@@ -1,8 +1,9 @@
 using System;
+using UnityEngine;
 
 public interface IMoverReadOnly
 {
     event Action StepTook;
 
-    float Speed { get; }
+    Vector3 Velocity { get; }
 }
