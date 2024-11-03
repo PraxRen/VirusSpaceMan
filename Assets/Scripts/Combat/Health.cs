@@ -6,14 +6,21 @@ public class Health : MonoBehaviour, IDamageable, IAttribute
     [SerializeField] private float _maxValue;
     [SerializeField] private float _cooldownHit;
 
+    private Transform _transform;
     private float _lastTimeHit;
 
+    public Vector3 Position => _transform.position;
     public float MaxValue => _maxValue;
     public float Value { get; private set; }
     public bool IsDied { get; private set; }
 
     public event Action ValueChanged;
     public event Action Died;
+
+    private void Awake()
+    {
+        _transform = transform;
+    }
 
     public bool CanTakeDamage(IWeaponReadOnly weapon)
     {

@@ -9,11 +9,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 439838ad9aa1c5b44ae71aae81be2e8a, type: 3}
+  m_Script: {fileID: 11500000, guid: 3c1f9d4cbc2c1b34fb9f3cc14cc4d648, type: 3}
   m_Name: Karate
   m_EditorClassIdentifier: 
-  _id: e978c682-9676-46ef-be34-80310e8f8177
-  _damage: 10
-  _distanceAttack: 10
-  _cooldownAttack: 0.3
+  _id: fa01fcdf-39e1-4b96-befe-813ab48c95cf
+  _damage: 1
+  _distanceAttack: 3
+  _cooldownAttack: 0.2
   _typeAnimationLayer: 2
+  _modeMover: {fileID: 11400000, guid: ea2f701029778194592a4f57854362ae, type: 2}

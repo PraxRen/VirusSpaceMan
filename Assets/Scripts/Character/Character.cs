@@ -13,5 +13,26 @@ public abstract class Character : MonoBehaviour
         AwakeAddon();
     }
 
+    private void Start()
+    {
+        StartAddon();
+    }
+
+    private void OnEnable()
+    {
+        EnableAddon();
+    }
+
+    private void OnDisable()
+    {
+        DisableAddon();
+    }
+
     protected virtual void AwakeAddon() { }
+
+    protected virtual void StartAddon() { }
+
+    protected virtual void EnableAddon() { }
+
+    protected virtual void DisableAddon() { }
 }

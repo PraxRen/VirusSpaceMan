@@ -1,31 +1,43 @@
 using System;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public class Fighter : MonoBehaviour, IDamageable, IFighterReadOnly
 {
-    [SerializeField][SerializeInterface(typeof(IStorageFighter))] private MonoBehaviour _storageFighterMonoBehaviour;
+    [SerializeField] private Health _health;
+    [SerializeField][SerializeInterface(typeof(IChangerWeaponConfig))] private MonoBehaviour _changerWeaponConfigMonoBehaviour;
     [SerializeField][SerializeInterface(typeof(IAttackNotifier))] private MonoBehaviour _attackNotifierMonoBehaviour;
     [SerializeField] private LayerMask _layerMaskDamageable;
     [SerializeField] private LayerMask _layerMaskCollision;
+    [SerializeField] private Weapon _weaponDEBUG;
 
-    private IStorageFighter _storageFighter;
+    private IChangerWeaponConfig _changerWeaponConfig;
     private IAttackNotifier _attackNotifier;
     private IDamageable _currentDamageable;
     private Weapon _currentWeapon;
+    private Transform _transform;
     private bool _isActivateWeapon;
 
+    public event Action<IWeaponReadOnly> ChangedWeapon;
+    public event Action RemovedWeapon;
+
     public bool IsAttack { get; private set; }
+    public IWeaponReadOnly Weapon => _currentWeapon;
+    public LayerMask LayerMaskDamageable => _layerMaskDamageable;
+    public Vector3 Position => _transform.position;
 
     private void Awake()
     {
-        _storageFighter = (IStorageFighter)_storageFighterMonoBehaviour;
+        _transform = transform;
+        _changerWeaponConfig = (IChangerWeaponConfig)_changerWeaponConfigMonoBehaviour;
         _attackNotifier = (IAttackNotifier)_attackNotifierMonoBehaviour;
+        _currentDamageable = _health;
     }
 
     private void OnEnable()
     {
-        _storageFighter.ChangedDamageable += OnChangedDamageable;
-        _storageFighter.ChangedWeapon += OnChangedWeapon;
+        _changerWeaponConfig.ChangedWeaponConfig += OnChangedWeaponConfig;
+        _changerWeaponConfig.RemovedWeaponConfig += RemoveWeapon;
         _attackNotifier.StartingAttack += OnStartingAttack;
         _attackNotifier.RunningDamage += OnRunningDamage;
         _attackNotifier.StoppingAttack += OnStoppingAttack;
@@ -33,8 +45,8 @@ public class Fighter : MonoBehaviour, IDamageable, IFighterReadOnly
 
     private void OnDisable()
     {
-        _storageFighter.ChangedDamageable -= OnChangedDamageable;
-        _storageFighter.ChangedWeapon -= OnChangedWeapon;
+        _changerWeaponConfig.ChangedWeaponConfig -= OnChangedWeaponConfig;
+        _changerWeaponConfig.RemovedWeaponConfig -= RemoveWeapon;
         _attackNotifier.StartingAttack -= OnStartingAttack;
         _attackNotifier.RunningDamage -= OnRunningDamage;
         _attackNotifier.StoppingAttack -= OnStoppingAttack;
@@ -81,13 +93,21 @@ public class Fighter : MonoBehaviour, IDamageable, IFighterReadOnly
         IsAttack = false;
     }
 
-    private void OnChangedDamageable(IDamageable damageable)
+    private void OnChangedWeaponConfig(WeaponConfig weaponConfig)
     {
-        _currentDamageable = damageable;
+        RemoveWeapon();
+        _currentWeapon = _weaponDEBUG;
+        _currentWeapon.Init(weaponConfig, this);
+        ChangedWeapon?.Invoke(_currentWeapon);
     }
 
-    private void OnChangedWeapon(Weapon weapon)
+    private void RemoveWeapon()
     {
-        _currentWeapon = weapon;
+        if (_currentWeapon == null)
+            return;
+
+        _currentWeapon.ClearConfig();
+        _currentWeapon = null;
+        RemovedWeapon?.Invoke();
     }
 }

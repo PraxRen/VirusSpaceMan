@@ -1,13 +1,14 @@
 using System;
 using UnityEngine;
 
-[RequireComponent(typeof(Animator))]
+[RequireComponent(typeof(Animator), typeof(SwitcherAnimationLayer))]
 public class AnimatorMover : MonoBehaviour, IStepNotifier
 {
     [SerializeField][SerializeInterface(typeof(IMoverReadOnly))] private MonoBehaviour _moverMonoBehaviour;
     [Range(0, 1)][SerializeField] private float _weightForAnimationEvent;
 
     private Animator _animator;
+    private SwitcherAnimationLayer _switcherAnimationLayer;
     private IMoverReadOnly _mover;
     
     public event Action CreatedStep;
@@ -15,6 +16,7 @@ public class AnimatorMover : MonoBehaviour, IStepNotifier
     private void Awake()
     {
         _animator = GetComponent<Animator>();
+        _switcherAnimationLayer = GetComponent<SwitcherAnimationLayer>();
         _mover = (IMoverReadOnly)_moverMonoBehaviour;
     }
 
@@ -28,6 +30,9 @@ public class AnimatorMover : MonoBehaviour, IStepNotifier
     //AnimationEvent
     private void OnFootstepAnimationEvent(AnimationEvent animationEvent)
     {
+        if (_switcherAnimationLayer.GetIndexCurrentMoverAnimationLayer() != animationEvent.intParameter)
+            return;
+
         if (animationEvent.animatorClipInfo.weight < _weightForAnimationEvent)
             return;
 

@@ -8,7 +8,7 @@ public class SwitcherAnimationLayer : MonoBehaviour
 
     private Dictionary<int, Coroutine> _hashCorutineJobs = new Dictionary<int, Coroutine>();
     private TypeAnimationLayer _defaultAnimationLayer = TypeAnimationLayer.Default;
-    private TypeAnimationLayer _currentAnimationLayer;
+    private TypeAnimationLayer _currentAnimationLayer = TypeAnimationLayer.Default;
 
     public void SetDefaultAnimationLayer(TypeAnimationLayer animationLayer)
     {

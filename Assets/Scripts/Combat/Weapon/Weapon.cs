@@ -62,6 +62,12 @@ public abstract class Weapon : MonoBehaviour, IWeaponReadOnly
         _fighter = fighter;
     }
 
+    public void ClearConfig()
+    {
+        _config = null;
+        _fighter = null;
+    }
+
     protected virtual bool CanAttackAddon() => true;
 
     protected virtual void StartAttackAddon() { }
