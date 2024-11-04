@@ -7,4 +7,5 @@ public interface IAttackNotifier
     event Action StoppingAttack;
 
     void CreateAttack();
+    void CancelAttack();
 }

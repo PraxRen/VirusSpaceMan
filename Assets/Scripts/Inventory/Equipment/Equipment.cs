@@ -1,9 +1,12 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
 public class Equipment : MonoBehaviour, IEquipmentReadOnly
 {
+    [SerializeField] private EquipmentCell[] _defaultCells;
+
     private EquipmentCell[] _equipmentCells;
 
     public event Action<IEquipmentCellReanOnly> ChangedCell;
@@ -11,6 +14,14 @@ public class Equipment : MonoBehaviour, IEquipmentReadOnly
     private void Awake()
     {
         Init();
+    }
+
+    private void Start()
+    {
+        foreach (EquipmentCell cell in _defaultCells) 
+        {
+            UpdateCell(cell.Type, cell.Item);
+        }
     }
 
     public void UpdateCell(EquipmentType type, Item item)
@@ -21,6 +32,7 @@ public class Equipment : MonoBehaviour, IEquipmentReadOnly
             throw new ArgumentNullException(nameof(equipmentCell));
 
         equipmentCell.AddItem(item);
+        ChangedCell?.Invoke(equipmentCell);
     }
 
     private void Init()

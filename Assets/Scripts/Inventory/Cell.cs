@@ -1,5 +1,7 @@
 using System;
+using UnityEngine;
 
+[Serializable]
 public class Cell : ICellReadOnly
 {
     public Cell(Item item, int count, int maxCount)
@@ -9,9 +11,9 @@ public class Cell : ICellReadOnly
         MaxCount = maxCount;
     }
 
-    public Item Item { get; private set; }
-    public int Count { get; private set; }
-    public int MaxCount { get; private set; }
+    [field: SerializeField] public Item Item { get; private set; }
+    [field: SerializeField] public int Count { get; private set; }
+    [field: SerializeField] public int MaxCount { get; private set; }
 
     public void AddItem(Item item) => AddItem(item, 1, 1);
 

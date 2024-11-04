@@ -38,7 +38,13 @@ public class AnimatorFighter : MonoBehaviour, IAttackNotifier
 
     public void CreateAttack()
     {
+        _animator.SetBool(CharacterAnimatorData.Params.IsAttack, true);
+        //_animator.SetFloat(CharacterAnimatorData.Params.IndexAttack, 0);
+    }
 
+    public void CancelAttack()
+    {
+        _animator.SetBool(CharacterAnimatorData.Params.IsAttack, false);
     }
 
     private void OnChangedWeapon(IWeaponReadOnly weapon)
@@ -62,6 +68,8 @@ public class AnimatorFighter : MonoBehaviour, IAttackNotifier
 
         if (animationEvent.animatorClipInfo.weight < _weightForAnimationEvent)
             return;
+
+        StartingAttack?.Invoke();
     }
 
     //AnimationEvent
@@ -72,6 +80,8 @@ public class AnimatorFighter : MonoBehaviour, IAttackNotifier
 
         if (animationEvent.animatorClipInfo.weight < _weightForAnimationEvent)
             return;
+
+        RunningDamage?.Invoke();
     }
 
     //AnimationEvent
@@ -82,5 +92,7 @@ public class AnimatorFighter : MonoBehaviour, IAttackNotifier
 
         if (animationEvent.animatorClipInfo.weight < _weightForAnimationEvent)
             return;
+
+        StoppingAttack?.Invoke();
     }
 }

@@ -13,8 +13,9 @@ MonoBehaviour:
   m_Name: Karate
   m_EditorClassIdentifier: 
   _id: fa01fcdf-39e1-4b96-befe-813ab48c95cf
+  _idWeapon: 2cc8b2c4-4ce5-4794-b250-0c5f418f381e
   _damage: 1
-  _distanceAttack: 3
+  _distanceAttack: 1.8
   _cooldownAttack: 0.2
   _typeAnimationLayer: 2
   _modeMover: {fileID: 11400000, guid: ea2f701029778194592a4f57854362ae, type: 2}

@@ -71,7 +71,7 @@ public class ScannerDamageable : MonoBehaviour
         if (colliders == null)
             return;
         
-        Collider targetCollider = colliders.Where(collider => (collider.transform.position - _transform.position).sqrMagnitude <= _radiusSqr)
+        Collider targetCollider = colliders.Where(collider => collider.transform != _transform && (collider.transform.position - _transform.position).sqrMagnitude <= _radiusSqr)
                                            .OrderBy(collider => (collider.transform.position - _transform.position).sqrMagnitude)
                                            .FirstOrDefault();
         if (targetCollider == null)

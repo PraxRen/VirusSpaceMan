@@ -28,6 +28,6 @@ public class Player : Character
         if (_fighter.CanAttack() == false)
             return;
 
-        _fighter.Attack();
+        _fighter.Attack(_scannerDamageable.Target);
     }
 }

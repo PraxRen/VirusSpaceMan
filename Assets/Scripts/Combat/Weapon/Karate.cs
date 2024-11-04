@@ -1,11 +1,5 @@
 using UnityEngine;
 
-public class Karate : Weapon
+public class Karate : SimpleMeleeWeapon
 {
-    [SerializeField] private WeaponConfig _configX;
-
-    private void Awake()
-    {
-        Init(_configX, GetComponent<IFighterReadOnly>());
-    }
 }

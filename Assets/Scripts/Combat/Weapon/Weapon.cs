@@ -1,16 +1,26 @@
 using System;
 using UnityEngine;
 
-public abstract class Weapon : MonoBehaviour, IWeaponReadOnly
+public abstract class Weapon : MonoBehaviour, IWeaponReadOnly, ISerializationCallbackReceiver
 {
+    [SerializeField][ReadOnly] private string _id;
+
     private WeaponConfig _config;
     private IFighterReadOnly _fighter;
-    private float _lastTimeAttack = float.MaxValue;
+    private float _lastTimeAttack;
+    private bool _isActivated;
 
+    public event Action<Transform> Hited;
+
+    public string Id => _id;
     public WeaponConfig Config => _config;
+    public IFighterReadOnly Fighter => _fighter;
 
     public bool CanAttack()
     {
+        if (_isActivated == false)
+            return false;
+
         if (_config == null)
             return false;
 
@@ -62,8 +72,27 @@ public abstract class Weapon : MonoBehaviour, IWeaponReadOnly
         _fighter = fighter;
     }
 
+    public void Activate()
+    {
+        if (_isActivated)
+            return;
+
+        gameObject.SetActive(true);
+        _isActivated = true;
+    }
+
+    public void Deactivate() 
+    {
+        if (_isActivated == false)
+            return;
+
+        gameObject.SetActive(false);
+        _isActivated = false;
+    }
+
     public void ClearConfig()
     {
+        Deactivate();
         _config = null;
         _fighter = null;
     }
@@ -75,4 +104,17 @@ public abstract class Weapon : MonoBehaviour, IWeaponReadOnly
     protected virtual void RunDamageAddon() { }
 
     protected virtual void StopAttackAddon() { }
+
+    protected void Hit(Transform transform)
+    {
+        Hited?.Invoke(transform);
+    }
+
+    void ISerializationCallbackReceiver.OnAfterDeserialize()
+    {
+        if (string.IsNullOrWhiteSpace(_id))
+            _id = System.Guid.NewGuid().ToString();
+    }
+
+    void ISerializationCallbackReceiver.OnBeforeSerialize() { }
 }
