@@ -27,7 +27,7 @@ public class ActionScheduler : MonoBehaviour
 
         if (_isBlockAction)
         {
-            return _matrixAction.CanUnblock(_currentAction, action) == false;
+            return _matrixAction.CanUnblock(_currentAction, action);
         }
 
         return true;

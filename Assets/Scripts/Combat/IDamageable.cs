@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public interface IDamageable
+public interface IDamageable : ISurface
 {
     public Vector3 Position { get; }
 

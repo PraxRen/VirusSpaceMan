@@ -1,5 +1,4 @@
 using System;
-using System.Drawing.Drawing2D;
 using UnityEditor;
 using UnityEngine;
 
@@ -14,33 +13,32 @@ public class MatrixActionEditor : Editor
         MatrixAction matrixAction = (MatrixAction)target;
         TypeAction[] types = (TypeAction[])Enum.GetValues(typeof(TypeAction));
 
-        DrawMatrix(NameMatrixBlock, types, matrixAction.MatrixBlock);
-        DrawMatrix(NameMatrixCancel, types, matrixAction.MatrixCancel);
+        DrawMatrix(NameMatrixBlock, types, matrixAction.MatrixBlock, matrixAction.SizeMatrix);
+        DrawMatrix(NameMatrixCancel, types, matrixAction.MatrixCancel, matrixAction.SizeMatrix);
     }
 
-    private void DrawMatrix(string nameMatrix, TypeAction[] types, bool[,] matrix)
+    private void DrawMatrix(string nameMatrix, TypeAction[] types, bool[] matrix, int size)
     {
         EditorGUILayout.LabelField(nameMatrix);
-
-        // Рендер заголовков столбцов
         EditorGUILayout.BeginHorizontal();
-        EditorGUILayout.LabelField("", GUILayout.Width(50)); // Пустая ячейка в левом верхнем углу
+        EditorGUILayout.LabelField("", GUILayout.Width(50));
 
-        for (int j = 0; j < types.Length; j++)
+        for (int j = 0; j < size; j++)
         {
             EditorGUILayout.LabelField(types[j].ToString(), GUILayout.Width(50));
         }
 
         EditorGUILayout.EndHorizontal();
 
-        // Рендер строк с заголовками
-        for (int i = 0; i < types.Length; i++)
+        for (int i = 0; i < size; i++)
         {
             EditorGUILayout.BeginHorizontal();
-            EditorGUILayout.LabelField(types[i].ToString(), GUILayout.Width(70)); // Заголовок строки
-            for (int j = 0; j < types.Length; j++)
+            EditorGUILayout.LabelField(types[i].ToString(), GUILayout.Width(70));
+
+            for (int j = 0; j < size; j++)
             {
-                matrix[i, j] = EditorGUILayout.Toggle(matrix[i, j], GUILayout.Width(50));
+                int index = i * size + j;
+                matrix[index] = EditorGUILayout.Toggle(matrix[index], GUILayout.Width(50));
             }
 
             EditorGUILayout.EndHorizontal();

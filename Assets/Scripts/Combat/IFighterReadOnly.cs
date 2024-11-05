@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 public interface IFighterReadOnly
@@ -9,6 +10,6 @@ public interface IFighterReadOnly
     bool IsAttack { get; }
     IWeaponReadOnly Weapon { get; }
     LayerMask LayerMaskDamageable { get; }
-
-    bool CanHit(Transform transform);
+    LayerMask LayerMaskCollision { get; }
+    public IReadOnlyCollection<Collider> IgnoreColliders { get; }
 }

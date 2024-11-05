@@ -13,4 +13,4 @@ MonoBehaviour:
   m_Name: WeaponKarateModeMover
   m_EditorClassIdentifier: 
   _speedMove: 4
-  _speedRotation: 30
+  _speedRotation: 50

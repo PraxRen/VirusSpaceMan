@@ -16,8 +16,16 @@ public class Player : Character
 
     private void Update()
     {
-        Mover.Move(_inputReader.DirectionMove);
+        HandleLocomotion();
         HandleCombat();
+    }
+
+    private void HandleLocomotion()
+    {
+        if (Mover.CanMove() == false)
+            return;
+
+        Mover.Move(_inputReader.DirectionMove);
     }
 
     private void HandleCombat()
@@ -28,6 +36,6 @@ public class Player : Character
         if (_fighter.CanAttack() == false)
             return;
 
-        _fighter.Attack(_scannerDamageable.Target);
+        _fighter.Attack((_scannerDamageable.Target.Position - Transform.position).normalized);
     }
 }

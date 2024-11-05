@@ -18,6 +18,7 @@ public class ScannerDamageable : MonoBehaviour
 
     public event Action<IDamageable> ChangedTarget;
     public event Action RemovedTarget;
+    public event Action<float> ChangedRadius;
 
     public IDamageable Target { get; private set; }
     
@@ -98,7 +99,7 @@ public class ScannerDamageable : MonoBehaviour
 
     private void OnChangedWeapon(IWeaponReadOnly weapon)
     {
-        UpdateRadius(_radiusBase + weapon.Config.DistanceAttack);
+        UpdateRadius(Mathf.Max(_radiusBase, weapon.Config.DistanceAttack));
     }
 
     private void OnRemovedWeapon()
@@ -110,6 +111,7 @@ public class ScannerDamageable : MonoBehaviour
     {
         _radius = radius;
         _radiusSqr = _radius * _radius;
+        ChangedRadius?.Invoke(_radius);
     }
 
     private void OnDrawGizmos()

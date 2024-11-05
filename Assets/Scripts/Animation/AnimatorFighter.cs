@@ -39,7 +39,7 @@ public class AnimatorFighter : MonoBehaviour, IAttackNotifier
     public void CreateAttack()
     {
         _animator.SetBool(CharacterAnimatorData.Params.IsAttack, true);
-        //_animator.SetFloat(CharacterAnimatorData.Params.IndexAttack, 0);
+        _animator.SetFloat(CharacterAnimatorData.Params.IndexAttack, _fighter.Weapon.CurrentAttack.AnimationIndex);
     }
 
     public void CancelAttack()

@@ -1,16 +1,20 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.UIElements;
 
-public class Fighter : MonoBehaviour, IDamageable, IFighterReadOnly
+public class Fighter : MonoBehaviour, IDamageable, IFighterReadOnly, IAction
 {
+    [SerializeField] private bool _isAutoActivationWeapon;
     [SerializeField] private Health _health;
     [SerializeField] private StorageWeapon _storageWeapon;
+    [SerializeField] private ActionScheduler _actionScheduler;
     [SerializeField][SerializeInterface(typeof(IChangerWeaponConfig))] private MonoBehaviour _changerWeaponConfigMonoBehaviour;
     [SerializeField][SerializeInterface(typeof(IAttackNotifier))] private MonoBehaviour _attackNotifierMonoBehaviour;
     [SerializeField] private LayerMask _layerMaskDamageable;
     [SerializeField] private LayerMask _layerMaskCollision;
-    [SerializeField] private bool _isAutoActivationWeapon;
+    [SerializeField] private Collider[] _ignoreColliders;
 
     private IChangerWeaponConfig _changerWeaponConfig;
     private IAttackNotifier _attackNotifier;
@@ -24,7 +28,10 @@ public class Fighter : MonoBehaviour, IDamageable, IFighterReadOnly
     public bool IsAttack { get; private set; }
     public IWeaponReadOnly Weapon => _currentWeapon;
     public LayerMask LayerMaskDamageable => _layerMaskDamageable;
+    public LayerMask LayerMaskCollision => _layerMaskCollision;
     public Vector3 Position => _transform.position;
+    public IReadOnlyCollection<Collider> IgnoreColliders => _ignoreColliders;
+    public SurfaceType SurfaceType => _currentDamageable.SurfaceType;
 
     private void Awake()
     {
@@ -40,7 +47,7 @@ public class Fighter : MonoBehaviour, IDamageable, IFighterReadOnly
         _changerWeaponConfig.RemovedWeaponConfig += RemoveWeapon;
         _attackNotifier.StartingAttack += OnStartingAttack;
         _attackNotifier.RunningDamage += OnRunningDamage;
-        _attackNotifier.StoppingAttack += OnStoppingAttack;
+        _attackNotifier.StoppingAttack += StopAttack;
     }
 
     private void OnDisable()
@@ -49,8 +56,10 @@ public class Fighter : MonoBehaviour, IDamageable, IFighterReadOnly
         _changerWeaponConfig.RemovedWeaponConfig -= RemoveWeapon;
         _attackNotifier.StartingAttack -= OnStartingAttack;
         _attackNotifier.RunningDamage -= OnRunningDamage;
-        _attackNotifier.StoppingAttack -= OnStoppingAttack;
+        _attackNotifier.StoppingAttack -= StopAttack;
     }
+
+    public void Cancel() => StopAttack();
 
     public bool CanTakeDamage(IWeaponReadOnly weapon) => _currentDamageable.CanTakeDamage(weapon);
 
@@ -91,12 +100,14 @@ public class Fighter : MonoBehaviour, IDamageable, IFighterReadOnly
         if (_currentWeapon.CanAttack() == false)
             return false;
 
+        if (_actionScheduler.CanStartAction(this) == false)
+            return false;
+
         return true;
     }
 
-    public void Attack(IDamageable target)
+    public void Attack(Vector3 direction)
     {
-        Vector3 direction = (target.Position - _transform.position).normalized;
         direction.y = 0f;
         _transform.forward = direction;
         Attack();
@@ -105,60 +116,50 @@ public class Fighter : MonoBehaviour, IDamageable, IFighterReadOnly
     public void Attack()
     {
         IsAttack = true;
+        _actionScheduler.StartAction(this);
+        _currentWeapon.UpdateIndexAttack();
         _attackNotifier.CreateAttack();
     }
 
     private void OnStartingAttack()
     {
+        if (IsAttack == false)
+            return;
+
         _currentWeapon.StartAttack();
     }
 
     private void OnRunningDamage()
     {
+        if (IsAttack == false)
+            return;
+
         _currentWeapon.RunDamage();
     }
 
-    private void OnStoppingAttack()
+    private void StopAttack()
     {
         _currentWeapon.StopAttack();
         _attackNotifier.CancelAttack();
+        _actionScheduler.ClearAction(this);
         IsAttack = false;
     }
 
-    public bool CanHit(Transform target)
+    private void Hit(IDamageable damageable)
     {
-        if (target == _transform)
-            return false;
+        Debug.Log("+++");
 
-        if (SimpleUtils.IsLayerInclud(target.gameObject, _layerMaskCollision) == false)
-            return false;
-
-        return true;
-    }
-
-    private void OnHited(Transform target)
-    {
-        Debug.Log(target.name);
-
-        if (target.TryGetComponent(out IDamageable damageable))
-        {
-            HandleHitDamageable(damageable);
-        }
-    }
-
-    private void HandleHitDamageable(IDamageable damageable)
-    {
         if (damageable.CanTakeDamage(Weapon) == false)
             return;
 
-        damageable.TakeDamage(Weapon, Weapon.Config.Damage);
+        damageable.TakeDamage(Weapon, Weapon.CurrentAttack.Damage);
     }
 
     private void OnChangedWeaponConfig(WeaponConfig weaponConfig)
     {
         RemoveWeapon();
         _currentWeapon = _storageWeapon.GetWeapon(weaponConfig.IdWeapon);
-        _currentWeapon.Hited += OnHited;
+        _currentWeapon.Hited += Hit;
         _currentWeapon.Init(weaponConfig, this);
 
         if (_isAutoActivationWeapon)
@@ -173,10 +174,8 @@ public class Fighter : MonoBehaviour, IDamageable, IFighterReadOnly
             return;
 
         _currentWeapon.ClearConfig();
-        _currentWeapon.Hited -= OnHited;
+        _currentWeapon.Hited -= Hit;
         _currentWeapon = null;
         RemovedWeapon?.Invoke();
     }
-
-
 }

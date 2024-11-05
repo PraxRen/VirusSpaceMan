@@ -1,20 +1,66 @@
 using System;
+using System.Linq;
 using UnityEngine;
 
 public abstract class Weapon : MonoBehaviour, IWeaponReadOnly, ISerializationCallbackReceiver
 {
+    private float TimeResetIndexAttack = 2f;
+
     [SerializeField][ReadOnly] private string _id;
+    [SerializeField] private SurfaceType _surfaceType;
 
     private WeaponConfig _config;
     private IFighterReadOnly _fighter;
     private float _lastTimeAttack;
     private bool _isActivated;
+    private int _indexAttack;
 
-    public event Action<Transform> Hited;
+    public event Action StartedAttack;
+    public event Action<ICollidable> Ñollided;
+    public event Action<IDamageable> Hited;
 
     public string Id => _id;
     public WeaponConfig Config => _config;
     public IFighterReadOnly Fighter => _fighter;
+    public Attack CurrentAttack => _config.Attacks[_indexAttack];
+    public SurfaceType SurfaceType => _surfaceType;
+
+
+    private void Awake()
+    {
+        AwakeAddon();
+    }
+
+    private void OnEnable()
+    {
+        ResetIndexAttack();
+        EnableAddon();
+    }
+
+    private void OnDisable()
+    {
+        DisableAddon();
+    }
+
+    private void Start()
+    {
+        StartAddon();
+    }
+
+    public void UpdateIndexAttack()
+    {
+        if (Time.time - _lastTimeAttack > TimeResetIndexAttack + _config.CooldownAttack)
+        {
+            ResetIndexAttack();
+        }
+
+        int indexNext = _indexAttack + 1;
+
+        if (indexNext > _config.Attacks.Count - 1)
+            indexNext = 0;
+
+        _indexAttack = indexNext;
+    }
 
     public bool CanAttack()
     {
@@ -41,7 +87,9 @@ public abstract class Weapon : MonoBehaviour, IWeaponReadOnly, ISerializationCal
         if (_fighter == null)
             throw new ArgumentNullException(nameof(_fighter));
 
+        _lastTimeAttack = Time.time;
         StartAttackAddon();
+        StartedAttack?.Invoke();
     }
 
     public void RunDamage()
@@ -97,6 +145,39 @@ public abstract class Weapon : MonoBehaviour, IWeaponReadOnly, ISerializationCal
         _fighter = null;
     }
 
+    protected bool CanÑollide(Collider targetCollider)
+    {
+        if (SimpleUtils.IsLayerInclud(targetCollider.gameObject, _fighter.LayerMaskCollision) == false)
+            return false;
+
+        if (_fighter.IgnoreColliders.Any(collider => collider == targetCollider))
+            return false;
+
+        return true;
+    }
+
+    protected void HandleÑollide(Collider targetCollider)
+    {
+        if (targetCollider.TryGetComponent(out ICollidable collidable))
+        {
+            collidable.HandleCollide(this);
+            Ñollided?.Invoke(collidable);
+        }
+
+        if (targetCollider.TryGetComponent(out IDamageable damageable))
+        {
+            if (SimpleUtils.IsLayerInclud(targetCollider.gameObject, _fighter.LayerMaskDamageable))
+            {
+                Hited?.Invoke(damageable);
+            }
+        }
+    }
+
+    protected virtual void AwakeAddon() { }
+    protected virtual void StartAddon() { }
+    protected virtual void EnableAddon() { }
+    protected virtual void DisableAddon() { }
+
     protected virtual bool CanAttackAddon() => true;
 
     protected virtual void StartAttackAddon() { }
@@ -105,15 +186,15 @@ public abstract class Weapon : MonoBehaviour, IWeaponReadOnly, ISerializationCal
 
     protected virtual void StopAttackAddon() { }
 
-    protected void Hit(Transform transform)
+    private void ResetIndexAttack()
     {
-        Hited?.Invoke(transform);
+        _indexAttack = -1;
     }
 
     void ISerializationCallbackReceiver.OnAfterDeserialize()
     {
         if (string.IsNullOrWhiteSpace(_id))
-            _id = System.Guid.NewGuid().ToString();
+            _id = Guid.NewGuid().ToString();
     }
 
     void ISerializationCallbackReceiver.OnBeforeSerialize() { }
