@@ -14,6 +14,18 @@ public class Player : Character
         _scannerDamageable = GetComponent<ScannerDamageable>();
     }
 
+    protected override void EnableAddon()
+    {
+        _scannerDamageable.ChangedTarget += OnChangedTarget;
+        _scannerDamageable.RemovedTarget += OnRemovedTarget;
+    }
+
+    protected override void DisableAddon()
+    {
+        _scannerDamageable.ChangedTarget -= OnChangedTarget;
+        _scannerDamageable.RemovedTarget -= OnRemovedTarget;
+    }
+
     private void Update()
     {
         HandleLocomotion();
@@ -33,9 +45,21 @@ public class Player : Character
         if (_scannerDamageable.Target == null)
             return;
 
+        _fighter.LookAtTarget((_scannerDamageable.Target.Position - Transform.position).normalized);
+
         if (_fighter.CanAttack() == false)
             return;
 
-        _fighter.Attack((_scannerDamageable.Target.Position - Transform.position).normalized);
+        _fighter.Attack();
+    }
+
+    private void OnChangedTarget(IDamageable damageable)
+    {
+        _fighter.ActivateWeapon();
+    }
+
+    private void OnRemovedTarget()
+    {
+        _fighter.DeactivateWeapon();
     }
 }

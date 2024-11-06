@@ -140,7 +140,6 @@ public abstract class Weapon : MonoBehaviour, IWeaponReadOnly, ISerializationCal
 
     public void ClearConfig()
     {
-        Deactivate();
         _config = null;
         _fighter = null;
     }

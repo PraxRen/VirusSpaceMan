@@ -1,7 +1,6 @@
 public enum SurfaceType
 {
+    None,
     Body,
-    Iron,
-    Stone,
-    Wood
+    Blade
 }

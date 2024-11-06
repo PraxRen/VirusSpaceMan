@@ -5,6 +5,8 @@ using UnityEngine;
 public interface IFighterReadOnly
 {
     event Action<IWeaponReadOnly> ChangedWeapon;
+    event Action<IWeaponReadOnly> ActivatedWeapon;
+    event Action<IWeaponReadOnly> DeactivatedWeapon;
     event Action RemovedWeapon;
 
     bool IsAttack { get; }

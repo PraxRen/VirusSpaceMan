@@ -1,5 +1,4 @@
 using System;
-using System.Drawing;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "NewMatrixAction", menuName = "Action/MatrixAction")]
@@ -8,18 +7,15 @@ public class MatrixAction : ScriptableObject, IMatrixActionReanOnly
     public bool[] MatrixBlock;
     public bool[] MatrixCancel;
 
-    public int SizeMatrix { get; private set; }
+    private int _countTypeAction;
+    private int _length;
 
     private void OnValidate()
     {
-        if (SizeMatrix == 0)
-            SizeMatrix = Enum.GetValues(typeof(TypeAction)).Length;
-
-        if (MatrixBlock == null)
-            MatrixBlock = new bool[SizeMatrix * SizeMatrix];
-
-        if (MatrixCancel == null)
-            MatrixCancel = new bool[SizeMatrix * SizeMatrix];
+        _countTypeAction = Enum.GetValues(typeof(TypeAction)).Length;
+        _length = _countTypeAction * _countTypeAction;
+        InitializeMatrix(ref MatrixBlock);
+        InitializeMatrix(ref MatrixCancel);
     }
 
     public bool CanUnblock(IAction currentAction, IAction nextAction)
@@ -40,7 +36,7 @@ public class MatrixAction : ScriptableObject, IMatrixActionReanOnly
 
     private int GetIndex(TypeAction typeActionOne, TypeAction typeActionTwo)
     {
-        return (int)typeActionOne * SizeMatrix + (int)typeActionTwo;
+        return (int)typeActionOne * _countTypeAction + (int)typeActionTwo;
     }
 
     private TypeAction GetTypeAction(IAction action)
@@ -52,5 +48,13 @@ public class MatrixAction : ScriptableObject, IMatrixActionReanOnly
             Health => TypeAction.Health,
             _ => throw new InvalidCastException(nameof(action))
         };
+    }
+
+    private void InitializeMatrix(ref bool[] matrix)
+    {
+        if (matrix == null || matrix.Length != _length)
+        {
+            matrix = new bool[_length];
+        }
     }
 }

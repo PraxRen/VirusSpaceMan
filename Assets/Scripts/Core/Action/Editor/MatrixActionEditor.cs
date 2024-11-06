@@ -12,9 +12,9 @@ public class MatrixActionEditor : Editor
     {
         MatrixAction matrixAction = (MatrixAction)target;
         TypeAction[] types = (TypeAction[])Enum.GetValues(typeof(TypeAction));
-
-        DrawMatrix(NameMatrixBlock, types, matrixAction.MatrixBlock, matrixAction.SizeMatrix);
-        DrawMatrix(NameMatrixCancel, types, matrixAction.MatrixCancel, matrixAction.SizeMatrix);
+        int size = types.Length;
+        DrawMatrix(NameMatrixBlock, types, matrixAction.MatrixBlock, size);
+        DrawMatrix(NameMatrixCancel, types, matrixAction.MatrixCancel, size);
     }
 
     private void DrawMatrix(string nameMatrix, TypeAction[] types, bool[] matrix, int size)

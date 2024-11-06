@@ -25,15 +25,15 @@ public class AnimatorFighter : MonoBehaviour, IAttackNotifier
 
     private void OnEnable()
     {
-        _fighter.ChangedWeapon += OnChangedWeapon;
-        _fighter.RemovedWeapon += OnRemovedWeapon;
+        _fighter.ActivatedWeapon += OnActivatedWeapon;
+        _fighter.DeactivatedWeapon += OnDeactivatedWeapon;
     }
 
 
     private void OnDisable()
     {
-        _fighter.ChangedWeapon -= OnChangedWeapon;
-        _fighter.RemovedWeapon -= OnRemovedWeapon;
+        _fighter.ActivatedWeapon -= OnActivatedWeapon;
+        _fighter.DeactivatedWeapon -= OnDeactivatedWeapon;
     }
 
     public void CreateAttack()
@@ -47,7 +47,7 @@ public class AnimatorFighter : MonoBehaviour, IAttackNotifier
         _animator.SetBool(CharacterAnimatorData.Params.IsAttack, false);
     }
 
-    private void OnChangedWeapon(IWeaponReadOnly weapon)
+    private void OnActivatedWeapon(IWeaponReadOnly weapon)
     {
         if (weapon.Config is not IAnimationLayerProvider animationLayerProvider)
             return;
@@ -55,7 +55,7 @@ public class AnimatorFighter : MonoBehaviour, IAttackNotifier
        _switcherAnimationLayer.SetAnimationLayer(animationLayerProvider.TypeAnimationLayer, _timeChangeAnimationLayer);
     }
 
-    private void OnRemovedWeapon()
+    private void OnDeactivatedWeapon(IWeaponReadOnly weapon)
     {
         _switcherAnimationLayer.ApplyDefaultAnimationLayer(_timeChangeAnimationLayer);
     }

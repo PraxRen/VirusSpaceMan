@@ -1,12 +1,10 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
-using UnityEngine.UIElements;
 
 public class Fighter : MonoBehaviour, IDamageable, IFighterReadOnly, IAction
 {
-    [SerializeField] private bool _isAutoActivationWeapon;
+    [Tooltip("Auto-Activate the weapon when it is changed")][SerializeField] private bool _isAutoActivationWeapon;
     [SerializeField] private Health _health;
     [SerializeField] private StorageWeapon _storageWeapon;
     [SerializeField] private ActionScheduler _actionScheduler;
@@ -23,6 +21,8 @@ public class Fighter : MonoBehaviour, IDamageable, IFighterReadOnly, IAction
     private Transform _transform;
 
     public event Action<IWeaponReadOnly> ChangedWeapon;
+    public event Action<IWeaponReadOnly> ActivatedWeapon;
+    public event Action<IWeaponReadOnly> DeactivatedWeapon;
     public event Action RemovedWeapon;
 
     public bool IsAttack { get; private set; }
@@ -69,24 +69,20 @@ public class Fighter : MonoBehaviour, IDamageable, IFighterReadOnly, IAction
 
     public void ActivateWeapon()
     {
-        if (_isAutoActivationWeapon)
-            return;
-
         if (_currentWeapon == null)
             return;
 
         _currentWeapon.Activate();
+        ActivatedWeapon?.Invoke(_currentWeapon);
     }
 
     public void DeactivateWeapon()
     {
-        if (_isAutoActivationWeapon)
-            return;
-
         if (_currentWeapon == null)
             return;
 
         _currentWeapon.Deactivate();
+        DeactivatedWeapon?.Invoke(_currentWeapon);
     }
 
     public bool CanAttack()
@@ -106,17 +102,17 @@ public class Fighter : MonoBehaviour, IDamageable, IFighterReadOnly, IAction
         return true;
     }
 
-    public void Attack(Vector3 direction)
+    public void LookAtTarget(Vector3 direction)
     {
         direction.y = 0f;
         _transform.forward = direction;
-        Attack();
     }
 
     public void Attack()
     {
         IsAttack = true;
         _actionScheduler.StartAction(this);
+        _actionScheduler.SetBlock(this);
         _currentWeapon.UpdateIndexAttack();
         _attackNotifier.CreateAttack();
     }
@@ -163,7 +159,7 @@ public class Fighter : MonoBehaviour, IDamageable, IFighterReadOnly, IAction
         _currentWeapon.Init(weaponConfig, this);
 
         if (_isAutoActivationWeapon)
-            _currentWeapon.Activate();
+            ActivateWeapon();
 
         ChangedWeapon?.Invoke(_currentWeapon);
     }
@@ -173,6 +169,7 @@ public class Fighter : MonoBehaviour, IDamageable, IFighterReadOnly, IAction
         if (_currentWeapon == null)
             return;
 
+        DeactivatedWeapon?.Invoke(_currentWeapon);
         _currentWeapon.ClearConfig();
         _currentWeapon.Hited -= Hit;
         _currentWeapon = null;
