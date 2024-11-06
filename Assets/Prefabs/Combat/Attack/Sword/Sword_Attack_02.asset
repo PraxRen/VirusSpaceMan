@@ -9,8 +9,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9b511b93bbce3bd4ba569c16c470d256, type: 3}
-  m_Name: PlayerMatrixAction
+  m_Script: {fileID: 11500000, guid: 773e858d2c352a443850ffbf8a786d77, type: 3}
+  m_Name: Sword_Attack_02
   m_EditorClassIdentifier: 
-  MatrixBlock: 000100000000000000
-  MatrixCancel: 000000010000000000
+  _damage: 5
+  _animationIndex: 1

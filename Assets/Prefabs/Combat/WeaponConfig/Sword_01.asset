@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3c1f9d4cbc2c1b34fb9f3cc14cc4d648, type: 3}
+  m_Name: Sword_01
+  m_EditorClassIdentifier: 
+  _id: f4c336ff-936c-4c5b-b25c-5f5690da6d05
+  _idWeapon: 3bcc4681-937b-4fcf-8d01-39fef347b869
+  _distanceAttack: 1.8
+  _cooldownAttack: 1
+  _attacks:
+  - {fileID: 11400000, guid: b3b32acb27f1350459b2806e8f5e00f9, type: 2}
+  - {fileID: 11400000, guid: 75b51633abc20704793a100b82b1fa56, type: 2}
+  - {fileID: 11400000, guid: 25bc930c4d2c0bc43bb661e991dff863, type: 2}
+  _typeAnimationLayer: 3
+  _modeMover: {fileID: 11400000, guid: 9bda4b8c0cedffe41a7aa33a9741c621, type: 2}

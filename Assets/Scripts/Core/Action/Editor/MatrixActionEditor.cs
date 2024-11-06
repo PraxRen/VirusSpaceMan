@@ -45,5 +45,6 @@ public class MatrixActionEditor : Editor
         }
 
         EditorGUILayout.LabelField("");
+        EditorUtility.SetDirty(target);
     }
 }

@@ -1,19 +1,18 @@
-using System.Linq;
 using UnityEngine;
 
-[RequireComponent(typeof(IWeaponReadOnly))]
 public class SoundWeapon : MonoBehaviour
 {
     private const float VolumeStartedAttackFactor = 0.5f;
 
     [SerializeField] private AudioSource _audioSource;
+    [SerializeField][SerializeInterface(typeof(IWeaponReadOnly))] private MonoBehaviour _weaponMonoBehaviour;
     [SerializeField] private AudioClip[] _clipsStartedAttack;
     
     private IWeaponReadOnly _weapon;
 
     private void Awake()
     {
-        _weapon = GetComponent<IWeaponReadOnly>();
+        _weapon = (IWeaponReadOnly)_weaponMonoBehaviour;
     }
 
     private void OnEnable()
