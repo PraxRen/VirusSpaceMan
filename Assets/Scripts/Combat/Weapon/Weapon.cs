@@ -16,7 +16,7 @@ public abstract class Weapon : MonoBehaviour, IWeaponReadOnly, ISerializationCal
     private int _indexAttack;
 
     public event Action StartedAttack;
-    public event Action<ICollidable> Ñollided;
+    public event Action<ICollidable> Collided;
     public event Action<IDamageable> Hited;
 
     public string Id => _id;
@@ -45,6 +45,11 @@ public abstract class Weapon : MonoBehaviour, IWeaponReadOnly, ISerializationCal
     private void Start()
     {
         StartAddon();
+    }
+
+    public float GetDamage()
+    {
+        return _config.Damage + _config.Attacks[_indexAttack].Damage + GetDamageAddon();
     }
 
     public void UpdateIndexAttack()
@@ -144,7 +149,7 @@ public abstract class Weapon : MonoBehaviour, IWeaponReadOnly, ISerializationCal
         _fighter = null;
     }
 
-    protected bool CanÑollide(Collider targetCollider)
+    public bool CanCollide(Collider targetCollider)
     {
         if (SimpleUtils.IsLayerInclud(targetCollider.gameObject, _fighter.LayerMaskCollision) == false)
             return false;
@@ -155,12 +160,12 @@ public abstract class Weapon : MonoBehaviour, IWeaponReadOnly, ISerializationCal
         return true;
     }
 
-    protected void HandleÑollide(Collider targetCollider)
+    protected void HandleCollide(Collider targetCollider)
     {
         if (targetCollider.TryGetComponent(out ICollidable collidable))
         {
             collidable.HandleCollide(this);
-            Ñollided?.Invoke(collidable);
+            Collided?.Invoke(collidable);
         }
 
         if (targetCollider.TryGetComponent(out IDamageable damageable))
@@ -171,6 +176,8 @@ public abstract class Weapon : MonoBehaviour, IWeaponReadOnly, ISerializationCal
             }
         }
     }
+
+    protected virtual float GetDamageAddon() => 0f;
 
     protected virtual void AwakeAddon() { }
     protected virtual void StartAddon() { }

@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1956428150716818784}
   - component: {fileID: 2220928577565880225}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Weapon
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -59,7 +59,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3752769748637363154}
   - component: {fileID: 8165278303556436014}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: AudioSourse
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -186,7 +186,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8214132601026689710}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Graphics
   m_TagString: Untagged
   m_Icon: {fileID: 0}

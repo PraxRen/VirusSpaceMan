@@ -148,7 +148,7 @@ public class Fighter : MonoBehaviour, IDamageable, IFighterReadOnly, IAction
         if (damageable.CanTakeDamage(Weapon) == false)
             return;
 
-        damageable.TakeDamage(Weapon, Weapon.CurrentAttack.Damage);
+        damageable.TakeDamage(Weapon, Weapon.GetDamage());
     }
 
     private void OnChangedWeaponConfig(WeaponConfig weaponConfig)
