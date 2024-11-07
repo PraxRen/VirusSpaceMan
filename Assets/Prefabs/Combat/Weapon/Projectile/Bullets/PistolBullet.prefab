@@ -28,7 +28,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0.70710707, y: -0, z: -0, w: 0.70710653}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1.2, y: 1.2, z: 1.2}
+  m_LocalScale: {x: 1.7, y: 1.7, z: 1.7}
   m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 8736528398427046690}
@@ -154,6 +154,14 @@ PrefabInstance:
     - target: {fileID: 5509723613021084298, guid: e16f314c7cd183345bc3e675bbc56373, type: 3}
       propertyPath: m_Name
       value: PistolBullet
+      objectReference: {fileID: 0}
+    - target: {fileID: 7155426185626284492, guid: e16f314c7cd183345bc3e675bbc56373, type: 3}
+      propertyPath: m_AngularDrag
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7155426185626284492, guid: e16f314c7cd183345bc3e675bbc56373, type: 3}
+      propertyPath: m_Constraints
+      value: 48
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

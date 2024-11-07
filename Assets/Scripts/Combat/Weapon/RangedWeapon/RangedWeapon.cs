@@ -6,9 +6,14 @@ public abstract class RangedWeapon : Weapon, IRangedWeaponReadOnly
     [SerializeField] private SpawnerProjectile _spawnerProjectile;
     [SerializeField] private Transform _startPoint;
 
-    public Projectile ProjectilePrefab => throw new NotImplementedException();
-
     public Transform StartPoint => _startPoint;
+
+    public RangedWeaponConfig RangedWeaponConfig {  get; private set; }
+
+    protected override void InitializeAddon(WeaponConfig config, IFighterReadOnly fighter)
+    {
+        RangedWeaponConfig = (RangedWeaponConfig)config;
+    }
 
     protected override bool CanAttackAddon()
     {
@@ -22,10 +27,7 @@ public abstract class RangedWeapon : Weapon, IRangedWeaponReadOnly
         projectile.Shoot();
     }
 
-    protected override float GetDamageAddon()
-    {
-        return 0f;
-    }
+    protected override float GetDamageAddon() => RangedWeaponConfig.Damage;
 
     private void OnCollided(Projectile projectile, Collider collider)
     {

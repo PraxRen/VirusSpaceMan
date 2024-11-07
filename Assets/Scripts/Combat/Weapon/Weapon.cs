@@ -15,6 +15,7 @@ public abstract class Weapon : MonoBehaviour, IWeaponReadOnly, ISerializationCal
     private bool _isActivated;
     private int _indexAttack;
 
+    public event Action Initialized;
     public event Action StartedAttack;
     public event Action<ICollidable> Collided;
     public event Action<IDamageable> Hited;
@@ -119,10 +120,12 @@ public abstract class Weapon : MonoBehaviour, IWeaponReadOnly, ISerializationCal
         StopAttackAddon();
     }
 
-    public void Init(WeaponConfig config, IFighterReadOnly fighter)
+    public void Initialize(WeaponConfig config, IFighterReadOnly fighter)
     {
         _config = config;
         _fighter = fighter;
+        InitializeAddon(config, fighter);
+        Initialized?.Invoke();
     }
 
     public void Activate()
@@ -180,9 +183,14 @@ public abstract class Weapon : MonoBehaviour, IWeaponReadOnly, ISerializationCal
     protected virtual float GetDamageAddon() => 0f;
 
     protected virtual void AwakeAddon() { }
+    
     protected virtual void StartAddon() { }
+    
     protected virtual void EnableAddon() { }
+    
     protected virtual void DisableAddon() { }
+
+    protected virtual void InitializeAddon(WeaponConfig config, IFighterReadOnly fighter) { }
 
     protected virtual bool CanAttackAddon() => true;
 

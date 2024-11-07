@@ -156,7 +156,7 @@ public class Fighter : MonoBehaviour, IDamageable, IFighterReadOnly, IAction
         RemoveWeapon();
         _currentWeapon = _storageWeapon.GetWeapon(weaponConfig.IdWeapon);
         _currentWeapon.Hited += Hit;
-        _currentWeapon.Init(weaponConfig, this);
+        _currentWeapon.Initialize(weaponConfig, this);
 
         if (_isAutoActivationWeapon)
             ActivateWeapon();

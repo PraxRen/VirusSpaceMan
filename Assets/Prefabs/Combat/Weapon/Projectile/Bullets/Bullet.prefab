@@ -48,6 +48,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4724383064603296513, guid: 2dd8d95e37a1d3440a5c5a0ab1afbe56, type: 3}
+      propertyPath: m_Constraints
+      value: 48
+      objectReference: {fileID: 0}
     - target: {fileID: 7974528066430003271, guid: 2dd8d95e37a1d3440a5c5a0ab1afbe56, type: 3}
       propertyPath: m_Name
       value: Bullet

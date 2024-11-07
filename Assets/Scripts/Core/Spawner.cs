@@ -18,24 +18,22 @@ public abstract class Spawner<T> : MonoBehaviour where T : MonoBehaviour
 
     private void Awake()
     {
-        Capacity = InitilizeCapacity();
-        Pool = InitilizePool();
-        HandleAwake();
+        AwakeAddon();
     }
 
     private void OnEnable()
     {
-        HandleEnable();
+        EnableAddon();
     }
 
     private void OnDisable()
     {
-        HandleDisable();
+        DisableAddon();
     }
 
     private void Start()
     {
-        HandleStart();
+        StartAddon();
     }
 
 #if UNITY_EDITOR
@@ -47,6 +45,12 @@ public abstract class Spawner<T> : MonoBehaviour where T : MonoBehaviour
     }
 
 #endif
+
+    public void Initilize()
+    {
+        Capacity = InitilizeCapacity();
+        Pool = InitilizePool();
+    }
 
     public bool CanSpawn()
     {
@@ -88,13 +92,13 @@ public abstract class Spawner<T> : MonoBehaviour where T : MonoBehaviour
         return objectToPoolOne.Equals(objectToPoolTwo);
     }
 
-    protected virtual void HandleAwake() { }
+    protected virtual void AwakeAddon() { }
 
-    protected virtual void HandleEnable() { }
+    protected virtual void EnableAddon() { }
 
-    protected virtual void HandleDisable() { }
+    protected virtual void DisableAddon() { }
 
-    protected virtual void HandleStart() { }
+    protected virtual void StartAddon() { }
 
     private ObjectPool<T> InitilizePool()
     {
