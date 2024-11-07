@@ -4,4 +4,5 @@ public enum TypeAnimationLayer
     Default,
     Karate,
     OneHandedWeapon,
+    PistolWeapon,
 }

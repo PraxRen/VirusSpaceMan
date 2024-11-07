@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3c1f9d4cbc2c1b34fb9f3cc14cc4d648, type: 3}
+  m_Name: DEBUG
+  m_EditorClassIdentifier: 
+  _id: 3ad9a962-4ecd-408e-820b-b67454c8c95a
+  _idWeapon: 
+  _distanceAttack: 5
+  _cooldownAttack: 0.2
+  _attacks:
+  - {fileID: 11400000, guid: 3f418f67df761f246bf6b9cb69a505bf, type: 2}
+  _typeAnimationLayer: 0
+  _modeMover: {fileID: 11400000, guid: 2616d2a45a3fb7343b92501db4b584fc, type: 2}
