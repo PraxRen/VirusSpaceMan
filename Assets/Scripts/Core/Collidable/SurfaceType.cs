@@ -2,5 +2,6 @@ public enum SurfaceType
 {
     None,
     Body,
-    Blade
+    Blade,
+    //BUllet,
 }

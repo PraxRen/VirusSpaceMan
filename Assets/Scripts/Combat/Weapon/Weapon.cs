@@ -7,7 +7,6 @@ public abstract class Weapon : MonoBehaviour, IWeaponReadOnly, ISerializationCal
     private float TimeResetIndexAttack = 2f;
 
     [SerializeField][ReadOnly] private string _id;
-    [SerializeField] private SurfaceType _surfaceType;
 
     private WeaponConfig _config;
     private IFighterReadOnly _fighter;
@@ -24,7 +23,8 @@ public abstract class Weapon : MonoBehaviour, IWeaponReadOnly, ISerializationCal
     public WeaponConfig Config => _config;
     public IFighterReadOnly Fighter => _fighter;
     public Attack CurrentAttack => _config.Attacks[_indexAttack];
-    public SurfaceType SurfaceType => _surfaceType;
+    public float FactorNoise => _config.FactorNoise;
+    public SurfaceType SurfaceType => _config.SurfaceType;
 
 
     private void Awake()
@@ -167,8 +167,8 @@ public abstract class Weapon : MonoBehaviour, IWeaponReadOnly, ISerializationCal
     {
         if (targetCollider.TryGetComponent(out ICollidable collidable))
         {
-            collidable.HandleCollide(this);
-            Collided?.Invoke(collidable);
+            HandleCollidable(collidable);
+             Collided?.Invoke(collidable);
         }
 
         if (targetCollider.TryGetComponent(out IDamageable damageable))
@@ -179,6 +179,8 @@ public abstract class Weapon : MonoBehaviour, IWeaponReadOnly, ISerializationCal
             }
         }
     }
+
+    protected virtual void HandleCollidable(ICollidable collidable) => collidable.HandleCollide(this);
 
     protected virtual float GetDamageAddon() => 0f;
 

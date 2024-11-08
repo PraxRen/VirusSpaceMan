@@ -183,6 +183,18 @@ PrefabInstance:
       propertyPath: _weaponMonoBehaviour
       value: 
       objectReference: {fileID: -8079413031452053757}
+    - target: {fileID: 213431683985974977, guid: 5d89ba4a2ac23ed48bdad3f9bd8620d8, type: 3}
+      propertyPath: _clipsStartedAttack.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 213431683985974977, guid: 5d89ba4a2ac23ed48bdad3f9bd8620d8, type: 3}
+      propertyPath: _clipsStartedAttack.Array.data[0]
+      value: 
+      objectReference: {fileID: 8300000, guid: 380a61624a607f042ab5e96218f37633, type: 3}
+    - target: {fileID: 213431683985974977, guid: 5d89ba4a2ac23ed48bdad3f9bd8620d8, type: 3}
+      propertyPath: _clipsStartedAttack.Array.data[1]
+      value: 
+      objectReference: {fileID: 8300000, guid: 45e5a2d015897d34780787ab6e691387, type: 3}
     - target: {fileID: 505160945024314368, guid: 5d89ba4a2ac23ed48bdad3f9bd8620d8, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -264,7 +276,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _id: 86aeb65c-39f4-4a8d-887d-2ef9c75f7c03
-  _surfaceType: 2
   _spawnerProjectile: {fileID: 8949493759871982632}
   _startPoint: {fileID: 4340006880443674283}
 --- !u!4 &4340006880443674283 stripped

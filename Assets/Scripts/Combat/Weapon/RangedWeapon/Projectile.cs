@@ -5,8 +5,6 @@ using UnityEngine.UIElements;
 [RequireComponent(typeof(Rigidbody))]
 public abstract class Projectile : MonoBehaviour, ISurface
 {
-    [SerializeField] private SurfaceType _surfaceType;
-
     private Rigidbody _rigidbody;
     private IRangedWeaponReadOnly _rangedWeapon;
     private ProjectileConfig _projectileConfig;
@@ -15,7 +13,8 @@ public abstract class Projectile : MonoBehaviour, ISurface
     public event Action<Projectile> Destroyed;
 
     public Transform Transform { get; private set; }
-    public SurfaceType SurfaceType => _surfaceType;
+    public float FactorNoise => _projectileConfig.FactorNoise;
+    public SurfaceType SurfaceType => _projectileConfig.SurfaceType;
 
     private void Awake()
     {

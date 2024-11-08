@@ -2,8 +2,6 @@ using UnityEngine;
 
 public class SoundWeapon : MonoBehaviour
 {
-    private const float VolumeStartedAttackFactor = 0.5f;
-
     [SerializeField] private AudioSource _audioSource;
     [SerializeField][SerializeInterface(typeof(IWeaponReadOnly))] private MonoBehaviour _weaponMonoBehaviour;
     [SerializeField] private AudioClip[] _clipsStartedAttack;
@@ -31,6 +29,6 @@ public class SoundWeapon : MonoBehaviour
             return;
 
         var index = Random.Range(0, _clipsStartedAttack.Length);
-        _audioSource.PlayOneShot(_clipsStartedAttack[index], VolumeStartedAttackFactor);
+        _audioSource.PlayOneShot(_clipsStartedAttack[index], _weapon.FactorNoise);
     }
 }

@@ -15,3 +15,5 @@ MonoBehaviour:
   _prefab: {fileID: 2122796519216704487, guid: 61ebe15849780be4d809b20d66759991, type: 3}
   _speed: 7.5
   _damage: 0
+  _factorNoise: 0.7
+  _surfaceType: 2

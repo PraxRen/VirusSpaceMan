@@ -32,6 +32,7 @@ public class Fighter : MonoBehaviour, IDamageable, IFighterReadOnly, IAction
     public Vector3 Position => _transform.position;
     public IReadOnlyCollection<Collider> IgnoreColliders => _ignoreColliders;
     public SurfaceType SurfaceType => _currentDamageable.SurfaceType;
+    public float FactorNoise => _currentDamageable.FactorNoise;
 
     private void Awake()
     {

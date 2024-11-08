@@ -143,6 +143,38 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4242034258777138779, guid: e16f314c7cd183345bc3e675bbc56373, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4242034258777138779, guid: e16f314c7cd183345bc3e675bbc56373, type: 3}
+      propertyPath: m_CastShadows
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4242034258777138779, guid: e16f314c7cd183345bc3e675bbc56373, type: 3}
+      propertyPath: m_ReceiveShadows
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4242034258777138779, guid: e16f314c7cd183345bc3e675bbc56373, type: 3}
+      propertyPath: m_Parameters.widthCurve.m_Curve.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 4242034258777138779, guid: e16f314c7cd183345bc3e675bbc56373, type: 3}
+      propertyPath: m_Parameters.widthCurve.m_Curve.Array.data[0].time
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4242034258777138779, guid: e16f314c7cd183345bc3e675bbc56373, type: 3}
+      propertyPath: m_Parameters.widthCurve.m_Curve.Array.data[1].time
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4242034258777138779, guid: e16f314c7cd183345bc3e675bbc56373, type: 3}
+      propertyPath: m_Parameters.widthCurve.m_Curve.Array.data[0].value
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4242034258777138779, guid: e16f314c7cd183345bc3e675bbc56373, type: 3}
+      propertyPath: m_Parameters.widthCurve.m_Curve.Array.data[1].value
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4709692591685264113, guid: e16f314c7cd183345bc3e675bbc56373, type: 3}
       propertyPath: m_Size.x
       value: 0.05
@@ -155,15 +187,8 @@ PrefabInstance:
       propertyPath: m_Name
       value: PistolBullet
       objectReference: {fileID: 0}
-    - target: {fileID: 7155426185626284492, guid: e16f314c7cd183345bc3e675bbc56373, type: 3}
-      propertyPath: m_AngularDrag
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7155426185626284492, guid: e16f314c7cd183345bc3e675bbc56373, type: 3}
-      propertyPath: m_Constraints
-      value: 48
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 4242034258777138779, guid: e16f314c7cd183345bc3e675bbc56373, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects:
     - targetCorrespondingSourceObject: {fileID: 2720503854604978358, guid: e16f314c7cd183345bc3e675bbc56373, type: 3}

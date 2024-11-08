@@ -28,3 +28,6 @@ MonoBehaviour:
     _clips:
     - {fileID: 8300000, guid: 4e7a9f408abdba8459fdccbeaea95215, type: 3}
     - {fileID: 8300000, guid: e4b229d1cd4c5954c982c44b6f42eb27, type: 3}
+  - _surfaceTypeOne: 0
+    _surfaceTypeTwo: 0
+    _clips: []

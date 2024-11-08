@@ -17,6 +17,8 @@ MonoBehaviour:
   _damage: 0
   _distanceAttack: 5
   _cooldownAttack: 0
+  _factorNoise: 0.5
+  _surfaceType: 2
   _attacks:
   - {fileID: 11400000, guid: f9d2096eb3e4f4841a8c2b6031018fd2, type: 2}
   _projectileConfig: {fileID: 11400000, guid: 5df596e617e0f9f429cd493f08e48f07, type: 2}

@@ -5,6 +5,7 @@ public class Health : MonoBehaviour, IDamageable, IAttribute
 {
     [SerializeField] private float _maxValue;
     [SerializeField] private float _cooldownHit;
+    [SerializeField] private float _factorNoise = 1f;
     [SerializeField] private SurfaceType _surfaceType;
 
     private Transform _transform;
@@ -12,9 +13,10 @@ public class Health : MonoBehaviour, IDamageable, IAttribute
 
     public Vector3 Position => _transform.position;
     public float MaxValue => _maxValue;
-    public SurfaceType SurfaceType => _surfaceType;
     public float Value { get; private set; }
     public bool IsDied { get; private set; }
+    public float FactorNoise => _factorNoise;
+    public SurfaceType SurfaceType => _surfaceType;
 
     public event Action ValueChanged;
     public event Action Died;

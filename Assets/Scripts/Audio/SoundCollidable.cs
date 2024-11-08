@@ -23,6 +23,6 @@ public class SoundCollidable : MonoBehaviour, ICollidable
             return;
 
         int index = Random.Range(0, clips.Count);
-        _audioSource.PlayOneShot(clips[index]);
+        _audioSource.PlayOneShot(clips[index], surface.FactorNoise);
     }
 }
