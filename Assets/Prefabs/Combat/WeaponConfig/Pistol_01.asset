@@ -23,4 +23,5 @@ MonoBehaviour:
   - {fileID: 11400000, guid: f9d2096eb3e4f4841a8c2b6031018fd2, type: 2}
   _projectileConfig: {fileID: 11400000, guid: 5df596e617e0f9f429cd493f08e48f07, type: 2}
   _typeAnimationLayer: 4
+  _typeAnimationRig: 2
   _modeMover: {fileID: 11400000, guid: 112f34ee093a1f8418f0a2272a5a648a, type: 2}

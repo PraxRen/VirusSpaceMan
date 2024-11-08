@@ -1,9 +1,7 @@
 using UnityEngine;
 
-public interface IDamageable : ISurface
+public interface IDamageable : ISurface, ITarget
 {
-    public Vector3 Position { get; }
-
     bool CanTakeDamage(IWeaponReadOnly weapon);
 
     void TakeDamage(IWeaponReadOnly weapon, float damage);

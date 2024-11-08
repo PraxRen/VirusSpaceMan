@@ -5,10 +5,13 @@ public class StorageWeapon : MonoBehaviour
 {
     [SerializeField][ReadOnly] private Weapon[] _weapons;
 
-    private void Awake()
+#if UNITY_EDITOR
+    [ContextMenu("Find Weapons")]
+    private void FindWeapons()
     {
         _weapons = GetComponentsInChildren<Weapon>(true);
     }
+#endif
 
     public Weapon GetWeapon(string idWeapon)
     {

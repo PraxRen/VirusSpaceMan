@@ -6,6 +6,7 @@ public interface IAttackNotifier
     event Action RunningDamage;
     event Action StoppingAttack;
 
+    bool CanCreateAttack();
     void CreateAttack();
     void CancelAttack();
 }

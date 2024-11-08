@@ -97,6 +97,9 @@ public class Fighter : MonoBehaviour, IDamageable, IFighterReadOnly, IAction
         if (_currentWeapon.CanAttack() == false)
             return false;
 
+        if(_attackNotifier.CanCreateAttack() == false)
+            return false;
+
         if (_actionScheduler.CanStartAction(this) == false)
             return false;
 

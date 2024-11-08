@@ -10,6 +10,8 @@ public class SwitcherAnimationLayer : MonoBehaviour
     private TypeAnimationLayer _defaultAnimationLayer = TypeAnimationLayer.Default;
     private TypeAnimationLayer _currentAnimationLayer = TypeAnimationLayer.Default;
 
+    public bool IsNotWork => _hashCorutineJobs.Count == 0;
+
     public void SetDefaultAnimationLayer(TypeAnimationLayer animationLayer)
     {
         _defaultAnimationLayer = animationLayer;

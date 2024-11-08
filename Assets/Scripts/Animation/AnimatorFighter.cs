@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-[RequireComponent(typeof(Animator), typeof(SwitcherAnimationLayer))]
+[RequireComponent(typeof(Animator), typeof(SwitcherAnimationLayer), typeof(SwitcherAnimationRig))]
 public class AnimatorFighter : MonoBehaviour, IAttackNotifier
 {
     [SerializeField][SerializeInterface(typeof(IFighterReadOnly))] private MonoBehaviour _fighterMonoBehaviour;
@@ -10,6 +10,7 @@ public class AnimatorFighter : MonoBehaviour, IAttackNotifier
 
     private Animator _animator;
     private SwitcherAnimationLayer _switcherAnimationLayer;
+    private SwitcherAnimationRig _switcherAnimationRig;
     private IFighterReadOnly _fighter;
 
     public event Action StartingAttack;
@@ -20,6 +21,7 @@ public class AnimatorFighter : MonoBehaviour, IAttackNotifier
     {
         _animator = GetComponent<Animator>();
         _switcherAnimationLayer = GetComponent<SwitcherAnimationLayer>();
+        _switcherAnimationRig = GetComponent<SwitcherAnimationRig>();
         _fighter = (IFighterReadOnly)_fighterMonoBehaviour;
     }
 
@@ -36,6 +38,11 @@ public class AnimatorFighter : MonoBehaviour, IAttackNotifier
         _fighter.DeactivatedWeapon -= OnDeactivatedWeapon;
     }
 
+    public bool CanCreateAttack()
+    {
+        return _switcherAnimationLayer.IsNotWork && _switcherAnimationRig.IsNotWork;
+    }
+
     public void CreateAttack()
     {
         _animator.SetBool(CharacterAnimatorData.Params.IsAttack, true);
@@ -49,15 +56,20 @@ public class AnimatorFighter : MonoBehaviour, IAttackNotifier
 
     private void OnActivatedWeapon(IWeaponReadOnly weapon)
     {
-        if (weapon.Config is not IAnimationLayerProvider animationLayerProvider)
-            return;
+        if (weapon.Config is IAnimationLayerProvider animationLayerProvider)
+            _switcherAnimationLayer.SetAnimationLayer(animationLayerProvider.TypeAnimationLayer, _timeChangeAnimationLayer);
 
-       _switcherAnimationLayer.SetAnimationLayer(animationLayerProvider.TypeAnimationLayer, _timeChangeAnimationLayer);
+        if (weapon.Config is IAnimationRigProvider animationRigProvider)
+            _switcherAnimationRig.SetAnimationRig(animationRigProvider.TypeAnimationRig, 1f);
     }
 
     private void OnDeactivatedWeapon(IWeaponReadOnly weapon)
     {
-        _switcherAnimationLayer.ApplyDefaultAnimationLayer(_timeChangeAnimationLayer);
+        if (weapon.Config is IAnimationLayerProvider animationLayerProvider)
+            _switcherAnimationLayer.ApplyDefaultAnimationLayer(_timeChangeAnimationLayer);
+
+        if (weapon.Config is IAnimationRigProvider animationRigProvider)
+            _switcherAnimationRig.ApplyDefaultAnimationRig();
     }
 
     //AnimationEvent
