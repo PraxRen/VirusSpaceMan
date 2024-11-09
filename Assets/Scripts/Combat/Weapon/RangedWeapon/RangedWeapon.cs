@@ -13,6 +13,7 @@ public abstract class RangedWeapon : Weapon, IRangedWeaponReadOnly
     protected override void InitializeAddon(WeaponConfig config, IFighterReadOnly fighter)
     {
         RangedWeaponConfig = (RangedWeaponConfig)config;
+        _spawnerProjectile.Initialize();
     }
 
     protected override bool CanAttackAddon()

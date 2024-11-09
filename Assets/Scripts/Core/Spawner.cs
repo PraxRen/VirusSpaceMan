@@ -46,10 +46,12 @@ public abstract class Spawner<T> : MonoBehaviour where T : MonoBehaviour
 
 #endif
 
-    public void Initilize()
+    public void Initialize()
     {
+        BeforeInitializeAddon();
         Capacity = InitilizeCapacity();
         Pool = InitilizePool();
+        AfterInitializeAddon();
     }
 
     public bool CanSpawn()
@@ -99,6 +101,9 @@ public abstract class Spawner<T> : MonoBehaviour where T : MonoBehaviour
     protected virtual void DisableAddon() { }
 
     protected virtual void StartAddon() { }
+
+    protected virtual void BeforeInitializeAddon() { }
+    protected virtual void AfterInitializeAddon() { }
 
     private ObjectPool<T> InitilizePool()
     {

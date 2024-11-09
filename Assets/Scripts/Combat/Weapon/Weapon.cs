@@ -14,7 +14,6 @@ public abstract class Weapon : MonoBehaviour, IWeaponReadOnly, ISerializationCal
     private bool _isActivated;
     private int _indexAttack;
 
-    public event Action Initialized;
     public event Action StartedAttack;
     public event Action<ICollidable> Collided;
     public event Action<IDamageable> Hited;
@@ -125,7 +124,6 @@ public abstract class Weapon : MonoBehaviour, IWeaponReadOnly, ISerializationCal
         _config = config;
         _fighter = fighter;
         InitializeAddon(config, fighter);
-        Initialized?.Invoke();
     }
 
     public void Activate()

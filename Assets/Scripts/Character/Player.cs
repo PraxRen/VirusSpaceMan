@@ -1,29 +1,39 @@
 using UnityEngine;
 
-[RequireComponent(typeof(PlayerInputReader), typeof(Fighter), typeof(ScannerDamageable))]
+[RequireComponent(typeof(PlayerInputReader), typeof(Fighter), typeof(Scanner))]
 public class Player : Character
 {
     private PlayerInputReader _inputReader;
-    private ScannerDamageable _scannerDamageable;
+    private Scanner _scanner;
     private Fighter _fighter;
 
     protected override void AwakeAddon()
     {
         _inputReader = GetComponent<PlayerInputReader>();
         _fighter = GetComponent<Fighter>();
-        _scannerDamageable = GetComponent<ScannerDamageable>();
+        _scanner = GetComponent<Scanner>();
     }
 
     protected override void EnableAddon()
     {
-        _scannerDamageable.ChangedTarget += OnChangedTarget;
-        _scannerDamageable.RemovedTarget += OnRemovedTarget;
+        _fighter.ChangedWeapon += OnChangedWeapon;
+        _fighter.RemovedWeapon += OnRemovedWeapon;
+        _scanner.ChangedTarget += OnChangedTarget;
+        _scanner.RemovedTarget += OnRemovedTarget;
+
+        if (_fighter.Weapon != null)
+        {
+            _scanner.StartScan(_fighter.LayerMaskDamageable, _fighter.Weapon.Config.DistanceAttack);
+        }
+
     }
 
     protected override void DisableAddon()
     {
-        _scannerDamageable.ChangedTarget -= OnChangedTarget;
-        _scannerDamageable.RemovedTarget -= OnRemovedTarget;
+        _fighter.ChangedWeapon -= OnChangedWeapon;
+        _fighter.RemovedWeapon -= OnRemovedWeapon;
+        _scanner.ChangedTarget -= OnChangedTarget;
+        _scanner.RemovedTarget -= OnRemovedTarget;
     }
 
     private void Update()
@@ -42,10 +52,10 @@ public class Player : Character
 
     private void HandleCombat()
     {
-        if (_scannerDamageable.Target == null)
+        if (_scanner.Target == null)
             return;
 
-        _fighter.LookAtTarget((_scannerDamageable.Target.Position - Transform.position).normalized);
+        _fighter.LookAtTarget((_scanner.Target.transform.position - Transform.position).normalized);
 
         if (_fighter.CanAttack() == false)
             return;
@@ -53,13 +63,27 @@ public class Player : Character
         _fighter.Attack();
     }
 
-    private void OnChangedTarget(IDamageable damageable)
+    private void OnChangedTarget(Collider target)
     {
         _fighter.ActivateWeapon();
+        Transform targetTransform = target.transform;
+        float height = target.bounds.center.y - targetTransform.position.y;
+        LookTarget.SetTarget(targetTransform, Vector3.up * height);
     }
 
     private void OnRemovedTarget()
     {
         _fighter.DeactivateWeapon();
+        LookTarget.ResetTarget();
+    }
+
+    private void OnChangedWeapon(IWeaponReadOnly weapon)
+    {
+        _scanner.StartScan(_fighter.LayerMaskDamageable, weapon.Config.DistanceAttack);
+    }
+
+    private void OnRemovedWeapon()
+    {
+        _scanner.ResetRadius();
     }
 }

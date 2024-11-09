@@ -3,7 +3,6 @@ using UnityEngine;
 
 public interface IWeaponReadOnly : ISurface
 {
-    event Action Initialized;
     event Action StartedAttack;
     event Action<ICollidable> Collided;
     event Action<IDamageable> Hited;

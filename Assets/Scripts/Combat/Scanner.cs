@@ -3,8 +3,7 @@ using System.Collections;
 using System.Linq;
 using UnityEngine;
 
-[RequireComponent(typeof(IFighterReadOnly))]
-public class ScannerDamageable : MonoBehaviour
+public class Scanner : MonoBehaviour
 {
     [SerializeField] private float _defaultFrequencyUpdate;
     [SerializeField] private float _radiusBase;
@@ -12,36 +11,50 @@ public class ScannerDamageable : MonoBehaviour
     private Transform _transform;
     private WaitForSeconds _waitUpdateScan;
     private Coroutine _jobUpdateScan;
-    private IFighterReadOnly _fighter;
     private float _radius;
     private float _radiusSqr;
+    private LayerMask _layerMask;
 
-    public event Action<IDamageable> ChangedTarget;
+    public event Action<Collider> ChangedTarget;
     public event Action RemovedTarget;
     public event Action<float> ChangedRadius;
 
-    public IDamageable Target { get; private set; }
+    public Collider Target { get; private set; }
     
     private void Awake()
     {
         _transform = transform;
         _waitUpdateScan = new WaitForSeconds(_defaultFrequencyUpdate);
-        _fighter = GetComponent<IFighterReadOnly>();
-        UpdateRadius(_radiusBase);
-    }
-
-    private void OnEnable()
-    {
-        _fighter.ChangedWeapon += OnChangedWeapon;
-        _fighter.RemovedWeapon += OnRemovedWeapon;
-        _jobUpdateScan = StartCoroutine(UpdateScan());
     }
 
     private void OnDisable()
     {
-        _fighter.ChangedWeapon -= OnChangedWeapon;
-        _fighter.RemovedWeapon -= OnRemovedWeapon;
         CancelUpdateScan();
+    }
+
+    public void StartScan(LayerMask layerMask)
+    {
+        StartScan(layerMask, _radiusBase);
+    }
+
+    public void StartScan(LayerMask layerMask, float radius)
+    {
+        CancelUpdateScan();
+        UpdateRadius(radius);
+        _layerMask = layerMask;
+        _jobUpdateScan = StartCoroutine(UpdateScan());
+    }
+
+    public void ResetRadius()
+    {
+        UpdateRadius(_radiusBase);
+    }
+
+    public void UpdateRadius(float radius)
+    {
+        _radius = Mathf.Max(_radiusBase, radius);
+        _radiusSqr = _radius * _radius;
+        ChangedRadius?.Invoke(_radius);
     }
 
     private IEnumerator UpdateScan()
@@ -49,7 +62,7 @@ public class ScannerDamageable : MonoBehaviour
         while (true)
         {
             HandleTarget();
-            Collider[] colliders = Physics.OverlapSphere(_transform.position, _radius, _fighter.LayerMaskDamageable, QueryTriggerInteraction.Ignore);
+            Collider[] colliders = Physics.OverlapSphere(_transform.position, _radius, _layerMask, QueryTriggerInteraction.Ignore);
             HandleResultScan(colliders);
             yield return _waitUpdateScan;
         }
@@ -60,7 +73,7 @@ public class ScannerDamageable : MonoBehaviour
         if (Target == null)
             return;
 
-        if ((Target.Position - _transform.position).sqrMagnitude > _radiusSqr)
+        if ((Target.transform.position - _transform.position).sqrMagnitude > _radiusSqr)
         {
             Target = null;
             RemovedTarget?.Invoke();
@@ -78,13 +91,10 @@ public class ScannerDamageable : MonoBehaviour
         if (targetCollider == null)
             return;
 
-        if (targetCollider.TryGetComponent(out IDamageable damageable) == false)
+        if (Target == targetCollider)
             return;
 
-        if (Target == damageable)
-            return;
-
-        Target = damageable;
+        Target = targetCollider;
         ChangedTarget?.Invoke(Target);
     }
 
@@ -97,26 +107,11 @@ public class ScannerDamageable : MonoBehaviour
         _jobUpdateScan = null;
     }
 
-    private void OnChangedWeapon(IWeaponReadOnly weapon)
-    {
-        UpdateRadius(Mathf.Max(_radiusBase, weapon.Config.DistanceAttack));
-    }
-
-    private void OnRemovedWeapon()
-    {
-        UpdateRadius(_radiusBase);
-    }
-
-    private void UpdateRadius(float radius)
-    {
-        _radius = radius;
-        _radiusSqr = _radius * _radius;
-        ChangedRadius?.Invoke(_radius);
-    }
-
+#if UNITY_EDITOR
     private void OnDrawGizmos()
     {
         Gizmos.color = Color.yellow;
         Gizmos.DrawWireSphere(transform.position, Mathf.Max(_radius, _radiusBase));
     }
+#endif
 }

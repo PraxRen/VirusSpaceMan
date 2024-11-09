@@ -5,7 +5,7 @@ public class ScannerDamageableUI : MonoBehaviour
 {
     [SerializeField] private Image _image;
     [SerializeField] private float _factorSize;
-    [SerializeField] ScannerDamageable _scannerDamageable;
+    [SerializeField] Scanner _scanner;
 
     private RectTransform _imageTransform;
 
@@ -16,12 +16,12 @@ public class ScannerDamageableUI : MonoBehaviour
 
     private void OnEnable()
     {
-        _scannerDamageable.ChangedRadius += OnChangedRadius;
+        _scanner.ChangedRadius += OnChangedRadius;
     }
 
     private void OnDisable()
     {
-        _scannerDamageable.ChangedRadius -= OnChangedRadius;
+        _scanner.ChangedRadius -= OnChangedRadius;
     }
 
     private void OnChangedRadius(float radius)

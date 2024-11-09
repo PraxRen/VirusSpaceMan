@@ -10,7 +10,7 @@ public class SoundSurfaceConfig : ScriptableObject
 
 #if UNITY_EDITOR
     private int _lastCountSettings;
-#endif
+
 
     private void OnValidate()
     {
@@ -32,6 +32,7 @@ public class SoundSurfaceConfig : ScriptableObject
         _settings = newSettings;
         _lastCountSettings = _settings.Length;
     }
+#endif
 
     public bool TryGetClips(SurfaceType surfaceTypeOne, SurfaceType surfaceTypeTwo, out IReadOnlyList<AudioClip> clips)
     {

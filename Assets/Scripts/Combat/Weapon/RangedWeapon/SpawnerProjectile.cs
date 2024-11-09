@@ -15,14 +15,12 @@ public class SpawnerProjectile : Spawner<Projectile>
         _rangedWeapon = (IRangedWeaponReadOnly)_rangedWeaponMonoBehaviour;
     }
 
-    protected override void EnableAddon()
+    protected override void BeforeInitializeAddon()
     {
-        _rangedWeapon.Initialized += OnInitialized;
-    }
+        if (_rangedWeapon == null)
+            _rangedWeapon = (IRangedWeaponReadOnly)_rangedWeaponMonoBehaviour;
 
-    protected override void DisableAddon()
-    {
-        _rangedWeapon.Initialized -= OnInitialized;
+        _prefab = _rangedWeapon.RangedWeaponConfig.ProjectileConfig.Prefab;
     }
 
     protected override Projectile CreateSpawnObjectAddon()
@@ -49,12 +47,6 @@ public class SpawnerProjectile : Spawner<Projectile>
     {
         projectile.gameObject.SetActive(false);
         projectile.transform.parent = transform;
-    }
-
-    private void OnInitialized()
-    {
-        _prefab = _rangedWeapon.RangedWeaponConfig.ProjectileConfig.Prefab;
-        Initilize();
     }
 
     private void OnDestroyed(Projectile projectile)

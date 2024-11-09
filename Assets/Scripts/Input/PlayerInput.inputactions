@@ -13,6 +13,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": true
+                },
+                {
+                    "name": "ScrollTarget",
+                    "type": "Value",
+                    "id": "4434a390-6a17-4ba6-a741-83b07367e1e8",
+                    "expectedControlType": "Vector2",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
                 }
             ],
             "bindings": [
@@ -26,6 +35,105 @@
                     "action": "Move",
                     "isComposite": false,
                     "isPartOfComposite": false
+                },
+                {
+                    "name": "2D Vector",
+                    "id": "fe6456da-8dde-480e-af8d-d4486d7e0c17",
+                    "path": "2DVector",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Move",
+                    "isComposite": true,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "up",
+                    "id": "316e99b0-2daf-4170-9bba-f65c15061600",
+                    "path": "<Keyboard>/w",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Move",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "down",
+                    "id": "ebdc2904-51f6-4fd0-975c-91e292f7fe6a",
+                    "path": "<Keyboard>/s",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Move",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "left",
+                    "id": "175a7d39-bf31-4564-a303-2a9e4279dfef",
+                    "path": "<Keyboard>/a",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Move",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "right",
+                    "id": "9b12f85a-4d43-4329-857b-0e1985d56d3c",
+                    "path": "<Keyboard>/d",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Move",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "",
+                    "id": "ff651d87-35f8-4c02-a411-276257ec96e0",
+                    "path": "<Mouse>/scroll",
+                    "interactions": "",
+                    "processors": "NormalizeVector2",
+                    "groups": "",
+                    "action": "ScrollTarget",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "2D Vector",
+                    "id": "bfe67d39-3839-429d-b795-1d49dfdabf70",
+                    "path": "2DVector",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "ScrollTarget",
+                    "isComposite": true,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "up",
+                    "id": "e5d9017a-165c-4a76-9a9c-05517739334b",
+                    "path": "<Keyboard>/rightArrow",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "ScrollTarget",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "down",
+                    "id": "43e5d935-e21e-4a37-b43b-5a2dc133f2ce",
+                    "path": "<Keyboard>/leftArrow",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "ScrollTarget",
+                    "isComposite": false,
+                    "isPartOfComposite": true
                 }
             ]
         }
