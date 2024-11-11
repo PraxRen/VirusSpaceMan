@@ -21,6 +21,16 @@ public abstract class Projectile : MonoBehaviour, ISurface
         Transform = transform;
     }
 
+    private void OnEnable()
+    {
+        EnableAddon();
+    }
+
+    private void OnDisable()
+    {
+        DisableAddon();
+    }
+
     private void OnCollisionEnter(Collision collision)
     {
         Collider targetCollider = collision.collider;
@@ -40,8 +50,6 @@ public abstract class Projectile : MonoBehaviour, ISurface
         _projectileConfig = ((RangedWeaponConfig)rangedWeapon.Config).ProjectileConfig;
     }
 
-    public void Shoot() => Shoot(Transform.forward);
-
     public void Shoot(Vector3 direction)
     {
         Transform.forward = direction;
@@ -51,6 +59,10 @@ public abstract class Projectile : MonoBehaviour, ISurface
 
     protected void ShootAddon() { }
 
+    protected virtual void EnableAddon() { }
+
+    protected virtual void DisableAddon() { }
+
     protected virtual void BeforeHandleCollideAddon(Collider collider) { }
     
     protected virtual void AfterHandleCollideAddon() { }
@@ -59,6 +71,7 @@ public abstract class Projectile : MonoBehaviour, ISurface
 
     protected void Destroy()
     {
+        _rigidbody.velocity = Vector3.zero;
         Destroyed?.Invoke(this);
     }
 

@@ -10,6 +10,7 @@ public class Fighter : MonoBehaviour, IDamageable, IFighterReadOnly, IAction
     [SerializeField] private ActionScheduler _actionScheduler;
     [SerializeField][SerializeInterface(typeof(IChangerWeaponConfig))] private MonoBehaviour _changerWeaponConfigMonoBehaviour;
     [SerializeField][SerializeInterface(typeof(IAttackNotifier))] private MonoBehaviour _attackNotifierMonoBehaviour;
+    [SerializeField][SerializeInterface(typeof(IReadOnlyLookTarget))] private MonoBehaviour _lookTargetMonoBehaviour;
     [SerializeField] private LayerMask _layerMaskDamageable;
     [SerializeField] private LayerMask _layerMaskCollision;
     [SerializeField] private Collider[] _ignoreColliders;
@@ -33,12 +34,14 @@ public class Fighter : MonoBehaviour, IDamageable, IFighterReadOnly, IAction
     public IReadOnlyCollection<Collider> IgnoreColliders => _ignoreColliders;
     public SurfaceType SurfaceType => _currentDamageable.SurfaceType;
     public float FactorNoise => _currentDamageable.FactorNoise;
+    public IReadOnlyLookTarget LookTarget {  get; private set; }
 
     private void Awake()
     {
         _transform = transform;
         _changerWeaponConfig = (IChangerWeaponConfig)_changerWeaponConfigMonoBehaviour;
         _attackNotifier = (IAttackNotifier)_attackNotifierMonoBehaviour;
+        LookTarget = (IReadOnlyLookTarget)_lookTargetMonoBehaviour;
         _currentDamageable = _health;
     }
 
@@ -104,12 +107,6 @@ public class Fighter : MonoBehaviour, IDamageable, IFighterReadOnly, IAction
             return false;
 
         return true;
-    }
-
-    public void LookAtTarget(Vector3 direction)
-    {
-        direction.y = 0f;
-        _transform.forward = direction;
     }
 
     public void Attack()

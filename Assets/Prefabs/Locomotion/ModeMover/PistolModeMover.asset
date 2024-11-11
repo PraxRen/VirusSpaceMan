@@ -13,4 +13,4 @@ MonoBehaviour:
   m_Name: PistolModeMover
   m_EditorClassIdentifier: 
   _speedMove: 6
-  _speedRotation: 50
+  _speedRotation: 15

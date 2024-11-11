@@ -3,10 +3,10 @@ using System.Linq;
 using UnityEngine;
 
 [RequireComponent(typeof(CharacterController))]
-public class Mover : MonoBehaviour, IMover, IAction
+public class Mover : MonoBehaviour, IMover 
 {
-    [SerializeField] private bool _canLookAtMoveDirection;
     [SerializeField] private float _gravity;
+    [SerializeField] private float _speedUpdateInertia;
     [SerializeField] private ActionScheduler _actionScheduler;
     [SerializeField][SerializeInterface(typeof(IStepNotifier))] private MonoBehaviour _stepNotifierMonoBehaviour;
     [SerializeField] private ModeMover _defaultModeMover;
@@ -18,6 +18,7 @@ public class Mover : MonoBehaviour, IMover, IAction
     private IChangerModeMover[] _switchesModeMover;
     private IStepNotifier _stepNotifier;
     private Vector2 _inputMoveDirection;
+    private Vector2 _inputLookDirection;
 
     public event Action StepTook;
 
@@ -47,11 +48,12 @@ public class Mover : MonoBehaviour, IMover, IAction
     private void FixedUpdate()
     {
         HandleMove();
+        HandleRotate();
     }
 
     public void Cancel() 
     {
-        Debug.Log("CancelMover");
+        _inputMoveDirection = Vector3.zero;
     }
 
     public bool CanMove()
@@ -61,7 +63,14 @@ public class Mover : MonoBehaviour, IMover, IAction
 
     public void Move(Vector2 direction)
     {
+        _actionScheduler.StartAction(this);
+        _actionScheduler.SetBlock(this);
         _inputMoveDirection = direction;
+    }
+
+    public void LookAtDirection(Vector2 direction)
+    {
+        _inputLookDirection = direction;
     }
 
     private void HandleMove()
@@ -73,20 +82,14 @@ public class Mover : MonoBehaviour, IMover, IAction
             _actionScheduler.ClearAction(this);
             return;
         }
-
-
-        _actionScheduler.StartAction(this);
-        _actionScheduler.SetBlock(this);
+        
         _characterController.Move(Velocity * Time.fixedDeltaTime);
-        HandleRotate();
+        _inputMoveDirection = Vector2.MoveTowards(_inputMoveDirection, Vector2.zero, _speedUpdateInertia * Time.fixedDeltaTime);
     }
 
     private void HandleRotate()
     {
-        if (_canLookAtMoveDirection == false)
-            return;
-
-        _transform.forward = Vector3.MoveTowards(_transform.forward, new Vector3(_inputMoveDirection.x, 0f, _inputMoveDirection.y), _currentModeMover.SpeedRotation * Time.fixedDeltaTime);
+        _transform.forward = Vector3.MoveTowards(_transform.forward, new Vector3(_inputLookDirection.x, 0f, _inputLookDirection.y), _currentModeMover.SpeedRotation * Time.fixedDeltaTime);
     }
 
     private void OnCreatedStep()

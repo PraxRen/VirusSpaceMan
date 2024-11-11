@@ -20,7 +20,8 @@ public class Player : Character
         _fighter.RemovedWeapon += OnRemovedWeapon;
         _scanner.ChangedCurrentTarget += OnChangedTarget;
         _scanner.RemovedCurrentTarget += OnRemovedTarget;
-        _inputReader.ChangedScrollTarget += OnChangedScrollTarget;
+        _inputReader.ChangedScrollNextTarget += OnChangedScrollNextTarget;
+        _inputReader.ChangedScrollPreviousTarget += OnChangedScrollPreviousTarget;
 
         if (_fighter.Weapon != null)
         {
@@ -34,7 +35,8 @@ public class Player : Character
         _fighter.RemovedWeapon -= OnRemovedWeapon;
         _scanner.ChangedCurrentTarget -= OnChangedTarget;
         _scanner.RemovedCurrentTarget -= OnRemovedTarget;
-        _inputReader.ChangedScrollTarget -= OnChangedScrollTarget;
+        _inputReader.ChangedScrollNextTarget -= OnChangedScrollNextTarget;
+        _inputReader.ChangedScrollPreviousTarget -= OnChangedScrollPreviousTarget;
     }
 
     private void Update()
@@ -45,10 +47,14 @@ public class Player : Character
 
     private void HandleLocomotion()
     {
+        if (_inputReader.DirectionMove == Vector2.zero)
+            return;
+
         if (Mover.CanMove() == false)
             return;
 
         Mover.Move(_inputReader.DirectionMove);
+        Mover.LookAtDirection(_inputReader.DirectionMove);
     }
 
     private void HandleCombat()
@@ -56,7 +62,8 @@ public class Player : Character
         if (_scanner.Target == null)
             return;
 
-        _fighter.LookAtTarget((_scanner.Target.transform.position - Transform.position).normalized);
+        Vector3 direction = (LookTarget.Position - Transform.position).normalized;
+        Mover.LookAtDirection(new Vector2(direction.x, direction.z));
 
         if (_fighter.CanAttack() == false)
             return;
@@ -88,16 +95,14 @@ public class Player : Character
         _scanner.ResetRadius();
     }
 
-    private void OnChangedScrollTarget(float value)
+    private void OnChangedScrollNextTarget()
     {
-        if (value == 0)
-            return;
+        _scanner.NextTarget();
 
-        bool isNext = value > 0;
+    }
 
-        if (isNext)
-            _scanner.NextTarget();
-        else
-            _scanner.PreviousTarget();
+    private void OnChangedScrollPreviousTarget()
+    {
+        _scanner.PreviousTarget();
     }
 }

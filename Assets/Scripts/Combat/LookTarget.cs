@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class LookTarget : MonoBehaviour
+public class LookTarget : MonoBehaviour, IReadOnlyLookTarget
 {
     [SerializeField] private Transform _parent;
     [SerializeField] private Transform _pointDefault;
@@ -11,6 +11,8 @@ public class LookTarget : MonoBehaviour
     private Transform _target;
     private Vector3 _offset;
     private float _speedUpdate;
+
+    public Vector3 Position => _transform.position;
 
     private void Awake()
     {

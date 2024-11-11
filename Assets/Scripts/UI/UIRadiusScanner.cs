@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-public class ScannerDamageableUI : MonoBehaviour
+public class UIRadiusScanner : MonoBehaviour
 {
     [SerializeField] private Image _image;
     [SerializeField] private float _factorSize;

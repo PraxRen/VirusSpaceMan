@@ -30,7 +30,7 @@ public class SpawnerProjectile : Spawner<Projectile>
 
     protected override Projectile CreateSpawnObjectAddon()
     {
-        Projectile projectile = Instantiate(_prefab, _transform);
+        Projectile projectile = Instantiate(_prefab, _rangedWeapon.StartPoint.position, _rangedWeapon.StartPoint.rotation, _transform);
         projectile.Initialize(_rangedWeapon);
         projectile.gameObject.SetActive(false);
 
@@ -40,8 +40,10 @@ public class SpawnerProjectile : Spawner<Projectile>
     protected override void GetSpawnObject(Projectile projectile)
     {
         projectile.Destroyed += OnDestroyed;
+        projectile.transform.parent = null;
+        projectile.transform.rotation = _rangedWeapon.StartPoint.rotation;
+        projectile.transform.position = _rangedWeapon.StartPoint.position;
         projectile.gameObject.SetActive(true);
-        projectile.Transform.parent = null;
     }
 
     protected override int InitilizeCapacity() => _capacity;
@@ -50,8 +52,6 @@ public class SpawnerProjectile : Spawner<Projectile>
     {
         projectile.gameObject.SetActive(false);
         projectile.Transform.parent = transform;
-        projectile.Transform.rotation = _rangedWeapon.StartPoint.rotation;
-        projectile.Transform.position = _rangedWeapon.StartPoint.position;
     }
 
     private void OnDestroyed(Projectile projectile)

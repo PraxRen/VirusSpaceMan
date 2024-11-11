@@ -13,4 +13,4 @@ MonoBehaviour:
   m_Name: WeaponSwordModeMover_01
   m_EditorClassIdentifier: 
   _speedMove: 4
-  _speedRotation: 50
+  _speedRotation: 15

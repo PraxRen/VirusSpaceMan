@@ -11,6 +11,7 @@ public interface IFighterReadOnly
 
     bool IsAttack { get; }
     IWeaponReadOnly Weapon { get; }
+    IReadOnlyLookTarget LookTarget { get; }
     LayerMask LayerMaskDamageable { get; }
     LayerMask LayerMaskCollision { get; }
     public IReadOnlyCollection<Collider> IgnoreColliders { get; }

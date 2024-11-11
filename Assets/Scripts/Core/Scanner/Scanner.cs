@@ -91,7 +91,6 @@ public class Scanner : MonoBehaviour
             return;
         }
 
-        Debug.Log(_currentIndexTarget);
         Collider newTarget = _targets[_currentIndexTarget];
 
         if (Target == newTarget) 
