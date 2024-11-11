@@ -18,22 +18,23 @@ public class Player : Character
     {
         _fighter.ChangedWeapon += OnChangedWeapon;
         _fighter.RemovedWeapon += OnRemovedWeapon;
-        _scanner.ChangedTarget += OnChangedTarget;
-        _scanner.RemovedTarget += OnRemovedTarget;
+        _scanner.ChangedCurrentTarget += OnChangedTarget;
+        _scanner.RemovedCurrentTarget += OnRemovedTarget;
+        _inputReader.ChangedScrollTarget += OnChangedScrollTarget;
 
         if (_fighter.Weapon != null)
         {
             _scanner.StartScan(_fighter.LayerMaskDamageable, _fighter.Weapon.Config.DistanceAttack);
         }
-
     }
 
     protected override void DisableAddon()
     {
         _fighter.ChangedWeapon -= OnChangedWeapon;
         _fighter.RemovedWeapon -= OnRemovedWeapon;
-        _scanner.ChangedTarget -= OnChangedTarget;
-        _scanner.RemovedTarget -= OnRemovedTarget;
+        _scanner.ChangedCurrentTarget -= OnChangedTarget;
+        _scanner.RemovedCurrentTarget -= OnRemovedTarget;
+        _inputReader.ChangedScrollTarget -= OnChangedScrollTarget;
     }
 
     private void Update()
@@ -71,7 +72,7 @@ public class Player : Character
         LookTarget.SetTarget(targetTransform, Vector3.up * height);
     }
 
-    private void OnRemovedTarget()
+    private void OnRemovedTarget(Collider target)
     {
         _fighter.DeactivateWeapon();
         LookTarget.ResetTarget();
@@ -85,5 +86,18 @@ public class Player : Character
     private void OnRemovedWeapon()
     {
         _scanner.ResetRadius();
+    }
+
+    private void OnChangedScrollTarget(float value)
+    {
+        if (value == 0)
+            return;
+
+        bool isNext = value > 0;
+
+        if (isNext)
+            _scanner.NextTarget();
+        else
+            _scanner.PreviousTarget();
     }
 }

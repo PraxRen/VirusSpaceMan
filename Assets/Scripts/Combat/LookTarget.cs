@@ -1,7 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UIElements;
 
 public class LookTarget : MonoBehaviour
 {
@@ -18,13 +15,13 @@ public class LookTarget : MonoBehaviour
     private void Awake()
     {
         _transform = transform;
-        ResetPosition();
     }
 
     private void OnEnable()
     {
-        if (_parent != null)
-            ResetPosition();
+        ResetTarget();
+        _transform.position = _pointDefault.position;
+        _transform.parent = null;
     }
 
     public void Update()
@@ -44,12 +41,5 @@ public class LookTarget : MonoBehaviour
         _target = _pointDefault;
         _offset = Vector3.zero;
         _speedUpdate = _speedUpdatePositionDefault;
-    }
-
-    private void ResetPosition()
-    {
-        _transform.position = _pointDefault.position;
-        _target = _pointDefault;
-        _transform.parent = null;
     }
 }
