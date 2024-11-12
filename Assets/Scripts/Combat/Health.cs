@@ -26,6 +26,11 @@ public class Health : MonoBehaviour, IDamageable, IAttribute
         _transform = transform;
     }
 
+    private void Start()
+    {
+        UpdateValue(_maxValue);
+    }
+
     public bool CanTakeDamage(IWeaponReadOnly weapon)
     {
         if (weapon == null)

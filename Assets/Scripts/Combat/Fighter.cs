@@ -144,8 +144,6 @@ public class Fighter : MonoBehaviour, IDamageable, IFighterReadOnly, IAction
 
     private void Hit(IDamageable damageable)
     {
-        //Debug.Log("+++");
-
         if (damageable.CanTakeDamage(Weapon) == false)
             return;
 

@@ -12,5 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 773e858d2c352a443850ffbf8a786d77, type: 3}
   m_Name: Karate_Attack_04
   m_EditorClassIdentifier: 
-  _damage: 5
+  _damage: 0
   _animationIndex: 3

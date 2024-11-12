@@ -34,7 +34,7 @@ public abstract class RangedWeapon : Weapon, IRangedWeaponReadOnly
         projectile.Shoot((Fighter.LookTarget.Position - _transform.position).normalized);
     }
 
-    protected override float GetDamageAddon() => RangedWeaponConfig.Damage;
+    protected override float GetDamageAddon() => RangedWeaponConfig.ProjectileConfig.Damage;
 
     protected override void HandleCollidable(ICollidable collidable)
     {
