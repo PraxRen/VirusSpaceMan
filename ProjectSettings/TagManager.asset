@@ -3,7 +3,35 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
-  tags: []
+  tags:
+  - Root
+  - Hips
+  - Spine_01
+  - Spine_02
+  - Spine_03
+  - Neck
+  - Head
+  - Eyes
+  - Eyebrows
+  - Clavicle_L
+  - Shoulder_L
+  - Elbow_L
+  - Thumb_01
+  - Thumb_02
+  - Thumb_03
+  - IndexFinger_01
+  - IndexFinger_02
+  - IndexFinger_03
+  - IndexFinger_04
+  - Finger_01
+  - Finger_02
+  - Finger_03
+  - Finger_04
+  - Clavicle_R
+  - Shoulder_R
+  - Elbow_R
+  - Hand_R
+  - Thumb_01 1
   layers:
   - Default
   - TransparentFX
