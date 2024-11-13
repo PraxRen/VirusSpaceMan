@@ -17,8 +17,7 @@ public abstract class Weapon : MonoBehaviour, IWeaponReadOnly, ISerializationCal
     private Transform _transform;
 
     public event Action StartedAttack;
-    public event Action<ICollidable> Collided;
-    public event Action<IDamageable> Hited;
+    public event Action<IDamageable, Vector3> Hited;
 
     public string Id => _id;
     public WeaponConfig Config => _config;
@@ -165,24 +164,26 @@ public abstract class Weapon : MonoBehaviour, IWeaponReadOnly, ISerializationCal
         return true;
     }
 
-    protected void HandleCollide(Collider targetCollider)
+    protected void HandleCollide(Collider targetCollider, Vector3 hitPoint)
     {
         if (targetCollider.TryGetComponent(out ICollidable collidable))
         {
             HandleCollidable(collidable);
-             Collided?.Invoke(collidable);
         }
 
         if (targetCollider.TryGetComponent(out IDamageable damageable))
         {
             if (SimpleUtils.IsLayerInclud(targetCollider.gameObject, _fighter.LayerMaskDamageable))
             {
-                Hited?.Invoke(damageable);
+                Hited?.Invoke(damageable, hitPoint);
             }
         }
     }
 
-    protected virtual void HandleCollidable(ICollidable collidable) => collidable.HandleCollide(this);
+    protected virtual void HandleCollidable(ICollidable collidable) 
+    {
+        collidable.HandleCollide(this);
+    } 
 
     protected virtual float GetDamageAddon() => 0f;
 

@@ -10,6 +10,17 @@ public class Equipment : MonoBehaviour, IEquipmentReadOnly
 
     public event Action<IEquipmentCellReanOnly> ChangedCell;
 
+    private void OnValidate()
+    {
+        if (_defaultCells == null)
+            return;
+
+        if (_equipmentCells == null)
+            return;
+
+        Start();
+    }
+
     private void Awake()
     {
         Initialize();

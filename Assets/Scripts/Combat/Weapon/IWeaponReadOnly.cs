@@ -4,8 +4,7 @@ using UnityEngine;
 public interface IWeaponReadOnly : ISurface
 {
     event Action StartedAttack;
-    event Action<ICollidable> Collided;
-    event Action<IDamageable> Hited;
+    event Action<IDamageable, Vector3> Hited;
 
     string Id { get; }
     WeaponConfig Config { get; }

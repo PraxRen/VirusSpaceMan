@@ -7,7 +7,8 @@ public abstract class SimpleMeleeWeapon : Weapon
 
     protected override void RunDamageAddon()
     {
-        bool hasHit = Physics.SphereCast(_pointRaycast.position, _radiusDamage, _pointRaycast.forward, out RaycastHit hit, Config.DistanceAttack, Fighter.LayerMaskCollision, QueryTriggerInteraction.Ignore);
+        Vector3 direction = (Fighter.LookTarget.Position - _pointRaycast.position).normalized;
+        bool hasHit = Physics.SphereCast(_pointRaycast.position, _radiusDamage, direction, out RaycastHit hit, Config.DistanceAttack, Fighter.LayerMaskCollision, QueryTriggerInteraction.Ignore);
 
         if (hasHit == false)
             return;
@@ -15,6 +16,9 @@ public abstract class SimpleMeleeWeapon : Weapon
         if (CanCollide(hit.collider) == false)
             return;
 
-        HandleCollide(hit.collider);
+#if UNITY_EDITOR
+        Debug.DrawLine(hit.collider.transform.position, hit.point, Color.red, 2f);
+#endif
+        HandleCollide(hit.collider, hit.point);
     }
 }

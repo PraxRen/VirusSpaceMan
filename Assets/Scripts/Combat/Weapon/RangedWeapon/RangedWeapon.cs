@@ -26,7 +26,8 @@ public abstract class RangedWeapon : Weapon, IRangedWeaponReadOnly
     {
         Projectile projectile = _spawnerProjectile.Spawn();
         projectile.Collided += OnCollided;
-        projectile.Shoot((Fighter.LookTarget.Position - Transform.position).normalized);
+        Vector3 targetPosition = GetTargetPosition();
+        projectile.Shoot((targetPosition - Transform.position).normalized);
     }
 
     protected override float GetDamageAddon() => RangedWeaponConfig.ProjectileConfig.Damage;
@@ -36,10 +37,23 @@ public abstract class RangedWeapon : Weapon, IRangedWeaponReadOnly
         collidable.HandleCollide(_lastProjectile);
     }
 
+    private Vector3 GetTargetPosition()
+    {
+        float adjustedRadius = RangedWeaponConfig.MaxRadiusAccuracy * (1 - RangedWeaponConfig.Accuracy);
+        Vector2 randomPointInCircle = Random.insideUnitCircle * adjustedRadius;
+        Vector3 targetPosition = Fighter.LookTarget.Position + new Vector3(randomPointInCircle.x, 0, randomPointInCircle.y);
+
+        return targetPosition;
+    }
+
     private void OnCollided(Projectile projectile, Collider collider)
     {
         projectile.Collided -= OnCollided;
         _lastProjectile = projectile;
-        HandleCollide(collider);
+        Vector3 hitPoint = collider.ClosestPoint(projectile.Transform.position);
+#if UNITY_EDITOR
+        Debug.DrawLine(collider.transform.position, hitPoint, Color.red, 2f);
+#endif
+        HandleCollide(collider, hitPoint);
     }
 }

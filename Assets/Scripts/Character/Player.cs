@@ -75,8 +75,9 @@ public class Player : Character
     {
         _fighter.ActivateWeapon();
         Transform targetTransform = target.transform;
-        float height = target.bounds.center.y - targetTransform.position.y;
-        LookTarget.SetTarget(targetTransform, Vector3.up * height);
+        float center = target.bounds.center.y - targetTransform.position.y;
+        float offsetCenter = 0.2f;
+        LookTarget.SetTarget(targetTransform, Vector3.up * (center + offsetCenter));
     }
 
     private void OnRemovedTarget(Collider target)

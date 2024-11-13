@@ -399,7 +399,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _canChangeValue: 0
-  _value: 1
+  _value: 0.201
 --- !u!4 &80268434
 Transform:
   m_ObjectHideFlags: 0
@@ -1186,10 +1186,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 3653731634534953916, guid: a5da0f04edbf85e45a62a795afebc55d, type: 3}
-      propertyPath: m_AdditionalShaderChannelsFlag
-      value: 25
-      objectReference: {fileID: 0}
     - target: {fileID: 5821032506775687253, guid: a5da0f04edbf85e45a62a795afebc55d, type: 3}
       propertyPath: m_Name
       value: Alien
@@ -1201,14 +1197,6 @@ PrefabInstance:
     - target: {fileID: 7224742052736693330, guid: a5da0f04edbf85e45a62a795afebc55d, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8878137414798047310, guid: a5da0f04edbf85e45a62a795afebc55d, type: 3}
-      propertyPath: m_AnchoredPosition.x
-      value: -0.00025004148
-      objectReference: {fileID: 0}
-    - target: {fileID: 8878137414798047310, guid: a5da0f04edbf85e45a62a795afebc55d, type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: -0.000000029802322
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -1434,9 +1422,17 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1588699072647978945, guid: 21685c10a89cef242847b4a2c729e36c, type: 3}
+      propertyPath: _defaultCells.Array.data[0].<Item>k__BackingField
+      value: 
+      objectReference: {fileID: 11400000, guid: 6adcfd5db1426c84f8c8fa2c633a6d45, type: 2}
     - target: {fileID: 3326990007501782220, guid: 21685c10a89cef242847b4a2c729e36c, type: 3}
       propertyPath: m_Name
       value: Player
+      objectReference: {fileID: 0}
+    - target: {fileID: 3465745153293022649, guid: 21685c10a89cef242847b4a2c729e36c, type: 3}
+      propertyPath: m_WarningMessage
+      value: 
       objectReference: {fileID: 0}
     - target: {fileID: 7394927946005314348, guid: 21685c10a89cef242847b4a2c729e36c, type: 3}
       propertyPath: m_LocalPosition.x

@@ -25,11 +25,11 @@ public class HandlerHit : MonoBehaviour
         _damageable.BeforeTakeDamage -= OnBeforeTakeDamage;
     }
 
-    private void OnBeforeTakeDamage(IWeaponReadOnly weapon, float damage)
+    private void OnBeforeTakeDamage(IWeaponReadOnly weapon, Vector3 hitPoint, float damage)
     {
         foreach (IHitReaction reaction in _reactions)
         {
-            reaction.Handle(weapon, damage);
+            reaction.Handle(weapon, hitPoint, damage);
         }
     }
 }
