@@ -149,7 +149,7 @@ public class Scanner : MonoBehaviour
             _currentIndexTarget = 0;
 
         if (_currentIndexTarget >= _targets.Count)
-            _currentIndexTarget = 0;
+            _currentIndexTarget = _targets.Count - 1;
 
         UpdateTarget();
     }
