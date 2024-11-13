@@ -1,10 +1,17 @@
 using UnityEngine;
 using System.Linq;
 
-public class ActivatorRigHit : MonoBehaviour
+public class ActivatorRigHit : MonoBehaviour, IHitReaction
 {
     [SerializeField] private RigHit[] _rigsHit;
     [SerializeField] private float _distanceRaction;
+
+    private Transform _transform;
+
+    private void Awake()
+    {
+        _transform = transform;
+    }
 
     public void ApplyHit(Vector3 forceDirection, Vector3 hitPoint)
     {
@@ -24,8 +31,13 @@ public class ActivatorRigHit : MonoBehaviour
 
         if (isFindedRigHit == false)
         {
-            RigHit rigHit = _rigsHit.OrderBy(rigHit => Vector3.Distance(rigHit.transform.position, hitPoint)).First();
-            rigHit.AddForce(forceDirection);
+            RigHit rigHit = _rigsHit.OrderBy(rigHit => (rigHit.transform.position - hitPoint).sqrMagnitude).FirstOrDefault();
+            rigHit?.AddForce(forceDirection);
         }
+    }
+
+    public void Handle(IWeaponReadOnly weapon, float damage)
+    {
+        ApplyHit((weapon.Position - _transform.position).normalized, weapon.Position);
     }
 }

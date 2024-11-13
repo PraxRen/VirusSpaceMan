@@ -1,6 +1,7 @@
 using System;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public abstract class Weapon : MonoBehaviour, IWeaponReadOnly, ISerializationCallbackReceiver
 {
@@ -13,6 +14,7 @@ public abstract class Weapon : MonoBehaviour, IWeaponReadOnly, ISerializationCal
     private float _lastTimeAttack;
     private bool _isActivated;
     private int _indexAttack;
+    private Transform _transform;
 
     public event Action StartedAttack;
     public event Action<ICollidable> Collided;
@@ -24,10 +26,12 @@ public abstract class Weapon : MonoBehaviour, IWeaponReadOnly, ISerializationCal
     public Attack CurrentAttack => _config.Attacks[_indexAttack];
     public float FactorNoise => _config.FactorNoise;
     public SurfaceType SurfaceType => _config.SurfaceType;
-
+    public Vector3 Position => _transform.position;
+    protected Transform Transform => _transform;
 
     private void Awake()
     {
+        _transform = transform;
         AwakeAddon();
     }
 

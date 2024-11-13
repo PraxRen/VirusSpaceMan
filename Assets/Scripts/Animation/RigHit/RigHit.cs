@@ -41,8 +41,8 @@ public class RigHit : MonoBehaviour
 
         while (Mathf.Approximately(_rig.weight, targetValue) == false)
         {
-            _rig.weight = Mathf.Lerp(startValue, targetValue, speedUpdate * elapsedTime / delta);
             elapsedTime += Time.deltaTime;
+            _rig.weight = Mathf.Lerp(startValue, targetValue, speedUpdate * elapsedTime / delta);
             yield return null;
         }
 

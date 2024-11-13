@@ -20,6 +20,8 @@ public class Health : MonoBehaviour, IDamageable, IAttribute
 
     public event Action ValueChanged;
     public event Action Died;
+    public event Action<IWeaponReadOnly, float> BeforeTakeDamage;
+    public event Action<IWeaponReadOnly, float> AfterTakeDamage;
 
     private void Awake()
     {
@@ -53,10 +55,13 @@ public class Health : MonoBehaviour, IDamageable, IAttribute
         if (damage < 0)
             throw new ArgumentOutOfRangeException(nameof(damage));
 
+        BeforeTakeDamage?.Invoke(weapon, damage);
         UpdateValue(Value - damage);
 
         if (Value == 0)
             Die();
+
+        AfterTakeDamage?.Invoke(weapon, damage);
     }
 
     public bool CanDie(IWeaponReadOnly weapon, float damage)

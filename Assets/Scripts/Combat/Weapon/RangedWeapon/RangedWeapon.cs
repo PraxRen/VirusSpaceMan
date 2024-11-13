@@ -5,16 +5,11 @@ public abstract class RangedWeapon : Weapon, IRangedWeaponReadOnly
     [SerializeField] private SpawnerProjectile _spawnerProjectile;
     [SerializeField] private Transform _startPoint;
 
-    private Transform _transform;
     private Projectile _lastProjectile;
 
     public Transform StartPoint => _startPoint;
     public RangedWeaponConfig RangedWeaponConfig {  get; private set; }
 
-    protected override void AwakeAddon()
-    {
-        _transform = transform;
-    }
 
     protected override void InitializeAddon(WeaponConfig config, IFighterReadOnly fighter)
     {
@@ -31,7 +26,7 @@ public abstract class RangedWeapon : Weapon, IRangedWeaponReadOnly
     {
         Projectile projectile = _spawnerProjectile.Spawn();
         projectile.Collided += OnCollided;
-        projectile.Shoot((Fighter.LookTarget.Position - _transform.position).normalized);
+        projectile.Shoot((Fighter.LookTarget.Position - Transform.position).normalized);
     }
 
     protected override float GetDamageAddon() => RangedWeaponConfig.ProjectileConfig.Damage;

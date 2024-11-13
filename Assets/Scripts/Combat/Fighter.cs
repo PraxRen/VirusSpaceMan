@@ -25,6 +25,8 @@ public class Fighter : MonoBehaviour, IDamageable, IFighterReadOnly, IAction
     public event Action<IWeaponReadOnly> ActivatedWeapon;
     public event Action<IWeaponReadOnly> DeactivatedWeapon;
     public event Action RemovedWeapon;
+    public event Action<IWeaponReadOnly, float> BeforeTakeDamage;
+    public event Action<IWeaponReadOnly, float> AfterTakeDamage;
 
     public bool IsAttack { get; private set; }
     public IWeaponReadOnly Weapon => _currentWeapon;
@@ -67,7 +69,12 @@ public class Fighter : MonoBehaviour, IDamageable, IFighterReadOnly, IAction
 
     public bool CanTakeDamage(IWeaponReadOnly weapon) => _currentDamageable.CanTakeDamage(weapon);
 
-    public void TakeDamage(IWeaponReadOnly weapon, float damage) => _currentDamageable.TakeDamage(weapon, damage);
+    public void TakeDamage(IWeaponReadOnly weapon, float damage) 
+    {
+        BeforeTakeDamage?.Invoke(weapon, damage);
+        _currentDamageable.TakeDamage(weapon, damage);
+        AfterTakeDamage?.Invoke(weapon, damage);
+    } 
 
     public bool CanDie(IWeaponReadOnly weapon, float damage) => _currentDamageable.CanDie(weapon, damage);
 

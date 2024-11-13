@@ -10,6 +10,7 @@ public interface IWeaponReadOnly : ISurface
     string Id { get; }
     WeaponConfig Config { get; }
     Attack CurrentAttack { get; }
+    Vector3 Position { get; }
 
     bool CanCollide(Collider targetCollider);
     float GetDamage();
