@@ -6,6 +6,7 @@ public class WeaponConfig : Item
 {
     [SerializeField] private string _idWeapon;
     [SerializeField] private float _damage;
+    [SerializeField] private float _force;
     [Min(0f)][SerializeField] private float _distanceAttack;
     [Min(0f)][SerializeField] private float _cooldownAttack;
     [Range(0f, 1f)][SerializeField] private float _factorNoise;
@@ -14,6 +15,7 @@ public class WeaponConfig : Item
 
     public string IdWeapon => _idWeapon;
     public float Damage => _damage;
+    public float Force => _force;
     public float DistanceAttack => _distanceAttack;
     public float CooldownAttack => _cooldownAttack;
     public float FactorNoise => _factorNoise;

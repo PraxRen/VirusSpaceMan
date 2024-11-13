@@ -10,6 +10,7 @@ public class Mover : MonoBehaviour, IMover
     [SerializeField] private ActionScheduler _actionScheduler;
     [SerializeField][SerializeInterface(typeof(IStepNotifier))] private MonoBehaviour _stepNotifierMonoBehaviour;
     [SerializeField] private ModeMover _defaultModeMover;
+    [SerializeField] private LayerMask _groundLayer;
     [SerializeField][SerializeInterface(typeof(IChangerModeMover))] private MonoBehaviour[] _switchesModeMoverMonoBehaviour;
 
     private Transform _transform;
@@ -23,6 +24,7 @@ public class Mover : MonoBehaviour, IMover
     public event Action StepTook;
 
     public Vector3 Velocity { get; private set; }
+    public LayerMask GroundLayer => _groundLayer;
 
     private void Awake()
     {

@@ -9,4 +9,10 @@ public class CharacterAnimatorData
         public static readonly int IsAttack = Animator.StringToHash("IsAttack");
         public static readonly int IndexAttack = Animator.StringToHash("IndexAttack");
     }
+
+    public static class Names
+    {
+        public const string FaceUpStandUp = "FaceUpStandUp";
+        public const string FaceDownStandUp = "FaceDownStandUp";
+    }
 }

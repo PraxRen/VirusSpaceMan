@@ -29,7 +29,8 @@ public class HandlerHit : MonoBehaviour
     {
         foreach (IHitReaction reaction in _reactions)
         {
-            reaction.Handle(weapon, hitPoint, damage);
+            if (reaction.CanHandleHit(weapon, hitPoint, damage))
+                reaction.HandleHit(weapon, hitPoint, damage);
         }
     }
 }

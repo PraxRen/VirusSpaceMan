@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.UIElements;
@@ -8,6 +9,7 @@ public abstract class Weapon : MonoBehaviour, IWeaponReadOnly, ISerializationCal
     private float TimeResetIndexAttack = 2f;
 
     [SerializeField][ReadOnly] private string _id;
+    [SerializeField] private Collider[] _colliders; 
 
     private WeaponConfig _config;
     private IFighterReadOnly _fighter;
@@ -26,6 +28,7 @@ public abstract class Weapon : MonoBehaviour, IWeaponReadOnly, ISerializationCal
     public float FactorNoise => _config.FactorNoise;
     public SurfaceType SurfaceType => _config.SurfaceType;
     public Vector3 Position => _transform.position;
+    public IReadOnlyCollection<Collider> Colliders => _colliders;
     protected Transform Transform => _transform;
 
     private void Awake()

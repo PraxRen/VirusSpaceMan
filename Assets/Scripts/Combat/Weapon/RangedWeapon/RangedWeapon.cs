@@ -52,7 +52,7 @@ public abstract class RangedWeapon : Weapon, IRangedWeaponReadOnly
         _lastProjectile = projectile;
         Vector3 hitPoint = collider.ClosestPoint(projectile.Transform.position);
 #if UNITY_EDITOR
-        Debug.DrawLine(collider.transform.position, hitPoint, Color.red, 2f);
+        Debug.DrawLine(collider.GetComponent<Transform>().position, hitPoint, Color.red, 2f);
 #endif
         HandleCollide(collider, hitPoint);
     }
