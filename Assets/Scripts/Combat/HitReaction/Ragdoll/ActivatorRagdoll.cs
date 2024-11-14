@@ -1,24 +1,44 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UIElements;
 
 [RequireComponent(typeof(SwitcherRagdoll))]
-public class ActivatorRagdoll : MonoBehaviour, IHitReaction
+public class ActivatorRagdoll : MonoBehaviour, IHitReaction, IAction
 {
     private const float ForceYOffset = 0.35f;
 
+    [SerializeField] private ActionScheduler _actionScheduler;
+    [SerializeField][SerializeInterface(typeof(IDamageable))] private MonoBehaviour _mainDamageableMonoBehaviour;
     [Min(0f)][SerializeField] private float _timeResetIgnoreColliders;
     [Min(0f)][SerializeField] private float _timeDeactivate;
 
     private Transform _transform;
     private SwitcherRagdoll _switcherRagdoll;
+    private IDamageable _damageable;
     private Coroutine _jobRunTimerForDeactivate;
 
     private void Awake()
     {
         _transform = transform;
         _switcherRagdoll = GetComponent<SwitcherRagdoll>();
+        _damageable = (IDamageable)_mainDamageableMonoBehaviour;
+    }
+
+    private void OnEnable()
+    {
+        _switcherRagdoll.ExiteAnimationStandUp += OnExiteAnimationStandUp;
+    }
+
+    private void OnDisable()
+    {
+        _switcherRagdoll.ExiteAnimationStandUp -= OnExiteAnimationStandUp;
+    }
+
+    public void Cancel()
+    {
+        CancelJobTimerForDeactivate();
+        _switcherRagdoll.Deactivete();
+        _actionScheduler.ClearAction(this);
     }
 
     public bool CanHandleHit(IWeaponReadOnly weapon, Vector3 hitPoint, float damage)
@@ -28,20 +48,20 @@ public class ActivatorRagdoll : MonoBehaviour, IHitReaction
 
     public void HandleHit(IWeaponReadOnly weapon, Vector3 hitPoint, float damage)
     {
+        _actionScheduler.StartAction(this);
+        _actionScheduler.SetBlock(this);
         Vector3 force = CalculateForce(weapon, hitPoint);
         List<Collider> ignoreColliders = new List<Collider>();
         ignoreColliders.AddRange(weapon.Colliders);
         ignoreColliders.AddRange(weapon.Fighter.IgnoreColliders);
         _switcherRagdoll.SetIgnoreColliders(ignoreColliders, true, _timeResetIgnoreColliders);
         _switcherRagdoll.Activete();
-        
-        if (_jobRunTimerForDeactivate != null)
-        {
-            StopCoroutine(_jobRunTimerForDeactivate);
-            _jobRunTimerForDeactivate = null;
-        }
 
-        _jobRunTimerForDeactivate = StartCoroutine(RunTimerForDeactivateRagdoll(_timeDeactivate));
+        if (_damageable.CanDie(weapon, damage) == false)
+        {
+            CancelJobTimerForDeactivate();
+            _jobRunTimerForDeactivate = StartCoroutine(RunTimerForDeactivateRagdoll(_timeDeactivate));
+        }
 
         _switcherRagdoll.ApplyHit(force, hitPoint);
     }
@@ -83,5 +103,19 @@ public class ActivatorRagdoll : MonoBehaviour, IHitReaction
         }
 
         _jobRunTimerForDeactivate = null;
+    }
+
+    private void CancelJobTimerForDeactivate()
+    {
+        if (_jobRunTimerForDeactivate != null)
+        {
+            StopCoroutine(_jobRunTimerForDeactivate);
+            _jobRunTimerForDeactivate = null;
+        }
+    }
+
+    private void OnExiteAnimationStandUp()
+    {
+        _actionScheduler.ClearAction(this);
     }
 }

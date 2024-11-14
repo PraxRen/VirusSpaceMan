@@ -17,7 +17,6 @@ public class Scanner : MonoBehaviour
     private WaitForSeconds _waitUpdateScan;
     private Coroutine _jobScanTargets;
     private float _radius;
-    private float _radiusSqr;
     private LayerMask _layerMask;
 
     public event Action<IReadOnlyCollection<Collider>> ChangedTargets;
@@ -60,7 +59,6 @@ public class Scanner : MonoBehaviour
     public void UpdateRadius(float radius)
     {
         _radius = Mathf.Max(_radiusBase, radius);
-        _radiusSqr = _radius * _radius;
         ChangedRadius?.Invoke(_radius);
     }
 
@@ -152,13 +150,6 @@ public class Scanner : MonoBehaviour
             _currentIndexTarget = _targets.Count - 1;
 
         UpdateTarget();
-    }
-
-    private float GetAngleToTarget(Vector3 targetPosition)
-    {
-        Vector3 directionToTarget = (targetPosition - _transform.position).normalized;
-
-        return Vector3.SignedAngle(_transform.forward, directionToTarget, Vector3.up);
     }
 
     private void CancelUpdateScan()

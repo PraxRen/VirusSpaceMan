@@ -41,7 +41,7 @@ public abstract class RangedWeapon : Weapon, IRangedWeaponReadOnly
     {
         float adjustedRadius = RangedWeaponConfig.MaxRadiusAccuracy * (1 - RangedWeaponConfig.Accuracy);
         Vector2 randomPointInCircle = Random.insideUnitCircle * adjustedRadius;
-        Vector3 targetPosition = Fighter.LookTarget.Position + new Vector3(randomPointInCircle.x, 0, randomPointInCircle.y);
+        Vector3 targetPosition = Fighter.LookTarget.Position + new Vector3(randomPointInCircle.x, randomPointInCircle.y, 0f);
 
         return targetPosition;
     }

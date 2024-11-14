@@ -14,4 +14,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _damage: 0
   _animationIndex: 0
-  _ragePoints: 0.05
+  _ragePoints: 0

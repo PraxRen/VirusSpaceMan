@@ -14,7 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _id: f4c336ff-936c-4c5b-b25c-5f5690da6d05
   _idWeapon: 3bcc4681-937b-4fcf-8d01-39fef347b869
-  _damage: 0
+  _damage: 100
+  _force: 0
   _distanceAttack: 1.8
   _cooldownAttack: 1
   _factorNoise: 1

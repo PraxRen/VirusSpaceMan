@@ -2294,7 +2294,7 @@ Transform:
   m_GameObject: {fileID: 3945497287508130690}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 1, z: 0, w: 0}
-  m_LocalPosition: {x: 0, y: 1.843, z: -0.006}
+  m_LocalPosition: {x: -0, y: 1.843, z: -0.084}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -5406,7 +5406,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _value: 0
   _maxValue: 1
-  _speedDecreaseValue: 5
+  _speedDecreaseValue: 0.06
   _timeWaitForMaxValue: 3
 --- !u!114 &6204769784501713040
 MonoBehaviour:
@@ -5526,7 +5526,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 837fa2f28d5a1c84ca3b2cfdb2fe23c3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _isCanActivate: 0
 --- !u!114 &552784237519895650
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5559,6 +5558,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7ec5d68ac43ee9642b19cf899840f4ae, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _actionScheduler: {fileID: 4139406190617183259}
+  _mainDamageableMonoBehaviour: {fileID: 5307021067024973806}
   _timeResetIgnoreColliders: 1.5
   _timeDeactivate: 2.2
 --- !u!114 &3871522830149729227

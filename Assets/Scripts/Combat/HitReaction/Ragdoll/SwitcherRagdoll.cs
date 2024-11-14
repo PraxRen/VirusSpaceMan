@@ -212,7 +212,7 @@ public class SwitcherRagdoll : MonoBehaviour
 
     private void RunAnimationStandUp()
     {
-        _collider.enabled = true;
+        //_collider.enabled = true;
         _animator.enabled = true;
         int indexAnimatorLayer = _switcherAnimationLayer.GetIndexCurrentMoverAnimationLayer();
         _animator.Play(GetNameAnimationStandUp(), indexAnimatorLayer, 0);
@@ -227,6 +227,7 @@ public class SwitcherRagdoll : MonoBehaviour
         if (_agent != null)
             _agent.enabled = true;
 
+        _collider.enabled = true;
         _mover.enabled = true;
         IsActivated = false;
     }

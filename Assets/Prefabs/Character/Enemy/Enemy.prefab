@@ -26,15 +26,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4220238893386968526, guid: 7d42cd749514eaf4ea6c228b66310aad, type: 3}
       propertyPath: _layerMaskCollision.m_Bits
-      value: 11777
+      value: 10753
       objectReference: {fileID: 0}
     - target: {fileID: 4220238893386968526, guid: 7d42cd749514eaf4ea6c228b66310aad, type: 3}
       propertyPath: _layerMaskDamageable.m_Bits
-      value: 64
+      value: 8256
       objectReference: {fileID: 0}
     - target: {fileID: 6613059982058320866, guid: 7d42cd749514eaf4ea6c228b66310aad, type: 3}
       propertyPath: _groundLayer.m_Bits
-      value: 11264
+      value: 15360
       objectReference: {fileID: 0}
     - target: {fileID: 7025720906217470975, guid: 7d42cd749514eaf4ea6c228b66310aad, type: 3}
       propertyPath: m_LocalPosition.x

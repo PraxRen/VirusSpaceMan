@@ -462,11 +462,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6536734285014286234, guid: 44be744388e3e254ab9946f7963209cc, type: 3}
       propertyPath: m_AnchorMax.x
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6536734285014286234, guid: 44be744388e3e254ab9946f7963209cc, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7943262969625516957, guid: 44be744388e3e254ab9946f7963209cc, type: 3}
       propertyPath: m_Name
@@ -478,7 +478,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9054179793945102924, guid: 44be744388e3e254ab9946f7963209cc, type: 3}
       propertyPath: _layerMaskCollision.m_Bits
-      value: 7681
+      value: 6657
       objectReference: {fileID: 0}
     - target: {fileID: 9054179793945102924, guid: 44be744388e3e254ab9946f7963209cc, type: 3}
       propertyPath: _layerMaskDamageable.m_Bits
