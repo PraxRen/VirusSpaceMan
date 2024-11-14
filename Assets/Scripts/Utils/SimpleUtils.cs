@@ -7,8 +7,9 @@ public class SimpleUtils
         return (layerMask.value & (1 << gameObject.layer)) > 0;
     }
 
-    public static bool TryLuck(float maxValue, float value)
+    public static bool TryLuck(float value)
     {
-        return Random.Range(0, maxValue) <= value;
+        value = Mathf.Clamp01(value);
+        return Random.value <= value;
     }
 }

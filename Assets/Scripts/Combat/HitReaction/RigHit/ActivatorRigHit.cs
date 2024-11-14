@@ -4,8 +4,6 @@ using UnityEngine.UIElements;
 [RequireComponent(typeof(SwitcherRigHit))]
 public class ActivatorRigHit : MonoBehaviour, IHitReaction
 {
-    [SerializeField] private bool _isCanActivate;
-
     private Transform _transform;
     private SwitcherRigHit _switherRigHit;
 
@@ -17,7 +15,7 @@ public class ActivatorRigHit : MonoBehaviour, IHitReaction
 
     public bool CanHandleHit(IWeaponReadOnly weapon, Vector3 hitPoint, float damage)
     {
-        return enabled && _isCanActivate;
+        return enabled;
     }
 
     public void HandleHit(IWeaponReadOnly weapon, Vector3 hitPoint, float damage)

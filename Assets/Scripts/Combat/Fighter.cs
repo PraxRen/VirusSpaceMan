@@ -8,6 +8,8 @@ public class Fighter : MonoBehaviour, IDamageable, IFighterReadOnly, IAction
     [SerializeField] private Health _health;
     [SerializeField] private StorageWeapon _storageWeapon;
     [SerializeField] private ActionScheduler _actionScheduler;
+    [SerializeField] private Rage _rage;
+    [Range(0f, 1f)][SerializeField] private float _luckRageAttack;
     [SerializeField][SerializeInterface(typeof(IChangerWeaponConfig))] private MonoBehaviour _changerWeaponConfigMonoBehaviour;
     [SerializeField][SerializeInterface(typeof(IAttackNotifier))] private MonoBehaviour _attackNotifierMonoBehaviour;
     [SerializeField][SerializeInterface(typeof(IReadOnlyLookTarget))] private MonoBehaviour _lookTargetMonoBehaviour;
@@ -154,7 +156,11 @@ public class Fighter : MonoBehaviour, IDamageable, IFighterReadOnly, IAction
         if (damageable.CanTakeDamage(Weapon) == false)
             return;
 
-        damageable.TakeDamage(Weapon, hitPoint, Weapon.GetDamage());
+        _rage.AddPoint(_currentWeapon.CurrentAttack.RagePoints);
+        float luck = _luckRageAttack + _rage.Value;
+        _currentWeapon.IsRageAttack = SimpleUtils.TryLuck(luck);
+        damageable.TakeDamage(_currentWeapon, hitPoint, Weapon.GetDamage());
+        _currentWeapon.IsRageAttack = false;
     }
 
     private void OnChangedWeaponConfig(WeaponConfig weaponConfig)

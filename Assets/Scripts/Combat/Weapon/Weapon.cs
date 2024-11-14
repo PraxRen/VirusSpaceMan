@@ -2,14 +2,13 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-using UnityEngine.UIElements;
 
 public abstract class Weapon : MonoBehaviour, IWeaponReadOnly, ISerializationCallbackReceiver
 {
     private float TimeResetIndexAttack = 2f;
 
     [SerializeField][ReadOnly] private string _id;
-    [SerializeField] private Collider[] _colliders; 
+    [SerializeField] private Collider[] _colliders;
 
     private WeaponConfig _config;
     private IFighterReadOnly _fighter;
@@ -29,6 +28,7 @@ public abstract class Weapon : MonoBehaviour, IWeaponReadOnly, ISerializationCal
     public SurfaceType SurfaceType => _config.SurfaceType;
     public Vector3 Position => _transform.position;
     public IReadOnlyCollection<Collider> Colliders => _colliders;
+    public bool IsRageAttack { get; set; }
     protected Transform Transform => _transform;
 
     private void Awake()
@@ -99,6 +99,7 @@ public abstract class Weapon : MonoBehaviour, IWeaponReadOnly, ISerializationCal
             throw new ArgumentNullException(nameof(_fighter));
 
         _lastTimeAttack = Time.time;
+        IsRageAttack = false;
         StartAttackAddon();
         StartedAttack?.Invoke();
     }

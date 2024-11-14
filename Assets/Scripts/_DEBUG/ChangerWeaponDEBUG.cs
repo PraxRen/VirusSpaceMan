@@ -4,15 +4,11 @@ using UnityEngine;
 
 public class ChangerWeaponDEBUG : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    [SerializeField] private WeaponConfig _weaponConfig;
+    [SerializeField] private Equipment _equipment;
 
-    // Update is called once per frame
-    void Update()
+    private void Update()
     {
-        
+        _equipment.UpdateCell(EquipmentType.Weapon, _weaponConfig);
     }
 }
