@@ -11,14 +11,14 @@ TagManager:
   - 
   - Water
   - UI
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
+  - Player
+  - Projectile
+  - Weapon
+  - Enemy
+  - Ragdoll
+  - Ground
+  - RagdollDamageableEnemy
+  - RagdollDamageablePlayer
   - 
   - 
   - 

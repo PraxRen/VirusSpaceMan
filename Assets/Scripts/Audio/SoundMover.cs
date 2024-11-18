@@ -1,13 +1,10 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(IMoverReadOnly))]
 public class SoundMover : MonoBehaviour
 {
-    [SerializeField] private AudioSource _audioSourceStep;
-    [SerializeField] private AudioClip[] _stepClips;
+    [SerializeField] private AudioSource _audioSource;
+    [SerializeField] private AudioClip[] _clips;
 
     private IMoverReadOnly _mover;
 
@@ -28,7 +25,7 @@ public class SoundMover : MonoBehaviour
 
     private void OnStepTook()
     {
-        int index = UnityEngine.Random.Range(0, _stepClips.Length);
-        _audioSourceStep.PlayOneShot(_stepClips[index]);
+        int index = Random.Range(0, _clips.Length);
+        _audioSource.PlayOneShot(_clips[index]);
     }
 }
