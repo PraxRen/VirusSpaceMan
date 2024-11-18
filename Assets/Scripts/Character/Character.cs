@@ -1,8 +1,7 @@
 using UnityEngine;
-using UnityEngine.UIElements;
 
 [RequireComponent(typeof(IMover))]
-public abstract class Character : MonoBehaviour
+public abstract class Character : MonoBehaviour, IReadOnlyCharacter
 {
     [SerializeField] private LookTarget _lookTarget;
 

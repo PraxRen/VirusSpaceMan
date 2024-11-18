@@ -1,18 +1,25 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class AICharacter : MonoBehaviour
+[RequireComponent(typeof(StateMachine))]
+public abstract class AICharacter : Character
 {
-    // Start is called before the first frame update
-    void Start()
+    private StateMachine _stateMachine;
+
+    protected override void AwakeAddon()
     {
-        
+        _stateMachine = GetComponent<StateMachine>();
     }
 
-    // Update is called once per frame
-    void Update()
+    protected override void EnableAddon()
     {
-        
+        _stateMachine.enabled = true;
+    }
+
+    protected override void DisableAddon()
+    {
+        _stateMachine.enabled = false;
     }
 }
