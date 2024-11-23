@@ -3,7 +3,7 @@ using System.Linq;
 using UnityEngine;
 
 [RequireComponent(typeof(CharacterController))]
-public class Mover : MonoBehaviour, IMover 
+public class Mover : MonoBehaviour, IMoverReadOnly, IAction
 {
     [SerializeField] private float _gravity;
     [SerializeField] private float _speedUpdateInertia;

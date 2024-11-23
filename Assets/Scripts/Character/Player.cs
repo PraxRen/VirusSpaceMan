@@ -4,37 +4,33 @@ using UnityEngine;
 public class Player : Character
 {
     private PlayerInputReader _inputReader;
-    private Scanner _scanner;
-    private Fighter _fighter;
 
     protected override void AwakeAddon()
     {
         _inputReader = GetComponent<PlayerInputReader>();
-        _fighter = GetComponent<Fighter>();
-        _scanner = GetComponent<Scanner>();
     }
 
     protected override void EnableAddon()
     {
-        _fighter.ChangedWeapon += OnChangedWeapon;
-        _fighter.RemovedWeapon += OnRemovedWeapon;
-        _scanner.ChangedCurrentTarget += OnChangedTarget;
-        _scanner.RemovedCurrentTarget += OnRemovedTarget;
+        Fighter.ChangedWeapon += OnChangedWeapon;
+        Fighter.RemovedWeapon += OnRemovedWeapon;
+        Scanner.ChangedCurrentTarget += OnChangedTarget;
+        Scanner.RemovedCurrentTarget += OnRemovedTarget;
         _inputReader.ChangedScrollNextTarget += OnChangedScrollNextTarget;
         _inputReader.ChangedScrollPreviousTarget += OnChangedScrollPreviousTarget;
 
-        if (_fighter.Weapon != null)
+        if (Fighter.Weapon != null)
         {
-            _scanner.StartScan(_fighter.LayerMaskDamageable, _fighter.Weapon.Config.DistanceAttack);
+            Scanner.StartScan(Fighter.LayerMaskDamageable, Fighter.Weapon.Config.DistanceAttack);
         }
     }
 
     protected override void DisableAddon()
     {
-        _fighter.ChangedWeapon -= OnChangedWeapon;
-        _fighter.RemovedWeapon -= OnRemovedWeapon;
-        _scanner.ChangedCurrentTarget -= OnChangedTarget;
-        _scanner.RemovedCurrentTarget -= OnRemovedTarget;
+        Fighter.ChangedWeapon -= OnChangedWeapon;
+        Fighter.RemovedWeapon -= OnRemovedWeapon;
+        Scanner.ChangedCurrentTarget -= OnChangedTarget;
+        Scanner.RemovedCurrentTarget -= OnRemovedTarget;
         _inputReader.ChangedScrollNextTarget -= OnChangedScrollNextTarget;
         _inputReader.ChangedScrollPreviousTarget -= OnChangedScrollPreviousTarget;
     }
@@ -59,51 +55,54 @@ public class Player : Character
 
     private void HandleCombat()
     {
-        if (_scanner.Target == null)
+        if (Scanner.Target == null)
             return;
 
-        Vector3 direction = (LookTarget.Position - Transform.position).normalized;
+        Vector3 direction = (LookTracker.Position - Transform.position).normalized;
         Mover.LookAtDirection(new Vector2(direction.x, direction.z));
 
-        if (_fighter.CanAttack() == false)
+        if (Fighter.CanAttack() == false)
             return;
 
-        _fighter.Attack();
+        Fighter.Attack();
     }
 
-    private void OnChangedTarget(Collider target)
+    private void OnChangedTarget(Collider collider)
     {
-        _fighter.ActivateWeapon();
-        Transform targetTransform = target.transform;
-        float center = target.bounds.center.y - targetTransform.position.y;
+        Fighter.ActivateWeapon();
+
+        if (collider.TryGetComponent(out ITarget target) == false)
+            return;
+
+        float center = collider.bounds.center.y - target.Position.y;
         float offsetCenter = 0.2f;
-        LookTarget.SetTarget(targetTransform, Vector3.up * (center + offsetCenter));
+        LookTracker.SetTarget(target, Vector3.up * (center + offsetCenter));
     }
 
     private void OnRemovedTarget(Collider target)
     {
-        _fighter.DeactivateWeapon();
-        LookTarget.ResetTarget();
+        Fighter.DeactivateWeapon();
+        LookTracker.ResetTarget();
     }
 
     private void OnChangedWeapon(IWeaponReadOnly weapon)
     {
-        _scanner.StartScan(_fighter.LayerMaskDamageable, weapon.Config.DistanceAttack);
+        Scanner.StartScan(Fighter.LayerMaskDamageable, weapon.Config.DistanceAttack);
     }
 
     private void OnRemovedWeapon()
     {
-        _scanner.ResetRadius();
+        Scanner.ResetRadius();
     }
 
     private void OnChangedScrollNextTarget()
     {
-        _scanner.NextTarget();
+        Scanner.NextTarget();
 
     }
 
     private void OnChangedScrollPreviousTarget()
     {
-        _scanner.PreviousTarget();
+        Scanner.PreviousTarget();
     }
 }

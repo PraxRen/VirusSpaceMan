@@ -1,14 +1,14 @@
 using UnityEngine;
 
-public class LookTarget : MonoBehaviour, IReadOnlyLookTarget
+public class TargetTracker : MonoBehaviour, IReadOnlyTargetTracker
 {
-    [SerializeField] private Transform _parent;
     [SerializeField] private Transform _pointDefault;
     [SerializeField] private float _speedUpdatePositionDefault;
     [SerializeField] private float _speedUpdatePositionTarget;
 
     private Transform _transform;
-    private Transform _target;
+    private TargetTransform _targetDefault;
+    private ITarget _target;
     private Vector3 _offset;
     private float _speedUpdate;
 
@@ -17,6 +17,7 @@ public class LookTarget : MonoBehaviour, IReadOnlyLookTarget
     private void Awake()
     {
         _transform = transform;
+        _targetDefault = new TargetTransform(_pointDefault);
     }
 
     private void OnEnable()
@@ -28,19 +29,19 @@ public class LookTarget : MonoBehaviour, IReadOnlyLookTarget
 
     public void Update()
     {
-        _transform.position = Vector3.MoveTowards(_transform.position, _target.position + _offset, _speedUpdate * Time.deltaTime);
+        _transform.position = Vector3.MoveTowards(_transform.position, _target.Position + _offset, _speedUpdate * Time.deltaTime);
     }
 
-    public void SetTarget(Transform transform, Vector3 offset)
+    public void SetTarget(ITarget target, Vector3 offset)
     {
-        _target = transform;
+        _target = target;
         _offset = offset;
         _speedUpdate = _speedUpdatePositionTarget;
     }
 
     public void ResetTarget()
     {
-        _target = _pointDefault;
+        _target = _targetDefault;
         _offset = Vector3.zero;
         _speedUpdate = _speedUpdatePositionDefault;
     }

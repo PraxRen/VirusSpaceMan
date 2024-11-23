@@ -7,7 +7,7 @@ public abstract class SimpleMeleeWeapon : Weapon
 
     protected override void RunDamageAddon()
     {
-        Vector3 direction = (Fighter.LookTarget.Position - _pointRaycast.position).normalized;
+        Vector3 direction = (Fighter.LookTracker.Position - _pointRaycast.position).normalized;
         bool hasHit = Physics.SphereCast(_pointRaycast.position, _radiusDamage, direction, out RaycastHit hit, Config.DistanceAttack, Fighter.LayerMaskCollision, QueryTriggerInteraction.Ignore);
 
         if (hasHit == false)

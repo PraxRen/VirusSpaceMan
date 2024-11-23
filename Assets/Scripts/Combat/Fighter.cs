@@ -12,7 +12,7 @@ public class Fighter : MonoBehaviour, IDamageable, IFighterReadOnly, IAction
     [Range(0f, 1f)][SerializeField] private float _luckRageAttack;
     [SerializeField][SerializeInterface(typeof(IChangerWeaponConfig))] private MonoBehaviour _changerWeaponConfigMonoBehaviour;
     [SerializeField][SerializeInterface(typeof(IAttackNotifier))] private MonoBehaviour _attackNotifierMonoBehaviour;
-    [SerializeField][SerializeInterface(typeof(IReadOnlyLookTarget))] private MonoBehaviour _lookTargetMonoBehaviour;
+    [SerializeField][SerializeInterface(typeof(IReadOnlyTargetTracker))] private MonoBehaviour _lookTrackerMonoBehaviour;
     [SerializeField] private LayerMask _layerMaskDamageable;
     [SerializeField] private LayerMask _layerMaskCollision;
     [SerializeField] private Collider[] _ignoreColliders;
@@ -35,17 +35,18 @@ public class Fighter : MonoBehaviour, IDamageable, IFighterReadOnly, IAction
     public LayerMask LayerMaskDamageable => _layerMaskDamageable;
     public LayerMask LayerMaskCollision => _layerMaskCollision;
     public Vector3 Position => _transform.position;
+    public Quaternion Rotation => _transform.rotation;
     public IReadOnlyCollection<Collider> IgnoreColliders => _ignoreColliders;
     public SurfaceType SurfaceType => _currentDamageable.SurfaceType;
     public float FactorNoise => _currentDamageable.FactorNoise;
-    public IReadOnlyLookTarget LookTarget {  get; private set; }
+    public IReadOnlyTargetTracker LookTracker {  get; private set; }
 
     private void Awake()
     {
         _transform = transform;
         _changerWeaponConfig = (IChangerWeaponConfig)_changerWeaponConfigMonoBehaviour;
         _attackNotifier = (IAttackNotifier)_attackNotifierMonoBehaviour;
-        LookTarget = (IReadOnlyLookTarget)_lookTargetMonoBehaviour;
+        LookTracker = (IReadOnlyTargetTracker)_lookTrackerMonoBehaviour;
         _currentDamageable = _health;
     }
 

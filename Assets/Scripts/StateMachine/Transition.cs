@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-public abstract class Transition : ScriptableObject, IReadOnlyTransition
+public abstract class Transition : MonoBehaviour, IReadOnlyTransition
 {
     [SerializeField] private State _targetState;
 
@@ -12,9 +12,9 @@ public abstract class Transition : ScriptableObject, IReadOnlyTransition
     public StatusTransition Status { get; private set; }
     public IReadOnlyState CurrentState => _currentState;
     public IReadOnlyState TargetState => _targetState;
-    public IReadOnlyCharacter Character { get; private set; }
+    protected Character Character { get; private set; }
 
-    public void Initialize(IReadOnlyCharacter character, State currentState)
+    public void Initialize(Character character, State currentState)
     {
         if (Status != StatusTransition.None)
             throw new InvalidOperationException($"Ошибка инициализации \"{nameof(Transition)}\"! \"{GetType().Name}\" у \"{nameof(State)} -{_currentState.GetType().Name}\" уже инициализирован.");
@@ -48,8 +48,6 @@ public abstract class Transition : ScriptableObject, IReadOnlyTransition
         DeactivateAddon();
         UpdateStatusTransition(StatusTransition.Deactivated);
     }
-
-    public virtual void Handle(float deltaTime) { }
 
     protected void SetNeedTransit() => UpdateStatusTransition(StatusTransition.NeedTransit);
 

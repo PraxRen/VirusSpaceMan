@@ -12,6 +12,7 @@ public class DamageableProvider : MonoBehaviour, IDamageable
     public event Action<IWeaponReadOnly, Vector3, float> AfterTakeDamage;
 
     public Vector3 Position => _transform.position;
+    public Quaternion Rotation => _transform.rotation;
     public float FactorNoise => _mainDamageable.FactorNoise;
     public SurfaceType SurfaceType => _mainDamageable.SurfaceType;
 

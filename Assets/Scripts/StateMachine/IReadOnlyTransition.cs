@@ -7,5 +7,4 @@ public interface IReadOnlyTransition
     public StatusTransition Status { get; }
     public IReadOnlyState CurrentState { get; }
     public IReadOnlyState TargetState { get; }
-    public IReadOnlyCharacter Character { get; }
 }

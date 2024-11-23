@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-public class Health : MonoBehaviour, IDamageable, IAttribute
+public class Health : MonoBehaviour, IHealth, IDamageable, IAttribute
 {
     [SerializeField] private float _maxValue;
     [SerializeField] private float _cooldownHit;
@@ -12,6 +12,7 @@ public class Health : MonoBehaviour, IDamageable, IAttribute
     private float _lastTimeHit;
 
     public Vector3 Position => _transform.position;
+    public Quaternion Rotation => _transform.rotation;
     public float MaxValue => _maxValue;
     public float Value { get; private set; }
     public bool IsDied { get; private set; }

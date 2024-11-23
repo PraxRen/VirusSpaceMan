@@ -2,9 +2,10 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-public abstract class State : ScriptableObject, IReadOnlyState, ISerializationCallbackReceiver
+public abstract class State : MonoBehaviour, IReadOnlyState, ISerializationCallbackReceiver
 {
     [SerializeField][ReadOnly] private string _id;
+    [Range(0f,1f)][SerializeField] private float _timeSecondsWaitHandle;
     [SerializeField] private List<Transition> _transitions;
 
     public event Action<StatusState> ChangedStatus;
@@ -12,16 +13,18 @@ public abstract class State : ScriptableObject, IReadOnlyState, ISerializationCa
 
     public string Id => _id;
     public StatusState Status { get; private set; }
-    public IReadOnlyCharacter Character { get; private set; }
     public IReadOnlyCollection<IReadOnlyTransition> Transitions => _transitions;
+    public WaitForSeconds WaitHandle { get; private set; }
+    protected Character Character { get; private set; }
 
-    public void Initialize(IReadOnlyCharacter character)
+    public void Initialize(Character character)
     {
         if (Status != StatusState.None)
             throw new InvalidOperationException($"Состояние \"{GetType().Name}\" уже инициализировано!");
 
         InitializeBeforeAddon(character);
         Character = character;
+        WaitHandle = new WaitForSeconds(_timeSecondsWaitHandle);
 
         foreach (var transition in _transitions)
         {
@@ -56,35 +59,19 @@ public abstract class State : ScriptableObject, IReadOnlyState, ISerializationCa
             throw new InvalidOperationException($"Невозможно изменить статус состояния \"{GetType().Name}\" на \"{StatusState.Exited}\"!");
 
         ExitBeforeAddon();
-
-        foreach (var transition in _transitions)
-        {
-            transition.ChangedStatus -= OnChangedTransitionStatus;
-            transition.Deactivate();
-        }
-
-        UpdateStatus(StatusState.Completed);
+        DeactivateTransitions();
+        Complete();
         ExitAddon();
         UpdateStatus(StatusState.Exited);
         ExitAfterAddon();
     }
 
-    public bool CanHandle(float deltaTime)
+    public void Handle()
     {
-        if (Status != StatusState.Entered)
-            return false;
+        if (CanHandle() == false)
+            return;
 
-        return CanUpdateAddon(deltaTime);
-    }
-
-    public void Handle(float deltaTime) 
-    {
-        foreach (Transition transition in _transitions)
-        {
-            transition.Handle(deltaTime);
-        }
-
-        UpdateAddon(deltaTime);
+        HandleAddon();
     }
 
     protected virtual void InitializeBeforeAddon(IReadOnlyCharacter aiCharacter) { }
@@ -105,9 +92,9 @@ public abstract class State : ScriptableObject, IReadOnlyState, ISerializationCa
 
     protected virtual void ExitAfterAddon() { }
 
-    protected virtual bool CanUpdateAddon(float deltaTime) => true;
+    protected virtual bool CanHandleAddon() => true;
 
-    protected virtual void UpdateAddon(float deltaTime) { }
+    protected virtual void HandleAddon() { }
 
     protected void Complete() => UpdateStatus(StatusState.Completed);
 
@@ -128,12 +115,27 @@ public abstract class State : ScriptableObject, IReadOnlyState, ISerializationCa
         }
     }
 
+    private void DeactivateTransitions()
+    {
+        foreach (var transition in _transitions)
+        {
+            transition.ChangedStatus -= OnChangedTransitionStatus;
+            transition.Deactivate();
+        }
+    }
+    
+    private bool CanHandle()
+    {
+        if (Status != StatusState.Entered)
+            return false;
+
+        return CanHandleAddon();
+    }
+
     private void UpdateStatus(StatusState state)
     {
         if (Status == state)
-        {
             return;
-        }
 
         Status = state;
         ChangedStatus?.Invoke(Status);

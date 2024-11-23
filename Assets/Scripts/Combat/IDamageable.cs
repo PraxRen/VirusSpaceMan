@@ -1,10 +1,8 @@
 using System;
 using UnityEngine;
 
-public interface IDamageable : ISurface
+public interface IDamageable : ISurface, ITarget
 {
-    public Vector3 Position { get; }
-
     event Action<IWeaponReadOnly, Vector3, float> BeforeTakeDamage;
     event Action<IWeaponReadOnly, Vector3, float> AfterTakeDamage;
 

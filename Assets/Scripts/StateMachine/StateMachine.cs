@@ -1,59 +1,72 @@
 using System;
+using System.Collections;
 using System.Linq;
 using UnityEngine;
 
 public class StateMachine : MonoBehaviour
 {
-    [SerializeField][SerializeInterface(typeof(IReadOnlyCharacter))] private MonoBehaviour _characterMonoBehaviour;
+    [SerializeField] private Character _character;
     [SerializeField] private State[] _states;
 
-    private IReadOnlyCharacter _character;
     private State _defaultState;
     private State _currentState;
+    private Coroutine _jobUpdateState;
 
     public event Action<IReadOnlyState> ChangedState;
 
     public IReadOnlyState State => _currentState;
 
-    private void Awake()
-    {
-        _character = (IReadOnlyCharacter)_characterMonoBehaviour;
-    }
-
     private void OnEnable()
     {
+        if (_currentState == null)
+            return;
+
         SetCurrentState(_currentState);
+        RunUpdateState();
     }
 
     private void OnDisable()
     {
         ExitCurrentState();
+        CancelJobUpdateState();
     }
 
     private void Start()
     {
+        if (_states.Length == 0)
+            throw new ArgumentOutOfRangeException(nameof(_states));
+
         InitializeStates();
         SetCurrentState(_defaultState);
+        RunUpdateState();
     }
 
-    private void Update()
+    private void RunUpdateState()
     {
-        if (_currentState == null)
+        CancelJobUpdateState();
+        _jobUpdateState = StartCoroutine(UpdateState());
+    }
+
+    private void CancelJobUpdateState()
+    {
+        if (_jobUpdateState == null)
             return;
+        
+        StopCoroutine(_jobUpdateState);
+        _jobUpdateState = null;
+    }
 
-        float deltasTime = Time.deltaTime;
-
-        if (_currentState.CanHandle(deltasTime))
-            return;
-
-        _currentState.Handle(deltasTime);
+    private IEnumerator UpdateState()
+    {
+        while (true) 
+        {
+            _currentState.Handle();
+            yield return _currentState.WaitHandle;
+        }
     }
 
     private void InitializeStates()
     {
-        if (_states.Length == 0)
-            return;
-
         foreach (State state in _states)
             state.Initialize(_character);
 
@@ -62,9 +75,6 @@ public class StateMachine : MonoBehaviour
 
     private void SetCurrentState(State startState)
     {
-        if (startState == null)
-            return;
-
         _currentState = startState;
         _currentState.GetedNextState += Transit;
         _currentState.Enter();
@@ -76,7 +86,12 @@ public class StateMachine : MonoBehaviour
         State state = _states.FirstOrDefault(state => state.Id == nextState.Id);
 
         if (state == null)
+        {
+#if UNITY_EDITOR
+            Debug.LogWarning($"State Machine not find \"{nameof(nextState)}\"");
+#endif
             return;
+        }
 
         ExitCurrentState();
         SetCurrentState(state);
@@ -84,9 +99,6 @@ public class StateMachine : MonoBehaviour
 
     private void ExitCurrentState()
     {
-        if (_currentState == null)
-            return;
-
         _currentState.GetedNextState -= Transit;
         _currentState.Exit();
     }

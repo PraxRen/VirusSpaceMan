@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public interface IReadOnlyLookTarget
+public interface IReadOnlyTargetTracker
 {
     Vector3 Position { get; }
 }
