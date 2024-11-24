@@ -33,6 +33,7 @@ public abstract class Transition : MonoBehaviour, IReadOnlyTransition
             throw new InvalidOperationException(message);
         }
 
+        enabled = true;
         ActivateAddon();
         UpdateStatusTransition(StatusTransition.Activated);
     }
@@ -47,6 +48,7 @@ public abstract class Transition : MonoBehaviour, IReadOnlyTransition
 
         DeactivateAddon();
         UpdateStatusTransition(StatusTransition.Deactivated);
+        enabled = false;
     }
 
     protected void SetNeedTransit() => UpdateStatusTransition(StatusTransition.NeedTransit);

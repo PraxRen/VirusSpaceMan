@@ -14,10 +14,16 @@ public class StateFindPlaceInterest : State
             throw new InvalidOperationException($"Initialization error \"{nameof(State)}\"! The component \"{nameof(HandlerZoneEnvironment)}\" required for operation \"{GetType().Name}\".");
     }
 
-    protected override void EnterAfterAddon()
+    protected override void HandleAddon()
     {
         IReadOnlyPlaceInterest currentPlaceInterest = FindPlaceInterest();
-        _moveTracker.SetTarget(currentPlaceInterest, Vector3.zero);
+
+        if (currentPlaceInterest != null)
+        {
+            _moveTracker.SetTarget(currentPlaceInterest, Vector3.zero);
+            Complete();
+        }
+
     }
 
     private IReadOnlyPlaceInterest FindPlaceInterest()
