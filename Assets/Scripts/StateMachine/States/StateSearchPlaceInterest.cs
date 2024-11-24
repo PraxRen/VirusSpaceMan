@@ -2,28 +2,25 @@ using System;
 using System.Linq;
 using UnityEngine;
 
-public class StateFindPlaceInterest : State
+public class StateSearchPlaceInterest : State
 {
-    [SerializeField] private TargetTracker _moveTracker;
-
     private HandlerZoneEnvironment _handlerZoneEnvironment;
 
-    protected override void InitializeAfterAddon()
+    public StateSearchPlaceInterest(string id, Character character, float timeSecondsWaitHandle) : base(id, character, timeSecondsWaitHandle)
     {
-        if (Character.TryGetComponent(out _handlerZoneEnvironment) == false)
+        if (character.TryGetComponent(out _handlerZoneEnvironment) == false)
             throw new InvalidOperationException($"Initialization error \"{nameof(State)}\"! The component \"{nameof(HandlerZoneEnvironment)}\" required for operation \"{GetType().Name}\".");
     }
 
-    protected override void HandleAddon()
+    public override void Update()
     {
         IReadOnlyPlaceInterest currentPlaceInterest = FindPlaceInterest();
 
         if (currentPlaceInterest != null)
         {
-            _moveTracker.SetTarget(currentPlaceInterest, Vector3.zero);
+            Character.MoveTracker.SetTarget(currentPlaceInterest, Vector3.zero);
             Complete();
         }
-
     }
 
     private IReadOnlyPlaceInterest FindPlaceInterest()

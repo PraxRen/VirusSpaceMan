@@ -45,8 +45,12 @@ public class Navigation : MonoBehaviour
         desiredVelocity.y = 0;
         desiredVelocity.Normalize();
         Vector2 direction = new Vector2(desiredVelocity.x, desiredVelocity.z);
-        _mover.Move(direction);
         _mover.LookAtDirection(direction);
+
+        if (_mover.CanMove() == false)
+            return;
+
+        _mover.Move(direction);
         _navMeshAgent.nextPosition = _transfrom.position;
     }
 

@@ -1,13 +1,16 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
+using Unity.VisualScripting.FullSerializer;
 using UnityEngine;
 
 public class StateMachine : MonoBehaviour
 {
     [SerializeField] private Character _character;
-    [SerializeField] private State[] _states;
+    [SerializeField] private StateMachineConfig _config;
 
+    private List<State> _states;
     private State _defaultState;
     private State _currentState;
     private Coroutine _jobUpdateState;
@@ -33,12 +36,25 @@ public class StateMachine : MonoBehaviour
 
     private void Start()
     {
-        if (_states.Length == 0)
-            throw new ArgumentOutOfRangeException(nameof(_states));
-
         InitializeStates();
         SetCurrentState(_defaultState);
         RunUpdateState();
+    }
+
+    private void Update()
+    {
+        _currentState.Tick(Time.deltaTime);
+    }
+
+    private IEnumerator UpdateState()
+    {
+        while (true)
+        {
+            if (_currentState.CanUpdate())
+                _currentState.Update();
+
+            yield return _currentState.WaitHandle;
+        }
     }
 
     private void RunUpdateState()
@@ -56,20 +72,9 @@ public class StateMachine : MonoBehaviour
         _jobUpdateState = null;
     }
 
-    private IEnumerator UpdateState()
-    {
-        while (true) 
-        {
-            _currentState.Handle();
-            yield return _currentState.WaitHandle;
-        }
-    }
-
     private void InitializeStates()
     {
-        foreach (State state in _states)
-            state.Initialize(_character);
-
+        _states = new List<State>(_config.CreatStates(_character));
         _defaultState = _states[0];
     }
 

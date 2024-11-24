@@ -1,18 +1,9 @@
-using UnityEngine;
-
 public class StateDied : State
 {
-    private const string DefaultNameLayerMask = "Default";
-
-    [SerializeField] private GameObject[] _objects—hangeLayerToDefault;
+    public StateDied(string id, Character character, float timeSecondsWaitHandle) : base(id, character, timeSecondsWaitHandle) { }
 
     protected override void EnterAfterAddon()
     {
-        foreach (GameObject object—hangeLayerToDefault in _objects—hangeLayerToDefault)
-        {
-            object—hangeLayerToDefault.layer = LayerMask.NameToLayer(DefaultNameLayerMask);
-        }
-
         Character.enabled = false;
     }
 }

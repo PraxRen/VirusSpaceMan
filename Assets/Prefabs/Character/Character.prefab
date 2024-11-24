@@ -2440,7 +2440,7 @@ GameObject:
   - component: {fileID: 3650219457189166563}
   - component: {fileID: 4595970500192526918}
   - component: {fileID: 3086911295654442151}
-  - component: {fileID: 5462294615219880676}
+  - component: {fileID: 7848351028208494146}
   m_Layer: 12
   m_Name: Spine_02
   m_TagString: Untagged
@@ -2586,7 +2586,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bcce42f2d8c03ad4d91fae35cbecd79a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &5462294615219880676
+--- !u!114 &7848351028208494146
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -2595,10 +2595,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 4457128853192686757}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 411be30f933af0744b2fb14fa8f4297e, type: 3}
+  m_Script: {fileID: 11500000, guid: 7ca3bd56ef1838242bfee02b19a9ef06, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _mainDamageableMonoBehaviour: {fileID: 9054179793945102924}
+  _healthMonoBehaviour: {fileID: 5307021067024973806}
 --- !u!1 &4631517464879152289
 GameObject:
   m_ObjectHideFlags: 0

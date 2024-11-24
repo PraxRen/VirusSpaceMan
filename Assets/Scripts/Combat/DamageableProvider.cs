@@ -20,6 +20,7 @@ public class DamageableProvider : MonoBehaviour, IDamageable
     {
         _transform = transform;
         _mainDamageable = (IDamageable)_mainDamageableMonoBehaviour;
+        AwakeAddon();
     }
 
     public bool CanDie(IWeaponReadOnly weapon, float damage) => _mainDamageable.CanDie(weapon, damage);
@@ -31,5 +32,7 @@ public class DamageableProvider : MonoBehaviour, IDamageable
         BeforeTakeDamage?.Invoke(weapon, hitPoint, damage);
         _mainDamageable.TakeDamage(weapon, hitPoint, damage);
         AfterTakeDamage?.Invoke(weapon, hitPoint, damage);
-    } 
+    }
+
+    protected virtual void AwakeAddon() { }
 }

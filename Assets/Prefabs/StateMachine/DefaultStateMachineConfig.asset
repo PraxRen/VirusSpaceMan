@@ -1,0 +1,28 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4fe6b1630feae8444baa83f2a4b3f3f8, type: 3}
+  m_Name: DefaultStateMachineConfig
+  m_EditorClassIdentifier: 
+  _stateConfigs:
+  - {fileID: 11400000, guid: ac62372e7da450444a7832495a55537b, type: 2}
+  - {fileID: 11400000, guid: edff8d2812d6ca344998b449fa123fbf, type: 2}
+  - {fileID: 11400000, guid: be88b975bbe04ea4cb581461d3d29e28, type: 2}
+  _transitionConfigs:
+  - _typeTransition: 0
+    _currentStateConfig: {fileID: 11400000, guid: ac62372e7da450444a7832495a55537b, type: 2}
+    _targetStateConfig: {fileID: 11400000, guid: edff8d2812d6ca344998b449fa123fbf, type: 2}
+  - _typeTransition: 1
+    _currentStateConfig: {fileID: 11400000, guid: ac62372e7da450444a7832495a55537b, type: 2}
+    _targetStateConfig: {fileID: 11400000, guid: be88b975bbe04ea4cb581461d3d29e28, type: 2}
+  - _typeTransition: 0
+    _currentStateConfig: {fileID: 11400000, guid: be88b975bbe04ea4cb581461d3d29e28, type: 2}
+    _targetStateConfig: {fileID: 11400000, guid: edff8d2812d6ca344998b449fa123fbf, type: 2}

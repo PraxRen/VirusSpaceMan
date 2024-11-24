@@ -7,11 +7,13 @@ public abstract class Character : MonoBehaviour, IReadOnlyCharacter
     [SerializeField][ReadOnly] private string _id;
     [SerializeField] private TargetTracker _lookTracker;
     [SerializeField] private TargetTracker _moveTracker;
+    [SerializeField][SerializeInterface(typeof(IHealth))] private MonoBehaviour _healthMonoBehaviour;
 
     public string Id => _id;
     public Transform Transform { get; private set; }
-    protected TargetTracker LookTracker => _lookTracker;
-    protected TargetTracker MoveTracker => _moveTracker;
+    public IHealth Health { get; private set; }
+    public TargetTracker LookTracker => _lookTracker;
+    public TargetTracker MoveTracker => _moveTracker;
     protected Mover Mover { get; private set; }
     protected Scanner Scanner { get; private set; }
     protected Fighter Fighter { get; private set; }
@@ -22,6 +24,7 @@ public abstract class Character : MonoBehaviour, IReadOnlyCharacter
             _id = Guid.NewGuid().ToString();
 
         Transform = transform;
+        Health = (IHealth)_healthMonoBehaviour;
         Mover = GetComponent<Mover>();
         Fighter = GetComponent<Fighter>();
         Scanner = GetComponent<Scanner>();

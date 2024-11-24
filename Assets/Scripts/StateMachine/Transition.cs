@@ -1,39 +1,30 @@
 using System;
-using UnityEngine;
 
-public abstract class Transition : MonoBehaviour, IReadOnlyTransition
+public abstract class Transition : IReadOnlyTransition
 {
-    [SerializeField] private State _targetState;
+    private readonly State _currentState;
+    private readonly State _targetState;
 
-    private State _currentState;
 
     public event Action<IReadOnlyTransition, StatusTransition> ChangedStatus;
 
     public StatusTransition Status { get; private set; }
     public IReadOnlyState CurrentState => _currentState;
     public IReadOnlyState TargetState => _targetState;
-    protected Character Character { get; private set; }
+    protected Character Character { get; }
 
-    public void Initialize(Character character, State currentState)
+    public Transition(Character character, State currentState, State targetState)
     {
-        if (Status != StatusTransition.None)
-            throw new InvalidOperationException($"Ошибка инициализации \"{nameof(Transition)}\"! \"{GetType().Name}\" у \"{nameof(State)} -{_currentState.GetType().Name}\" уже инициализирован.");
-
         Character = character ?? throw new ArgumentNullException(nameof(character));
         _currentState = currentState ?? throw new ArgumentNullException(nameof(currentState));
-        InitializeAddon();
-        UpdateStatusTransition(StatusTransition.Initialized);
+        _targetState = targetState ?? throw new ArgumentNullException(nameof(targetState));
     }
 
     public void Activate()
     {
-        if ((int)Status < (int)StatusTransition.Initialized)
-        {
-            string message = $"Ошибка активации \"{nameof(Transition)}\"! \"{GetType().Name}\" не инициализирован.";
-            throw new InvalidOperationException(message);
-        }
+        if (Status != StatusTransition.Initialized && Status != StatusTransition.Deactivated)
+            throw new InvalidOperationException($"Невозможно изменить статус перехода состояния \"{GetType().Name}\" на \"{StatusState.Entered}\"!");
 
-        enabled = true;
         ActivateAddon();
         UpdateStatusTransition(StatusTransition.Activated);
     }
@@ -48,12 +39,11 @@ public abstract class Transition : MonoBehaviour, IReadOnlyTransition
 
         DeactivateAddon();
         UpdateStatusTransition(StatusTransition.Deactivated);
-        enabled = false;
     }
 
-    protected void SetNeedTransit() => UpdateStatusTransition(StatusTransition.NeedTransit);
+    public virtual void Tick(float deltaTime) { }
 
-    protected virtual void InitializeAddon() { }
+    protected void SetNeedTransit() => UpdateStatusTransition(StatusTransition.NeedTransit);
 
     protected virtual void ActivateAddon() { }
 

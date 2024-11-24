@@ -2,38 +2,33 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-public abstract class State : MonoBehaviour, IReadOnlyState, ISerializationCallbackReceiver
+public abstract class State : IReadOnlyState
 {
-    [SerializeField][ReadOnly] private string _id;
-    [Range(0f,1f)][SerializeField] private float _timeSecondsWaitHandle;
-    [SerializeField] private List<Transition> _transitions;
+    private List<Transition> _transitions;
 
     public event Action<StatusState> ChangedStatus;
     public event Action<IReadOnlyState> GetedNextState;
 
-    public string Id => _id;
+    public string Id { get; }
+    public WaitForSeconds WaitHandle { get; }
     public StatusState Status { get; private set; }
     public IReadOnlyCollection<IReadOnlyTransition> Transitions => _transitions;
-    public WaitForSeconds WaitHandle { get; private set; }
     protected Character Character { get; private set; }
 
-    public void Initialize(Character character)
+    public State(string id, Character character, float timeSecondsWaitHandle)
     {
-        if (Status != StatusState.None)
-            throw new InvalidOperationException($"Состояние \"{GetType().Name}\" уже инициализировано!");
-
-        InitializeBeforeAddon(character);
+        Id = id;
         Character = character;
-        WaitHandle = new WaitForSeconds(_timeSecondsWaitHandle);
+        WaitHandle = new WaitForSeconds(timeSecondsWaitHandle);
+        _transitions = new List<Transition>();
+    }
 
-        foreach (var transition in _transitions)
-        {
-            transition.Initialize(character, this);
-        }
+    public void AddTransition(Transition transition)
+    {
+        if (_transitions.Contains(transition))
+            throw new InvalidOperationException();
 
-        InitializeAddon();
-        UpdateStatus(StatusState.Initialized);
-        InitializeAfterAddon();
+        _transitions.Add(transition);
     }
 
     public void Enter()
@@ -66,19 +61,22 @@ public abstract class State : MonoBehaviour, IReadOnlyState, ISerializationCallb
         ExitAfterAddon();
     }
 
-    public void Handle()
+    public bool CanUpdate()
     {
-        if (CanHandle() == false)
-            return;
-
-        HandleAddon();
+        return Status == StatusState.Entered && CanUpdateAddon();
     }
 
-    protected virtual void InitializeBeforeAddon(IReadOnlyCharacter aiCharacter) { }
+    public virtual void Update() { }
 
-    protected virtual void InitializeAddon() { }
+    public void Tick(float deltaTime)
+    {
+        foreach(Transition transition in _transitions)
+        {
+            transition.Tick(deltaTime);
+        }
 
-    protected virtual void InitializeAfterAddon() { }
+        TickAddon(deltaTime);
+    } 
 
     protected virtual void EnterBeforeAddon() { }
 
@@ -92,9 +90,9 @@ public abstract class State : MonoBehaviour, IReadOnlyState, ISerializationCallb
 
     protected virtual void ExitAfterAddon() { }
 
-    protected virtual bool CanHandleAddon() => true;
+    protected virtual void TickAddon(float deltaTime) { }
 
-    protected virtual void HandleAddon() { }
+    protected virtual bool CanUpdateAddon() => true;
 
     protected void Complete() => UpdateStatus(StatusState.Completed);
 
@@ -123,14 +121,6 @@ public abstract class State : MonoBehaviour, IReadOnlyState, ISerializationCallb
             transition.Deactivate();
         }
     }
-    
-    private bool CanHandle()
-    {
-        if (Status != StatusState.Entered)
-            return false;
-
-        return CanHandleAddon();
-    }
 
     private void UpdateStatus(StatusState state)
     {
@@ -148,12 +138,4 @@ public abstract class State : MonoBehaviour, IReadOnlyState, ISerializationCallb
 
         GetedNextState?.Invoke(transition.TargetState);
     }
-
-    void ISerializationCallbackReceiver.OnAfterDeserialize()
-    {
-        if (string.IsNullOrWhiteSpace(_id))
-            _id = Guid.NewGuid().ToString();
-    }
-
-    void ISerializationCallbackReceiver.OnBeforeSerialize() { }
 }
