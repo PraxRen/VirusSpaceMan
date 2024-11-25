@@ -1,6 +1,6 @@
-public class TransitionDied : Transition
+public class TransitionDeath : Transition
 {
-    public TransitionDied(Character character, State currentState, State targetState) : base(character, currentState, targetState) { }
+    public TransitionDeath(Character character, State currentState, State targetState) : base(character, currentState, targetState) { }
 
     protected override void ActivateAddon()
     {

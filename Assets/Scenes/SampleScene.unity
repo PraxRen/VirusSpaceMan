@@ -221,7 +221,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0aff9e474bba3e549bb08c9a7b962965, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _canChangeValue: 0
+  _canChangeValue: 1
   _value: 0.201
 --- !u!4 &80268434
 Transform:
@@ -1522,6 +1522,10 @@ PrefabInstance:
     - target: {fileID: 3326990007501782220, guid: 21685c10a89cef242847b4a2c729e36c, type: 3}
       propertyPath: m_Name
       value: Player
+      objectReference: {fileID: 0}
+    - target: {fileID: 3326990007501782220, guid: 21685c10a89cef242847b4a2c729e36c, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7394927946005314348, guid: 21685c10a89cef242847b4a2c729e36c, type: 3}
       propertyPath: m_LocalPosition.x

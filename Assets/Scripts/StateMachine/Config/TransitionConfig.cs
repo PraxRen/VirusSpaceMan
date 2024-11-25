@@ -1,10 +1,8 @@
 using UnityEngine;
 using System;
 
-[Serializable]
-public class TransitionConfig
+public abstract class TransitionConfig : ScriptableObject
 {
-    [SerializeField] private TypeTransition _typeTransition;
     [SerializeField] private StateConfig _currentStateConfig;
     [SerializeField] private StateConfig _targetStateConfig;
 
@@ -19,11 +17,8 @@ public class TransitionConfig
         if (_targetStateConfig.Id != targetState.Id)
             throw new InvalidOperationException();
 
-        return _typeTransition switch
-        {
-            TypeTransition.Died => new TransitionDied(character, currentState, targetState),
-            TypeTransition.StateComplete => new TransitionStateComplete(character, currentState, targetState),
-            _ => throw new InvalidOperationException()
-        };
+        return CreatTransitionAddon(character, currentState, targetState);
     }
+
+    protected abstract Transition CreatTransitionAddon(Character character, State currentState, State targetState);
 }
