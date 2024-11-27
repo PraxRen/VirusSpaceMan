@@ -20,7 +20,7 @@ public class TargetTracker : MonoBehaviour, IReadOnlyTargetTracker
 
     public Vector3 Position => _transform.position;
 
-    private void OnDrawGizmosSelected()
+    private void OnDrawGizmos()
     {
         Gizmos.color = _color;
         Gizmos.DrawSphere(transform.position, _size);
