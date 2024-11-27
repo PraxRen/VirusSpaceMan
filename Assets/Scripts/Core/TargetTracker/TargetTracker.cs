@@ -6,6 +6,12 @@ public class TargetTracker : MonoBehaviour, IReadOnlyTargetTracker
     [SerializeField] private float _speedUpdatePositionDefault;
     [SerializeField] private float _speedUpdatePositionTarget;
 
+#if UNITY_EDITOR
+    [Header("Gizmos")]
+    [SerializeField] private Color _color;
+    [SerializeField] private float _size;
+#endif
+
     private Transform _transform;
     private TargetTransform _targetDefault;
     private ITarget _target;
@@ -14,17 +20,23 @@ public class TargetTracker : MonoBehaviour, IReadOnlyTargetTracker
 
     public Vector3 Position => _transform.position;
 
+    private void OnDrawGizmosSelected()
+    {
+        Gizmos.color = _color;
+        Gizmos.DrawSphere(transform.position, _size);
+    }
+
     private void Awake()
     {
         _transform = transform;
         _targetDefault = new TargetTransform(_pointDefault);
+        _transform.parent = null;
     }
 
     private void OnEnable()
     {
         ResetTarget();
         _transform.position = _pointDefault.position;
-        _transform.parent = null;
     }
 
     public void Update()

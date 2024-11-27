@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9b511b93bbce3bd4ba569c16c470d256, type: 3}
-  m_Name: PlayerMatrixAction
+  m_Name: DefaultMatrixAction
   m_EditorClassIdentifier: 
-  MatrixBlock: 000100000000000000
-  MatrixCancel: 000000010000000000
+  MatrixBlock: 00010000000000000000010100010100000000000101000100
+  MatrixCancel: 00000000000100000000000000000000000000000000000000

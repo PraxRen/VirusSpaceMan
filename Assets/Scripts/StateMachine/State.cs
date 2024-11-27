@@ -1,10 +1,12 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public abstract class State : IReadOnlyState
 {
     private List<Transition> _transitions;
+    private List<Timer> _timers;
 
     public event Action<StatusState> ChangedStatus;
     public event Action<IReadOnlyState> GetedNextState;
@@ -21,6 +23,7 @@ public abstract class State : IReadOnlyState
         Character = character;
         WaitHandle = new WaitForSeconds(timeSecondsWaitHandle);
         _transitions = new List<Transition>();
+        _timers = new List<Timer>();
     }
 
     public void AddTransition(Transition transition)
@@ -75,6 +78,11 @@ public abstract class State : IReadOnlyState
             transition.Tick(deltaTime);
         }
 
+        foreach(Timer timer in _timers.ToList())
+        {
+            timer.Tick(deltaTime);
+        }
+
         TickAddon(deltaTime);
     } 
 
@@ -95,6 +103,23 @@ public abstract class State : IReadOnlyState
     protected virtual bool CanUpdateAddon() => true;
 
     protected void Complete() => UpdateStatus(StatusState.Completed);
+
+    protected void AddTimer(Timer timer)
+    {
+        if (_timers.Contains(timer))
+        {
+            throw new InvalidOperationException($"This {nameof(Timer)} been added!");
+        }
+
+        timer.—ompleted += OnTimer—ompleted;
+        _timers.Add(timer);
+    }
+
+    private void OnTimer—ompleted(Timer timer)
+    {
+        timer.—ompleted -= OnTimer—ompleted;
+        _timers.Remove(timer);
+    }
 
     private void ActivateTransitions(out Transition transitionNeedTransit)
     {

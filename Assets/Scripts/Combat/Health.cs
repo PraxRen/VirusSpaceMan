@@ -1,12 +1,13 @@
 using System;
 using UnityEngine;
 
-public class Health : MonoBehaviour, IHealth, IDamageable, IAttribute
+public class Health : MonoBehaviour, IHealth, IDamageable, IAttribute, IAction
 {
     [SerializeField] private float _maxValue;
     [SerializeField] private float _cooldownHit;
     [SerializeField] private float _factorNoise = 1f;
     [SerializeField] private SurfaceType _surfaceType;
+    [SerializeField] private ActionScheduler _actionScheduler;
 
     private Transform _transform;
     private float _lastTimeHit;
@@ -33,6 +34,8 @@ public class Health : MonoBehaviour, IHealth, IDamageable, IAttribute
     {
         UpdateValue(_maxValue);
     }
+
+    public void Cancel() { }
 
     public bool CanTakeDamage(IWeaponReadOnly weapon)
     {
@@ -83,6 +86,8 @@ public class Health : MonoBehaviour, IHealth, IDamageable, IAttribute
             return;
 
         IsDied = true;
+        _actionScheduler.StartAction(this);
+        _actionScheduler.SetBlock(this);
         Died?.Invoke();
     }
 }

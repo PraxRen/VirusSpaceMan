@@ -3489,6 +3489,8 @@ MonoBehaviour:
   _pointDefault: {fileID: 6928294587159783324}
   _speedUpdatePositionDefault: 100
   _speedUpdatePositionTarget: 20
+  _color: {r: 1, g: 0.9462535, b: 0, a: 1}
+  _size: 0.1
 --- !u!1 &6049858481937344480
 GameObject:
   m_ObjectHideFlags: 0
@@ -5161,22 +5163,6 @@ MonoBehaviour:
   - m_Rig: {fileID: 8677708428663332996}
     m_Active: 1
   m_Effectors:
-  - m_Transform: {fileID: 9164345053693527163}
-    m_Style:
-      shape: {fileID: 10207, guid: 0000000000000000e000000000000000, type: 0}
-      color: {r: 1, g: 0.9512216, b: 0, a: 0.5}
-      size: 0.2
-      position: {x: 0, y: 0, z: 0}
-      rotation: {x: 0, y: 0, z: 0}
-    m_Visible: 1
-  - m_Transform: {fileID: 0}
-    m_Style:
-      shape: {fileID: 4300000, guid: e050c2b16fe384bd994474655a4b4968, type: 2}
-      color: {r: 1, g: 0, b: 0, a: 0.5}
-      size: 0.05
-      position: {x: 0, y: 0, z: 0}
-      rotation: {x: 0, y: 0, z: 0}
-    m_Visible: 1
   - m_Transform: {fileID: 3771775499240177769}
     m_Style:
       shape: {fileID: 4300000, guid: e050c2b16fe384bd994474655a4b4968, type: 2}
@@ -5222,14 +5208,6 @@ MonoBehaviour:
       shape: {fileID: 4300000, guid: e050c2b16fe384bd994474655a4b4968, type: 2}
       color: {r: 1, g: 0, b: 0, a: 0.5}
       size: 0.05
-      position: {x: 0, y: 0, z: 0}
-      rotation: {x: 0, y: 0, z: 0}
-    m_Visible: 1
-  - m_Transform: {fileID: 451800320380502890}
-    m_Style:
-      shape: {fileID: 4300000, guid: e050c2b16fe384bd994474655a4b4968, type: 2}
-      color: {r: 0, g: 0.84990144, b: 1, a: 0.5}
-      size: 0.2
       position: {x: 0, y: 0, z: 0}
       rotation: {x: 0, y: 0, z: 0}
     m_Visible: 1
@@ -5537,6 +5515,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 837fa2f28d5a1c84ca3b2cfdb2fe23c3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _actionScheduler: {fileID: 4139406190617183259}
 --- !u!114 &552784237519895650
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6053,7 +6032,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _pointDefault: {fileID: 2889459301219298044}
   _speedUpdatePositionDefault: 100
-  _speedUpdatePositionTarget: 20
+  _speedUpdatePositionTarget: 40
+  _color: {r: 0, g: 1, b: 0.07561898, a: 1}
+  _size: 0.1
 --- !u!1 &8904528718974978316
 GameObject:
   m_ObjectHideFlags: 0
@@ -6263,6 +6244,7 @@ MonoBehaviour:
   _cooldownHit: 0.1
   _factorNoise: 1
   _surfaceType: 1
+  _actionScheduler: {fileID: 4139406190617183259}
 --- !u!1001 &1612888414343143805
 PrefabInstance:
   m_ObjectHideFlags: 0

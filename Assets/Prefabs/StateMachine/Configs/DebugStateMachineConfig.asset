@@ -9,9 +9,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ab4458449d8da454c9dc4291f9dcd2b7, type: 3}
-  m_Name: DefaultStateSearchPlaceInterestConfig
+  m_Script: {fileID: 11500000, guid: 4fe6b1630feae8444baa83f2a4b3f3f8, type: 3}
+  m_Name: DebugStateMachineConfig
   m_EditorClassIdentifier: 
-  _id: fc946ee7-bd21-499a-bbb8-1e77398aa1c5
-  _timeSecondsWaitUpdate: 0.2
-  _timeDelayComplete: 0.15
+  _stateConfigs:
+  - {fileID: 11400000, guid: ac62372e7da450444a7832495a55537b, type: 2}
+  _transitionConfigs: []

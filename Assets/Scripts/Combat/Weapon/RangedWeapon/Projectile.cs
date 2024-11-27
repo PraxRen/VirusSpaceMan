@@ -1,10 +1,14 @@
 using System;
 using UnityEngine;
 
-[RequireComponent(typeof(Rigidbody))]
+[RequireComponent(typeof(Rigidbody), typeof(Collider))]
 public abstract class Projectile : MonoBehaviour, ISurface
 {
+    private const float RadiusRaycatsForward = 0.2f;
+    private const float DistanceRaycatsForward = 1f;
+
     private Rigidbody _rigidbody;
+    private Collider _collider;
     private IRangedWeaponReadOnly _rangedWeapon;
     private ProjectileConfig _projectileConfig;
 
@@ -18,6 +22,7 @@ public abstract class Projectile : MonoBehaviour, ISurface
     private void Awake()
     {
         _rigidbody = GetComponent<Rigidbody>();
+        _collider = GetComponent<Collider>();
         Transform = transform;
     }
 
@@ -42,6 +47,16 @@ public abstract class Projectile : MonoBehaviour, ISurface
             return;
 
         HandleCollide(targetCollider);
+    }
+
+    private void Update()
+    {
+        bool isCollide = Physics.SphereCast(transform.position, RadiusRaycatsForward, transform.forward, out RaycastHit hit, DistanceRaycatsForward);
+
+        if (isCollide == true && _rangedWeapon.CanCollide(hit.collider) == false)
+        {
+            Physics.IgnoreCollision(_collider, hit.collider);
+        }
     }
 
     public void Initialize(IRangedWeaponReadOnly rangedWeapon)

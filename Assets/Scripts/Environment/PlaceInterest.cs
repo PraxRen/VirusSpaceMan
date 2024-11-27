@@ -31,7 +31,6 @@ public class PlaceInterest : MonoBehaviour, IReadOnlyPlaceInterest
         {
             _jobUpdateCollision = StartCoroutine(UpdateCollision());
         }
-
     }
 
     private void OnDisable()
@@ -117,8 +116,11 @@ public class PlaceInterest : MonoBehaviour, IReadOnlyPlaceInterest
 
         if (HasCharacterInside == false && isCollidedCharacter)
         {
-            HasCharacterInside = true;
             EnteredCharacter?.Invoke();
+        }
+        else if (HasCharacterInside && isCollidedCharacter == false)
+        {
+            Clear();
         }
 
         HasCharacterInside = isCollidedCharacter;

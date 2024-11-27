@@ -76,7 +76,7 @@ public class Player : Character
 
         float center = collider.bounds.center.y - target.Position.y;
         float offsetCenter = 0.2f;
-        LookTracker.SetTarget(target, Vector3.up * (center + offsetCenter));
+        LookTracker.SetTarget(target, (target.Rotation * Vector3.up) * (center + offsetCenter));
     }
 
     private void OnRemovedTarget(Collider target)

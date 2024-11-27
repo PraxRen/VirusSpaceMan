@@ -2,5 +2,7 @@ public enum TypeAction
 {
     Mover,
     Fighter,
-    Health
+    Health,
+    RigHit,
+    Ragdoll
 }

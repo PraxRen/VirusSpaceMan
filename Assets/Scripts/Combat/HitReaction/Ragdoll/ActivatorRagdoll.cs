@@ -43,7 +43,22 @@ public class ActivatorRagdoll : MonoBehaviour, IHitReaction, IAction
 
     public bool CanHandleHit(IWeaponReadOnly weapon, Vector3 hitPoint, float damage)
     {
-        return enabled && (weapon.IsRageAttack && _switcherRagdoll.IsActivated == false) || _damageable.CanDie(weapon, damage);
+        if (enabled == false)
+            return false;
+
+        if (_damageable.CanDie(weapon, damage) == false)
+        {
+            if (_actionScheduler.CanStartAction(this) == false)
+                return false;
+
+            if (weapon.IsRageAttack == false)
+                return false;
+            
+            if (_switcherRagdoll.IsActivated)
+                return false;
+        }
+
+        return true;
     }
 
     public void HandleHit(IWeaponReadOnly weapon, Vector3 hitPoint, float damage)
