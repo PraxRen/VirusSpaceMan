@@ -41,9 +41,9 @@ public class PlaceInterest : MonoBehaviour, IReadOnlyPlaceInterest
         }
     }
 
-    private void OnDrawGizmosSelected()
+    private void OnDrawGizmos()
     {
-        Gizmos.color = Color.white;
+        Gizmos.color = HasCharacterInside ? Color.green : Color.white;
         Gizmos.DrawWireSphere(transform.position, _radius);
     }
 
@@ -85,6 +85,17 @@ public class PlaceInterest : MonoBehaviour, IReadOnlyPlaceInterest
         IsEmpty = true;
     }
 
+    public bool CanReach(Transform transform)
+    {
+        if (HasCharacterInside == false)
+            return false;
+
+        if (IsCharacter(transform) == false)
+            return false;
+
+        return true;
+    }
+
     private IEnumerator UpdateCollision()
     {
         while (IsEmpty == false)
@@ -102,16 +113,13 @@ public class PlaceInterest : MonoBehaviour, IReadOnlyPlaceInterest
     {
         bool isCollidedCharacter = false;
 
-        foreach (Collider collider in colliders) 
+        foreach (Collider collider in colliders)
         {
-            if (collider.TryGetComponent(out IReadOnlyCharacter character) == false)
-                continue;
-
-            if (character != Character)
-                continue;
-
-            isCollidedCharacter = true;
-            break;
+            if (IsCharacter(collider.transform))
+            {
+                isCollidedCharacter = true;
+                break;
+            }
         }
 
         if (HasCharacterInside == false && isCollidedCharacter)
@@ -124,5 +132,16 @@ public class PlaceInterest : MonoBehaviour, IReadOnlyPlaceInterest
         }
 
         HasCharacterInside = isCollidedCharacter;
+    }
+
+    private bool IsCharacter(Transform transform)
+    {
+        if (transform.TryGetComponent(out IReadOnlyCharacter character) == false)
+            return false;
+
+        if (character != Character)
+            return false;
+
+        return true;
     }
 }

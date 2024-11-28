@@ -5,8 +5,9 @@ using UnityEngine;
 public class StateSearchPlaceInterest : State
 {
     private HandlerZoneEnvironment _handlerZoneEnvironment;
+    private IReadOnlyPlaceInterest _placeInterest;
     private float _timeDelayComplete;
-    private bool _isFoundPlace; 
+    private bool _isFoundPlace;
 
     public StateSearchPlaceInterest(string id, Character character, float timeSecondsWaitHandle, float timeDelayComplete) : base(id, character, timeSecondsWaitHandle)
     {
@@ -18,13 +19,13 @@ public class StateSearchPlaceInterest : State
 
     public override void Update()
     {
-        IReadOnlyPlaceInterest currentPlaceInterest = FindPlaceInterest();
+        _placeInterest = FindPlaceInterest();
 
-        if (currentPlaceInterest == null)
+        if (_placeInterest == null)
             return;
 
         _isFoundPlace = true;
-        Character.MoveTracker.SetTarget(currentPlaceInterest, Vector3.zero);
+        Character.MoveTracker.SetTarget(_placeInterest, Vector3.zero);
         Timer timerDelayComplete = new Timer(_timeDelayComplete);
         timerDelayComplete.—ompleted += OnTimer—ompleted;
         AddTimer(timerDelayComplete);
@@ -42,7 +43,7 @@ public class StateSearchPlaceInterest : State
 
     private IReadOnlyPlaceInterest FindPlaceInterest()
     {
-        IReadOnlyPlaceInterest currentPlaceInterest = null;
+        IReadOnlyPlaceInterest placeInterest = null;
 
         if (_handlerZoneEnvironment.CurrentZone.Interests == null)
             return null;
@@ -52,11 +53,11 @@ public class StateSearchPlaceInterest : State
 
         foreach (ZoneInterest zoneInterest in zoneInterests)
         {
-            if (zoneInterest.TryTakeEmptyPlace(Character, out currentPlaceInterest))
+            if (zoneInterest.TryTakeEmptyPlace(Character, out placeInterest))
                 break;
         }
 
-        return currentPlaceInterest;
+        return placeInterest;
     }
 
     private void OnTimer—ompleted(Timer timer)

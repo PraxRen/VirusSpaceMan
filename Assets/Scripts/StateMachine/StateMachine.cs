@@ -82,7 +82,7 @@ public class StateMachine : MonoBehaviour
     private void SetCurrentState(State startState)
     {
 #if UNITY_EDITOR
-        Debug.Log($"SetCurrentState: {_character.gameObject.name} | {_currentState?.GetType().Name} -> {startState.GetType().Name}");
+        Debug.Log($"SetCurrentState: {_character.Transform.parent.name} | {_currentState?.GetType().Name} -> {startState.GetType().Name}");
 #endif
         _currentState = startState;
         _currentState.GetedNextState += Transit;

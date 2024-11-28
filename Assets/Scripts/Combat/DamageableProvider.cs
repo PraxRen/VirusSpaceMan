@@ -23,6 +23,8 @@ public class DamageableProvider : MonoBehaviour, IDamageable
         AwakeAddon();
     }
 
+    public bool CanReach(Transform transform) => _mainDamageable.CanReach(transform);
+
     public bool CanDie(IWeaponReadOnly weapon, float damage) => _mainDamageable.CanDie(weapon, damage);
 
     public bool CanTakeDamage(IWeaponReadOnly weapon) => _mainDamageable.CanTakeDamage(weapon);

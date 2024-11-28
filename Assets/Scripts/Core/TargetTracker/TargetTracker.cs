@@ -14,11 +14,11 @@ public class TargetTracker : MonoBehaviour, IReadOnlyTargetTracker
 
     private Transform _transform;
     private TargetTransform _targetDefault;
-    private ITarget _target;
     private Vector3 _offset;
     private float _speedUpdate;
 
     public Vector3 Position => _transform.position;
+    public ITarget Target { get; private set; }
 
     private void OnDrawGizmos()
     {
@@ -41,19 +41,19 @@ public class TargetTracker : MonoBehaviour, IReadOnlyTargetTracker
 
     public void Update()
     {
-        _transform.position = Vector3.MoveTowards(_transform.position, _target.Position + _offset, _speedUpdate * Time.deltaTime);
+        _transform.position = Vector3.MoveTowards(_transform.position, Target.Position + _offset, _speedUpdate * Time.deltaTime);
     }
 
     public void SetTarget(ITarget target, Vector3 offset)
     {
-        _target = target;
+        Target = target;
         _offset = offset;
         _speedUpdate = _speedUpdatePositionTarget;
     }
 
     public void ResetTarget()
     {
-        _target = _targetDefault;
+        Target = _targetDefault;
         _offset = Vector3.zero;
         _speedUpdate = _speedUpdatePositionDefault;
     }

@@ -5,9 +5,12 @@ public class Health : MonoBehaviour, IHealth, IDamageable, IAttribute, IAction
 {
     [SerializeField] private float _maxValue;
     [SerializeField] private float _cooldownHit;
+    [SerializeField] private ActionScheduler _actionScheduler;
+    [Header(nameof(ISurface))]
     [SerializeField] private float _factorNoise = 1f;
     [SerializeField] private SurfaceType _surfaceType;
-    [SerializeField] private ActionScheduler _actionScheduler;
+    [Header(nameof(ITarget))]
+    [SerializeField] private float _radiusCanReachTarget = 0.2f;
 
     private Transform _transform;
     private float _lastTimeHit;
@@ -36,6 +39,11 @@ public class Health : MonoBehaviour, IHealth, IDamageable, IAttribute, IAction
     }
 
     public void Cancel() { }
+
+    public bool CanReach(Transform transform) 
+    {
+        return (transform.position - _transform.position).sqrMagnitude > (_radiusCanReachTarget * _radiusCanReachTarget);
+    }
 
     public bool CanTakeDamage(IWeaponReadOnly weapon)
     {

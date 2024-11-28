@@ -63,7 +63,7 @@ public class ZoneInterest : MonoBehaviour
         if (places.Length == 0)
             return false;
 
-        PlaceInterest place = places[Random.Range(0, places.Length - 1)];
+        PlaceInterest place = places[Random.Range(0, places.Length)];
         place.SetCharacter(character);
         placeInteres = place;
 

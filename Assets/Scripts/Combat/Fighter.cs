@@ -188,4 +188,6 @@ public class Fighter : MonoBehaviour, IDamageable, IFighterReadOnly, IAction
         _currentWeapon = null;
         RemovedWeapon?.Invoke();
     }
+
+    public bool CanReach(Transform transform) => _currentDamageable.CanReach(transform);
 }

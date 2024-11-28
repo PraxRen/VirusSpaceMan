@@ -11,4 +11,6 @@ public class TargetTransform : ITarget
 
     public Vector3 Position => _transform.position;
     public Quaternion Rotation => _transform.rotation;
+
+    public bool CanReach(Transform transform) => true;
 }
