@@ -1,68 +1,41 @@
 using UnityEngine;
 using UnityEngine.AI;
 
-public class Navigation : MonoBehaviour
+public class Navigation
 {
-    [SerializeField] private Mover _mover;
-    [SerializeField] private NavMeshAgent _navMeshAgent;
-
-    private Transform _transfrom;
-
-    private void OnValidate()
+    public static Vector3 CalculateDirection(NavMeshAgent navMeshAgent, Transform transform, Vector3 target)
     {
-        if (_navMeshAgent == null)
-            return;
+        if (navMeshAgent.enabled == false)
+            return Vector3.zero;
 
-        _navMeshAgent.updatePosition = false;
-        _navMeshAgent.updateRotation = false;
+        if (navMeshAgent.isOnNavMesh == false)
+            return Vector3.zero;
+
+        navMeshAgent.SetDestination(target);
+
+        if (navMeshAgent.pathPending)
+            return Vector3.zero;
+
+        Vector3 direction = navMeshAgent.desiredVelocity.normalized;
+        navMeshAgent.nextPosition = transform.position;
+        return direction;
     }
 
-    private void Awake()
+    public static Vector2 CalculateDirectionVector2(NavMeshAgent navMeshAgent, Transform transform, Vector3 target)
     {
-        _transfrom = transform;
+        Vector3 direction = CalculateDirection(navMeshAgent, transform, target);
+        return new Vector2(direction.x, direction.z);
     }
 
-    public void ResetPath()
+    public static void ResetNavMeshAgent(NavMeshAgent navMeshAgent)
     {
-        _navMeshAgent.ResetPath();
-        _navMeshAgent.velocity = Vector3.zero;
-    }
-
-    public void MoveTargetPosition(Vector3 position)
-    {
-        if (_navMeshAgent.enabled == false)
+        if (navMeshAgent.enabled == false)
             return;
 
-        if (_navMeshAgent.isOnNavMesh == false)
+        if (navMeshAgent.isOnNavMesh == false)
             return;
 
-        _navMeshAgent.SetDestination(position);
-
-        if (_navMeshAgent.pathPending)
-            return;
-
-        Vector3 desiredVelocity = _navMeshAgent.desiredVelocity;
-        desiredVelocity.y = 0;
-        desiredVelocity.Normalize();
-        Vector2 direction = new Vector2(desiredVelocity.x, desiredVelocity.z);
-        _mover.LookAtDirection(direction);
-
-        if (_mover.CanMove() == false)
-            return;
-
-        _mover.Move(direction);
-        _navMeshAgent.nextPosition = _transfrom.position;
-    }
-
-    public void Stop()
-    {
-        if (_navMeshAgent.enabled == false)
-            return;
-
-        if (_navMeshAgent.isOnNavMesh == false)
-            return;
-
-        _mover.Cancel();
-        ResetPath();
+        navMeshAgent.ResetPath();
+        navMeshAgent.velocity = Vector3.zero;
     }
 }

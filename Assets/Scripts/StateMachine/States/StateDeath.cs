@@ -1,6 +1,6 @@
 public class StateDeath : State
 {
-    public StateDeath(string id, Character character, float timeSecondsWaitHandle) : base(id, character, timeSecondsWaitHandle) { }
+    public StateDeath(string id, AICharacter character, float timeSecondsWaitHandle) : base(id, character, timeSecondsWaitHandle) { }
 
     protected override void EnterAfterAddon()
     {

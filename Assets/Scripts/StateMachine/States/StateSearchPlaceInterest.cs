@@ -4,12 +4,12 @@ using UnityEngine;
 
 public class StateSearchPlaceInterest : State
 {
-    private HandlerZoneEnvironment _handlerZoneEnvironment;
+    private IReadOnlyHandlerZoneEnvironment _handlerZoneEnvironment;
     private IReadOnlyPlaceInterest _placeInterest;
     private float _timeDelayComplete;
     private bool _isFoundPlace;
 
-    public StateSearchPlaceInterest(string id, Character character, float timeSecondsWaitHandle, float timeDelayComplete) : base(id, character, timeSecondsWaitHandle)
+    public StateSearchPlaceInterest(string id, AICharacter character, float timeSecondsWaitHandle, float timeDelayComplete) : base(id, character, timeSecondsWaitHandle)
     {
         if (character.TryGetComponent(out _handlerZoneEnvironment) == false)
             throw new InvalidOperationException($"Initialization error \"{nameof(State)}\"! The component \"{nameof(HandlerZoneEnvironment)}\" required for operation \"{GetType().Name}\".");
@@ -27,7 +27,7 @@ public class StateSearchPlaceInterest : State
         _isFoundPlace = true;
         Character.MoveTracker.SetTarget(_placeInterest, Vector3.zero);
         Timer timerDelayComplete = new Timer(_timeDelayComplete);
-        timerDelayComplete.—ompleted += OnTimer—ompleted;
+        timerDelayComplete.Completed += OnTimer—ompleted;
         AddTimer(timerDelayComplete);
     }
 
@@ -62,7 +62,7 @@ public class StateSearchPlaceInterest : State
 
     private void OnTimer—ompleted(Timer timer)
     {
-        timer.—ompleted -= OnTimer—ompleted;
+        timer.Completed -= OnTimer—ompleted;
         Complete();
     }
 }

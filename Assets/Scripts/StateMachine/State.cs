@@ -15,9 +15,9 @@ public abstract class State : IReadOnlyState
     public WaitForSeconds WaitHandle { get; }
     public StatusState Status { get; private set; }
     public IReadOnlyCollection<IReadOnlyTransition> Transitions => _transitions;
-    protected Character Character { get; private set; }
+    protected AICharacter Character { get; private set; }
 
-    public State(string id, Character character, float timeSecondsWaitHandle)
+    public State(string id, AICharacter character, float timeSecondsWaitHandle)
     {
         Id = id;
         Character = character;
@@ -111,13 +111,13 @@ public abstract class State : IReadOnlyState
             throw new InvalidOperationException($"This {nameof(Timer)} been added!");
         }
 
-        timer.—ompleted += OnTimer—ompleted;
+        timer.Completed += OnTimerCompleted;
         _timers.Add(timer);
     }
 
-    private void OnTimer—ompleted(Timer timer)
+    private void OnTimerCompleted(Timer timer)
     {
-        timer.—ompleted -= OnTimer—ompleted;
+        timer.Completed -= OnTimerCompleted;
         _timers.Remove(timer);
     }
 

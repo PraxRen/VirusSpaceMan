@@ -563,6 +563,7 @@ MonoBehaviour:
   _moveTracker: {fileID: 5784879641574093448}
   _healthMonoBehaviour: {fileID: 5747044227200280650}
   _stateMachine: {fileID: 1139711807028057639}
+  _navMeshAgent: {fileID: 3138609944013801915}
 --- !u!4 &1952125307350245167 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4881089377966891138, guid: b2ae4f7d10bb5224db3664389d0df2bc, type: 3}
@@ -591,6 +592,11 @@ Transform:
 --- !u!4 &2731558443419139375 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 9025841048520753794, guid: b2ae4f7d10bb5224db3664389d0df2bc, type: 3}
+  m_PrefabInstance: {fileID: 6389001975837458349}
+  m_PrefabAsset: {fileID: 0}
+--- !u!195 &3138609944013801915 stripped
+NavMeshAgent:
+  m_CorrespondingSourceObject: {fileID: 8297000982491756054, guid: b2ae4f7d10bb5224db3664389d0df2bc, type: 3}
   m_PrefabInstance: {fileID: 6389001975837458349}
   m_PrefabAsset: {fileID: 0}
 --- !u!4 &3642030971511544775 stripped

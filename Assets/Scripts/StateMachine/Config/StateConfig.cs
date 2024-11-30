@@ -9,7 +9,7 @@ public abstract class StateConfig : ScriptableObject, ISerializationCallbackRece
     public string Id => _id;
     protected float TimeSecondsWaitUpdate => _timeSecondsWaitUpdate;
 
-    public abstract State CreateState(Character character);
+    public abstract State CreateState(AICharacter character);
 
     void ISerializationCallbackReceiver.OnAfterDeserialize()
     {

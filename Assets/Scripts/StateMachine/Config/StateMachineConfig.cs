@@ -8,7 +8,7 @@ public class StateMachineConfig : ScriptableObject
     [SerializeField] private StateConfig[] _stateConfigs;
     [SerializeField] private TransitionConfig[] _transitionConfigs;
 
-    public IEnumerable<State> CreatStates(Character character)
+    public IEnumerable<State> CreatStates(AICharacter character)
     {
         Dictionary<string, State> result = new Dictionary<string, State>();
 

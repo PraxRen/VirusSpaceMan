@@ -85,22 +85,8 @@ PrefabInstance:
       addedObject: {fileID: 6658962989486510325}
     - targetCorrespondingSourceObject: {fileID: 3037592456749619465, guid: 44be744388e3e254ab9946f7963209cc, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 5419065303548254431}
-    - targetCorrespondingSourceObject: {fileID: 3037592456749619465, guid: 44be744388e3e254ab9946f7963209cc, type: 3}
-      insertIndex: -1
       addedObject: {fileID: 8662365238401388393}
   m_SourcePrefab: {fileID: 100100000, guid: 44be744388e3e254ab9946f7963209cc, type: 3}
---- !u!114 &4410197611544212695 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 8792028369519530837, guid: 44be744388e3e254ab9946f7963209cc, type: 3}
-  m_PrefabInstance: {fileID: 5131751053120776066}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7858805926000049803}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a3e22356bb40555419fa99c47c3ed9d3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &7858805926000049803 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 3037592456749619465, guid: 44be744388e3e254ab9946f7963209cc, type: 3}
@@ -128,20 +114,6 @@ NavMeshAgent:
   m_BaseOffset: 0
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
---- !u!114 &5419065303548254431
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7858805926000049803}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c9101d261d80e9748a890f01a51997d8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _mover: {fileID: 4410197611544212695}
-  _navMeshAgent: {fileID: 6658962989486510325}
 --- !u!114 &8662365238401388393
 MonoBehaviour:
   m_ObjectHideFlags: 0

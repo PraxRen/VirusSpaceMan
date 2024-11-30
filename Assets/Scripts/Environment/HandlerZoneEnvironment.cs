@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-public class HandlerZoneEnvironment : MonoBehaviour
+public class HandlerZoneEnvironment : MonoBehaviour, IReadOnlyHandlerZoneEnvironment
 {
     [SerializeField] private ZoneEnvironment _defaultZone;
 

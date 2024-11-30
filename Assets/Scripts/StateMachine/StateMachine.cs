@@ -8,7 +8,7 @@ using UnityEngine;
 
 public class StateMachine : MonoBehaviour
 {
-    [SerializeField] private Character _character;
+    [SerializeField] private AICharacter _character;
     [SerializeField] private StateMachineConfig _config;
 
     private List<State> _states;

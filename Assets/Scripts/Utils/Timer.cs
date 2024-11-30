@@ -5,12 +5,11 @@ public class Timer
     private float _time;
     private bool _isRunning;
 
-    public event Action<Timer> Ñompleted;
+    public event Action<Timer> Completed;
 
     public Timer(float time)
     {
-        _time = time;
-        _isRunning = true;
+        Reset(time);
     }
 
     public void Tick(float deltaTime)
@@ -24,7 +23,13 @@ public class Timer
         {
             _time = 0;
             _isRunning = false;
-            Ñompleted?.Invoke(this);
+            Completed?.Invoke(this);
         }
+    }
+
+    public void Reset(float time)
+    {
+        _time = time;
+        _isRunning = true;
     }
 }
