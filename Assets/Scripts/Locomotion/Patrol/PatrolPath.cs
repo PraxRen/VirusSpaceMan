@@ -50,6 +50,16 @@ public class PatrolPath : MonoBehaviour
         return _waypoints[index];
     }
 
+    public int GetIndex(Waypoint waypoint)
+    {
+        if (_waypoints.Contains(waypoint) == false)
+        {
+            return -1;
+        }
+
+        return _waypoints.IndexOf(waypoint);
+    }
+
     public Waypoint GetNearestWaypoint(Vector3 position, out int index) 
     {
         index = -1;

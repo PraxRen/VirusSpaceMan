@@ -19,6 +19,9 @@ public class Patrol : MonoBehaviour
     private PatrolPath _patrolPath;
     private int _indexWaypoint;
 
+    public float LastTimeChangeIndex { get; private set; }
+    public Waypoint LastWaypoint { get; private set; }
+
     private void Awake()
     {
         _transform = transform;
@@ -41,7 +44,7 @@ public class Patrol : MonoBehaviour
     public void Run()
     {
         if (_patrolPath == null)
-            return;
+            throw new InvalidOperationException($"The current {nameof(PatrolPath)} is not initialized");
 
         StartCoroutine(UpdateMover());
     }
@@ -49,20 +52,24 @@ public class Patrol : MonoBehaviour
     public void Clear()
     {
         _patrolPath = null;
+        _indexWaypoint = -1;
     }
 
     private IEnumerator UpdateMover()
     {
         while (_patrolPath != null) 
         {
-            Waypoint waypoint = _patrolPath.GetWaypoint(_indexWaypoint);
-            Vector2 direction = Navigation.CalculateDirectionVector2(_navMeshAgent, _transform, waypoint.Position);
-            _moveTracker.SetTarget(waypoint, Vector3.zero);
+            LastWaypoint = _patrolPath.GetWaypoint(_indexWaypoint);
+            Vector2 direction = Navigation.CalculateDirectionVector2(_navMeshAgent, _transform, LastWaypoint.Position);
+            _moveTracker.SetTarget(LastWaypoint, Vector3.zero);
             _mover.Move(direction);
             _mover.LookAtDirection(direction);
 
-            if (waypoint.CanReach(_transform))
+            if (LastWaypoint.CanReach(_transform))
+            {
                 _patrolPath.SetNextIndex(ref _indexWaypoint);
+                LastTimeChangeIndex = Time.time;
+            }
             
             yield return null;
         }

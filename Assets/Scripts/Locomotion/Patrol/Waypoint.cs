@@ -11,6 +11,11 @@ public class Waypoint : MonoBehaviour, ITarget
     public Quaternion Rotation => _transform.rotation;
     public float Radius => _radius;
 
+    private void Awake()
+    {
+        _transform = transform;
+    }
+
     public void Initialize(PatrolPath patrolPath)
     {
         PatrolPath = patrolPath;
@@ -18,6 +23,6 @@ public class Waypoint : MonoBehaviour, ITarget
 
     public bool CanReach(Transform transform)
     {
-        return (transform.position - _transform.position).sqrMagnitude > (_radius * _radius);
+        return (transform.position - _transform.position).sqrMagnitude < (_radius * _radius);
     }
 }

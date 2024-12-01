@@ -29,7 +29,7 @@ public class Timer
 
     public void Reset(float time)
     {
-        _time = time;
         _isRunning = true;
+        _time = time;
     }
 }

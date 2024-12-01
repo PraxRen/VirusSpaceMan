@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class StateSearchPatrolPath : State
 {
+    private const float FixTimeFindNewWaypoint = 2f;
+
     private IReadOnlyHandlerZoneEnvironment _handlerZoneEnvironment;
     private Patrol _patrol;
     private float _timeDelayComplete;
@@ -25,13 +27,24 @@ public class StateSearchPatrolPath : State
         PatrolPath patrolPath = FindPatrolPath(out int indexWaypoint);
 
         if (patrolPath == null)
-            Complete();
+            return;
 
         _isFoundPlace = true;
+        Character.MoveTracker.SetTarget(patrolPath.GetWaypoint(indexWaypoint), Vector3.zero);
         _patrol.ResetPatrolPath(patrolPath, indexWaypoint);
         Timer timerDelayComplete = new Timer(_timeDelayComplete);
         timerDelayComplete.Completed += OnTimerCompleted;
         AddTimer(timerDelayComplete);
+    }
+
+    protected override bool CanUpdateAddon()
+    {
+        return _isFoundPlace == false;
+    }
+
+    protected override void ExitAfterAddon()
+    {
+        _isFoundPlace = false;
     }
 
     private PatrolPath FindPatrolPath(out int indexWaypoint)
@@ -59,6 +72,16 @@ public class StateSearchPatrolPath : State
 
         if (nearestWaypoint == null)
             return null;
+
+        if (_patrol.LastWaypoint != null && nearestWaypoint != _patrol.LastWaypoint)
+        {
+            if (nearestWaypoint.PatrolPath == _patrol.LastWaypoint.PatrolPath && (Time.time - _patrol.LastTimeChangeIndex) < FixTimeFindNewWaypoint)
+            {
+                nearestWaypoint = _patrol.LastWaypoint;
+                indexWaypoint = nearestWaypoint.PatrolPath.GetIndex(nearestWaypoint);
+            }
+
+        }
 
         return nearestWaypoint.PatrolPath;
     }

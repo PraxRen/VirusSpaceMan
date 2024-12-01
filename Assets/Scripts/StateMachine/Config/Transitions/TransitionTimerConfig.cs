@@ -1,5 +1,6 @@
 using UnityEngine;
 
+[CreateAssetMenu(fileName = "NewTransitionTimerConfig", menuName = "StateMachine/Transitions/TransitionTimerConfig")]
 public class TransitionTimerConfig : TransitionConfig
 {
     [SerializeField] private float _timeTimer;

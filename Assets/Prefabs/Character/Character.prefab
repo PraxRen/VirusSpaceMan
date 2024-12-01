@@ -2097,7 +2097,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   boneShape: 1
-  drawBones: 1
+  drawBones: 0
   drawTripods: 0
   boneSize: 1
   tripodSize: 1
@@ -6243,9 +6243,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _maxValue: 1000
   _cooldownHit: 0.1
+  _actionScheduler: {fileID: 9063325606587652215}
   _factorNoise: 1
   _surfaceType: 1
-  _actionScheduler: {fileID: 9063325606587652215}
+  _radiusCanReachTarget: 0.2
 --- !u!1 &9214217703873248260
 GameObject:
   m_ObjectHideFlags: 0

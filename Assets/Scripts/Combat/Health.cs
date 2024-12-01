@@ -42,7 +42,7 @@ public class Health : MonoBehaviour, IHealth, IDamageable, IAttribute, IAction
 
     public bool CanReach(Transform transform) 
     {
-        return (transform.position - _transform.position).sqrMagnitude > (_radiusCanReachTarget * _radiusCanReachTarget);
+        return (transform.position - _transform.position).sqrMagnitude < (_radiusCanReachTarget * _radiusCanReachTarget);
     }
 
     public bool CanTakeDamage(IWeaponReadOnly weapon)
