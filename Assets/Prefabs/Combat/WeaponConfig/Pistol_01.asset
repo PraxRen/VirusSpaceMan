@@ -26,4 +26,5 @@ MonoBehaviour:
   _projectileConfig: {fileID: 11400000, guid: 5df596e617e0f9f429cd493f08e48f07, type: 2}
   _typeAnimationLayer: 4
   _typeAnimationRig: 2
-  _modeMover: {fileID: 11400000, guid: 112f34ee093a1f8418f0a2272a5a648a, type: 2}
+  _defaultModeMover: {fileID: 11400000, guid: 112f34ee093a1f8418f0a2272a5a648a, type: 2}
+  _activeModeMover: {fileID: 11400000, guid: 5125f1417baf42c4f9f0a0baa3bc06d2, type: 2}

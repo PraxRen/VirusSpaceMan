@@ -2,5 +2,5 @@ using System;
 
 public interface IChangerModeMover
 {
-    event Action<IModeMoverProvider> ChangedModeMover;
+    event Action<ModeMover> ChangedModeMover;
 }

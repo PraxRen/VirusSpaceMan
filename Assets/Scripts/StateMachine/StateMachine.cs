@@ -2,11 +2,9 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using Unity.VisualScripting;
-using Unity.VisualScripting.FullSerializer;
 using UnityEngine;
 
-public class StateMachine : MonoBehaviour
+public class StateMachine : MonoBehaviour, IChangerModeMover
 {
     [SerializeField] private AICharacter _character;
     [SerializeField] private StateMachineConfig _config;
@@ -17,6 +15,7 @@ public class StateMachine : MonoBehaviour
     private Coroutine _jobUpdateState;
 
     public event Action<IReadOnlyState> ChangedState;
+    public event Action<ModeMover> ChangedModeMover;
 
     public IReadOnlyState State => _currentState;
 
@@ -87,6 +86,10 @@ public class StateMachine : MonoBehaviour
         _currentState = startState;
         _currentState.GetedNextState += Transit;
         _currentState.Enter();
+
+        if (_currentState is IModeMoverProvider modeMoverProvider)
+            ChangedModeMover?.Invoke(modeMoverProvider.ActiveModeMover);
+
         ChangedState?.Invoke(_currentState);
     }
 
@@ -110,5 +113,10 @@ public class StateMachine : MonoBehaviour
     {
         _currentState.GetedNextState -= Transit;
         _currentState.Exit();
+
+        if (_currentState is IModeMoverProvider modeMoverProvider)
+        {
+            ChangedModeMover?.Invoke(null);
+        }
     }
 }

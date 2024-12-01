@@ -5,5 +5,7 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "NewStatePatrolConfig", menuName = "StateMachine/States/StatePatrolConfig")]
 public class StatePatrolConfig : StateConfig
 {
-    public override State CreateState(AICharacter character) => new StatePatrol(Id, character, TimeSecondsWaitUpdate);
+    [SerializeField] private ModeMover _modeMover;
+
+    public override State CreateState(AICharacter character) => new StatePatrol(Id, character, TimeSecondsWaitUpdate, _modeMover);
 }

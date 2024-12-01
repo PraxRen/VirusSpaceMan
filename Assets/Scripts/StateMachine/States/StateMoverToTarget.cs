@@ -5,7 +5,7 @@ using UnityEngine.AI;
 public class StateMoverToTarget : State
 {
     private readonly Mover _mover;
-     
+
     public StateMoverToTarget(string id, AICharacter character, float timeSecondsWaitHandle) : base(id, character, timeSecondsWaitHandle)
     {
         if (character.TryGetComponent(out _mover) == false)

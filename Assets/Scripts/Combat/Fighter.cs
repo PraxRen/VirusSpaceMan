@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Fighter : MonoBehaviour, IDamageable, IFighterReadOnly, IAction
+public class Fighter : MonoBehaviour, IDamageable, IFighterReadOnly, IAction, IChangerModeMover
 {
     [Tooltip("Auto-Activate the weapon when it is changed")][SerializeField] private bool _isAutoActivationWeapon;
     [SerializeField] private Health _health;
@@ -29,6 +29,7 @@ public class Fighter : MonoBehaviour, IDamageable, IFighterReadOnly, IAction
     public event Action RemovedWeapon;
     public event Action<IWeaponReadOnly, Vector3, float> BeforeTakeDamage;
     public event Action<IWeaponReadOnly, Vector3, float> AfterTakeDamage;
+    public event Action<ModeMover> ChangedModeMover;
 
     public bool IsAttack { get; private set; }
     public IWeaponReadOnly Weapon => _currentWeapon;
@@ -87,6 +88,10 @@ public class Fighter : MonoBehaviour, IDamageable, IFighterReadOnly, IAction
             return;
 
         _currentWeapon.Activate();
+
+        if (_currentWeapon.Config is IModeMoverProvider modeMoverProvider)
+            ChangedModeMover?.Invoke(modeMoverProvider.ActiveModeMover);
+
         ActivatedWeapon?.Invoke(_currentWeapon);
     }
 
@@ -96,6 +101,10 @@ public class Fighter : MonoBehaviour, IDamageable, IFighterReadOnly, IAction
             return;
 
         _currentWeapon.Deactivate();
+
+        if (_currentWeapon.Config is IModeMoverProvider modeMoverProvider)
+            ChangedModeMover?.Invoke(modeMoverProvider.DefaultModeMover);
+
         DeactivatedWeapon?.Invoke(_currentWeapon);
     }
 

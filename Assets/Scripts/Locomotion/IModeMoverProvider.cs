@@ -1,4 +1,5 @@
 public interface IModeMoverProvider
 {
-    ModeMover ModeMover { get; }
+    ModeMover DefaultModeMover { get; }
+    ModeMover ActiveModeMover { get; }
 }

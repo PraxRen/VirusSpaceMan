@@ -99,14 +99,8 @@ public class Mover : MonoBehaviour, IMoverReadOnly, IAction
         StepTook?.Invoke();
     }
 
-    private void OnChangedModeMover(IModeMoverProvider modeMoverProvider)
+    private void OnChangedModeMover(ModeMover modeMover)
     {
-        if (modeMoverProvider == null)
-        {
-            _currentModeMover = _defaultModeMover;
-            return;
-        }
-
-        _currentModeMover = modeMoverProvider.ModeMover;
+        _currentModeMover = modeMover ?? _defaultModeMover;
     }
 }

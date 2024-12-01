@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 76a7575da0b0d394a8e5e5af611ddd2c, type: 3}
-  m_Name: DefaultModeMover
+  m_Name: ModeMoverKarateDefault
   m_EditorClassIdentifier: 
   _speedMove: 4
   _speedRotation: 15

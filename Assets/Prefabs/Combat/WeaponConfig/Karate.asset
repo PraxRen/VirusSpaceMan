@@ -15,6 +15,7 @@ MonoBehaviour:
   _id: fa01fcdf-39e1-4b96-befe-813ab48c95cf
   _idWeapon: 2cc8b2c4-4ce5-4794-b250-0c5f418f381e
   _damage: 0
+  _force: 0
   _distanceAttack: 1.8
   _cooldownAttack: 1
   _factorNoise: 1
@@ -26,4 +27,5 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 46f1030777e6e8d45abdab2c46b34e8d, type: 2}
   _typeAnimationLayer: 2
   _typeAnimationRig: 1
-  _modeMover: {fileID: 11400000, guid: ea2f701029778194592a4f57854362ae, type: 2}
+  _defaultModeMover: {fileID: 11400000, guid: ea2f701029778194592a4f57854362ae, type: 2}
+  _activeModeMover: {fileID: 11400000, guid: 9c06c0e4ef332674a8823a6a24270bc3, type: 2}

@@ -14,3 +14,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _id: 983a7646-7448-43d8-ab6e-f25d3c301b0b
   _timeSecondsWaitUpdate: 0
+  _modeMover: {fileID: 11400000, guid: bdac00cb6f9c37547adfd62533aa18cf, type: 2}
