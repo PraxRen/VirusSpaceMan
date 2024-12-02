@@ -12,4 +12,16 @@ public class SimpleUtils
         value = Mathf.Clamp01(value);
         return Random.value <= value;
     }
+
+    public static float SignedAngleBetween(Vector3 a, Vector3 b, Vector3 n)
+    {
+        if (a.magnitude == 0 || b.magnitude == 0)
+            return 0;
+
+        float angle = Vector3.Angle(a, b);
+        float sign = Mathf.Sign(Vector3.Dot(n, Vector3.Cross(a, b)));
+        float signed_angle = angle * sign;
+
+        return signed_angle;
+    }
 }
