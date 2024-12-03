@@ -2,10 +2,15 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 [RequireComponent(typeof(Mover), typeof(ActionScheduler))]
-public class HandlerInteraction : MonoBehaviour, IAction
+public class HandlerInteraction : MonoBehaviour, IAction, IReadOnlyHandlerInteraction
 {
+    private const float FactorForwardLimit = 0.9f;
+    private const float FixDeltaUpdatePosition = 2f;
+    private const float FixDeltaUpdateRotation = 10f;
+
     [SerializeField][SerializeInterface(typeof(IInteractionNotifier))] private MonoBehaviour _interactionNotifierMonoBehaviour;
 
     private Transform _transform;
@@ -14,6 +19,8 @@ public class HandlerInteraction : MonoBehaviour, IAction
     private IInteractionNotifier _interactionNotifier;
     private Coroutine _jobMoveToObjectInteraction;
     private IObjectInteraction _currentObjectInteraction;
+
+    public IReadOnlyObjectInteraction ObjectInteraction => _currentObjectInteraction;
 
     private void Awake()
     {
@@ -40,6 +47,7 @@ public class HandlerInteraction : MonoBehaviour, IAction
     public void Cancel()
     {
         CancelMoveToObjectInteraction();
+        _interactionNotifier.Stop();
     }
 
     public bool CanStartInteract(IObjectInteraction objectInteraction)
@@ -68,36 +76,48 @@ public class HandlerInteraction : MonoBehaviour, IAction
     private IEnumerator MoveToObjectInteraction()
     {
         float factorForward = -1;
-        float factorForwardLimit = 0.9f;
+        ITarget startPoint = _currentObjectInteraction.StartPoint;
+        Vector3 startPointForward = startPoint.Rotation * Vector3.forward;
 
-        while (_mover.CanMove() && _currentObjectInteraction.CanReach(_transform) == false && factorForward < factorForwardLimit) 
+        while (startPoint.CanReach(_transform) == false && factorForward < FactorForwardLimit) 
         {
-            factorForward = Vector3.Dot(_currentObjectInteraction.Rotation * Vector3.forward, _transform.forward);
-            Vector3 directionVector3 = (_currentObjectInteraction.Position - _transform.position).normalized;
-            Vector2 direction = new Vector2(directionVector3.x, directionVector3.z);
-            _mover.Move(direction);
-            _mover.LookAtDirection(direction);
+            factorForward = Vector3.Dot(startPointForward, _transform.forward);
+
+            if (_mover.CanMove())
+            {
+                Vector3 directionVector3 = (startPoint.Position - _transform.position).normalized;
+                Vector2 direction = new Vector2(directionVector3.x, directionVector3.z);
+                _mover.LookAtDirection(direction);
+                _mover.Move(direction);
+            }
+            else
+            {
+                _transform.forward = Vector3.MoveTowards(_transform.forward, startPointForward, FixDeltaUpdatePosition * Time.fixedDeltaTime);
+                _transform.position = Vector3.MoveTowards(_transform.position, startPoint.Position, FixDeltaUpdateRotation * Time.deltaTime);
+            }
+
             yield return null;
         }
 
-        _transform.position = _currentObjectInteraction.Position;
-        _transform.forward = _currentObjectInteraction.Rotation * Vector3.forward;
+        _transform.position = startPoint.Position;
+        _transform.forward = startPointForward;
         _jobMoveToObjectInteraction = null;
         _interactionNotifier.Run();
     }
 
     private void OnBeforeInteract()
     {
-
+        _currentObjectInteraction.InteractBefore();
     }
 
     private void OnInteracted()
     {
-
+        _currentObjectInteraction.Interact();
     }
 
     private void OnAfterInteract()
     {
-
+        _currentObjectInteraction.InteractAfter();
+        _actionScheduler.ClearAction(this);
     }
 }

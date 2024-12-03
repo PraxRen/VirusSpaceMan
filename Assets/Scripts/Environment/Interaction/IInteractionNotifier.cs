@@ -12,4 +12,6 @@ public interface IInteractionNotifier
     bool CanRun();
 
     void Run();
+
+    void Stop();
 }

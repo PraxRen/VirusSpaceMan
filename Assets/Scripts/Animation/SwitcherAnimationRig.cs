@@ -7,37 +7,39 @@ public class SwitcherAnimationRig : MonoBehaviour
 {
     private DataAnimationRig _data;
     private Dictionary<TypeAnimationRig, Coroutine> _hashCorutineJobs = new Dictionary<TypeAnimationRig, Coroutine>();
-    private AnimationRigSetting _defaultAnimationSetting;
-    private AnimationRigSetting _currentAnimationSetting;
+    
+    public AnimationRigSetting DefaultAnimationSetting { get; private set; }    
+    public AnimationRigSetting CurrentAnimationSetting { get; private set; }
 
     public bool IsNotWork => _hashCorutineJobs.Count == 0;
 
     private void Awake()
     {
         _data = GetComponent<DataAnimationRig>();
-        _defaultAnimationSetting = _data.GetSetting(TypeAnimationRig.DefaultAim);
-        _currentAnimationSetting = _defaultAnimationSetting;
+        DefaultAnimationSetting = _data.GetSetting(TypeAnimationRig.DefaultAim);
+        CurrentAnimationSetting = DefaultAnimationSetting;
     }
 
     public void ApplyDefaultAnimationRig()
     {
-        SetAnimationRig(_defaultAnimationSetting.Type, 1f);
+        float valueDefault = 1f;
+        SetAnimationRig(DefaultAnimationSetting.Type, valueDefault);
     }
 
-    public void SetAnimationRig(TypeAnimationRig type, float targetValue)
+    public void SetAnimationRig(TypeAnimationRig type, float targetValue = 1f)
     {
-        if (_currentAnimationSetting.Type == type)
+        if (CurrentAnimationSetting.Type == type)
             return;
 
         AnimationRigSetting newSetting = _data.GetSetting(type);
-        SetNewAnimationRig(_currentAnimationSetting, newSetting, targetValue);
-        _currentAnimationSetting = newSetting;
+        SetNewAnimationRig(CurrentAnimationSetting, newSetting, targetValue);
+        CurrentAnimationSetting = newSetting;
     }
 
     private void SetNewAnimationRig(AnimationRigSetting oldAnimationRig, AnimationRigSetting newAnimationRig, float targetValue)
     {
         SetWeightRig(oldAnimationRig, 0f);
-        SetWeightRig(newAnimationRig, 1f);
+        SetWeightRig(newAnimationRig, targetValue);
     }
 
     private void SetWeightRig(AnimationRigSetting setting, float targetValue)

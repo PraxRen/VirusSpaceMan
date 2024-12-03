@@ -4,12 +4,14 @@ using UnityEngine;
 
 public class PlaceInterest : MonoBehaviour, IReadOnlyPlaceInterest
 {
+    [SerializeField][SerializeInterface(typeof(IObjectInteraction))] private MonoBehaviour _objectInteractionMonoBehaviour;
     [SerializeField] private float _radius;
 
     private Transform _transform;
     private ZoneInterest _zoneInterest;
     private WaitForSeconds _waitUpdateCollision;
     private Coroutine _jobUpdateCollision;
+    private IObjectInteraction _objectInteraction;
 
     public event Action EnteredCharacter;
 
@@ -23,6 +25,7 @@ public class PlaceInterest : MonoBehaviour, IReadOnlyPlaceInterest
     {
         _transform = transform;
         IsEmpty = true;
+        _objectInteraction = (IObjectInteraction)_objectInteractionMonoBehaviour;
     }
 
     private void OnEnable()

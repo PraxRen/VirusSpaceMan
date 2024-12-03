@@ -29,7 +29,7 @@ public class TargetTracker : MonoBehaviour, IReadOnlyTargetTracker
     private void Awake()
     {
         _transform = transform;
-        _targetDefault = new TargetTransform(_pointDefault);
+        _targetDefault = new TargetTransform(_pointDefault, 0f);
         _transform.parent = null;
     }
 
