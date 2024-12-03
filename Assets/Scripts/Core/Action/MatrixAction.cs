@@ -48,6 +48,7 @@ public class MatrixAction : ScriptableObject, IMatrixActionReanOnly
             Health => TypeAction.Health,
             ActivatorRigHit => TypeAction.RigHit,
             ActivatorRagdoll => TypeAction.Ragdoll,
+            HandlerInteraction => TypeAction.Interaction,
             _ => throw new InvalidCastException(nameof(action))
         };
     }

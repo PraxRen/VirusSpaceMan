@@ -4,5 +4,6 @@ public enum TypeAction
     Fighter,
     Health,
     RigHit,
-    Ragdoll
+    Ragdoll,
+    Interaction
 }

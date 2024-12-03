@@ -6,6 +6,7 @@ public class StateSearchPlaceInterest : State
 {
     private IReadOnlyHandlerZoneEnvironment _handlerZoneEnvironment;
     private IReadOnlyPlaceInterest _placeInterest;
+    private HandlerInteraction _handlerInteraction;
     private float _timeDelayComplete;
     private bool _isFoundPlace;
 
@@ -13,6 +14,9 @@ public class StateSearchPlaceInterest : State
     {
         if (character.TryGetComponent(out _handlerZoneEnvironment) == false)
             throw new InvalidOperationException($"Initialization error \"{nameof(State)}\"! The component \"{nameof(HandlerZoneEnvironment)}\" required for operation \"{GetType().Name}\".");
+
+        if (character.TryGetComponent(out _handlerInteraction) == false)
+            throw new InvalidOperationException($"Initialization error \"{nameof(State)}\"! The component \"{nameof(HandlerInteraction)}\" required for operation \"{GetType().Name}\".");
 
         _timeDelayComplete = timeDelayComplete;
     }
@@ -53,7 +57,7 @@ public class StateSearchPlaceInterest : State
 
         foreach (ZoneInterest zoneInterest in zoneInterests)
         {
-            if (zoneInterest.TryTakeEmptyPlace(Character, out placeInterest))
+            if (zoneInterest.TryTakeEmptyPlace(_handlerInteraction, out placeInterest))
                 break;
         }
 

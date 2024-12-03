@@ -1,8 +1,5 @@
-using System;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UIElements;
 
 [RequireComponent(typeof(Mover), typeof(ActionScheduler))]
 public class HandlerInteraction : MonoBehaviour, IAction, IReadOnlyHandlerInteraction

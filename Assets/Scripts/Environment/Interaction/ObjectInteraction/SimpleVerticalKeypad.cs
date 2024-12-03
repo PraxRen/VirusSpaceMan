@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class SimpleVerticalKeypad : MonoBehaviour, IObjectInteraction
@@ -9,6 +7,11 @@ public class SimpleVerticalKeypad : MonoBehaviour, IObjectInteraction
 
     public ITarget StartPoint { get; private set; }
 
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = Color.cyan;
+        Gizmos.DrawWireSphere(_startPoint.position, _radiusStartPoint);
+    }
 
     private void Awake()
     {

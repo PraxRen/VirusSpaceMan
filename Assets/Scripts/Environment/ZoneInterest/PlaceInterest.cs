@@ -13,11 +13,11 @@ public class PlaceInterest : MonoBehaviour, IReadOnlyPlaceInterest
     private Coroutine _jobUpdateCollision;
     private IObjectInteraction _objectInteraction;
 
-    public event Action EnteredCharacter;
+    public event Action EnteredHandlerInteraction;
 
     public bool IsEmpty {  get; private set; }
-    public bool HasCharacterInside { get; private set; }
-    public IReadOnlyCharacter Character { get; private set; }
+    public bool HasHandlerInteractionInside { get; private set; }
+    public HandlerInteraction HandlerInteraction { get; private set; }
     public Vector3 Position => _transform.position;
     public Quaternion Rotation => _transform.rotation;
 
@@ -46,7 +46,7 @@ public class PlaceInterest : MonoBehaviour, IReadOnlyPlaceInterest
 
     private void OnDrawGizmos()
     {
-        Gizmos.color = HasCharacterInside ? Color.green : Color.white;
+        Gizmos.color = HasHandlerInteractionInside ? Color.green : Color.white;
         Gizmos.DrawWireSphere(transform.position, _radius);
     }
 
@@ -56,44 +56,41 @@ public class PlaceInterest : MonoBehaviour, IReadOnlyPlaceInterest
         _waitUpdateCollision = waitUpdateCollision;
     }
 
-    public bool CanSetCharacter(IReadOnlyCharacter character)
-    {
-        return IsEmpty;
-    }
-
-    public void SetCharacter(IReadOnlyCharacter character)
+    public void SetHandlerInteraction(HandlerInteraction handlerInteraction)
     {
         if (IsEmpty == false)
             throw new InvalidOperationException("Place not is empty!");
 
-        Character = character;
+        HandlerInteraction = handlerInteraction;
         IsEmpty = false;
         _jobUpdateCollision = StartCoroutine(UpdateCollision());
     }
+
+    public bool CanRunInteract() => HandlerInteraction.CanStartInteract(_objectInteraction);
 
     public void RunInteract()
     {
         if (IsEmpty)
             throw new InvalidOperationException("Place is empty!");
 
-        if (HasCharacterInside == false)
-            throw new InvalidOperationException("The character is out of place!");
+        if (HasHandlerInteractionInside == false)
+            throw new InvalidOperationException("The HandlerInteraction is out of place!");
 
-        Debug.Log("+++");
+        HandlerInteraction.StartInteract(_objectInteraction);
     }
 
     public void Clear()
     {
-        Character = null;
+        HandlerInteraction = null;
         IsEmpty = true;
     }
 
     public bool CanReach(Transform transform)
     {
-        if (HasCharacterInside == false)
+        if (HasHandlerInteractionInside == false)
             return false;
 
-        if (IsCharacter(transform) == false)
+        if (IsHandlerInteraction(transform) == false)
             return false;
 
         return true;
@@ -103,7 +100,7 @@ public class PlaceInterest : MonoBehaviour, IReadOnlyPlaceInterest
     {
         while (IsEmpty == false)
         {
-            Collider[] colliders = Physics.OverlapSphere(_transform.position, _radius, _zoneInterest.LayerMaskCharacters, QueryTriggerInteraction.Ignore);
+            Collider[] colliders = Physics.OverlapSphere(_transform.position, _radius, _zoneInterest.LayerMaskHandlerInteraction, QueryTriggerInteraction.Ignore);
             UpdateCollide(colliders);
 
             yield return _waitUpdateCollision;
@@ -112,37 +109,38 @@ public class PlaceInterest : MonoBehaviour, IReadOnlyPlaceInterest
         _jobUpdateCollision = null;
     }
 
+
     private void UpdateCollide(Collider[] colliders)
     {
-        bool isCollidedCharacter = false;
+        bool isEnterTriggerHandlerInteraction = false;
 
         foreach (Collider collider in colliders)
         {
-            if (IsCharacter(collider.transform))
+            if (IsHandlerInteraction(collider.transform))
             {
-                isCollidedCharacter = true;
+                isEnterTriggerHandlerInteraction = true;
                 break;
             }
         }
 
-        if (HasCharacterInside == false && isCollidedCharacter)
+        if (HasHandlerInteractionInside == false && isEnterTriggerHandlerInteraction)
         {
-            EnteredCharacter?.Invoke();
+            EnteredHandlerInteraction?.Invoke();
         }
-        else if (HasCharacterInside && isCollidedCharacter == false)
+        else if (HasHandlerInteractionInside && isEnterTriggerHandlerInteraction == false)
         {
             Clear();
         }
 
-        HasCharacterInside = isCollidedCharacter;
+        HasHandlerInteractionInside = isEnterTriggerHandlerInteraction;
     }
 
-    private bool IsCharacter(Transform transform)
+    private bool IsHandlerInteraction(Transform transform)
     {
-        if (transform.TryGetComponent(out IReadOnlyCharacter character) == false)
+        if (transform.TryGetComponent(out HandlerInteraction handlerInteraction) == false)
             return false;
 
-        if (character != Character)
+        if (handlerInteraction != HandlerInteraction)
             return false;
 
         return true;

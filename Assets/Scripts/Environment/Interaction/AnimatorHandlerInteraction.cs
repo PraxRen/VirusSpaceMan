@@ -40,6 +40,8 @@ public class AnimatorHandlerInteraction : MonoBehaviour, IInteractionNotifier
             _beforeRunTypeAnimationLayer = _switcherAnimationLayer.CurrentAnimationLayer;
             _switcherAnimationLayer.SetAnimationLayer(animationLayerProvider.TypeAnimationLayer, _timeChangeAnimationLayer);
         }
+
+        Debug.Log("+++!!!");
     }
 
     public void Stop()

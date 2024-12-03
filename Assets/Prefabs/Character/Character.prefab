@@ -2004,6 +2004,8 @@ GameObject:
   - component: {fileID: 4638119998574195930}
   - component: {fileID: 6195853445073212177}
   - component: {fileID: 3910946193813396065}
+  - component: {fileID: 5615886745292537988}
+  - component: {fileID: 2383351116305322014}
   m_Layer: 0
   m_Name: Main
   m_TagString: Player
@@ -2607,6 +2609,34 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _defaultZone: {fileID: 0}
+--- !u!114 &5615886745292537988
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3037592456749619465}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c3d151dc2ed58bd408266fd0345489e2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _interactionNotifierMonoBehaviour: {fileID: 2383351116305322014}
+--- !u!114 &2383351116305322014
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3037592456749619465}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6db64a1a79098ec459df3219075ce748, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _handlerInteractionMonoBehaviour: {fileID: 5615886745292537988}
+  _weightForAnimationEvent: 0.5
+  _timeChangeAnimationLayer: 0.15
 --- !u!1 &3063404305515597323
 GameObject:
   m_ObjectHideFlags: 0

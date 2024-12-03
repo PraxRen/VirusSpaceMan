@@ -4,7 +4,7 @@ using UnityEngine;
 public class ZoneInterest : MonoBehaviour
 {
     [SerializeField][ReadOnly] private PlaceInterest[] _places;
-    [SerializeField] private LayerMask _layerMaskCharacters;
+    [SerializeField] private LayerMask _layerMaskHandlerInteraction;
     [SerializeField] private float timeWaitUpdateCollision;
 #if UNITY_EDITOR
     [Space(1f)]
@@ -16,7 +16,7 @@ public class ZoneInterest : MonoBehaviour
 
     private WaitForSeconds _waitUpdateCollision;
 
-    public LayerMask LayerMaskCharacters => _layerMaskCharacters;
+    public LayerMask LayerMaskHandlerInteraction => _layerMaskHandlerInteraction;
     public Transform Transform { get; private set; }
 
 #if UNITY_EDITOR
@@ -48,23 +48,23 @@ public class ZoneInterest : MonoBehaviour
         Gizmos.DrawCube(center, _gizmosSizeZone);
     }
 
-    public bool TryTakeEmptyPlace(IReadOnlyCharacter character, out IReadOnlyPlaceInterest placeInteres)
+    public bool TryTakeEmptyPlace(HandlerInteraction handlerInteraction, out IReadOnlyPlaceInterest placeInteres)
     {
         placeInteres = null;
 
         if (enabled == false)
             return false;
 
-        if (_places.Any(place => place.Character != null && place.Character.Id == character.Id))
+        if (_places.Any(place => place.HandlerInteraction != null && place.HandlerInteraction == handlerInteraction))
             return false;
 
-        PlaceInterest[] places = _places.Where(place => place.CanSetCharacter(character)).ToArray();
+        PlaceInterest[] places = _places.Where(place => place.IsEmpty).ToArray();
 
         if (places.Length == 0)
             return false;
 
         PlaceInterest place = places[Random.Range(0, places.Length)];
-        place.SetCharacter(character);
+        place.SetHandlerInteraction(handlerInteraction);
         placeInteres = place;
 
         return true;

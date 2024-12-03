@@ -3,6 +3,7 @@ using UnityEngine;
 [RequireComponent(typeof(PlayerInputReader), typeof(Fighter), typeof(Scanner))]
 public class Player : Character
 {
+    [SerializeField] private bool _DEBUG;
     private PlayerInputReader _inputReader;
 
     protected override void AwakeAddon()
@@ -43,6 +44,9 @@ public class Player : Character
 
     private void HandleLocomotion()
     {
+        if (_DEBUG)
+            return;
+
         if (_inputReader.DirectionMove == Vector2.zero)
             return;
 

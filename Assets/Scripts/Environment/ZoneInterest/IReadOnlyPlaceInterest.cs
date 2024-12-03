@@ -2,9 +2,9 @@ using System;
 
 public interface IReadOnlyPlaceInterest : ITarget
 {
-    event Action EnteredCharacter;
+    event Action EnteredHandlerInteraction;
 
     bool IsEmpty { get; }
-    bool HasCharacterInside { get; }
-    IReadOnlyCharacter Character { get; }
+    bool HasHandlerInteractionInside { get; }
+    HandlerInteraction HandlerInteraction { get; }
 }
