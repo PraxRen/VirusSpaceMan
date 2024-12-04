@@ -20,6 +20,7 @@ public class Mover : MonoBehaviour, IMoverReadOnly, IAction
     private IStepNotifier _stepNotifier;
     private Vector2 _inputMoveDirection;
     private Vector2 _inputLookDirection;
+    private bool _canRotation = true;
 
     public event Action StepTook;
 
@@ -56,6 +57,7 @@ public class Mover : MonoBehaviour, IMoverReadOnly, IAction
     public void Cancel() 
     {
         _inputMoveDirection = Vector3.zero;
+        _inputLookDirection = Vector3.zero;
     }
 
     public bool CanMove()
@@ -70,9 +72,25 @@ public class Mover : MonoBehaviour, IMoverReadOnly, IAction
         _inputMoveDirection = direction;
     }
 
+    public void SimpleMove(Vector2 direction)
+    {
+        _inputMoveDirection = direction;
+    }
+
     public void LookAtDirection(Vector2 direction)
     {
         _inputLookDirection = direction;
+    }
+
+    public void BlockRotation()
+    {
+        _inputLookDirection = Vector3.zero;
+        _canRotation = false;
+    }
+
+    public void UnblockRotation()
+    {
+        _canRotation = true;
     }
 
     private void HandleMove()
@@ -91,7 +109,13 @@ public class Mover : MonoBehaviour, IMoverReadOnly, IAction
 
     private void HandleRotate()
     {
-        _transform.forward = Vector3.MoveTowards(_transform.forward, new Vector3(_inputLookDirection.x, 0f, _inputLookDirection.y), _currentModeMover.SpeedRotation * Time.fixedDeltaTime);
+        if (_inputLookDirection == Vector2.zero)
+            return;
+
+        if (_canRotation == false)
+            return;
+
+        transform.forward = Vector3.MoveTowards(_transform.forward, new Vector3(_inputLookDirection.x, 0f, _inputLookDirection.y), _currentModeMover.SpeedRotation * Time.fixedDeltaTime);
     }
 
     private void OnCreatedStep()

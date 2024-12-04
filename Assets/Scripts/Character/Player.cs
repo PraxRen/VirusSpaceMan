@@ -1,9 +1,8 @@
 using UnityEngine;
 
-[RequireComponent(typeof(PlayerInputReader), typeof(Fighter), typeof(Scanner))]
+[RequireComponent(typeof(PlayerInputReader))]
 public class Player : Character
 {
-    [SerializeField] private bool _DEBUG;
     private PlayerInputReader _inputReader;
 
     protected override void AwakeAddon()
@@ -15,14 +14,14 @@ public class Player : Character
     {
         Fighter.ChangedWeapon += OnChangedWeapon;
         Fighter.RemovedWeapon += OnRemovedWeapon;
-        Scanner.ChangedCurrentTarget += OnChangedTarget;
-        Scanner.RemovedCurrentTarget += OnRemovedTarget;
+        ScannerDamageable.ChangedCurrentTarget += OnChangedTarget;
+        ScannerDamageable.RemovedCurrentTarget += OnRemovedTarget;
         _inputReader.ChangedScrollNextTarget += OnChangedScrollNextTarget;
         _inputReader.ChangedScrollPreviousTarget += OnChangedScrollPreviousTarget;
 
         if (Fighter.Weapon != null)
         {
-            Scanner.StartScan(Fighter.LayerMaskDamageable, Fighter.Weapon.Config.DistanceAttack);
+            ScannerDamageable.StartScan(Fighter.LayerMaskDamageable, Fighter.Weapon.Config.DistanceAttack);
         }
     }
 
@@ -30,8 +29,8 @@ public class Player : Character
     {
         Fighter.ChangedWeapon -= OnChangedWeapon;
         Fighter.RemovedWeapon -= OnRemovedWeapon;
-        Scanner.ChangedCurrentTarget -= OnChangedTarget;
-        Scanner.RemovedCurrentTarget -= OnRemovedTarget;
+        ScannerDamageable.ChangedCurrentTarget -= OnChangedTarget;
+        ScannerDamageable.RemovedCurrentTarget -= OnRemovedTarget;
         _inputReader.ChangedScrollNextTarget -= OnChangedScrollNextTarget;
         _inputReader.ChangedScrollPreviousTarget -= OnChangedScrollPreviousTarget;
     }
@@ -44,22 +43,26 @@ public class Player : Character
 
     private void HandleLocomotion()
     {
-        if (_DEBUG)
-            return;
-
         if (_inputReader.DirectionMove == Vector2.zero)
             return;
 
         if (Mover.CanMove() == false)
+        {
+            if (HandlerInteraction.IsActive)
+                HandlerInteraction.Cancel();
+
             return;
+        }
+
+        if (ScannerDamageable.Target == null)
+            Mover.LookAtDirection(_inputReader.DirectionMove);
 
         Mover.Move(_inputReader.DirectionMove);
-        Mover.LookAtDirection(_inputReader.DirectionMove);
     }
 
     private void HandleCombat()
     {
-        if (Scanner.Target == null)
+        if (ScannerDamageable.Target == null)
             return;
 
         Vector3 direction = (LookTracker.Position - Transform.position).normalized;
@@ -91,22 +94,22 @@ public class Player : Character
 
     private void OnChangedWeapon(IWeaponReadOnly weapon)
     {
-        Scanner.StartScan(Fighter.LayerMaskDamageable, weapon.Config.DistanceAttack);
+        ScannerDamageable.StartScan(Fighter.LayerMaskDamageable, weapon.Config.DistanceAttack);
     }
 
     private void OnRemovedWeapon()
     {
-        Scanner.ResetRadius();
+        ScannerDamageable.ResetRadius();
     }
 
     private void OnChangedScrollNextTarget()
     {
-        Scanner.NextTarget();
+        ScannerDamageable.NextTarget();
 
     }
 
     private void OnChangedScrollPreviousTarget()
     {
-        Scanner.PreviousTarget();
+        ScannerDamageable.PreviousTarget();
     }
 }

@@ -1,11 +1,14 @@
 using UnityEngine;
 
-public class SimpleVerticalKeypad : MonoBehaviour, IObjectInteraction
+public class SimpleVerticalKeypad : MonoBehaviour, IComplexObjectInteraction
 {
     [SerializeField] private Transform _startPoint;
     [SerializeField] private float _radiusStartPoint;
 
     public ITarget StartPoint { get; private set; }
+    public int IndexAnimation => 0;
+    public TypeAnimationLayer TypeAnimationLayer => TypeAnimationLayer.Default;
+
 
     private void OnDrawGizmos()
     {

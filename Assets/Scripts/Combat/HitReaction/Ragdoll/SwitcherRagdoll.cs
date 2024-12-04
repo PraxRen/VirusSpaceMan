@@ -58,8 +58,8 @@ public class SwitcherRagdoll : MonoBehaviour
             _ragdollBoneTransforms[i] = new BoneTransform();
         }
 
-        PopulateAnimationStartBoneTransforms(CharacterAnimatorData.Names.FaceUpStandUp, _faceUpStandUpBoneTransforms);
-        PopulateAnimationStartBoneTransforms(CharacterAnimatorData.Names.FaceDownStandUp, _faceDownStandUpBoneTransforms);
+        PopulateAnimationStartBoneTransforms(DataCharacterAnimator.Names.FaceUpStandUp, _faceUpStandUpBoneTransforms);
+        PopulateAnimationStartBoneTransforms(DataCharacterAnimator.Names.FaceDownStandUp, _faceDownStandUpBoneTransforms);
     }
 
     private void OnDisable()
@@ -260,7 +260,7 @@ public class SwitcherRagdoll : MonoBehaviour
         _transform.rotation = rotationBeforeSampling;
     }
 
-    private string GetNameAnimationStandUp() => _isFacingUp ? CharacterAnimatorData.Names.FaceUpStandUp : CharacterAnimatorData.Names.FaceDownStandUp;
+    private string GetNameAnimationStandUp() => _isFacingUp ? DataCharacterAnimator.Names.FaceUpStandUp : DataCharacterAnimator.Names.FaceDownStandUp;
 
     private BoneTransform[] GetStandUpBonesTransform() => _isFacingUp ? _faceUpStandUpBoneTransforms : _faceDownStandUpBoneTransforms;
 

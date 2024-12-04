@@ -4,9 +4,7 @@ using UnityEngine;
 [RequireComponent(typeof(Mover), typeof(ActionScheduler))]
 public class HandlerInteraction : MonoBehaviour, IAction, IReadOnlyHandlerInteraction
 {
-    private const float FactorForwardLimit = 0.9f;
-    private const float FixDeltaUpdatePosition = 2f;
-    private const float FixDeltaUpdateRotation = 10f;
+    private const float FactorForwardLimit = 1f;
 
     [SerializeField][SerializeInterface(typeof(IInteractionNotifier))] private MonoBehaviour _interactionNotifierMonoBehaviour;
 
@@ -17,6 +15,7 @@ public class HandlerInteraction : MonoBehaviour, IAction, IReadOnlyHandlerIntera
     private Coroutine _jobMoveToObjectInteraction;
     private IObjectInteraction _currentObjectInteraction;
 
+    public bool IsActive { get; private set; }
     public IReadOnlyObjectInteraction ObjectInteraction => _currentObjectInteraction;
 
     private void Awake()
@@ -44,7 +43,7 @@ public class HandlerInteraction : MonoBehaviour, IAction, IReadOnlyHandlerIntera
     public void Cancel()
     {
         CancelMoveToObjectInteraction();
-        _interactionNotifier.Stop();
+        StopInteract();
     }
 
     public bool CanStartInteract(IObjectInteraction objectInteraction)
@@ -54,6 +53,7 @@ public class HandlerInteraction : MonoBehaviour, IAction, IReadOnlyHandlerIntera
 
     public void StartInteract(IObjectInteraction objectInteraction)
     {
+        IsActive = true;
         _actionScheduler.StartAction(this);
         _actionScheduler.SetBlock(this);
         _currentObjectInteraction = objectInteraction;
@@ -76,30 +76,32 @@ public class HandlerInteraction : MonoBehaviour, IAction, IReadOnlyHandlerIntera
         ITarget startPoint = _currentObjectInteraction.StartPoint;
         Vector3 startPointForward = startPoint.Rotation * Vector3.forward;
 
-        while (startPoint.CanReach(_transform) == false && factorForward < FactorForwardLimit) 
+
+        while (startPoint.CanReach(_transform) == false || Mathf.Approximately(factorForward, FactorForwardLimit) == false) 
         {
             factorForward = Vector3.Dot(startPointForward, _transform.forward);
-
-            if (_mover.CanMove())
-            {
-                Vector3 directionVector3 = (startPoint.Position - _transform.position).normalized;
-                Vector2 direction = new Vector2(directionVector3.x, directionVector3.z);
-                _mover.LookAtDirection(direction);
-                _mover.Move(direction);
-            }
-            else
-            {
-                _transform.forward = Vector3.MoveTowards(_transform.forward, startPointForward, FixDeltaUpdatePosition * Time.fixedDeltaTime);
-                _transform.position = Vector3.MoveTowards(_transform.position, startPoint.Position, FixDeltaUpdateRotation * Time.deltaTime);
-            }
+            _mover.LookAtDirection(new Vector2(startPointForward.x, startPointForward.z));
+            Vector3 direction = (startPoint.Position - _transform.position).normalized;
+            _mover.SimpleMove(new Vector2(direction.x, direction.z));
 
             yield return null;
         }
 
+        _mover.Cancel();
+        _mover.BlockRotation();
         _transform.position = startPoint.Position;
         _transform.forward = startPointForward;
         _jobMoveToObjectInteraction = null;
         _interactionNotifier.Run();
+    }
+
+    private void StopInteract()
+    {
+        _interactionNotifier.Stop();
+        _mover.UnblockRotation();
+        _currentObjectInteraction = null;
+        IsActive = false;
+        _actionScheduler.ClearAction(this);
     }
 
     private void OnBeforeInteract()
@@ -115,6 +117,6 @@ public class HandlerInteraction : MonoBehaviour, IAction, IReadOnlyHandlerIntera
     private void OnAfterInteract()
     {
         _currentObjectInteraction.InteractAfter();
-        _actionScheduler.ClearAction(this);
+        StopInteract();
     }
 }

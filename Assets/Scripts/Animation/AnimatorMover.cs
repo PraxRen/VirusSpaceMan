@@ -23,8 +23,8 @@ public class AnimatorMover : MonoBehaviour, IStepNotifier
     private void Update()
     {
         Vector3 velocity = transform.InverseTransformDirection(_mover.Velocity);
-        _animator.SetFloat(CharacterAnimatorData.Params.VelocityX, velocity.x);
-        _animator.SetFloat(CharacterAnimatorData.Params.VelocityZ, velocity.z);
+        _animator.SetFloat(DataCharacterAnimator.Params.VelocityX, velocity.x);
+        _animator.SetFloat(DataCharacterAnimator.Params.VelocityZ, velocity.z);
     }
 
     //AnimationEvent
