@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[RequireComponent(typeof(Animator), typeof(SwitcherAnimationLayer))]
+[RequireComponent(typeof(Animator), typeof(SwitcherAnimationLayer), typeof(SwitcherAnimationRig))]
 public class AnimatorHandlerInteraction : MonoBehaviour, IInteractionNotifier
 {
     [SerializeField][SerializeInterface(typeof(IReadOnlyHandlerInteraction))] private MonoBehaviour _handlerInteractionMonoBehaviour;
@@ -12,8 +12,10 @@ public class AnimatorHandlerInteraction : MonoBehaviour, IInteractionNotifier
 
     private Animator _animator;
     private SwitcherAnimationLayer _switcherAnimationLayer;
+    private SwitcherAnimationRig _switcherAnimationRig;
     private IReadOnlyHandlerInteraction _handlerInteraction;
     private TypeAnimationLayer _beforeRunTypeAnimationLayer;
+    private TypeAnimationRig _beforeRunTypeAnimationRig;
 
     public event Action BeforeInteract;
     public event Action Interacted;
@@ -23,6 +25,7 @@ public class AnimatorHandlerInteraction : MonoBehaviour, IInteractionNotifier
     {
         _animator = GetComponent<Animator>();
         _switcherAnimationLayer = GetComponent<SwitcherAnimationLayer>();
+        _switcherAnimationRig = GetComponent<SwitcherAnimationRig>();
         _handlerInteraction = (IReadOnlyHandlerInteraction)_handlerInteractionMonoBehaviour;
     }
 
@@ -33,22 +36,31 @@ public class AnimatorHandlerInteraction : MonoBehaviour, IInteractionNotifier
 
     public void Run()
     {
-        if (_handlerInteraction.ObjectInteraction is IAnimationLayerProvider animationLayerProvider)
+        if (_handlerInteraction.ObjectInteraction.Config is IAnimationLayerProvider animationLayerProvider)
         {
             _beforeRunTypeAnimationLayer = _switcherAnimationLayer.CurrentAnimationLayer;
             _switcherAnimationLayer.SetAnimationLayer(animationLayerProvider.TypeAnimationLayer, _timeChangeAnimationLayer);
         }
 
-        _animator.SetFloat(DataCharacterAnimator.Params.IndexInteractive, _handlerInteraction.ObjectInteraction.IndexAnimation);
+        if (_handlerInteraction.ObjectInteraction.Config is IAnimationRigProvider animationRigProvider)
+        {
+            _beforeRunTypeAnimationRig = _switcherAnimationRig.CurrentTypeAnimationRig;
+            _switcherAnimationRig.SetAnimationRig(animationRigProvider.TypeAnimationRig);
+        }
+
+        _animator.SetFloat(DataCharacterAnimator.Params.IndexInteractive, _handlerInteraction.ObjectInteraction.AnimationInteractiveIndex);
         _animator.SetBool(DataCharacterAnimator.Params.IsInteractive, true);
     }
 
     public void Stop()
     {
-        if (_handlerInteraction.ObjectInteraction is IAnimationLayerProvider animationLayerProvider)
+        _animator.SetBool(DataCharacterAnimator.Params.IsInteractive, false);
+
+        if (_handlerInteraction.ObjectInteraction.Config is IAnimationLayerProvider animationLayerProvider)
             _switcherAnimationLayer.SetAnimationLayer(_beforeRunTypeAnimationLayer, _timeChangeAnimationLayer);
 
-        _animator.SetBool(DataCharacterAnimator.Params.IsInteractive, false);
+        if (_handlerInteraction.ObjectInteraction.Config is IAnimationRigProvider animationRigProvider)
+            _switcherAnimationRig.SetAnimationRig(_beforeRunTypeAnimationRig);
     }
 
     //AnimationEvent
@@ -84,6 +96,7 @@ public class AnimatorHandlerInteraction : MonoBehaviour, IInteractionNotifier
         if (animationEvent.animatorClipInfo.weight < _weightForAnimationEvent)
             return;
 
+        //Debug.Log(animationEvent.animatorClipInfo.clip.name);
         AfterInteract?.Invoke();
     }
 }

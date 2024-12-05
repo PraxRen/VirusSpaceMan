@@ -8,11 +8,11 @@ public class ActivatorInteractiveDEBUG : MonoBehaviour
     [SerializeField] private HandlerInteraction _handlerInteraction;
     [SerializeField] private LayerMask _objectInteractionLayer;
     [SerializeField] private float _radius;
-    [SerializeField] private bool _canInteract = true;
+    [SerializeField] private KeyCode _debug;
 
     private void Update()
     {
-        if (_canInteract == false)
+        if (Input.GetKeyDown(_debug) == false)
             return;
 
         Collider[] results = Physics.OverlapSphere(transform.position, _radius, _objectInteractionLayer, QueryTriggerInteraction.Ignore);
@@ -26,7 +26,6 @@ public class ActivatorInteractiveDEBUG : MonoBehaviour
             if (_handlerInteraction.CanStartInteract(objectInteraction))
             {
                 _handlerInteraction.StartInteract(objectInteraction);
-                _canInteract = false;
             }
         }
     }

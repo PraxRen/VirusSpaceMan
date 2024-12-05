@@ -1,38 +1,47 @@
 using UnityEngine;
 
-public class SimpleVerticalKeypad : MonoBehaviour, IComplexObjectInteraction
+public class SimpleVerticalKeypad : MonoBehaviour, IObjectInteraction
 {
+    [SerializeField] private ObjectInteractionConfig _config;
     [SerializeField] private Transform _startPoint;
+    [SerializeField] private Transform _lookAtPoint;
     [SerializeField] private float _radiusStartPoint;
 
-    public ITarget StartPoint { get; private set; }
-    public int IndexAnimation => 0;
-    public TypeAnimationLayer TypeAnimationLayer => TypeAnimationLayer.Default;
+    private int _currentIndexAnimations;
 
+    public ObjectInteractionConfig Config => _config;
+    public ITarget StartPoint { get; private set; }
+    public ITarget LookAtPoint { get; private set; }
+    public int AnimationInteractiveIndex => _config.AnimationInteractiveIndexes[_currentIndexAnimations];
 
     private void OnDrawGizmos()
     {
-        Gizmos.color = Color.cyan;
+        Gizmos.color = Color.green;
         Gizmos.DrawWireSphere(_startPoint.position, _radiusStartPoint);
+        Gizmos.color = Color.yellow;
+        Gizmos.DrawWireSphere(_lookAtPoint.position, _radiusStartPoint);
     }
 
     private void Awake()
     {
         StartPoint = new TargetTransform(_startPoint, _radiusStartPoint);
+        LookAtPoint = new TargetTransform(_lookAtPoint, _radiusStartPoint);
     }
 
-    public void InteractBefore()
-    {
-        Debug.Log("InteractBefore");
-    }
+    public void StartInteract() { }
+
+    public void InteractBefore() { }
     
-    public void Interact()
+    public void Interact() { }
+
+    public void InteractAfter() 
     {
-        Debug.Log("Interact");
+        int nextIndex = _currentIndexAnimations + 1;
+        _currentIndexAnimations = nextIndex >= _config.AnimationInteractiveIndexes.Count ? 0 : nextIndex;
     }
 
-    public void InteractAfter()
+    public void StopInteract()
     {
-        Debug.Log("InteractAfter");
+        _currentIndexAnimations = 0;
     }
 }

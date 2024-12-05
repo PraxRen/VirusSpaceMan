@@ -2622,6 +2622,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _interactionNotifierMonoBehaviour: {fileID: 2383351116305322014}
+  _lookTracker: {fileID: 5461797471941535293}
 --- !u!114 &2383351116305322014
 MonoBehaviour:
   m_ObjectHideFlags: 0

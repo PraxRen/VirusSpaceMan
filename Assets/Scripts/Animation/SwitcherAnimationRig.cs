@@ -7,33 +7,34 @@ public class SwitcherAnimationRig : MonoBehaviour
 {
     private DataAnimationRig _data;
     private Dictionary<TypeAnimationRig, Coroutine> _hashCorutineJobs = new Dictionary<TypeAnimationRig, Coroutine>();
-    
-    public AnimationRigSetting DefaultAnimationSetting { get; private set; }    
-    public AnimationRigSetting CurrentAnimationSetting { get; private set; }
+    private AnimationRigSetting _defaultAnimationSetting;    
+    private AnimationRigSetting _currentAnimationSetting;
 
+    public TypeAnimationRig DefaultTypeAnimationRig => _defaultAnimationSetting.Type;
+    public TypeAnimationRig CurrentTypeAnimationRig => _currentAnimationSetting.Type;
     public bool IsNotWork => _hashCorutineJobs.Count == 0;
 
     private void Awake()
     {
         _data = GetComponent<DataAnimationRig>();
-        DefaultAnimationSetting = _data.GetSetting(TypeAnimationRig.DefaultAim);
-        CurrentAnimationSetting = DefaultAnimationSetting;
+        _defaultAnimationSetting = _data.GetSetting(TypeAnimationRig.DefaultAim);
+        _currentAnimationSetting = _defaultAnimationSetting;
     }
 
     public void ApplyDefaultAnimationRig()
     {
         float valueDefault = 1f;
-        SetAnimationRig(DefaultAnimationSetting.Type, valueDefault);
+        SetAnimationRig(_defaultAnimationSetting.Type, valueDefault);
     }
 
     public void SetAnimationRig(TypeAnimationRig type, float targetValue = 1f)
     {
-        if (CurrentAnimationSetting.Type == type)
+        if (_currentAnimationSetting.Type == type)
             return;
 
         AnimationRigSetting newSetting = _data.GetSetting(type);
-        SetNewAnimationRig(CurrentAnimationSetting, newSetting, targetValue);
-        CurrentAnimationSetting = newSetting;
+        SetNewAnimationRig(_currentAnimationSetting, newSetting, targetValue);
+        _currentAnimationSetting = newSetting;
     }
 
     private void SetNewAnimationRig(AnimationRigSetting oldAnimationRig, AnimationRigSetting newAnimationRig, float targetValue)

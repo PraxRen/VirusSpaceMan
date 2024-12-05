@@ -7,6 +7,7 @@ public class HandlerInteraction : MonoBehaviour, IAction, IReadOnlyHandlerIntera
     private const float FactorForwardLimit = 1f;
 
     [SerializeField][SerializeInterface(typeof(IInteractionNotifier))] private MonoBehaviour _interactionNotifierMonoBehaviour;
+    [SerializeField] private TargetTracker _lookTracker;
 
     private Transform _transform;
     private Mover _mover;
@@ -57,6 +58,7 @@ public class HandlerInteraction : MonoBehaviour, IAction, IReadOnlyHandlerIntera
         _actionScheduler.StartAction(this);
         _actionScheduler.SetBlock(this);
         _currentObjectInteraction = objectInteraction;
+        _lookTracker.SetTarget(_currentObjectInteraction.LookAtPoint, Vector3.zero);
         CancelMoveToObjectInteraction();
         _jobMoveToObjectInteraction = StartCoroutine(MoveToObjectInteraction());
     }
@@ -92,31 +94,50 @@ public class HandlerInteraction : MonoBehaviour, IAction, IReadOnlyHandlerIntera
         _transform.position = startPoint.Position;
         _transform.forward = startPointForward;
         _jobMoveToObjectInteraction = null;
+        _currentObjectInteraction.StartInteract();
         _interactionNotifier.Run();
     }
 
     private void StopInteract()
     {
         _interactionNotifier.Stop();
+        _currentObjectInteraction.StopInteract();
         _mover.UnblockRotation();
+        _lookTracker.ResetTarget();
         _currentObjectInteraction = null;
         IsActive = false;
         _actionScheduler.ClearAction(this);
+        Debug.Log("StopInteract");
     }
 
     private void OnBeforeInteract()
     {
         _currentObjectInteraction.InteractBefore();
+        Debug.Log("OnBeforeInteract");
     }
 
     private void OnInteracted()
     {
         _currentObjectInteraction.Interact();
+        Debug.Log("OnInteracted");
     }
 
     private void OnAfterInteract()
     {
-        _currentObjectInteraction.InteractAfter();
+        Debug.Log("OnAfterInteract");
+
+        if (_currentObjectInteraction.Config.IsLoop)
+        {
+            _interactionNotifier.Stop();
+            _currentObjectInteraction.InteractAfter();
+            _interactionNotifier.Run();
+            return;
+        }
+        else
+        {
+            _currentObjectInteraction.InteractAfter();
+        }
+
         StopInteract();
     }
 }
