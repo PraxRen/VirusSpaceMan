@@ -45,6 +45,7 @@ public abstract class Character : MonoBehaviour, IReadOnlyCharacter
         Mover.enabled = true;
         Fighter.enabled = true;
         ScannerDamageable.enabled = true;
+        HandlerInteraction.enabled = true;
         EnableAddon();
     }
 
@@ -59,6 +60,7 @@ public abstract class Character : MonoBehaviour, IReadOnlyCharacter
         Mover.enabled = false;
         Fighter.enabled = false;
         ScannerDamageable.enabled = false;
+        HandlerInteraction.enabled = false;
         DisableAddon();
     }
 

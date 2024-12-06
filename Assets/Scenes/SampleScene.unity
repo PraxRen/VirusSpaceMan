@@ -1464,12 +1464,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2035735518996174069, guid: 21685c10a89cef242847b4a2c729e36c, type: 3}
       propertyPath: m_WarningMessage
-      value: "\nBinding warning: Some generic clip(s) animate transforms that are
-        already bound by a Humanoid avatar. These transforms can only be changed
-        by Humanoid clips.\n\tTransform 'Elbow_R'\n\tTransform 'Clavicle_L'\n\tTransform
-        'Neck'\n\tTransform 'Elbow_L'\n\tTransform 'Head'\n\tTransform 'Spine_03'\n\tTransform
-        'Hand_L'\n\tTransform 'Shoulder_L'\n\tTransform 'Clavicle_R'\n\tTransform
-        'Shoulder_R'\n\tand more ..."
+      value: 
       objectReference: {fileID: 0}
     - target: {fileID: 2151633010312285633, guid: 21685c10a89cef242847b4a2c729e36c, type: 3}
       propertyPath: _defaultCells.Array.data[0].<Item>k__BackingField
@@ -1625,11 +1620,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1917095466079424722, guid: a5da0f04edbf85e45a62a795afebc55d, type: 3}
       propertyPath: m_AnchorMax.x
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1917095466079424722, guid: a5da0f04edbf85e45a62a795afebc55d, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3414792835267020359, guid: a5da0f04edbf85e45a62a795afebc55d, type: 3}
       propertyPath: _donorRoot
@@ -1841,7 +1836,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6839966602787136849, guid: a5da0f04edbf85e45a62a795afebc55d, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

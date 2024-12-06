@@ -16,6 +16,7 @@ public class AnimatorHandlerInteraction : MonoBehaviour, IInteractionNotifier
     private IReadOnlyHandlerInteraction _handlerInteraction;
     private TypeAnimationLayer _beforeRunTypeAnimationLayer;
     private TypeAnimationRig _beforeRunTypeAnimationRig;
+    private bool _isRunning;
 
     public event Action BeforeInteract;
     public event Action Interacted;
@@ -48,19 +49,22 @@ public class AnimatorHandlerInteraction : MonoBehaviour, IInteractionNotifier
             _switcherAnimationRig.SetAnimationRig(animationRigProvider.TypeAnimationRig);
         }
 
+        _isRunning = true;
         _animator.SetFloat(DataCharacterAnimator.Params.IndexInteractive, _handlerInteraction.ObjectInteraction.AnimationInteractiveIndex);
         _animator.SetBool(DataCharacterAnimator.Params.IsInteractive, true);
     }
 
     public void Stop()
     {
-        _animator.SetBool(DataCharacterAnimator.Params.IsInteractive, false);
+        _isRunning = false;
 
         if (_handlerInteraction.ObjectInteraction.Config is IAnimationLayerProvider animationLayerProvider)
             _switcherAnimationLayer.SetAnimationLayer(_beforeRunTypeAnimationLayer, _timeChangeAnimationLayer);
 
         if (_handlerInteraction.ObjectInteraction.Config is IAnimationRigProvider animationRigProvider)
             _switcherAnimationRig.SetAnimationRig(_beforeRunTypeAnimationRig);
+
+        _animator.SetBool(DataCharacterAnimator.Params.IsInteractive, false);
     }
 
     //AnimationEvent
@@ -70,6 +74,9 @@ public class AnimatorHandlerInteraction : MonoBehaviour, IInteractionNotifier
             return;
 
         if (animationEvent.animatorClipInfo.weight < _weightForAnimationEvent)
+            return;
+
+        if (_isRunning == false)
             return;
 
         BeforeInteract?.Invoke();
@@ -84,6 +91,9 @@ public class AnimatorHandlerInteraction : MonoBehaviour, IInteractionNotifier
         if (animationEvent.animatorClipInfo.weight < _weightForAnimationEvent)
             return;
 
+        if (_isRunning == false)
+            return;
+
         Interacted?.Invoke();
     }
 
@@ -94,6 +104,9 @@ public class AnimatorHandlerInteraction : MonoBehaviour, IInteractionNotifier
             return;
 
         if (animationEvent.animatorClipInfo.weight < _weightForAnimationEvent)
+            return;
+
+        if (_isRunning == false)
             return;
 
         //Debug.Log(animationEvent.animatorClipInfo.clip.name);

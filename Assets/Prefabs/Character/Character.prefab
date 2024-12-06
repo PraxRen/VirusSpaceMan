@@ -2401,7 +2401,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _scannerStrategyMonoBehaviour: {fileID: 11400000, guid: 80de86d438a2c7d408e16fbf6b596e11, type: 2}
   _defaultFrequencyUpdate: 0.2
-  _radiusBase: 1
+  _radiusBase: 0
 --- !u!114 &8834457130469672473
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4108,7 +4108,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _pointDefault: {fileID: 6928294587159783324}
-  _speedUpdatePositionDefault: 100
+  _speedUpdatePositionDefault: 20
   _speedUpdatePositionTarget: 20
   _color: {r: 1, g: 0.9462535, b: 0, a: 1}
   _size: 0.1

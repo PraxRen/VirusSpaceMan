@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using UnityEngine;
 
@@ -9,12 +10,17 @@ public class HandlerInteraction : MonoBehaviour, IAction, IReadOnlyHandlerIntera
     [SerializeField][SerializeInterface(typeof(IInteractionNotifier))] private MonoBehaviour _interactionNotifierMonoBehaviour;
     [SerializeField] private TargetTracker _lookTracker;
 
+    public event Action<IReadOnlyObjectInteraction> StartedInteract;
+    public event Action<IReadOnlyObjectInteraction> Interacted;
+    public event Action<IReadOnlyObjectInteraction> StoppedInteract;
+
     private Transform _transform;
     private Mover _mover;
     private ActionScheduler _actionScheduler;
     private IInteractionNotifier _interactionNotifier;
     private Coroutine _jobMoveToObjectInteraction;
     private IObjectInteraction _currentObjectInteraction;
+    private Coroutine _jobWaitAnimationLoopTimeout;
 
     public bool IsActive { get; private set; }
     public IReadOnlyObjectInteraction ObjectInteraction => _currentObjectInteraction;
@@ -39,11 +45,13 @@ public class HandlerInteraction : MonoBehaviour, IAction, IReadOnlyHandlerIntera
         _interactionNotifier.BeforeInteract -= OnBeforeInteract;
         _interactionNotifier.Interacted -= OnInteracted;
         _interactionNotifier.AfterInteract -= OnAfterInteract;
+        Cancel();
     }
 
     public void Cancel()
     {
         CancelMoveToObjectInteraction();
+        CancelWaitAnimationLoopTimeout();
         StopInteract();
     }
 
@@ -61,6 +69,7 @@ public class HandlerInteraction : MonoBehaviour, IAction, IReadOnlyHandlerIntera
         _lookTracker.SetTarget(_currentObjectInteraction.LookAtPoint, Vector3.zero);
         CancelMoveToObjectInteraction();
         _jobMoveToObjectInteraction = StartCoroutine(MoveToObjectInteraction());
+        StartedInteract?.Invoke(_currentObjectInteraction);
     }
 
     private void CancelMoveToObjectInteraction()
@@ -79,7 +88,7 @@ public class HandlerInteraction : MonoBehaviour, IAction, IReadOnlyHandlerIntera
         Vector3 startPointForward = startPoint.Rotation * Vector3.forward;
 
 
-        while (startPoint.CanReach(_transform) == false || Mathf.Approximately(factorForward, FactorForwardLimit) == false) 
+        while (startPoint.CanReach(_transform) == false || Mathf.Approximately(factorForward, FactorForwardLimit) == false)
         {
             factorForward = Vector3.Dot(startPointForward, _transform.forward);
             _mover.LookAtDirection(new Vector2(startPointForward.x, startPointForward.z));
@@ -107,6 +116,7 @@ public class HandlerInteraction : MonoBehaviour, IAction, IReadOnlyHandlerIntera
         _currentObjectInteraction = null;
         IsActive = false;
         _actionScheduler.ClearAction(this);
+        StoppedInteract?.Invoke(_currentObjectInteraction);
         Debug.Log("StopInteract");
     }
 
@@ -119,6 +129,7 @@ public class HandlerInteraction : MonoBehaviour, IAction, IReadOnlyHandlerIntera
     private void OnInteracted()
     {
         _currentObjectInteraction.Interact();
+        Interacted?.Invoke(_currentObjectInteraction);
         Debug.Log("OnInteracted");
     }
 
@@ -128,16 +139,31 @@ public class HandlerInteraction : MonoBehaviour, IAction, IReadOnlyHandlerIntera
 
         if (_currentObjectInteraction.Config.IsLoop)
         {
-            _interactionNotifier.Stop();
-            _currentObjectInteraction.InteractAfter();
-            _interactionNotifier.Run();
+            CancelWaitAnimationLoopTimeout();
+            _jobWaitAnimationLoopTimeout = StartCoroutine(WaitAnimationLoopTimeout());
+
             return;
         }
-        else
-        {
-            _currentObjectInteraction.InteractAfter();
-        }
 
+        _currentObjectInteraction.InteractAfter();
         StopInteract();
+    }
+
+    private void CancelWaitAnimationLoopTimeout()
+    {
+        if (_jobWaitAnimationLoopTimeout == null)
+            return;
+
+        StopCoroutine(_jobWaitAnimationLoopTimeout);
+        _jobWaitAnimationLoopTimeout = null;
+    }
+
+    private IEnumerator WaitAnimationLoopTimeout()
+    {
+        _interactionNotifier.Stop();
+        yield return new WaitForSeconds(_currentObjectInteraction.Config.AnimationLoopTimeout);
+        _currentObjectInteraction.InteractAfter();
+        _interactionNotifier.Run();
+        _jobWaitAnimationLoopTimeout = null;
     }
 }
