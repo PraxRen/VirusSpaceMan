@@ -2,7 +2,7 @@ using System;
 using UnityEngine;
 
 [RequireComponent(typeof(Mover), typeof(Fighter), typeof(Scanner))]
-[RequireComponent(typeof(HandlerInteraction))]
+[RequireComponent(typeof(Interactor))]
 public abstract class Character : MonoBehaviour, IReadOnlyCharacter
 {
     [SerializeField][ReadOnly] private string _id;
@@ -18,7 +18,7 @@ public abstract class Character : MonoBehaviour, IReadOnlyCharacter
     protected Mover Mover { get; private set; }
     protected Scanner ScannerDamageable { get; private set; }
     protected Fighter Fighter { get; private set; }
-    protected HandlerInteraction HandlerInteraction { get; private set; }
+    protected Interactor Interactor { get; private set; }
 
     private void Awake()
     {
@@ -30,7 +30,7 @@ public abstract class Character : MonoBehaviour, IReadOnlyCharacter
         Mover = GetComponent<Mover>();
         Fighter = GetComponent<Fighter>();
         ScannerDamageable = GetComponent<Scanner>();
-        HandlerInteraction = GetComponent<HandlerInteraction>();
+        Interactor = GetComponent<Interactor>();
         AwakeAddon();
     }
 
@@ -45,7 +45,7 @@ public abstract class Character : MonoBehaviour, IReadOnlyCharacter
         Mover.enabled = true;
         Fighter.enabled = true;
         ScannerDamageable.enabled = true;
-        HandlerInteraction.enabled = true;
+        Interactor.enabled = true;
         EnableAddon();
     }
 
@@ -60,7 +60,7 @@ public abstract class Character : MonoBehaviour, IReadOnlyCharacter
         Mover.enabled = false;
         Fighter.enabled = false;
         ScannerDamageable.enabled = false;
-        HandlerInteraction.enabled = false;
+        Interactor.enabled = false;
         DisableAddon();
     }
 

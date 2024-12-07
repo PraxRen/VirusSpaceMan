@@ -16,8 +16,8 @@ public class Player : Character
         Fighter.RemovedWeapon += OnRemovedWeapon;
         ScannerDamageable.ChangedCurrentTarget += OnChangedTarget;
         ScannerDamageable.RemovedCurrentTarget += OnRemovedTarget;
-        HandlerInteraction.StartedInteract += OnStartedInteract;
-        HandlerInteraction.StoppedInteract += OnStoppedInteract;
+        Interactor.StartedInteract += OnStartedInteract;
+        Interactor.StoppedInteract += OnStoppedInteract;
         _inputReader.ChangedScrollNextTarget += OnChangedScrollNextTarget;
         _inputReader.ChangedScrollPreviousTarget += OnChangedScrollPreviousTarget;
 
@@ -33,8 +33,8 @@ public class Player : Character
         Fighter.RemovedWeapon -= OnRemovedWeapon;
         ScannerDamageable.ChangedCurrentTarget -= OnChangedTarget;
         ScannerDamageable.RemovedCurrentTarget -= OnRemovedTarget;
-        HandlerInteraction.StartedInteract -= OnStartedInteract;
-        HandlerInteraction.StoppedInteract -= OnStoppedInteract;
+        Interactor.StartedInteract -= OnStartedInteract;
+        Interactor.StoppedInteract -= OnStoppedInteract;
         _inputReader.ChangedScrollNextTarget -= OnChangedScrollNextTarget;
         _inputReader.ChangedScrollPreviousTarget -= OnChangedScrollPreviousTarget;
     }
@@ -52,8 +52,8 @@ public class Player : Character
 
         if (Mover.CanMove() == false)
         {
-            if (HandlerInteraction.IsActive)
-                HandlerInteraction.Cancel();
+            if (Interactor.IsActive)
+                Interactor.Cancel();
 
             return;
         }

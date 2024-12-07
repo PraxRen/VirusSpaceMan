@@ -17,7 +17,7 @@ public class PlaceInterest : MonoBehaviour, IReadOnlyPlaceInterest
 
     public bool IsEmpty {  get; private set; }
     public bool HasHandlerInteractionInside { get; private set; }
-    public IReadOnlyHandlerInteraction HandlerInteraction { get; private set; }
+    public IReadOnlyInteractor HandlerInteraction { get; private set; }
     public Vector3 Position => _transform.position;
     public Quaternion Rotation => _transform.rotation;
 
@@ -56,7 +56,7 @@ public class PlaceInterest : MonoBehaviour, IReadOnlyPlaceInterest
         _waitUpdateCollision = waitUpdateCollision;
     }
 
-    public void SetHandlerInteraction(IReadOnlyHandlerInteraction handlerInteraction)
+    public void SetHandlerInteraction(IReadOnlyInteractor handlerInteraction)
     {
         if (IsEmpty == false)
             throw new InvalidOperationException("Place not is empty!");
@@ -66,7 +66,7 @@ public class PlaceInterest : MonoBehaviour, IReadOnlyPlaceInterest
         _jobUpdateCollision = StartCoroutine(UpdateCollision());
     }
 
-    public bool TryGetObjectInteraction(IReadOnlyHandlerInteraction handlerInteraction, out IObjectInteraction objectInteraction)
+    public bool TryGetObjectInteraction(IReadOnlyInteractor handlerInteraction, out IObjectInteraction objectInteraction)
     {
         objectInteraction = null;
 
@@ -144,7 +144,7 @@ public class PlaceInterest : MonoBehaviour, IReadOnlyPlaceInterest
 
     private bool IsHandlerInteraction(Transform transform)
     {
-        if (transform.TryGetComponent(out IReadOnlyHandlerInteraction handlerInteraction) == false)
+        if (transform.TryGetComponent(out IReadOnlyInteractor handlerInteraction) == false)
             return false;
 
         if (handlerInteraction != HandlerInteraction)

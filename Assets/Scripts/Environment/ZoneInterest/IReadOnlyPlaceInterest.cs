@@ -6,8 +6,8 @@ public interface IReadOnlyPlaceInterest : ITarget
 
     bool IsEmpty { get; }
     bool HasHandlerInteractionInside { get; }
-    IReadOnlyHandlerInteraction HandlerInteraction { get; }
+    IReadOnlyInteractor HandlerInteraction { get; }
 
-    void SetHandlerInteraction(IReadOnlyHandlerInteraction handlerInteraction);
-    bool TryGetObjectInteraction(IReadOnlyHandlerInteraction handlerInteraction, out IObjectInteraction objectInteraction);
+    void SetHandlerInteraction(IReadOnlyInteractor handlerInteraction);
+    bool TryGetObjectInteraction(IReadOnlyInteractor handlerInteraction, out IObjectInteraction objectInteraction);
 }

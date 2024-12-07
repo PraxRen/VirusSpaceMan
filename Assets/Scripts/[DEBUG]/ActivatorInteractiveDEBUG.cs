@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class ActivatorInteractiveDEBUG : MonoBehaviour
 {
-    [SerializeField] private HandlerInteraction _handlerInteraction;
+    [SerializeField] private Interactor _interactor;
     [SerializeField] private LayerMask _objectInteractionLayer;
     [SerializeField] private float _radius;
     [SerializeField] private KeyCode _debug;
@@ -23,9 +23,9 @@ public class ActivatorInteractiveDEBUG : MonoBehaviour
 
         if (hit.TryGetComponent(out IObjectInteraction objectInteraction))
         {
-            if (_handlerInteraction.CanStartInteract(objectInteraction))
+            if (_interactor.CanStartInteract(objectInteraction))
             {
-                _handlerInteraction.StartInteract(objectInteraction);
+                _interactor.StartInteract(objectInteraction);
             }
         }
     }

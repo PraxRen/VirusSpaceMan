@@ -6,7 +6,7 @@ using UnityEngine;
 public class StateSearchPlaceInterest : State
 {
     private IReadOnlyHandlerZoneEnvironment _handlerZoneEnvironment;
-    private IReadOnlyHandlerInteraction _handlerInteraction;
+    private IReadOnlyInteractor _handlerInteraction;
     private IReadOnlyPlaceInterest _placeInterest;
     private float _timeDelayComplete;
     private bool _isFoundPlace;
@@ -17,7 +17,7 @@ public class StateSearchPlaceInterest : State
             throw new InvalidOperationException($"Initialization error \"{nameof(State)}\"! The component \"{nameof(IReadOnlyHandlerZoneEnvironment)}\" required for operation \"{GetType().Name}\".");
 
         if (character.TryGetComponent(out _handlerInteraction) == false)
-            throw new InvalidOperationException($"Initialization error \"{nameof(State)}\"! The component \"{nameof(IReadOnlyHandlerInteraction)}\" required for operation \"{GetType().Name}\".");
+            throw new InvalidOperationException($"Initialization error \"{nameof(State)}\"! The component \"{nameof(IReadOnlyInteractor)}\" required for operation \"{GetType().Name}\".");
 
         _timeDelayComplete = timeDelayComplete;
     }

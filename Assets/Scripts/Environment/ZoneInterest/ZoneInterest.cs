@@ -48,7 +48,7 @@ public class ZoneInterest : MonoBehaviour
         Gizmos.DrawCube(center, _gizmosSizeZone);
     }
 
-    public bool TryGetEmptyPlace(IReadOnlyHandlerInteraction handlerInteraction, out IReadOnlyPlaceInterest placeInteres)
+    public bool TryGetEmptyPlace(IReadOnlyInteractor handlerInteraction, out IReadOnlyPlaceInterest placeInteres)
     {
         placeInteres = null;
 
