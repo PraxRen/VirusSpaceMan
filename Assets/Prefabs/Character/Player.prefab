@@ -449,15 +449,15 @@ PrefabInstance:
       objectReference: {fileID: 88914280985365669}
     - target: {fileID: 2144771935013928198, guid: 653af2d372795cb4d8d0cc3a42002b70, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0.00026659563
+      value: 0.00026607513
       objectReference: {fileID: 0}
     - target: {fileID: 2144771935013928198, guid: 653af2d372795cb4d8d0cc3a42002b70, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 12.46339
+      value: 12.463389
       objectReference: {fileID: 0}
     - target: {fileID: 2144771935013928198, guid: 653af2d372795cb4d8d0cc3a42002b70, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -7.6305046
+      value: -7.630504
       objectReference: {fileID: 0}
     - target: {fileID: 2144771935013928198, guid: 653af2d372795cb4d8d0cc3a42002b70, type: 3}
       propertyPath: m_LocalRotation.w
@@ -531,15 +531,15 @@ PrefabInstance:
       objectReference: {fileID: 1282953391994682413}
     - target: {fileID: 7089104936429261207, guid: b0325fc8c79f30347a82bdb58e4dea37, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0.00026659563
+      value: 0.00026607513
       objectReference: {fileID: 0}
     - target: {fileID: 7089104936429261207, guid: b0325fc8c79f30347a82bdb58e4dea37, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 12.46339
+      value: 12.463389
       objectReference: {fileID: 0}
     - target: {fileID: 7089104936429261207, guid: b0325fc8c79f30347a82bdb58e4dea37, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -7.6305046
+      value: -7.630504
       objectReference: {fileID: 0}
     - target: {fileID: 7089104936429261207, guid: b0325fc8c79f30347a82bdb58e4dea37, type: 3}
       propertyPath: m_LocalRotation.w
@@ -739,6 +739,10 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 6
       objectReference: {fileID: 0}
+    - target: {fileID: 8792028369519530837, guid: 44be744388e3e254ab9946f7963209cc, type: 3}
+      propertyPath: _defaultModeMover
+      value: 
+      objectReference: {fileID: 11400000, guid: 797e994ce0a45124fa207bacc9c82366, type: 2}
     - target: {fileID: 9054179793945102924, guid: 44be744388e3e254ab9946f7963209cc, type: 3}
       propertyPath: _layerMaskCollision.m_Bits
       value: 6657

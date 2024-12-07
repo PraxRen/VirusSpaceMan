@@ -66,7 +66,7 @@ public abstract class State : IReadOnlyState
 
     public bool CanUpdate()
     {
-        return Status == StatusState.Entered && CanUpdateAddon();
+        return Status == StatusState.Entered;
     }
 
     public virtual void Update() { }
@@ -99,8 +99,6 @@ public abstract class State : IReadOnlyState
     protected virtual void ExitAfterAddon() { }
 
     protected virtual void TickAddon(float deltaTime) { }
-
-    protected virtual bool CanUpdateAddon() => true;
 
     protected void Complete() => UpdateStatus(StatusState.Completed);
 

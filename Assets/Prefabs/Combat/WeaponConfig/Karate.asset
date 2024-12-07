@@ -27,5 +27,4 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 46f1030777e6e8d45abdab2c46b34e8d, type: 2}
   _typeAnimationLayer: 2
   _typeAnimationRig: 1
-  _defaultModeMover: {fileID: 11400000, guid: ea2f701029778194592a4f57854362ae, type: 2}
-  _activeModeMover: {fileID: 11400000, guid: 9c06c0e4ef332674a8823a6a24270bc3, type: 2}
+  _modeMover: {fileID: 11400000, guid: 9c06c0e4ef332674a8823a6a24270bc3, type: 2}

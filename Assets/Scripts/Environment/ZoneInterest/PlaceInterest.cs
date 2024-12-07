@@ -17,7 +17,7 @@ public class PlaceInterest : MonoBehaviour, IReadOnlyPlaceInterest
 
     public bool IsEmpty {  get; private set; }
     public bool HasHandlerInteractionInside { get; private set; }
-    public HandlerInteraction HandlerInteraction { get; private set; }
+    public IReadOnlyHandlerInteraction HandlerInteraction { get; private set; }
     public Vector3 Position => _transform.position;
     public Quaternion Rotation => _transform.rotation;
 
@@ -56,7 +56,7 @@ public class PlaceInterest : MonoBehaviour, IReadOnlyPlaceInterest
         _waitUpdateCollision = waitUpdateCollision;
     }
 
-    public void SetHandlerInteraction(HandlerInteraction handlerInteraction)
+    public void SetHandlerInteraction(IReadOnlyHandlerInteraction handlerInteraction)
     {
         if (IsEmpty == false)
             throw new InvalidOperationException("Place not is empty!");
@@ -66,17 +66,24 @@ public class PlaceInterest : MonoBehaviour, IReadOnlyPlaceInterest
         _jobUpdateCollision = StartCoroutine(UpdateCollision());
     }
 
-    public bool CanRunInteract() => HandlerInteraction.CanStartInteract(_objectInteraction);
-
-    public void RunInteract()
+    public bool TryGetObjectInteraction(IReadOnlyHandlerInteraction handlerInteraction, out IObjectInteraction objectInteraction)
     {
+        objectInteraction = null;
+
         if (IsEmpty)
-            throw new InvalidOperationException("Place is empty!");
+            return false;
 
         if (HasHandlerInteractionInside == false)
-            throw new InvalidOperationException("The HandlerInteraction is out of place!");
+            return false;
 
-        HandlerInteraction.StartInteract(_objectInteraction);
+        if (handlerInteraction != HandlerInteraction)
+            return false;
+
+        if (SimpleUtils.IsLayerInclud(_objectInteraction.Layer, handlerInteraction.LayerObjectInteraction) == false)
+            return false;
+
+        objectInteraction = _objectInteraction;
+        return true;
     }
 
     public void Clear()
@@ -137,7 +144,7 @@ public class PlaceInterest : MonoBehaviour, IReadOnlyPlaceInterest
 
     private bool IsHandlerInteraction(Transform transform)
     {
-        if (transform.TryGetComponent(out HandlerInteraction handlerInteraction) == false)
+        if (transform.TryGetComponent(out IReadOnlyHandlerInteraction handlerInteraction) == false)
             return false;
 
         if (handlerInteraction != HandlerInteraction)

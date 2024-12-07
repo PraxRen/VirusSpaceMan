@@ -9,8 +9,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 76a7575da0b0d394a8e5e5af611ddd2c, type: 3}
-  m_Name: ModeMoverKarateActive
+  m_Script: {fileID: 11500000, guid: 46021ec5a05436546ad8bc7bd9eae012, type: 3}
+  m_Name: DefaultStateInteractionConfig
   m_EditorClassIdentifier: 
-  _speedMove: 4
-  _speedRotation: 15
+  _id: 6856092c-88f6-4e94-a210-7bed0c61f716
+  _timeSecondsWaitUpdate: 0.3

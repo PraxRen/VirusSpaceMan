@@ -77,8 +77,24 @@ PrefabInstance:
       value: AICharacter
       objectReference: {fileID: 0}
     - target: {fileID: 8792028369519530837, guid: 44be744388e3e254ab9946f7963209cc, type: 3}
+      propertyPath: _defaultModeMover
+      value: 
+      objectReference: {fileID: 11400000, guid: 8e534774c0be0f543b82cdc824763055, type: 2}
+    - target: {fileID: 8792028369519530837, guid: 44be744388e3e254ab9946f7963209cc, type: 3}
+      propertyPath: _modeMoverMonoBehaviourChangers.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 8792028369519530837, guid: 44be744388e3e254ab9946f7963209cc, type: 3}
       propertyPath: _switchesModeMoverMonoBehaviour.Array.size
       value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 8792028369519530837, guid: 44be744388e3e254ab9946f7963209cc, type: 3}
+      propertyPath: _modeMoverMonoBehaviourChangers.Array.data[1]
+      value: 
+      objectReference: {fileID: 8662365238401388393}
+    - target: {fileID: 8792028369519530837, guid: 44be744388e3e254ab9946f7963209cc, type: 3}
+      propertyPath: _modeMoverMonoBehaviourChangers.Array.data[2]
+      value: 
       objectReference: {fileID: 0}
     - target: {fileID: 8792028369519530837, guid: 44be744388e3e254ab9946f7963209cc, type: 3}
       propertyPath: _switchesModeMoverMonoBehaviour.Array.data[2]

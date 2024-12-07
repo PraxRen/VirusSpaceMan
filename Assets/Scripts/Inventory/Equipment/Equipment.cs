@@ -2,14 +2,13 @@ using System;
 using System.Linq;
 using UnityEngine;
 
-public class Equipment : MonoBehaviour, IEquipmentReadOnly, IChangerModeMover
+public class Equipment : MonoBehaviour, IEquipmentReadOnly
 {
     [SerializeField] private EquipmentCell[] _defaultCells;
 
     private EquipmentCell[] _equipmentCells;
 
     public event Action<IEquipmentCellReanOnly> ChangedCell;
-    public event Action<ModeMover> ChangedModeMover;
 
     private void Awake()
     {
@@ -31,13 +30,6 @@ public class Equipment : MonoBehaviour, IEquipmentReadOnly, IChangerModeMover
     {
         EquipmentCell equipmentCell = FindCell(type);
         equipmentCell.AddItem(item);
-
-        if (equipmentCell.Type == EquipmentType.Weapon)
-        {
-            IModeMoverProvider modeMoverProvider = equipmentCell.Item as IModeMoverProvider;
-            ChangedModeMover?.Invoke(modeMoverProvider.DefaultModeMover);
-        }
-
         ChangedCell?.Invoke(equipmentCell);
     }
 

@@ -9,7 +9,7 @@ public class StateSearchPatrolPath : State
     private IReadOnlyHandlerZoneEnvironment _handlerZoneEnvironment;
     private Patrol _patrol;
     private float _timeDelayComplete;
-    private bool _isFoundPlace;
+    private bool _isFoundPatrolPath;
 
     public StateSearchPatrolPath(string id, AICharacter character, float timeSecondsWaitHandle, float timeDelayComplete) : base(id, character, timeSecondsWaitHandle)
     {
@@ -24,12 +24,15 @@ public class StateSearchPatrolPath : State
 
     public override void Update()
     {
+        if (_isFoundPatrolPath)
+            return;
+
         PatrolPath patrolPath = FindPatrolPath(out int indexWaypoint);
 
         if (patrolPath == null)
             return;
 
-        _isFoundPlace = true;
+        _isFoundPatrolPath = true;
         Character.MoveTracker.SetTarget(patrolPath.GetWaypoint(indexWaypoint), Vector3.zero);
         _patrol.ResetPatrolPath(patrolPath, indexWaypoint);
         Timer timerDelayComplete = new Timer(_timeDelayComplete);
@@ -37,14 +40,9 @@ public class StateSearchPatrolPath : State
         AddTimer(timerDelayComplete);
     }
 
-    protected override bool CanUpdateAddon()
-    {
-        return _isFoundPlace == false;
-    }
-
     protected override void ExitAfterAddon()
     {
-        _isFoundPlace = false;
+        _isFoundPatrolPath = false;
     }
 
     private PatrolPath FindPatrolPath(out int indexWaypoint)

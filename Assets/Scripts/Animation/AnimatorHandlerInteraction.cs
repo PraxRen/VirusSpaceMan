@@ -1,6 +1,4 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(Animator), typeof(SwitcherAnimationLayer), typeof(SwitcherAnimationRig))]
@@ -58,11 +56,14 @@ public class AnimatorHandlerInteraction : MonoBehaviour, IInteractionNotifier
     {
         _isRunning = false;
 
-        if (_handlerInteraction.ObjectInteraction.Config is IAnimationLayerProvider animationLayerProvider)
-            _switcherAnimationLayer.SetAnimationLayer(_beforeRunTypeAnimationLayer, _timeChangeAnimationLayer);
+        if (_handlerInteraction.ObjectInteraction != null)
+        {
+            if (_handlerInteraction.ObjectInteraction.Config is IAnimationLayerProvider animationLayerProvider)
+                _switcherAnimationLayer.SetAnimationLayer(_beforeRunTypeAnimationLayer, _timeChangeAnimationLayer);
 
-        if (_handlerInteraction.ObjectInteraction.Config is IAnimationRigProvider animationRigProvider)
-            _switcherAnimationRig.SetAnimationRig(_beforeRunTypeAnimationRig);
+            if (_handlerInteraction.ObjectInteraction.Config is IAnimationRigProvider animationRigProvider)
+                _switcherAnimationRig.SetAnimationRig(_beforeRunTypeAnimationRig);
+        }
 
         _animator.SetBool(DataCharacterAnimator.Params.IsInteractive, false);
     }

@@ -7,12 +7,15 @@ public class SimpleVerticalKeypad : MonoBehaviour, IObjectInteraction
     [SerializeField] private Transform _lookAtPoint;
     [SerializeField] private float _radiusStartPoint;
 
+    private GameObject _gameObject;
     private int _currentIndexAnimations;
 
     public ObjectInteractionConfig Config => _config;
     public ITarget StartPoint { get; private set; }
     public ITarget LookAtPoint { get; private set; }
     public int AnimationInteractiveIndex => _config.AnimationInteractiveIndexes[_currentIndexAnimations];
+    public int Layer => _gameObject.layer;
+    public bool IsActive {  get; private set; }
 
     private void OnDrawGizmos()
     {
@@ -24,11 +27,15 @@ public class SimpleVerticalKeypad : MonoBehaviour, IObjectInteraction
 
     private void Awake()
     {
+        _gameObject = gameObject;
         StartPoint = new TargetTransform(_startPoint, _radiusStartPoint);
         LookAtPoint = new TargetTransform(_lookAtPoint, _radiusStartPoint);
     }
 
-    public void StartInteract() { }
+    public void StartInteract() 
+    {
+        IsActive = true;
+    }
 
     public void InteractBefore() { }
     
@@ -43,5 +50,6 @@ public class SimpleVerticalKeypad : MonoBehaviour, IObjectInteraction
     public void StopInteract()
     {
         _currentIndexAnimations = 0;
+        IsActive = false;
     }
 }

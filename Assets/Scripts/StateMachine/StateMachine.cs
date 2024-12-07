@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-public class StateMachine : MonoBehaviour, IChangerModeMover
+public class StateMachine : MonoBehaviour, IModeMoverChanger
 {
     [SerializeField] private AICharacter _character;
     [SerializeField] private StateMachineConfig _config;
@@ -15,7 +15,8 @@ public class StateMachine : MonoBehaviour, IChangerModeMover
     private Coroutine _jobUpdateState;
 
     public event Action<IReadOnlyState> ChangedState;
-    public event Action<ModeMover> ChangedModeMover;
+    public event Action<IModeMoverProvider> AddedModeMover;
+    public event Action<IModeMoverProvider> RemovedModeMover;
 
     public IReadOnlyState State => _currentState;
 
@@ -81,14 +82,14 @@ public class StateMachine : MonoBehaviour, IChangerModeMover
     private void SetCurrentState(State startState)
     {
 #if UNITY_EDITOR
-        Debug.Log($"SetCurrentState: {_character.Transform.parent.name} | {_currentState?.GetType().Name} -> {startState.GetType().Name}");
+        //Debug.Log($"SetCurrentState: {_character.Transform.parent.name} | {_currentState?.GetType().Name} -> {startState.GetType().Name}");
 #endif
         _currentState = startState;
         _currentState.GetedNextState += Transit;
         _currentState.Enter();
 
         if (_currentState is IModeMoverProvider modeMoverProvider)
-            ChangedModeMover?.Invoke(modeMoverProvider.ActiveModeMover);
+            AddedModeMover?.Invoke(modeMoverProvider);
 
         ChangedState?.Invoke(_currentState);
     }
@@ -115,8 +116,6 @@ public class StateMachine : MonoBehaviour, IChangerModeMover
         _currentState.Exit();
 
         if (_currentState is IModeMoverProvider modeMoverProvider)
-        {
-            ChangedModeMover?.Invoke(null);
-        }
+            RemovedModeMover?.Invoke(modeMoverProvider);
     }
 }

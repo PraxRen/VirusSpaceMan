@@ -32,6 +32,10 @@ PrefabInstance:
       propertyPath: _layerMaskDamageable.m_Bits
       value: 8256
       objectReference: {fileID: 0}
+    - target: {fileID: 4410197611544212695, guid: 7d42cd749514eaf4ea6c228b66310aad, type: 3}
+      propertyPath: _factorSpeed
+      value: 0.65
+      objectReference: {fileID: 0}
     - target: {fileID: 4846679268636970269, guid: 7d42cd749514eaf4ea6c228b66310aad, type: 3}
       propertyPath: _layerMaskCollision.m_Bits
       value: 10753

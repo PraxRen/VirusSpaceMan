@@ -4,7 +4,12 @@ public class SimpleUtils
 {
     public static bool IsLayerInclud(GameObject gameObject, LayerMask layerMask)
     {
-        return (layerMask.value & (1 << gameObject.layer)) > 0;
+        return IsLayerInclud(gameObject.layer, layerMask);
+    }
+
+    public static bool IsLayerInclud(int layer, LayerMask layerMask)
+    {
+        return (layerMask.value & (1 << layer)) > 0;
     }
 
     public static bool TryLuck(float value)

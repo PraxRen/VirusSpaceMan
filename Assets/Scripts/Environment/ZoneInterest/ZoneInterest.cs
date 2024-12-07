@@ -48,7 +48,7 @@ public class ZoneInterest : MonoBehaviour
         Gizmos.DrawCube(center, _gizmosSizeZone);
     }
 
-    public bool TryTakeEmptyPlace(HandlerInteraction handlerInteraction, out IReadOnlyPlaceInterest placeInteres)
+    public bool TryGetEmptyPlace(IReadOnlyHandlerInteraction handlerInteraction, out IReadOnlyPlaceInterest placeInteres)
     {
         placeInteres = null;
 
@@ -63,9 +63,7 @@ public class ZoneInterest : MonoBehaviour
         if (places.Length == 0)
             return false;
 
-        PlaceInterest place = places[Random.Range(0, places.Length)];
-        place.SetHandlerInteraction(handlerInteraction);
-        placeInteres = place;
+        placeInteres = places[Random.Range(0, places.Length)];
 
         return true;
     }

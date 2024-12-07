@@ -9,6 +9,7 @@ public class HandlerInteraction : MonoBehaviour, IAction, IReadOnlyHandlerIntera
 
     [SerializeField][SerializeInterface(typeof(IInteractionNotifier))] private MonoBehaviour _interactionNotifierMonoBehaviour;
     [SerializeField] private TargetTracker _lookTracker;
+    [SerializeField] private LayerMask _layerObjectInteraction;
 
     public event Action<IReadOnlyObjectInteraction> StartedInteract;
     public event Action<IReadOnlyObjectInteraction> Interacted;
@@ -21,9 +22,11 @@ public class HandlerInteraction : MonoBehaviour, IAction, IReadOnlyHandlerIntera
     private Coroutine _jobMoveToObjectInteraction;
     private IObjectInteraction _currentObjectInteraction;
     private Coroutine _jobWaitAnimationLoopTimeout;
+    private Coroutine _jobWaitTimerStopInteract;
 
     public bool IsActive { get; private set; }
     public IReadOnlyObjectInteraction ObjectInteraction => _currentObjectInteraction;
+    public LayerMask LayerObjectInteraction => _layerObjectInteraction;
 
     private void Awake()
     {
@@ -52,12 +55,13 @@ public class HandlerInteraction : MonoBehaviour, IAction, IReadOnlyHandlerIntera
     {
         CancelMoveToObjectInteraction();
         CancelWaitAnimationLoopTimeout();
+        CancelWaitTimerStopInteract();
         StopInteract();
     }
 
     public bool CanStartInteract(IObjectInteraction objectInteraction)
     {
-        return _interactionNotifier.CanRun();
+        return IsActive == false && _interactionNotifier.CanRun() && SimpleUtils.IsLayerInclud(objectInteraction.Layer, _layerObjectInteraction);
     }
 
     public void StartInteract(IObjectInteraction objectInteraction)
@@ -70,15 +74,6 @@ public class HandlerInteraction : MonoBehaviour, IAction, IReadOnlyHandlerIntera
         CancelMoveToObjectInteraction();
         _jobMoveToObjectInteraction = StartCoroutine(MoveToObjectInteraction());
         StartedInteract?.Invoke(_currentObjectInteraction);
-    }
-
-    private void CancelMoveToObjectInteraction()
-    {
-        if (_jobMoveToObjectInteraction == null)
-            return;
-
-        StopCoroutine(_jobMoveToObjectInteraction);
-        _jobMoveToObjectInteraction = null;
     }
 
     private IEnumerator MoveToObjectInteraction()
@@ -103,6 +98,10 @@ public class HandlerInteraction : MonoBehaviour, IAction, IReadOnlyHandlerIntera
         _transform.position = startPoint.Position;
         _transform.forward = startPointForward;
         _jobMoveToObjectInteraction = null;
+
+        if (_currentObjectInteraction.Config.Mode == ModeInteractive.Timer)
+            HandleModeTime();
+
         _currentObjectInteraction.StartInteract();
         _interactionNotifier.Run();
     }
@@ -110,52 +109,66 @@ public class HandlerInteraction : MonoBehaviour, IAction, IReadOnlyHandlerIntera
     private void StopInteract()
     {
         _interactionNotifier.Stop();
-        _currentObjectInteraction.StopInteract();
+
+        if (_currentObjectInteraction != null)
+        {
+            _currentObjectInteraction.StopInteract();
+            StoppedInteract?.Invoke(_currentObjectInteraction);
+            _currentObjectInteraction = null;
+        }
+
         _mover.UnblockRotation();
         _lookTracker.ResetTarget();
-        _currentObjectInteraction = null;
-        IsActive = false;
         _actionScheduler.ClearAction(this);
-        StoppedInteract?.Invoke(_currentObjectInteraction);
-        Debug.Log("StopInteract");
+        IsActive = false;
+        //Debug.Log("StopInteract");
     }
 
     private void OnBeforeInteract()
     {
         _currentObjectInteraction.InteractBefore();
-        Debug.Log("OnBeforeInteract");
+        //Debug.Log("OnBeforeInteract");
     }
 
     private void OnInteracted()
     {
         _currentObjectInteraction.Interact();
         Interacted?.Invoke(_currentObjectInteraction);
-        Debug.Log("OnInteracted");
+        //Debug.Log("OnInteracted");
     }
 
     private void OnAfterInteract()
     {
-        Debug.Log("OnAfterInteract");
-
-        if (_currentObjectInteraction.Config.IsLoop)
+        switch (_currentObjectInteraction.Config.Mode)
         {
-            CancelWaitAnimationLoopTimeout();
-            _jobWaitAnimationLoopTimeout = StartCoroutine(WaitAnimationLoopTimeout());
-
-            return;
+            case ModeInteractive.Default:
+                HandleModeDefault();
+                break;
+            case ModeInteractive.Loop:
+            case ModeInteractive.Timer:
+                HandleModeLoop();
+                break;
         }
 
+        //Debug.Log("OnAfterInteract");
+    }
+
+    private void HandleModeDefault()
+    {
         _currentObjectInteraction.InteractAfter();
         StopInteract();
     }
 
-    private void CancelWaitAnimationLoopTimeout()
+    private void HandleModeLoop()
     {
-        if (_jobWaitAnimationLoopTimeout == null)
-            return;
+        CancelWaitAnimationLoopTimeout();
+        _jobWaitAnimationLoopTimeout = StartCoroutine(WaitAnimationLoopTimeout());
+    }
 
-        StopCoroutine(_jobWaitAnimationLoopTimeout);
-        _jobWaitAnimationLoopTimeout = null;
+    private void HandleModeTime()
+    {
+        CancelWaitTimerStopInteract();
+        _jobWaitTimerStopInteract = StartCoroutine(WaitTimerStopInteract());
     }
 
     private IEnumerator WaitAnimationLoopTimeout()
@@ -165,5 +178,27 @@ public class HandlerInteraction : MonoBehaviour, IAction, IReadOnlyHandlerIntera
         _currentObjectInteraction.InteractAfter();
         _interactionNotifier.Run();
         _jobWaitAnimationLoopTimeout = null;
+    }
+
+    private IEnumerator WaitTimerStopInteract()
+    {
+        yield return new WaitForSeconds(_currentObjectInteraction.Config.TimeModeTimer);
+        StopInteract();
+        _jobWaitTimerStopInteract = null;
+    }
+
+    private void CancelMoveToObjectInteraction() => CancelCoroutine(ref _jobMoveToObjectInteraction);
+
+    private void CancelWaitAnimationLoopTimeout() => CancelCoroutine(ref _jobWaitAnimationLoopTimeout);
+
+    private void CancelWaitTimerStopInteract() => CancelCoroutine(ref _jobWaitTimerStopInteract);
+
+    private void CancelCoroutine(ref Coroutine coroutine)
+    {
+        if (coroutine == null)
+            return;
+
+        StopCoroutine(coroutine);
+        coroutine = null;
     }
 }

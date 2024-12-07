@@ -1,5 +1,7 @@
 public interface IObjectInteraction : IReadOnlyObjectInteraction
 {
+    bool IsActive { get; }
+
     void StartInteract();
 
     void InteractBefore();

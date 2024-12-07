@@ -1,6 +1,5 @@
 using System;
 using UnityEngine;
-using UnityEngine.AI;
 
 public class StateMoverToTarget : State
 {
@@ -14,6 +13,9 @@ public class StateMoverToTarget : State
 
     public override void Update()
     {
+        if (_mover.CanMove() == false)
+            return;
+
         Vector2 direction = Navigation.CalculateDirectionVector2(Character.NavMeshAgent, Character.Transform, Character.MoveTracker.Position);
         _mover.Move(direction);
         _mover.LookAtDirection(direction);
@@ -28,10 +30,5 @@ public class StateMoverToTarget : State
     {
         Navigation.ResetNavMeshAgent(Character.NavMeshAgent);
         _mover.Cancel();
-    }
-
-    protected override bool CanUpdateAddon()
-    {
-        return _mover.CanMove();
     }
 }

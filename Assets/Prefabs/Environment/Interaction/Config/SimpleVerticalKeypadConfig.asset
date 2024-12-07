@@ -12,7 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 90905bdba1d32c8478b023dedde6c30e, type: 3}
   m_Name: SimpleVerticalKeypadConfig
   m_EditorClassIdentifier: 
-  _isLoop: 0
+  _mode: 0
+  _timeModeTimer: 0
   _animationLoopTimeout: 1
   _animationInteractiveIndexes: 0000000001000000
   _typeAnimationLayer: 1
