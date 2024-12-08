@@ -16,7 +16,7 @@ public class ActivatorInteractiveDEBUG : MonoBehaviour
             return;
 
         Collider[] results = Physics.OverlapSphere(transform.position, _radius, _objectInteractionLayer, QueryTriggerInteraction.Ignore);
-        Collider hit = results.FirstOrDefault();
+        Collider hit = results.OrderBy(collider => (collider.transform.position - transform.position).sqrMagnitude).FirstOrDefault();
 
         if (hit == null)
             return;

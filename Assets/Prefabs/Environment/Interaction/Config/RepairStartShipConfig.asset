@@ -14,7 +14,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _mode: 2
   _timeModeTimer: 25
-  _animationLoopTimeout: 1
-  _animationInteractiveIndexes: 03000000
+  _iterationLoopTimeout: 1
+  _settingIterations:
+  - _id: 3
+    _startInteractGraphics: 01000000
+    _beforeInteractGraphics: 
+    _interactedGraphics: 
+    _afterInteractGraphics: 
+    _stopInteractGraphics: 
   _typeAnimationLayer: 1
   _typeAnimationRig: 1

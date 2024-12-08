@@ -5,6 +5,7 @@ public interface IReadOnlyObjectInteraction
     ObjectInteractionConfig Config { get; }
     ITarget StartPoint { get; }
     ITarget LookAtPoint { get; }
-    int AnimationInteractiveIndex { get; }
+    int IdIteration { get; }
+    int IndexIteration { get; }
     int Layer {  get; }
 }

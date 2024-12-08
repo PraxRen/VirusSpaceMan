@@ -48,7 +48,7 @@ public class AnimatorInteractor : MonoBehaviour, IInteractionNotifier
         }
 
         _isRunning = true;
-        _animator.SetFloat(DataCharacterAnimator.Params.IndexInteractive, _handlerInteraction.ObjectInteraction.AnimationInteractiveIndex);
+        _animator.SetFloat(DataCharacterAnimator.Params.IndexInteractive, _handlerInteraction.ObjectInteraction.IdIteration);
         _animator.SetBool(DataCharacterAnimator.Params.IsInteractive, true);
     }
 

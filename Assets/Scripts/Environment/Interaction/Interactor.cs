@@ -1,5 +1,7 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 [RequireComponent(typeof(Mover), typeof(ActionScheduler))]
@@ -8,6 +10,7 @@ public class Interactor : MonoBehaviour, IAction, IReadOnlyInteractor
     private const float FactorForwardLimit = 1f;
 
     [SerializeField][SerializeInterface(typeof(IInteractionNotifier))] private MonoBehaviour _interactionNotifierMonoBehaviour;
+    [SerializeField] private SwitcherGraphics _switcherGraphics;
     [SerializeField] private TargetTracker _lookTracker;
     [SerializeField] private LayerMask _layerObjectInteraction;
 
@@ -21,6 +24,8 @@ public class Interactor : MonoBehaviour, IAction, IReadOnlyInteractor
     private IInteractionNotifier _interactionNotifier;
     private Coroutine _jobMoveToObjectInteraction;
     private IObjectInteraction _currentObjectInteraction;
+    private List<SettingIterationInteraction> _settingIterations;
+    private IEnumerable<TypeGraphics> _activeGraphics;
     private Coroutine _jobWaitAnimationLoopTimeout;
     private Coroutine _jobWaitTimerStopInteract;
 
@@ -70,6 +75,7 @@ public class Interactor : MonoBehaviour, IAction, IReadOnlyInteractor
         _actionScheduler.StartAction(this);
         _actionScheduler.SetBlock(this);
         _currentObjectInteraction = objectInteraction;
+        _settingIterations = _currentObjectInteraction.Config.SettingIterations.ToList();
         _lookTracker.SetTarget(_currentObjectInteraction.LookAtPoint, Vector3.zero);
         CancelMoveToObjectInteraction();
         _jobMoveToObjectInteraction = StartCoroutine(MoveToObjectInteraction());
@@ -102,6 +108,7 @@ public class Interactor : MonoBehaviour, IAction, IReadOnlyInteractor
         if (_currentObjectInteraction.Config.Mode == ModeInteractive.Timer)
             HandleModeTime();
 
+        UpdateGraphics(null, _settingIterations[_currentObjectInteraction.IndexIteration].StartInteractGraphics);
         _currentObjectInteraction.StartInteract();
         _interactionNotifier.Run();
     }
@@ -114,7 +121,9 @@ public class Interactor : MonoBehaviour, IAction, IReadOnlyInteractor
         {
             _currentObjectInteraction.StopInteract();
             StoppedInteract?.Invoke(_currentObjectInteraction);
+            UpdateGraphics(_activeGraphics, _settingIterations[_currentObjectInteraction.IndexIteration].StopInteractGraphics);
             _currentObjectInteraction = null;
+            _settingIterations = null;
         }
 
         _mover.UnblockRotation();
@@ -126,12 +135,14 @@ public class Interactor : MonoBehaviour, IAction, IReadOnlyInteractor
 
     private void OnBeforeInteract()
     {
+        UpdateGraphics(_activeGraphics, _settingIterations[_currentObjectInteraction.IndexIteration].BeforeInteractGraphics);
         _currentObjectInteraction.InteractBefore();
         //Debug.Log("OnBeforeInteract");
     }
 
     private void OnInteracted()
     {
+        UpdateGraphics(_activeGraphics, _settingIterations[_currentObjectInteraction.IndexIteration].InteractedGraphics);
         _currentObjectInteraction.Interact();
         Interacted?.Invoke(_currentObjectInteraction);
         //Debug.Log("OnInteracted");
@@ -155,6 +166,7 @@ public class Interactor : MonoBehaviour, IAction, IReadOnlyInteractor
 
     private void HandleModeDefault()
     {
+        UpdateGraphics(_activeGraphics, _settingIterations[_currentObjectInteraction.IndexIteration].AfterInteractGraphics);
         _currentObjectInteraction.InteractAfter();
         StopInteract();
     }
@@ -175,6 +187,7 @@ public class Interactor : MonoBehaviour, IAction, IReadOnlyInteractor
     {
         _interactionNotifier.Stop();
         yield return new WaitForSeconds(_currentObjectInteraction.Config.AnimationLoopTimeout);
+        UpdateGraphics(_activeGraphics, _settingIterations[_currentObjectInteraction.IndexIteration].AfterInteractGraphics);
         _currentObjectInteraction.InteractAfter();
         _interactionNotifier.Run();
         _jobWaitAnimationLoopTimeout = null;
@@ -185,6 +198,26 @@ public class Interactor : MonoBehaviour, IAction, IReadOnlyInteractor
         yield return new WaitForSeconds(_currentObjectInteraction.Config.TimeModeTimer);
         StopInteract();
         _jobWaitTimerStopInteract = null;
+    }
+
+    private void UpdateGraphics(IEnumerable<TypeGraphics> oldGraphics, IEnumerable<TypeGraphics> newGraphics)
+    {
+        IEnumerable<TypeGraphics> addedGraphics = newGraphics;
+
+        if (oldGraphics != null)
+        {
+            IEnumerable<TypeGraphics> removedGraphics = oldGraphics.Except(newGraphics);
+
+            foreach (var graphics in removedGraphics)
+                _switcherGraphics.Deactivate(graphics);
+
+            addedGraphics = newGraphics.Except(oldGraphics);
+        }
+
+        foreach (var graphics in addedGraphics)
+            _switcherGraphics.Activate(graphics);
+
+        _activeGraphics = addedGraphics;
     }
 
     private void CancelMoveToObjectInteraction() => CancelCoroutine(ref _jobMoveToObjectInteraction);
