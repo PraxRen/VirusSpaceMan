@@ -202,22 +202,21 @@ public class Interactor : MonoBehaviour, IAction, IReadOnlyInteractor
 
     private void UpdateGraphics(IEnumerable<TypeGraphics> oldGraphics, IEnumerable<TypeGraphics> newGraphics)
     {
-        IEnumerable<TypeGraphics> addedGraphics = newGraphics;
+        oldGraphics ??= Enumerable.Empty<TypeGraphics>();
+        newGraphics ??= Enumerable.Empty<TypeGraphics>();
 
-        if (oldGraphics != null)
-        {
-            IEnumerable<TypeGraphics> removedGraphics = oldGraphics.Except(newGraphics);
+        IEnumerable<TypeGraphics> removedGraphics = oldGraphics.Except(newGraphics);
 
-            foreach (var graphics in removedGraphics)
-                _switcherGraphics.Deactivate(graphics);
+        foreach (var graphics in removedGraphics)
+            _switcherGraphics.Deactivate(graphics);
 
-            addedGraphics = newGraphics.Except(oldGraphics);
-        }
+        IEnumerable<TypeGraphics> addedGraphics = newGraphics.Except(oldGraphics);
 
         foreach (var graphics in addedGraphics)
             _switcherGraphics.Activate(graphics);
 
-        _activeGraphics = addedGraphics;
+        _activeGraphics = addedGraphics.Count() == 0 ? newGraphics : addedGraphics;
+        Debug.Log(string.Join(" ", _activeGraphics.Select(x => x.ToString()).ToArray()));
     }
 
     private void CancelMoveToObjectInteraction() => CancelCoroutine(ref _jobMoveToObjectInteraction);

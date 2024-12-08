@@ -20,7 +20,7 @@ public class ZoneInterest : MonoBehaviour
     public Transform Transform { get; private set; }
 
 #if UNITY_EDITOR
-    [ContextMenu("FindPlaces")]
+    [ContextMenu("Find Places")]
     private void FindPlaces()
     {
         _places = GetComponentsInChildren<PlaceInterest>();
