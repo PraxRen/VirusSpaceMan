@@ -6171,8 +6171,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _pointDefault: {fileID: 2889459301219298044}
-  _speedUpdatePositionDefault: 100
-  _speedUpdatePositionTarget: 40
+  _speedUpdatePositionDefault: 30
+  _speedUpdatePositionTarget: 30
   _color: {r: 0, g: 1, b: 0.07561898, a: 1}
   _size: 0.1
 --- !u!1 &8931950087524203268

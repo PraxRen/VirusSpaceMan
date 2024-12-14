@@ -1,6 +1,7 @@
+using System;
 using UnityEngine;
 
-public class Waypoint : MonoBehaviour, ITarget
+public class Waypoint : MonoBehaviour, ITarget, ICloneable
 {
     [SerializeField] private float _radius;
     
@@ -24,5 +25,14 @@ public class Waypoint : MonoBehaviour, ITarget
     public bool CanReach(Transform transform)
     {
         return (transform.position - _transform.position).sqrMagnitude < (_radius * _radius);
+    }
+
+    public object Clone()
+    {
+        Waypoint newWaypoint = Instantiate(this, transform.position, transform.rotation);
+        newWaypoint._radius = _radius;
+        newWaypoint._transform = newWaypoint.transform;
+        newWaypoint.PatrolPath = PatrolPath;
+        return newWaypoint;
     }
 }

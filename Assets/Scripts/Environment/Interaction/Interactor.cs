@@ -216,7 +216,7 @@ public class Interactor : MonoBehaviour, IAction, IReadOnlyInteractor
             _switcherGraphics.Activate(graphics);
 
         _activeGraphics = addedGraphics.Count() == 0 ? newGraphics : addedGraphics;
-        Debug.Log(string.Join(" ", _activeGraphics.Select(x => x.ToString()).ToArray()));
+        //Debug.Log(string.Join(" ", _activeGraphics.Select(x => x.ToString()).ToArray()));
     }
 
     private void CancelMoveToObjectInteraction() => CancelCoroutine(ref _jobMoveToObjectInteraction);

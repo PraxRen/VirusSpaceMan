@@ -60,8 +60,8 @@ public class Patrol : MonoBehaviour
         while (_patrolPath != null) 
         {
             LastWaypoint = _patrolPath.GetWaypoint(_indexWaypoint);
-            Vector2 direction = Navigation.CalculateDirectionVector2(_navMeshAgent, _transform, LastWaypoint.Position);
             _moveTracker.SetTarget(LastWaypoint, Vector3.zero);
+            Vector2 direction = Navigation.CalculateDirectionVector2(_navMeshAgent, _transform, _moveTracker.Target.Position);
             _mover.Move(direction);
             _mover.LookAtDirection(direction);
 

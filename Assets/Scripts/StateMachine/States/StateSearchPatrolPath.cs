@@ -10,6 +10,7 @@ public class StateSearchPatrolPath : State
     private Patrol _patrol;
     private float _timeDelayComplete;
     private bool _isFoundPatrolPath;
+    private Timer _timerDelayComplete;
 
     public StateSearchPatrolPath(string id, AICharacter character, float timeSecondsWaitHandle, float timeDelayComplete) : base(id, character, timeSecondsWaitHandle)
     {
@@ -20,6 +21,7 @@ public class StateSearchPatrolPath : State
             throw new InvalidOperationException($"Initialization error \"{nameof(State)}\"! The component \"{nameof(Patrol)}\" required for operation \"{GetType().Name}\".");
 
         _timeDelayComplete = timeDelayComplete;
+        _timerDelayComplete = new Timer(_timeDelayComplete);
     }
 
     public override void Update()
@@ -35,13 +37,14 @@ public class StateSearchPatrolPath : State
         _isFoundPatrolPath = true;
         Character.MoveTracker.SetTarget(patrolPath.GetWaypoint(indexWaypoint), Vector3.zero);
         _patrol.ResetPatrolPath(patrolPath, indexWaypoint);
-        Timer timerDelayComplete = new Timer(_timeDelayComplete);
-        timerDelayComplete.Completed += OnTimerCompleted;
-        AddTimer(timerDelayComplete);
+        _timerDelayComplete.Completed += OnTimerCompleted;
+        AddTimer(_timerDelayComplete);
     }
 
     protected override void ExitAfterAddon()
     {
+        _timerDelayComplete.Completed -= OnTimerCompleted;
+        _timerDelayComplete.Reset(_timeDelayComplete);
         _isFoundPatrolPath = false;
     }
 

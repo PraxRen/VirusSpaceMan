@@ -14,4 +14,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _currentStateConfig: {fileID: 11400000, guid: f184a95ce8a7e5341881410729c5f994, type: 2}
   _targetStateConfig: {fileID: 11400000, guid: be88b975bbe04ea4cb581461d3d29e28, type: 2}
-  _timeTimer: 15
+  _timeTimer: 45

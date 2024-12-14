@@ -13,4 +13,4 @@ MonoBehaviour:
   m_Name: DefaultModeMoverCharacterAI
   m_EditorClassIdentifier: 
   _speedMove: -0.7
-  _speedRotation: 0
+  _speedRotation: -0.7

@@ -75,5 +75,23 @@ public class PatrolPath : MonoBehaviour
     {
         _waypoints = GetComponentsInChildren<Waypoint>()?.ToList();
     }
+
+    [ContextMenu("Create Reverse Waypoints")]
+    private void CreateReverseWaypoints()
+    {
+        if (_waypoints == null || _waypoints.Count == 0)
+            return;
+
+        int minIndex = 1;
+        int maxIndex = _waypoints.Count - 2;
+
+        for (int i = maxIndex; i >= minIndex; i--)
+        {
+            Waypoint waypoint = (Waypoint)_waypoints[i].Clone();
+            waypoint.transform.parent = transform;
+        }
+
+        FindWaypoints();
+    }
 #endif
 }

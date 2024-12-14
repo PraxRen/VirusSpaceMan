@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 90905bdba1d32c8478b023dedde6c30e, type: 3}
   m_Name: Smoke
   m_EditorClassIdentifier: 
-  _mode: 1
+  _mode: 2
   _timeModeTimer: 60
   _iterationLoopTimeout: 1
   _settingIterations:

@@ -20,6 +20,7 @@ public class PlaceInterest : MonoBehaviour, IReadOnlyPlaceInterest
     public IReadOnlyInteractor HandlerInteraction { get; private set; }
     public Vector3 Position => _transform.position;
     public Quaternion Rotation => _transform.rotation;
+    public string Name => $"\"{_transform.parent.name}/{name}\"";
 
     private void Awake()
     {
@@ -64,6 +65,7 @@ public class PlaceInterest : MonoBehaviour, IReadOnlyPlaceInterest
         HandlerInteraction = handlerInteraction;
         IsEmpty = false;
         _jobUpdateCollision = StartCoroutine(UpdateCollision());
+        Debug.Log($"SetHandlerInteraction {((Interactor)handlerInteraction).transform.parent.name}");
     }
 
     public bool TryGetObjectInteraction(IReadOnlyInteractor handlerInteraction, out IObjectInteraction objectInteraction)
@@ -90,6 +92,7 @@ public class PlaceInterest : MonoBehaviour, IReadOnlyPlaceInterest
     {
         HandlerInteraction = null;
         IsEmpty = true;
+        Debug.Log("Clear");
     }
 
     public bool CanReach(Transform transform)
