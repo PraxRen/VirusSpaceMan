@@ -2,13 +2,13 @@ using System;
 
 public interface IReadOnlyPlaceInterest : ITarget
 {
-    event Action EnteredHandlerInteraction;
+    event Action EnteredInteractor;
 
     string Name { get; }
     bool IsEmpty { get; }
-    bool HasHandlerInteractionInside { get; }
-    IReadOnlyInteractor HandlerInteraction { get; }
+    bool HasInteractorInside { get; }
+    IReadOnlyInteractor Interactor { get; }
 
-    void SetHandlerInteraction(IReadOnlyInteractor handlerInteraction);
-    bool TryGetObjectInteraction(IReadOnlyInteractor handlerInteraction, out IObjectInteraction objectInteraction);
+    void Reserve(IReadOnlyInteractor interactor);
+    bool TryGetObjectInteraction(IReadOnlyInteractor interactor, out IObjectInteraction objectInteraction);
 }

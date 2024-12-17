@@ -22,5 +22,17 @@ MonoBehaviour:
     _interactedGraphics: 
     _afterInteractGraphics: 
     _stopInteractGraphics: 
+  - _id: 7
+    _startInteractGraphics: 
+    _beforeInteractGraphics: 
+    _interactedGraphics: 
+    _afterInteractGraphics: 
+    _stopInteractGraphics: 
+  - _id: 8
+    _startInteractGraphics: 
+    _beforeInteractGraphics: 
+    _interactedGraphics: 
+    _afterInteractGraphics: 
+    _stopInteractGraphics: 
   _typeAnimationLayer: 1
   _typeAnimationRig: 1

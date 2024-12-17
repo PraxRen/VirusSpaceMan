@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Smoke
   m_EditorClassIdentifier: 
   _mode: 2
-  _timeModeTimer: 60
+  _timeModeTimer: 45
   _iterationLoopTimeout: 1
   _settingIterations:
   - _id: 4

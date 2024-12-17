@@ -5,8 +5,8 @@ using UnityEngine;
 
 public class StateSearchPlaceInterest : State
 {
-    private IReadOnlyHandlerZoneEnvironment _handlerZoneEnvironment;
-    private IReadOnlyInteractor _handlerInteraction;
+    private IReadOnlyHandlerEnvironment _handlerEnvironment;
+    private IReadOnlyInteractor _interactor;
     private IReadOnlyPlaceInterest _placeInterest;
     private float _timeDelayComplete;
     private bool _isFoundPlace;
@@ -14,10 +14,10 @@ public class StateSearchPlaceInterest : State
 
     public StateSearchPlaceInterest(string id, AICharacter character, float timeSecondsWaitHandle, float timeDelayComplete) : base(id, character, timeSecondsWaitHandle)
     {
-        if (character.TryGetComponent(out _handlerZoneEnvironment) == false)
-            throw new InvalidOperationException($"Initialization error \"{nameof(State)}\"! The component \"{nameof(IReadOnlyHandlerZoneEnvironment)}\" required for operation \"{GetType().Name}\".");
+        if (character.TryGetComponent(out _handlerEnvironment) == false)
+            throw new InvalidOperationException($"Initialization error \"{nameof(State)}\"! The component \"{nameof(IReadOnlyHandlerEnvironment)}\" required for operation \"{GetType().Name}\".");
 
-        if (character.TryGetComponent(out _handlerInteraction) == false)
+        if (character.TryGetComponent(out _interactor) == false)
             throw new InvalidOperationException($"Initialization error \"{nameof(State)}\"! The component \"{nameof(IReadOnlyInteractor)}\" required for operation \"{GetType().Name}\".");
 
         _timeDelayComplete = timeDelayComplete;
@@ -51,21 +51,7 @@ public class StateSearchPlaceInterest : State
 
     private IReadOnlyPlaceInterest FindPlaceInterest()
     {
-        IReadOnlyList<ZoneInterest> currentZoneInterests = _handlerZoneEnvironment.CurrentZone.Interests;
-
-        if (currentZoneInterests == null)
-            return null;
-
-        IReadOnlyPlaceInterest placeInterest = null;
-        var activeZoneInterests = currentZoneInterests.Where(zoneInterest => zoneInterest.gameObject.activeSelf)
-                                                      .OrderBy(zoneInterest => (zoneInterest.Transform.position - Character.Transform.position).sqrMagnitude);
-
-        foreach (ZoneInterest zoneInterest in activeZoneInterests)
-        {
-            if (zoneInterest.TryReserveEmptyPlace(_handlerInteraction, out placeInterest))
-                break;
-        }
-
+        _handlerEnvironment.CurrentZone.TryReserveNearestPlaceInterest(_interactor, out IReadOnlyPlaceInterest placeInterest);
         return placeInterest;
     }
 

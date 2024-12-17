@@ -4,7 +4,7 @@ using UnityEngine;
 public class ZoneInterest : MonoBehaviour
 {
     [SerializeField][ReadOnly] private PlaceInterest[] _places;
-    [SerializeField] private LayerMask _layerMaskHandlerInteraction;
+    [SerializeField] private LayerMask _layerMaskInteractor;
     [SerializeField] private float timeWaitUpdateCollision;
 #if UNITY_EDITOR
     [Space(1f)]
@@ -16,7 +16,7 @@ public class ZoneInterest : MonoBehaviour
 
     private WaitForSeconds _waitUpdateCollision;
 
-    public LayerMask LayerMaskHandlerInteraction => _layerMaskHandlerInteraction;
+    public LayerMask LayerMaskInteractor => _layerMaskInteractor;
     public Transform Transform { get; private set; }
 
 #if UNITY_EDITOR
@@ -55,7 +55,7 @@ public class ZoneInterest : MonoBehaviour
         if (enabled == false)
             return false;
 
-        if (_places.Any(place => place.HandlerInteraction != null && place.HandlerInteraction == handlerInteraction))
+        if (_places.Any(place => place.Interactor != null && place.Interactor == handlerInteraction))
             return false;
 
         PlaceInterest[] places = _places.Where(place => place.IsEmpty).ToArray();
@@ -64,7 +64,7 @@ public class ZoneInterest : MonoBehaviour
             return false;
 
         placeInteres = places[Random.Range(0, places.Length)];
-        placeInteres.SetHandlerInteraction(handlerInteraction);
+        placeInteres.Reserve(handlerInteraction);
 
         return true;
     }

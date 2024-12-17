@@ -46,8 +46,11 @@ public class StateInteraction : State
         return result;
     }
 
-    private void OnStoppedInteract(IReadOnlyObjectInteraction objectInteraction)
+    private void OnStoppedInteract(IReadOnlyInteractor interactor, IReadOnlyObjectInteraction objectInteraction)
     {
+        if (interactor != (IReadOnlyInteractor)_interactor)
+            return;
+
         if (objectInteraction != _currentObjectInteraction)
             return;
 

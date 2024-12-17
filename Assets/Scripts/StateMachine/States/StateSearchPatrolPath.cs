@@ -6,7 +6,7 @@ public class StateSearchPatrolPath : State
 {
     private const float FixTimeFindNewWaypoint = 2f;
 
-    private IReadOnlyHandlerZoneEnvironment _handlerZoneEnvironment;
+    private IReadOnlyHandlerEnvironment _handlerEnvironment;
     private Patrol _patrol;
     private float _timeDelayComplete;
     private bool _isFoundPatrolPath;
@@ -14,8 +14,8 @@ public class StateSearchPatrolPath : State
 
     public StateSearchPatrolPath(string id, AICharacter character, float timeSecondsWaitHandle, float timeDelayComplete) : base(id, character, timeSecondsWaitHandle)
     {
-        if (character.TryGetComponent(out _handlerZoneEnvironment) == false)
-            throw new InvalidOperationException($"Initialization error \"{nameof(State)}\"! The component \"{nameof(HandlerZoneEnvironment)}\" required for operation \"{GetType().Name}\".");
+        if (character.TryGetComponent(out _handlerEnvironment) == false)
+            throw new InvalidOperationException($"Initialization error \"{nameof(State)}\"! The component \"{nameof(HandlerEnvironment)}\" required for operation \"{GetType().Name}\".");
 
         if (character.TryGetComponent(out _patrol) == false)
             throw new InvalidOperationException($"Initialization error \"{nameof(State)}\"! The component \"{nameof(Patrol)}\" required for operation \"{GetType().Name}\".");
@@ -52,10 +52,10 @@ public class StateSearchPatrolPath : State
     {
         indexWaypoint = -1;
 
-        if (_handlerZoneEnvironment.CurrentZone.PatrolPaths == null)
+        if (_handlerEnvironment.CurrentZone.PatrolPaths == null)
             return null;
 
-        var activatedPatrolPathes = _handlerZoneEnvironment.CurrentZone.PatrolPaths.Where(zoneInterest => zoneInterest.gameObject.activeSelf);
+        var activatedPatrolPathes = _handlerEnvironment.CurrentZone.PatrolPaths.Where(zoneInterest => zoneInterest.gameObject.activeSelf);
         Waypoint nearestWaypoint = null;
         float minDistanceSqr = float.MaxValue;
 

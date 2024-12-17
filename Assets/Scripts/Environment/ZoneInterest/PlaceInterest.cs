@@ -13,11 +13,11 @@ public class PlaceInterest : MonoBehaviour, IReadOnlyPlaceInterest
     private Coroutine _jobUpdateCollision;
     private IObjectInteraction _objectInteraction;
 
-    public event Action EnteredHandlerInteraction;
+    public event Action EnteredInteractor;
 
     public bool IsEmpty {  get; private set; }
-    public bool HasHandlerInteractionInside { get; private set; }
-    public IReadOnlyInteractor HandlerInteraction { get; private set; }
+    public bool HasInteractorInside { get; private set; }
+    public IReadOnlyInteractor Interactor { get; private set; }
     public Vector3 Position => _transform.position;
     public Quaternion Rotation => _transform.rotation;
     public string Name => $"\"{_transform.parent.name}/{name}\"";
@@ -47,7 +47,7 @@ public class PlaceInterest : MonoBehaviour, IReadOnlyPlaceInterest
 
     private void OnDrawGizmos()
     {
-        Gizmos.color = HasHandlerInteractionInside ? Color.green : Color.white;
+        Gizmos.color = HasInteractorInside ? Color.green : Color.white;
         Gizmos.DrawWireSphere(transform.position, _radius);
     }
 
@@ -57,15 +57,16 @@ public class PlaceInterest : MonoBehaviour, IReadOnlyPlaceInterest
         _waitUpdateCollision = waitUpdateCollision;
     }
 
-    public void SetHandlerInteraction(IReadOnlyInteractor handlerInteraction)
+    public void Reserve(IReadOnlyInteractor interactor)
     {
         if (IsEmpty == false)
             throw new InvalidOperationException("Place not is empty!");
 
-        HandlerInteraction = handlerInteraction;
+        Interactor = interactor;
         IsEmpty = false;
+        Interactor.StoppedInteract += OnStoppedInteract;
         _jobUpdateCollision = StartCoroutine(UpdateCollision());
-        Debug.Log($"SetHandlerInteraction {((Interactor)handlerInteraction).transform.parent.name}");
+        Debug.Log($"SetHandlerInteraction {((Interactor)interactor).transform.parent.name}");
     }
 
     public bool TryGetObjectInteraction(IReadOnlyInteractor handlerInteraction, out IObjectInteraction objectInteraction)
@@ -75,10 +76,10 @@ public class PlaceInterest : MonoBehaviour, IReadOnlyPlaceInterest
         if (IsEmpty)
             return false;
 
-        if (HasHandlerInteractionInside == false)
+        if (HasInteractorInside == false)
             return false;
 
-        if (handlerInteraction != HandlerInteraction)
+        if (handlerInteraction != Interactor)
             return false;
 
         if (SimpleUtils.IsLayerInclud(_objectInteraction.Layer, handlerInteraction.LayerObjectInteraction) == false)
@@ -90,14 +91,16 @@ public class PlaceInterest : MonoBehaviour, IReadOnlyPlaceInterest
 
     public void Clear()
     {
-        HandlerInteraction = null;
+        Interactor.StoppedInteract -= OnStoppedInteract;
+        Interactor = null;
         IsEmpty = true;
+        HasInteractorInside = false;
         Debug.Log("Clear");
     }
 
     public bool CanReach(Transform transform)
     {
-        if (HasHandlerInteractionInside == false)
+        if (HasInteractorInside == false)
             return false;
 
         if (IsHandlerInteraction(transform) == false)
@@ -110,7 +113,7 @@ public class PlaceInterest : MonoBehaviour, IReadOnlyPlaceInterest
     {
         while (IsEmpty == false)
         {
-            Collider[] colliders = Physics.OverlapSphere(_transform.position, _radius, _zoneInterest.LayerMaskHandlerInteraction, QueryTriggerInteraction.Ignore);
+            Collider[] colliders = Physics.OverlapSphere(_transform.position, _radius, _zoneInterest.LayerMaskInteractor, QueryTriggerInteraction.Ignore);
             UpdateCollide(colliders);
 
             yield return _waitUpdateCollision;
@@ -118,7 +121,6 @@ public class PlaceInterest : MonoBehaviour, IReadOnlyPlaceInterest
 
         _jobUpdateCollision = null;
     }
-
 
     private void UpdateCollide(Collider[] colliders)
     {
@@ -133,16 +135,16 @@ public class PlaceInterest : MonoBehaviour, IReadOnlyPlaceInterest
             }
         }
 
-        if (HasHandlerInteractionInside == false && isEnterTriggerHandlerInteraction)
+        if (HasInteractorInside == false && isEnterTriggerHandlerInteraction)
         {
-            EnteredHandlerInteraction?.Invoke();
+            EnteredInteractor?.Invoke();
         }
-        else if (HasHandlerInteractionInside && isEnterTriggerHandlerInteraction == false)
+        else if (HasInteractorInside && isEnterTriggerHandlerInteraction == false)
         {
             Clear();
         }
 
-        HasHandlerInteractionInside = isEnterTriggerHandlerInteraction;
+        HasInteractorInside = isEnterTriggerHandlerInteraction;
     }
 
     private bool IsHandlerInteraction(Transform transform)
@@ -150,9 +152,11 @@ public class PlaceInterest : MonoBehaviour, IReadOnlyPlaceInterest
         if (transform.TryGetComponent(out IReadOnlyInteractor handlerInteraction) == false)
             return false;
 
-        if (handlerInteraction != HandlerInteraction)
+        if (handlerInteraction != Interactor)
             return false;
 
         return true;
     }
+
+    private void OnStoppedInteract(IReadOnlyInteractor interactor, IReadOnlyObjectInteraction objectInteraction) => Clear();
 }

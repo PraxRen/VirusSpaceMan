@@ -117,13 +117,19 @@ public class Player : Character
         ScannerDamageable.PreviousTarget();
     }
 
-    private void OnStartedInteract(IReadOnlyObjectInteraction objectInteraction)
+    private void OnStartedInteract(IReadOnlyInteractor interactor, IReadOnlyObjectInteraction objectInteraction)
     {
+        if (interactor != (IReadOnlyInteractor)Interactor)
+            return;
+
         ScannerDamageable.ResetRadius();
     }
 
-    private void OnStoppedInteract(IReadOnlyObjectInteraction objectInteraction)
+    private void OnStoppedInteract(IReadOnlyInteractor interactor, IReadOnlyObjectInteraction objectInteraction)
     {
+        if (interactor != (IReadOnlyInteractor)Interactor)
+            return;
+
         if (Fighter.Weapon != null)
         {
             ScannerDamageable.StartScan(Fighter.LayerMaskDamageable, Fighter.Weapon.Config.DistanceAttack);

@@ -1,11 +1,11 @@
 using System;
 using UnityEngine;
 
-public interface IReadOnlyInteractor
+public interface IReadOnlyInteractor : ITarget
 {
-    event Action<IReadOnlyObjectInteraction> StartedInteract;
-    event Action<IReadOnlyObjectInteraction> Interacted;
-    event Action<IReadOnlyObjectInteraction> StoppedInteract;
+    event Action<IReadOnlyInteractor, IReadOnlyObjectInteraction> StartedInteract;
+    event Action<IReadOnlyInteractor, IReadOnlyObjectInteraction> Interacted;
+    event Action<IReadOnlyInteractor, IReadOnlyObjectInteraction> StoppedInteract;
 
     bool IsActive { get; }
     IReadOnlyObjectInteraction ObjectInteraction { get; }

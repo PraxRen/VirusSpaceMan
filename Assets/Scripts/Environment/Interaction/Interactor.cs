@@ -14,9 +14,9 @@ public class Interactor : MonoBehaviour, IAction, IReadOnlyInteractor
     [SerializeField] private TargetTracker _lookTracker;
     [SerializeField] private LayerMask _layerObjectInteraction;
 
-    public event Action<IReadOnlyObjectInteraction> StartedInteract;
-    public event Action<IReadOnlyObjectInteraction> Interacted;
-    public event Action<IReadOnlyObjectInteraction> StoppedInteract;
+    public event Action<IReadOnlyInteractor, IReadOnlyObjectInteraction> StartedInteract;
+    public event Action<IReadOnlyInteractor, IReadOnlyObjectInteraction> Interacted;
+    public event Action<IReadOnlyInteractor, IReadOnlyObjectInteraction> StoppedInteract;
 
     private Transform _transform;
     private Mover _mover;
@@ -32,6 +32,8 @@ public class Interactor : MonoBehaviour, IAction, IReadOnlyInteractor
     public bool IsActive { get; private set; }
     public IReadOnlyObjectInteraction ObjectInteraction => _currentObjectInteraction;
     public LayerMask LayerObjectInteraction => _layerObjectInteraction;
+    public Vector3 Position => _transform.position;
+    public Quaternion Rotation => _transform.rotation;
 
     private void Awake()
     {
@@ -79,7 +81,7 @@ public class Interactor : MonoBehaviour, IAction, IReadOnlyInteractor
         _lookTracker.SetTarget(_currentObjectInteraction.LookAtPoint, Vector3.zero);
         CancelMoveToObjectInteraction();
         _jobMoveToObjectInteraction = StartCoroutine(MoveToObjectInteraction());
-        StartedInteract?.Invoke(_currentObjectInteraction);
+        StartedInteract?.Invoke(this, _currentObjectInteraction);
     }
 
     private IEnumerator MoveToObjectInteraction()
@@ -93,8 +95,12 @@ public class Interactor : MonoBehaviour, IAction, IReadOnlyInteractor
         {
             factorForward = Vector3.Dot(startPointForward, _transform.forward);
             _mover.LookAtDirection(new Vector2(startPointForward.x, startPointForward.z));
-            Vector3 direction = (startPoint.Position - _transform.position).normalized;
-            _mover.SimpleMove(new Vector2(direction.x, direction.z));
+
+            if (startPoint.CanReach(_transform) == false)
+            {
+                Vector3 direction = (startPoint.Position - _transform.position).normalized;
+                _mover.SimpleMove(new Vector2(direction.x, direction.z));
+            }
 
             yield return null;
         }
@@ -120,8 +126,8 @@ public class Interactor : MonoBehaviour, IAction, IReadOnlyInteractor
         if (_currentObjectInteraction != null)
         {
             _currentObjectInteraction.StopInteract();
-            StoppedInteract?.Invoke(_currentObjectInteraction);
             UpdateGraphics(_activeGraphics, _settingIterations[_currentObjectInteraction.IndexIteration].StopInteractGraphics);
+            StoppedInteract?.Invoke(this, _currentObjectInteraction);
             _currentObjectInteraction = null;
             _settingIterations = null;
         }
@@ -144,7 +150,7 @@ public class Interactor : MonoBehaviour, IAction, IReadOnlyInteractor
     {
         UpdateGraphics(_activeGraphics, _settingIterations[_currentObjectInteraction.IndexIteration].InteractedGraphics);
         _currentObjectInteraction.Interact();
-        Interacted?.Invoke(_currentObjectInteraction);
+        Interacted?.Invoke(this, _currentObjectInteraction);
         //Debug.Log("OnInteracted");
     }
 
@@ -232,5 +238,10 @@ public class Interactor : MonoBehaviour, IAction, IReadOnlyInteractor
 
         StopCoroutine(coroutine);
         coroutine = null;
+    }
+
+    public bool CanReach(Transform transform)
+    {
+        throw new NotImplementedException();
     }
 }
