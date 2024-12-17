@@ -10,7 +10,7 @@ public class Health : MonoBehaviour, IHealth, IDamageable, IAttribute, IAction
     [SerializeField] private float _factorNoise = 1f;
     [SerializeField] private SurfaceType _surfaceType;
     [Header(nameof(ITarget))]
-    [SerializeField] private float _radiusCanReachTarget = 0.2f;
+    [SerializeField] private float _radiusCanReachTarget = 0.3f;
 
     private Transform _transform;
     private float _lastTimeHit;

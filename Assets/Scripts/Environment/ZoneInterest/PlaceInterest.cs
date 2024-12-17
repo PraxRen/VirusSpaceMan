@@ -64,7 +64,7 @@ public class PlaceInterest : MonoBehaviour, IReadOnlyPlaceInterest
 
         Interactor = interactor;
         IsEmpty = false;
-        Interactor.StoppedInteract += OnStoppedInteract;
+        Interactor.Canceled += OnStoppedInteract;
         _jobUpdateCollision = StartCoroutine(UpdateCollision());
         Debug.Log($"SetHandlerInteraction {((Interactor)interactor).transform.parent.name}");
     }
@@ -91,7 +91,7 @@ public class PlaceInterest : MonoBehaviour, IReadOnlyPlaceInterest
 
     public void Clear()
     {
-        Interactor.StoppedInteract -= OnStoppedInteract;
+        Interactor.Canceled -= OnStoppedInteract;
         Interactor = null;
         IsEmpty = true;
         HasInteractorInside = false;
@@ -158,5 +158,5 @@ public class PlaceInterest : MonoBehaviour, IReadOnlyPlaceInterest
         return true;
     }
 
-    private void OnStoppedInteract(IReadOnlyInteractor interactor, IReadOnlyObjectInteraction objectInteraction) => Clear();
+    private void OnStoppedInteract(IReadOnlyInteractor interactor) => Clear();
 }

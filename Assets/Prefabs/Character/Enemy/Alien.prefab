@@ -266,6 +266,10 @@ PrefabInstance:
       propertyPath: _character
       value: 
       objectReference: {fileID: 543985071881179937}
+    - target: {fileID: 7786548918308219902, guid: b2ae4f7d10bb5224db3664389d0df2bc, type: 3}
+      propertyPath: _luckRageAttack
+      value: 0.012
+      objectReference: {fileID: 0}
     - target: {fileID: 8631584709067717098, guid: b2ae4f7d10bb5224db3664389d0df2bc, type: 3}
       propertyPath: _bones.Array.size
       value: 49

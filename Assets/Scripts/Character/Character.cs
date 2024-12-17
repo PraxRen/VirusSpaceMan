@@ -15,8 +15,8 @@ public abstract class Character : MonoBehaviour, IReadOnlyCharacter
     public IHealth Health { get; private set; }
     public TargetTracker LookTracker => _lookTracker;
     public TargetTracker MoveTracker => _moveTracker;
+    public Scanner ScannerDamageable { get; private set; }
     protected Mover Mover { get; private set; }
-    protected Scanner ScannerDamageable { get; private set; }
     protected Fighter Fighter { get; private set; }
     protected Interactor Interactor { get; private set; }
 
@@ -36,6 +36,14 @@ public abstract class Character : MonoBehaviour, IReadOnlyCharacter
 
     private void OnEnable()
     {
+        Fighter.ChangedWeapon += OnChangedWeapon;
+        Fighter.RemovedWeapon += OnRemovedWeapon;
+        Interactor.StartedInteract += OnStartedInteract;
+        Interactor.StoppedInteract += OnStoppedInteract;
+
+        if (Fighter.Weapon != null)
+            OnChangedWeapon(Fighter.Weapon);
+
         if (_lookTracker.gameObject.activeSelf == false)
             _lookTracker.gameObject.SetActive(true);
 
@@ -51,6 +59,11 @@ public abstract class Character : MonoBehaviour, IReadOnlyCharacter
 
     private void OnDisable()
     {
+        Fighter.ChangedWeapon -= OnChangedWeapon;
+        Fighter.RemovedWeapon -= OnRemovedWeapon;
+        Interactor.StartedInteract -= OnStartedInteract;
+        Interactor.StoppedInteract -= OnStoppedInteract;
+
         if (_lookTracker != null && _lookTracker.gameObject.activeSelf)
             _lookTracker.gameObject.SetActive(false);
 
@@ -76,4 +89,33 @@ public abstract class Character : MonoBehaviour, IReadOnlyCharacter
     protected virtual void DisableAddon() { }
 
     protected virtual void StartAddon() { }
+
+    private void OnChangedWeapon(IWeaponReadOnly weapon)
+    {
+        ScannerDamageable.StartScan(Fighter.LayerMaskDamageable, weapon.Config.DistanceAttack);
+    }
+
+    private void OnRemovedWeapon()
+    {
+        ScannerDamageable.ResetRadius();
+    }
+
+    private void OnStartedInteract(IReadOnlyInteractor interactor, IReadOnlyObjectInteraction objectInteraction)
+    {
+        if (interactor != (IReadOnlyInteractor)Interactor)
+            return;
+
+        ScannerDamageable.ResetRadius();
+    }
+
+    private void OnStoppedInteract(IReadOnlyInteractor interactor, IReadOnlyObjectInteraction objectInteraction)
+    {
+        if (interactor != (IReadOnlyInteractor)Interactor)
+            return;
+
+        if (Fighter.Weapon != null)
+        {
+            ScannerDamageable.StartScan(Fighter.LayerMaskDamageable, Fighter.Weapon.Config.DistanceAttack);
+        }
+    }
 }

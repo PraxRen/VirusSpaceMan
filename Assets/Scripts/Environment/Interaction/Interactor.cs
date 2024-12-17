@@ -17,6 +17,7 @@ public class Interactor : MonoBehaviour, IAction, IReadOnlyInteractor
     public event Action<IReadOnlyInteractor, IReadOnlyObjectInteraction> StartedInteract;
     public event Action<IReadOnlyInteractor, IReadOnlyObjectInteraction> Interacted;
     public event Action<IReadOnlyInteractor, IReadOnlyObjectInteraction> StoppedInteract;
+    public event Action<IReadOnlyInteractor> Canceled;
 
     private Transform _transform;
     private Mover _mover;
@@ -64,6 +65,7 @@ public class Interactor : MonoBehaviour, IAction, IReadOnlyInteractor
         CancelWaitAnimationLoopTimeout();
         CancelWaitTimerStopInteract();
         StopInteract();
+        Canceled?.Invoke(this);
     }
 
     public bool CanStartInteract(IObjectInteraction objectInteraction)
@@ -242,6 +244,6 @@ public class Interactor : MonoBehaviour, IAction, IReadOnlyInteractor
 
     public bool CanReach(Transform transform)
     {
-        throw new NotImplementedException();
+        return (transform.position - _transform.position).sqrMagnitude < 1f;
     }
 }

@@ -1,15 +1,10 @@
 ﻿using System;
 using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.AI;
-using UnityEngine.UIElements;
 
 [RequireComponent(typeof(Mover), typeof(NavMeshAgent))]
-public class Patrol : MonoBehaviour
+public class Patrol : MonoBehaviour, IReadOnlyPatrol
 {
     [SerializeField] private TargetTracker _moveTracker;
 
@@ -57,10 +52,12 @@ public class Patrol : MonoBehaviour
 
     private IEnumerator UpdateMover()
     {
+
+        LastWaypoint = _patrolPath.GetWaypoint(_indexWaypoint);
+        _moveTracker.SetTarget(LastWaypoint, Vector3.zero);
+
         while (_patrolPath != null) 
         {
-            LastWaypoint = _patrolPath.GetWaypoint(_indexWaypoint);
-            _moveTracker.SetTarget(LastWaypoint, Vector3.zero);
             Vector2 direction = Navigation.CalculateDirectionVector2(_navMeshAgent, _transform, _moveTracker.Target.Position);
             _mover.Move(direction);
             _mover.LookAtDirection(direction);
@@ -68,6 +65,8 @@ public class Patrol : MonoBehaviour
             if (LastWaypoint.CanReach(_transform))
             {
                 _patrolPath.SetNextIndex(ref _indexWaypoint);
+                LastWaypoint = _patrolPath.GetWaypoint(_indexWaypoint);
+                _moveTracker.SetTarget(LastWaypoint, Vector3.zero);
                 LastTimeChangeIndex = Time.time;
             }
             

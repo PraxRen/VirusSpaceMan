@@ -16,7 +16,7 @@ MonoBehaviour:
   _idWeapon: 2cc8b2c4-4ce5-4794-b250-0c5f418f381e
   _damage: 0
   _force: 0
-  _distanceAttack: 1.8
+  _distanceAttack: 0.1
   _cooldownAttack: 1
   _factorNoise: 1
   _surfaceType: 1

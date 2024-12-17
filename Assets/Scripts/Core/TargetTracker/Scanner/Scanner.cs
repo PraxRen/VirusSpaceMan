@@ -16,7 +16,6 @@ public class Scanner : MonoBehaviour
     private Transform _transform;
     private WaitForSeconds _waitUpdateScan;
     private Coroutine _jobScanTargets;
-    private float _radius;
     private LayerMask _layerMask;
 
     public event Action<IReadOnlyCollection<Collider>> ChangedTargets;
@@ -25,6 +24,7 @@ public class Scanner : MonoBehaviour
     public event Action<float> ChangedRadius;
 
     public Collider Target { get; private set; }
+    public float Radius { get; private set; }
     
     private void Awake()
     {
@@ -58,8 +58,8 @@ public class Scanner : MonoBehaviour
 
     public void UpdateRadius(float radius)
     {
-        _radius = Mathf.Max(_radiusBase, radius);
-        ChangedRadius?.Invoke(_radius);
+        Radius = Mathf.Max(_radiusBase, radius);
+        ChangedRadius?.Invoke(Radius);
     }
 
     public void NextTarget()
@@ -102,7 +102,7 @@ public class Scanner : MonoBehaviour
     {
         while (true)
         {
-            Collider[] colliders = Physics.OverlapSphere(_transform.position, _radius, _layerMask, QueryTriggerInteraction.Ignore);
+            Collider[] colliders = Physics.OverlapSphere(_transform.position, Radius, _layerMask, QueryTriggerInteraction.Ignore);
             UpdateTargets(colliders);
             yield return _waitUpdateScan;
         }
@@ -165,7 +165,7 @@ public class Scanner : MonoBehaviour
     private void OnDrawGizmos()
     {
         Gizmos.color = Color.yellow;
-        Gizmos.DrawWireSphere(transform.position, Mathf.Max(_radius, _radiusBase));
+        Gizmos.DrawWireSphere(transform.position, Mathf.Max(Radius, _radiusBase));
     }
 #endif
 }

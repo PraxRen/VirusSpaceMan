@@ -81,7 +81,6 @@ public class StateSearchPatrolPath : State
                 nearestWaypoint = _patrol.LastWaypoint;
                 indexWaypoint = nearestWaypoint.PatrolPath.GetIndex(nearestWaypoint);
             }
-
         }
 
         return nearestWaypoint.PatrolPath;

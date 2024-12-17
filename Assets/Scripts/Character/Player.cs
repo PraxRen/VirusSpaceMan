@@ -12,29 +12,16 @@ public class Player : Character
 
     protected override void EnableAddon()
     {
-        Fighter.ChangedWeapon += OnChangedWeapon;
-        Fighter.RemovedWeapon += OnRemovedWeapon;
         ScannerDamageable.ChangedCurrentTarget += OnChangedTarget;
         ScannerDamageable.RemovedCurrentTarget += OnRemovedTarget;
-        Interactor.StartedInteract += OnStartedInteract;
-        Interactor.StoppedInteract += OnStoppedInteract;
         _inputReader.ChangedScrollNextTarget += OnChangedScrollNextTarget;
         _inputReader.ChangedScrollPreviousTarget += OnChangedScrollPreviousTarget;
-
-        if (Fighter.Weapon != null)
-        {
-            ScannerDamageable.StartScan(Fighter.LayerMaskDamageable, Fighter.Weapon.Config.DistanceAttack);
-        }
     }
 
     protected override void DisableAddon()
     {
-        Fighter.ChangedWeapon -= OnChangedWeapon;
-        Fighter.RemovedWeapon -= OnRemovedWeapon;
         ScannerDamageable.ChangedCurrentTarget -= OnChangedTarget;
         ScannerDamageable.RemovedCurrentTarget -= OnRemovedTarget;
-        Interactor.StartedInteract -= OnStartedInteract;
-        Interactor.StoppedInteract -= OnStoppedInteract;
         _inputReader.ChangedScrollNextTarget -= OnChangedScrollNextTarget;
         _inputReader.ChangedScrollPreviousTarget -= OnChangedScrollPreviousTarget;
     }
@@ -96,43 +83,13 @@ public class Player : Character
         LookTracker.ResetTarget();
     }
 
-    private void OnChangedWeapon(IWeaponReadOnly weapon)
-    {
-        ScannerDamageable.StartScan(Fighter.LayerMaskDamageable, weapon.Config.DistanceAttack);
-    }
-
-    private void OnRemovedWeapon()
-    {
-        ScannerDamageable.ResetRadius();
-    }
-
     private void OnChangedScrollNextTarget()
     {
         ScannerDamageable.NextTarget();
-
     }
 
     private void OnChangedScrollPreviousTarget()
     {
         ScannerDamageable.PreviousTarget();
-    }
-
-    private void OnStartedInteract(IReadOnlyInteractor interactor, IReadOnlyObjectInteraction objectInteraction)
-    {
-        if (interactor != (IReadOnlyInteractor)Interactor)
-            return;
-
-        ScannerDamageable.ResetRadius();
-    }
-
-    private void OnStoppedInteract(IReadOnlyInteractor interactor, IReadOnlyObjectInteraction objectInteraction)
-    {
-        if (interactor != (IReadOnlyInteractor)Interactor)
-            return;
-
-        if (Fighter.Weapon != null)
-        {
-            ScannerDamageable.StartScan(Fighter.LayerMaskDamageable, Fighter.Weapon.Config.DistanceAttack);
-        }
     }
 }
