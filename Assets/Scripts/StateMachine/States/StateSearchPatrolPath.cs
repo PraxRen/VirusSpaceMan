@@ -6,9 +6,9 @@ public class StateSearchPatrolPath : State
 {
     private const float FixTimeFindNewWaypoint = 2f;
 
-    private IReadOnlyHandlerEnvironment _handlerEnvironment;
-    private Patrol _patrol;
-    private float _timeDelayComplete;
+    private readonly IReadOnlyHandlerEnvironment _handlerEnvironment;
+    private readonly Patrol _patrol;
+    private readonly float _timeDelayComplete;
     private bool _isFoundPatrolPath;
     private Timer _timerDelayComplete;
 
