@@ -13,4 +13,4 @@ MonoBehaviour:
   m_Name: DefaultTransitionScannerDamageableRemoveTargetConfig_Attack_MoverToTarget(3)
   m_EditorClassIdentifier: 
   _currentStateConfig: {fileID: 11400000, guid: b2961a80b677d8448abba53ed3da08a7, type: 2}
-  _targetStateConfig: {fileID: 11400000, guid: ac974ac40942a73409683cd5edca145d, type: 2}
+  _targetStateConfig: {fileID: 11400000, guid: 4b7a3f1949de8fc4fac0eb2c9fe2f337, type: 2}

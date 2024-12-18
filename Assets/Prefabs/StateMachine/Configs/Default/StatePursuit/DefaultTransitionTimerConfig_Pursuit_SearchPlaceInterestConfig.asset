@@ -10,8 +10,8 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 54f52eb69d3d5dc43bdfe3ebb20b8485, type: 3}
-  m_Name: DefaultTransitionTimerConfig_MoverToTarget(3)_SearchPlaceInterestConfig
+  m_Name: DefaultTransitionTimerConfig_Pursuit_SearchPlaceInterestConfig
   m_EditorClassIdentifier: 
-  _currentStateConfig: {fileID: 11400000, guid: ac974ac40942a73409683cd5edca145d, type: 2}
+  _currentStateConfig: {fileID: 11400000, guid: 4b7a3f1949de8fc4fac0eb2c9fe2f337, type: 2}
   _targetStateConfig: {fileID: 11400000, guid: be88b975bbe04ea4cb581461d3d29e28, type: 2}
   _timeTimer: 20

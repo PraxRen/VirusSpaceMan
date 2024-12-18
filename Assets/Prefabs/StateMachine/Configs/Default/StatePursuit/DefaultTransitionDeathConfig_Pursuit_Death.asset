@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: a980fd3e2c5f166429b1bc2a2af873f1, type: 3}
-  m_Name: DefaultTransitionDeathConfig_MoverToTarget(3)_Death
+  m_Name: DefaultTransitionDeathConfig_Pursuit_Death
   m_EditorClassIdentifier: 
-  _currentStateConfig: {fileID: 11400000, guid: ac974ac40942a73409683cd5edca145d, type: 2}
+  _currentStateConfig: {fileID: 11400000, guid: 4b7a3f1949de8fc4fac0eb2c9fe2f337, type: 2}
   _targetStateConfig: {fileID: 11400000, guid: edff8d2812d6ca344998b449fa123fbf, type: 2}

@@ -9,8 +9,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d3bc41cf8371a7b4da22791839cb07a3, type: 3}
-  m_Name: DefaultStateMoverToTarget(3)Config
+  m_Script: {fileID: 11500000, guid: 533f62f91d6aa284295567adaa7f8427, type: 3}
+  m_Name: DefaultStatePursuitConfig
   m_EditorClassIdentifier: 
-  _id: 2a75caa2-c405-457a-8143-e44651926441
+  _id: 6758175a-410e-429b-96c8-7acb3dd0c669
   _timeSecondsWaitUpdate: 0
+  _modeMover: {fileID: 11400000, guid: 862e5f88ecfa5b641b4269f2be2a9250, type: 2}

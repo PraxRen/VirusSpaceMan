@@ -39,6 +39,7 @@ public class StateAttack : State, IModeMoverProvider
     protected override void EnterAfterAddon()
     {
         Collider colliderTarget = Character.ScannerDamageable.Target;
+        Debug.Log($"EnterAfterAddon() {colliderTarget}");
 
         if (colliderTarget == null || colliderTarget.TryGetComponent(out _target) == false)
             throw new InvalidOperationException($"The component \"{nameof(IDamageable)}\" required for operation \"{GetType().Name}\"");
