@@ -9,8 +9,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: de94c7f9f0b7a794ebd4536ee35abf56, type: 3}
-  m_Name: DefaultStateIdleConfig
+  m_Script: {fileID: 11500000, guid: d3bc41cf8371a7b4da22791839cb07a3, type: 3}
+  m_Name: DefaultStateMoverToTarget(3)Config
   m_EditorClassIdentifier: 
-  _id: bb01414f-90e3-4b35-9212-a4d1a76514c4
-  _timeSecondsWaitUpdate: 1
+  _id: 2a75caa2-c405-457a-8143-e44651926441
+  _timeSecondsWaitUpdate: 0

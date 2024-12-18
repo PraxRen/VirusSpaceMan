@@ -30,9 +30,10 @@ public class SimpleUtils
         return signed_angle;
     }
 
-    public static Vector3 GetRandomPositionInsideCircle(Vector3 center, float radius)
+    public static Vector3 GetRandomPositionInsideCircle(Vector3 center, float radius, float minRadius = 0f)
     {
-        float randomRadius = Mathf.Sqrt(Random.Range(0f, 1f)) * radius;
+        minRadius = Mathf.Clamp(minRadius, 0f, radius);
+        float randomRadius = Mathf.Sqrt(Random.Range(minRadius * minRadius / (radius * radius), 1f)) * radius;
         float angle = Random.Range(0f, Mathf.PI * 2);
         float x = Mathf.Cos(angle) * randomRadius;
         float z = Mathf.Sin(angle) * randomRadius;

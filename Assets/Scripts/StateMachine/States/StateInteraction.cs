@@ -31,8 +31,9 @@ public class StateInteraction : State
 
     protected override void ExitAfterAddon()
     {
-        _currentObjectInteraction = null;
         _interactor.StoppedInteract -= OnStoppedInteract;
+        _interactor.Cancel();
+        _currentObjectInteraction = null;
     }
 
     private IObjectInteraction GetObjectInteraction() 

@@ -6288,7 +6288,7 @@ MonoBehaviour:
   _actionScheduler: {fileID: 9063325606587652215}
   _factorNoise: 1
   _surfaceType: 1
-  _radiusCanReachTarget: 0.2
+  _radiusCanReachTarget: 1
 --- !u!1 &9214217703873248260
 GameObject:
   m_ObjectHideFlags: 0

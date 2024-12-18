@@ -1,17 +1,20 @@
 using System;
 using UnityEngine;
 using UnityEngine.AI;
-using UnityEngine.UIElements;
 
 public class StateAttack : State, IModeMoverProvider
 {
     private const float MinRadiusMovePosition = 0.7f;
+    private const float MinTimeUpdatePosition = 3f;
+    private const float MaxTimeUpdatePosition = 10f;
+    private const float MinFactorDistanceAtack = 0.1f;
+    private const float MaxFactorDistanceAtack = 0.7f;
 
     private readonly Fighter _fighter;
     private readonly Mover _mover;
     private readonly NavMeshAgent _navMeshAgent;
 
-    private ITarget _target;
+    private IDamageable _target;
 
     private float _timeUpdatePosition;
     private float _timerUpdatePosition;
@@ -38,7 +41,7 @@ public class StateAttack : State, IModeMoverProvider
         Collider colliderTarget = Character.ScannerDamageable.Target;
 
         if (colliderTarget == null || colliderTarget.TryGetComponent(out _target) == false)
-            throw new InvalidOperationException($"The component \"{nameof(ITarget)}\" required for operation \"{GetType().Name}\"");
+            throw new InvalidOperationException($"The component \"{nameof(IDamageable)}\" required for operation \"{GetType().Name}\"");
 
         UpdatePosition();
         _fighter.ActivateWeapon();
@@ -60,10 +63,9 @@ public class StateAttack : State, IModeMoverProvider
 
     private void UpdatePosition()
     {
-        _positionMove = SimpleUtils.GetRandomPositionInsideCircle(_target.Position, _fighter.Weapon.Config.DistanceAttack / 2);
-        _timeUpdatePosition = UnityEngine.Random.Range(0.5f, 2f);
+        _positionMove = SimpleUtils.GetRandomPositionInsideCircle(_target.Position, _fighter.Weapon.Config.DistanceAttack * MaxFactorDistanceAtack, 1f + (_fighter.Weapon.Config.DistanceAttack * MinFactorDistanceAtack));
+        _timeUpdatePosition = UnityEngine.Random.Range(MinTimeUpdatePosition, MaxTimeUpdatePosition);
         _timerUpdatePosition = 0f;
-        Debug.Log("UpdatePosition");
     }
 
     public override void Update()
@@ -71,6 +73,7 @@ public class StateAttack : State, IModeMoverProvider
         if ((_positionMove - Character.Transform.position).sqrMagnitude > MinRadiusMovePosition * MinRadiusMovePosition)
         {
             Vector2 directionMove = Navigation.CalculateDirectionVector2(_navMeshAgent, Character.Transform, _positionMove);
+            Debug.Log(directionMove);
             _mover.Move(directionMove);
         }
 
@@ -85,6 +88,5 @@ public class StateAttack : State, IModeMoverProvider
     {
         _fighter.DeactivateWeapon();
         Character.LookTracker.ResetTarget();
-        Character.MoveTracker.ResetTarget();
     }
 }
