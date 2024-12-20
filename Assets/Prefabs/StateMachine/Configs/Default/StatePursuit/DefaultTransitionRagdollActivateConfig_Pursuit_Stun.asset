@@ -9,9 +9,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 152ebdc72ce411a44925dd6b02416899, type: 3}
-  m_Name: DefaultTransitionDistanceToMoveTargetConfig_Pursuit_Attack
+  m_Script: {fileID: 11500000, guid: a70c175cbcc347e4f9f90e6163d35e21, type: 3}
+  m_Name: DefaultTransitionRagdollActivateConfig_Pursuit_Stun
   m_EditorClassIdentifier: 
   _currentStateConfig: {fileID: 11400000, guid: 4b7a3f1949de8fc4fac0eb2c9fe2f337, type: 2}
-  _targetStateConfig: {fileID: 11400000, guid: b2961a80b677d8448abba53ed3da08a7, type: 2}
-  _distance: 7
+  _targetStateConfig: {fileID: 11400000, guid: 4244a1b78cf44a340a178278b2c2c7de, type: 2}

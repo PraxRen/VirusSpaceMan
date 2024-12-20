@@ -53,6 +53,11 @@ public class SwitcherAnimationRig : MonoBehaviour
 
         if (_hashCorutineJobs.ContainsKey(setting.Type))
         {
+            if (_hashCorutineJobs[setting.Type] == null)
+            {
+                var x = 1f;
+            }
+
             StopCoroutine(_hashCorutineJobs[setting.Type]);
         }
 

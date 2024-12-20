@@ -4,6 +4,12 @@ public class TransitionDeath : Transition
 
     protected override void ActivateAddon()
     {
+        if (Character.Health.IsDied)
+        {
+            SetNeedTransit();
+            return;
+        }
+
         Character.Health.Died += SetNeedTransit;
     }
 

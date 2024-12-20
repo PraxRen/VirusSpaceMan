@@ -27,7 +27,7 @@ public abstract class RangedWeapon : Weapon, IRangedWeaponReadOnly
         Projectile projectile = _spawnerProjectile.Spawn();
         projectile.Collided += OnCollided;
         Vector3 targetPosition = GetTargetPosition();
-        projectile.Shoot((targetPosition - Transform.position).normalized);
+        projectile.Shoot((targetPosition - Transform.position).normalized, CurrentAttack);
     }
 
     protected override float GetDamageAddon() => RangedWeaponConfig.ProjectileConfig.Damage;
@@ -54,6 +54,6 @@ public abstract class RangedWeapon : Weapon, IRangedWeaponReadOnly
 #if UNITY_EDITOR
         Debug.DrawLine(collider.GetComponent<Transform>().position, hitPoint, Color.red, 2f);
 #endif
-        HandleCollide(collider, hitPoint);
+        HandleCollide(collider, projectile.Attack, hitPoint);
     }
 }

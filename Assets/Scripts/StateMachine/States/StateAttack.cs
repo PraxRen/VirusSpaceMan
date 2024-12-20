@@ -39,7 +39,6 @@ public class StateAttack : State, IModeMoverProvider
     protected override void EnterAfterAddon()
     {
         Collider colliderTarget = Character.ScannerDamageable.Target;
-        Debug.Log($"EnterAfterAddon() {colliderTarget}");
 
         if (colliderTarget == null || colliderTarget.TryGetComponent(out _target) == false)
             throw new InvalidOperationException($"The component \"{nameof(IDamageable)}\" required for operation \"{GetType().Name}\"");
@@ -74,7 +73,6 @@ public class StateAttack : State, IModeMoverProvider
         if ((_positionMove - Character.Transform.position).sqrMagnitude > MinRadiusMovePosition * MinRadiusMovePosition)
         {
             Vector2 directionMove = Navigation.CalculateDirectionVector2(_navMeshAgent, Character.Transform, _positionMove);
-            Debug.Log(directionMove);
             _mover.Move(directionMove);
         }
 

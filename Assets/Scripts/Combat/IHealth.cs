@@ -2,5 +2,7 @@ using System;
 
 public interface IHealth
 {
-    public event Action Died;
+    event Action Died;
+
+    bool IsDied { get; }
 }

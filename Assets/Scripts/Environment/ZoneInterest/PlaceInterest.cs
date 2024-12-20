@@ -66,7 +66,6 @@ public class PlaceInterest : MonoBehaviour, IReadOnlyPlaceInterest
         IsEmpty = false;
         Interactor.Canceled += OnStoppedInteract;
         _jobUpdateCollision = StartCoroutine(UpdateCollision());
-        Debug.Log($"SetHandlerInteraction {((Interactor)interactor).transform.parent.name}");
     }
 
     public bool TryGetObjectInteraction(IReadOnlyInteractor handlerInteraction, out IObjectInteraction objectInteraction)
@@ -95,7 +94,6 @@ public class PlaceInterest : MonoBehaviour, IReadOnlyPlaceInterest
         Interactor = null;
         IsEmpty = true;
         HasInteractorInside = false;
-        Debug.Log("Clear");
     }
 
     public bool CanReach(Transform transform)

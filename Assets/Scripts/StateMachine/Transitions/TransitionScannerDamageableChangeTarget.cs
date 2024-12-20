@@ -6,6 +6,12 @@ public class TransitionScannerDamageableChangeTarget : Transition
 
     protected override void ActivateAddon()
     {
+        if (Character.ScannerDamageable.Target != null)
+        {
+            OnChangedCurrentTarget(Character.ScannerDamageable.Target);
+            return;
+        }
+
         Character.ScannerDamageable.ChangedCurrentTarget += OnChangedCurrentTarget;
     }
 

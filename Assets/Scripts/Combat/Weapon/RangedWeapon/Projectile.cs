@@ -16,6 +16,7 @@ public abstract class Projectile : MonoBehaviour, ISurface
     public event Action<Projectile> Destroyed;
 
     public Transform Transform { get; private set; }
+    public Attack Attack { get; private set; }
     public float FactorNoise => _projectileConfig.FactorNoise;
     public SurfaceType SurfaceType => _projectileConfig.SurfaceType;
 
@@ -65,8 +66,9 @@ public abstract class Projectile : MonoBehaviour, ISurface
         _projectileConfig = ((RangedWeaponConfig)rangedWeapon.Config).ProjectileConfig;
     }
 
-    public void Shoot(Vector3 direction)
+    public void Shoot(Vector3 direction, Attack attack)
     {
+        Attack = attack;
         Transform.forward = direction;
         _rigidbody.AddForce(Transform.forward * _projectileConfig.Speed, ForceMode.Impulse);
         ShootAddon();

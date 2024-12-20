@@ -10585,7 +10585,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4927656130072186318, guid: 21685c10a89cef242847b4a2c729e36c, type: 3}
       propertyPath: _luckRageAttack
-      value: 0.2
+      value: 0.7
       objectReference: {fileID: 0}
     - target: {fileID: 7394927946005314348, guid: 21685c10a89cef242847b4a2c729e36c, type: 3}
       propertyPath: m_LocalPosition.x

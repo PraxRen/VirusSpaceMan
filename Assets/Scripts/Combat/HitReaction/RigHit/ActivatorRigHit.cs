@@ -15,7 +15,7 @@ public class ActivatorRigHit : MonoBehaviour, IHitReaction, IAction
         _switherRigHit = GetComponent<SwitcherRigHit>();
     }
 
-    public bool CanHandleHit(IWeaponReadOnly weapon, Vector3 hitPoint, float damage)
+    public bool CanHandleHit(Hit hit, float damage)
     {
         if (enabled == false) 
             return false;
@@ -28,13 +28,13 @@ public class ActivatorRigHit : MonoBehaviour, IHitReaction, IAction
 
     public void Cancel() { }
 
-    public void HandleHit(IWeaponReadOnly weapon, Vector3 hitPoint, float damage)
+    public void HandleHit(Hit hit, float damage)
     {
-        Vector3 forceDirection = CalculateForceDirection(weapon, hitPoint);
+        Vector3 forceDirection = CalculateForceDirection(hit.Weapon, hit.Point);
 #if UNITY_EDITOR
-        Debug.DrawLine(hitPoint, hitPoint + forceDirection, Color.yellow, 2f);
+        Debug.DrawLine(hit.Point, hit.Point + forceDirection, Color.yellow, 2f);
 #endif
-        _switherRigHit.ApplyHit(forceDirection, hitPoint);
+        _switherRigHit.ApplyHit(forceDirection, hit.Point);
         _actionScheduler.StartAction(this);
     }
 

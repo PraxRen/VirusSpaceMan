@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -18,7 +19,7 @@ public abstract class Weapon : MonoBehaviour, IWeaponReadOnly, ISerializationCal
     private Transform _transform;
 
     public event Action StartedAttack;
-    public event Action<IDamageable, Vector3> Hited;
+    public event Action<IDamageable, IWeaponReadOnly, Attack, Vector3> Hited;
 
     public string Id => _id;
     public WeaponConfig Config => _config;
@@ -28,7 +29,6 @@ public abstract class Weapon : MonoBehaviour, IWeaponReadOnly, ISerializationCal
     public SurfaceType SurfaceType => _config.SurfaceType;
     public Vector3 Position => _transform.position;
     public IReadOnlyCollection<Collider> Colliders => _colliders;
-    public bool IsRageAttack { get; set; }
     protected Transform Transform => _transform;
 
     private void Awake()
@@ -55,7 +55,7 @@ public abstract class Weapon : MonoBehaviour, IWeaponReadOnly, ISerializationCal
 
     public float GetDamage()
     {
-        return _config.Damage + _config.Attacks[_indexAttack].Damage + GetDamageAddon();
+        return _config.Damage + GetDamageAddon();
     }
 
     public void UpdateIndexAttack()
@@ -99,7 +99,6 @@ public abstract class Weapon : MonoBehaviour, IWeaponReadOnly, ISerializationCal
             throw new ArgumentNullException(nameof(_fighter));
 
         _lastTimeAttack = Time.time;
-        IsRageAttack = false;
         StartAttackAddon();
         StartedAttack?.Invoke();
     }
@@ -168,7 +167,7 @@ public abstract class Weapon : MonoBehaviour, IWeaponReadOnly, ISerializationCal
         return true;
     }
 
-    protected void HandleCollide(Collider targetCollider, Vector3 hitPoint)
+    protected void HandleCollide(Collider targetCollider, Attack attack, Vector3 hitPoint)
     {
         if (targetCollider.TryGetComponent(out ICollidable collidable))
         {
@@ -179,7 +178,7 @@ public abstract class Weapon : MonoBehaviour, IWeaponReadOnly, ISerializationCal
         {
             if (SimpleUtils.IsLayerInclud(targetCollider.gameObject, _fighter.LayerMaskDamageable))
             {
-                Hited?.Invoke(damageable, hitPoint);
+                Hited?.Invoke(damageable, this, attack, hitPoint);
             }
         }
     }

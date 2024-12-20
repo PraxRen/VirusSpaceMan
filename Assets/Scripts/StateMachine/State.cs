@@ -151,6 +151,7 @@ public abstract class State : IReadOnlyState
             return;
 
         Status = state;
+        Debug.Log($"UpdateStatus: {Character.Transform.parent.name} | {GetType().Name} = {Status}");
         ChangedStatus?.Invoke(Status);
     }
 
@@ -159,6 +160,10 @@ public abstract class State : IReadOnlyState
         if (statusTransition != StatusTransition.NeedTransit)
             return;
 
+        if (Status != StatusState.Entered && Status != StatusState.Completed)
+            return;
+
+        Debug.Log($"OnChangedTransitionStatus: {Character.Transform.parent.name} | {GetType().Name} = {Status}");
         GetedNextState?.Invoke(transition.TargetState);
     }
 }

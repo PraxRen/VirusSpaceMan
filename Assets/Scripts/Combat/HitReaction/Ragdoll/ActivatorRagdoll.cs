@@ -41,17 +41,17 @@ public class ActivatorRagdoll : MonoBehaviour, IHitReaction, IAction
         _actionScheduler.ClearAction(this);
     }
 
-    public bool CanHandleHit(IWeaponReadOnly weapon, Vector3 hitPoint, float damage)
+    public bool CanHandleHit(Hit hit, float damage)
     {
         if (enabled == false)
             return false;
 
-        if (_damageable.CanDie(weapon, damage) == false)
+        if (_damageable.CanDie(hit, damage) == false)
         {
             if (_actionScheduler.CanStartAction(this) == false)
                 return false;
 
-            if (weapon.IsRageAttack == false)
+            if (hit.IsRageAttack == false)
                 return false;
             
             if (_switcherRagdoll.IsActivated)
@@ -61,24 +61,24 @@ public class ActivatorRagdoll : MonoBehaviour, IHitReaction, IAction
         return true;
     }
 
-    public void HandleHit(IWeaponReadOnly weapon, Vector3 hitPoint, float damage)
+    public void HandleHit(Hit hit, float damage)
     {
         _actionScheduler.StartAction(this);
         _actionScheduler.SetBlock(this);
-        Vector3 force = CalculateForce(weapon, hitPoint);
+        Vector3 force = CalculateForce(hit.Weapon, hit.Point);
         List<Collider> ignoreColliders = new List<Collider>();
-        ignoreColliders.AddRange(weapon.Colliders);
-        ignoreColliders.AddRange(weapon.Fighter.IgnoreColliders);
+        ignoreColliders.AddRange(hit.Weapon.Colliders);
+        ignoreColliders.AddRange(hit.Weapon.Fighter.IgnoreColliders);
         _switcherRagdoll.SetIgnoreColliders(ignoreColliders, true, _timeResetIgnoreColliders);
         _switcherRagdoll.Activete();
 
-        if (_damageable.CanDie(weapon, damage) == false)
+        if (_damageable.CanDie(hit, damage) == false)
         {
             CancelJobTimerForDeactivate();
             _jobRunTimerForDeactivate = StartCoroutine(RunTimerForDeactivateRagdoll(_timeDeactivate));
         }
 
-        _switcherRagdoll.ApplyHit(force, hitPoint);
+        _switcherRagdoll.ApplyHit(force, hit.Point);
     }
 
     private Vector3 CalculateForce(IWeaponReadOnly weapon, Vector3 hitPoint)

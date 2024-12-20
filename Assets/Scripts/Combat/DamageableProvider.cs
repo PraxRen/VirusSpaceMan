@@ -8,8 +8,8 @@ public class DamageableProvider : MonoBehaviour, IDamageable
     private Transform _transform;
     private IDamageable _mainDamageable;
 
-    public event Action<IWeaponReadOnly, Vector3, float> BeforeTakeDamage;
-    public event Action<IWeaponReadOnly, Vector3, float> AfterTakeDamage;
+    public event Action<Hit, float> BeforeTakeDamage;
+    public event Action<Hit, float> AfterTakeDamage;
 
     public Vector3 Position => _transform.position;
     public Quaternion Rotation => _transform.rotation;
@@ -25,15 +25,15 @@ public class DamageableProvider : MonoBehaviour, IDamageable
 
     public bool CanReach(Transform transform) => _mainDamageable.CanReach(transform);
 
-    public bool CanDie(IWeaponReadOnly weapon, float damage) => _mainDamageable.CanDie(weapon, damage);
+    public bool CanDie(Hit hit, float damage) => _mainDamageable.CanDie(hit, damage);
 
-    public bool CanTakeDamage(IWeaponReadOnly weapon) => _mainDamageable.CanTakeDamage(weapon);
+    public bool CanTakeDamage() => _mainDamageable.CanTakeDamage();
 
-    public void TakeDamage(IWeaponReadOnly weapon, Vector3 hitPoint, float damage) 
+    public void TakeDamage(Hit hit, float damage) 
     {
-        BeforeTakeDamage?.Invoke(weapon, hitPoint, damage);
-        _mainDamageable.TakeDamage(weapon, hitPoint, damage);
-        AfterTakeDamage?.Invoke(weapon, hitPoint, damage);
+        BeforeTakeDamage?.Invoke(hit, damage);
+        _mainDamageable.TakeDamage(hit, damage);
+        AfterTakeDamage?.Invoke(hit, damage);
     }
 
     protected virtual void AwakeAddon() { }

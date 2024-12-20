@@ -25,8 +25,8 @@ public class Health : MonoBehaviour, IHealth, IDamageable, IAttribute, IAction
 
     public event Action ValueChanged;
     public event Action Died;
-    public event Action<IWeaponReadOnly, Vector3, float> BeforeTakeDamage;
-    public event Action<IWeaponReadOnly, Vector3, float> AfterTakeDamage;
+    public event Action<Hit, float> BeforeTakeDamage;
+    public event Action<Hit, float> AfterTakeDamage;
 
     private void Awake()
     {
@@ -45,11 +45,8 @@ public class Health : MonoBehaviour, IHealth, IDamageable, IAttribute, IAction
         return (transform.position - _transform.position).sqrMagnitude < (_radiusCanReachTarget * _radiusCanReachTarget);
     }
 
-    public bool CanTakeDamage(IWeaponReadOnly weapon)
+    public bool CanTakeDamage()
     {
-        if (weapon == null)
-            throw new ArgumentNullException(nameof(weapon));
-
         if (IsDied)
             return false;
 
@@ -59,24 +56,21 @@ public class Health : MonoBehaviour, IHealth, IDamageable, IAttribute, IAction
         return true;
     }
 
-    public void TakeDamage(IWeaponReadOnly weapon, Vector3 hitPoint, float damage)
+    public void TakeDamage(Hit hit, float damage)
     {
-        if (weapon == null)
-            throw new ArgumentNullException(nameof(weapon));
-
         if (damage < 0)
             throw new ArgumentOutOfRangeException(nameof(damage));
 
-        BeforeTakeDamage?.Invoke(weapon, hitPoint, damage);
+        BeforeTakeDamage?.Invoke(hit, damage);
         UpdateValue(Value - damage);
 
         if (Value == 0)
             Die();
 
-        AfterTakeDamage?.Invoke(weapon, hitPoint, damage);
+        AfterTakeDamage?.Invoke(hit, damage);
     }
 
-    public bool CanDie(IWeaponReadOnly weapon, float damage)
+    public bool CanDie(Hit hit, float damage)
     {
         return (Value - damage) > 0 ? false : true;
     }

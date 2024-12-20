@@ -19,6 +19,6 @@ public abstract class SimpleMeleeWeapon : Weapon
 #if UNITY_EDITOR
         Debug.DrawLine(hit.collider.transform.position, hit.point, Color.red, 2f);
 #endif
-        HandleCollide(hit.collider, hit.point);
+        HandleCollide(hit.collider, CurrentAttack, hit.point);
     }
 }

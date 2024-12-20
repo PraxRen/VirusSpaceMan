@@ -27,8 +27,8 @@ public class Fighter : MonoBehaviour, IDamageable, IFighterReadOnly, IAction, IM
     public event Action<IWeaponReadOnly> ActivatedWeapon;
     public event Action<IWeaponReadOnly> DeactivatedWeapon;
     public event Action RemovedWeapon;
-    public event Action<IWeaponReadOnly, Vector3, float> BeforeTakeDamage;
-    public event Action<IWeaponReadOnly, Vector3, float> AfterTakeDamage;
+    public event Action<Hit, float> BeforeTakeDamage;
+    public event Action<Hit, float> AfterTakeDamage;
     public event Action<IModeMoverProvider> AddedModeMover;
     public event Action<IModeMoverProvider> RemovedModeMover;
 
@@ -72,16 +72,16 @@ public class Fighter : MonoBehaviour, IDamageable, IFighterReadOnly, IAction, IM
 
     public void Cancel() => StopAttack();
 
-    public bool CanTakeDamage(IWeaponReadOnly weapon) => _currentDamageable.CanTakeDamage(weapon);
+    public bool CanTakeDamage() => _currentDamageable.CanTakeDamage();
 
-    public void TakeDamage(IWeaponReadOnly weapon, Vector3 hitPoint, float damage) 
+    public void TakeDamage(Hit hit, float damage) 
     {
-        BeforeTakeDamage?.Invoke(weapon, hitPoint, damage);
-        _currentDamageable.TakeDamage(weapon, hitPoint, damage);
-        AfterTakeDamage?.Invoke(weapon, hitPoint, damage);
+        BeforeTakeDamage?.Invoke(hit, damage);
+        _currentDamageable.TakeDamage(hit, damage);
+        AfterTakeDamage?.Invoke(hit, damage);
     } 
 
-    public bool CanDie(IWeaponReadOnly weapon, float damage) => _currentDamageable.CanDie(weapon, damage);
+    public bool CanDie(Hit hit, float damage) => _currentDamageable.CanDie(hit, damage);
 
     public void ActivateWeapon()
     {
@@ -101,6 +101,7 @@ public class Fighter : MonoBehaviour, IDamageable, IFighterReadOnly, IAction, IM
         if (_currentWeapon == null)
             return;
 
+        Cancel();
         _currentWeapon.Deactivate();
 
         if (_currentWeapon.Config is IModeMoverProvider modeMoverProvider)
@@ -156,29 +157,31 @@ public class Fighter : MonoBehaviour, IDamageable, IFighterReadOnly, IAction, IM
 
     private void StopAttack()
     {
+        if (IsAttack == false)
+            return;
+
         _currentWeapon.StopAttack();
         _attackNotifier.CancelAttack();
         _actionScheduler.ClearAction(this);
         IsAttack = false;
     }
 
-    private void Hit(IDamageable damageable, Vector3 hitPoint)
+    private void OnHited(IDamageable damageable, IWeaponReadOnly weapon, Attack attack, Vector3 hitPoint)
     {
-        if (damageable.CanTakeDamage(Weapon) == false)
+        if (damageable.CanTakeDamage() == false)
             return;
 
-        _rage.AddPoint(_currentWeapon.CurrentAttack.RagePoints);
-        float luck = _luckRageAttack + _rage.Value;
-        _currentWeapon.IsRageAttack = SimpleUtils.TryLuck(luck);
-        damageable.TakeDamage(_currentWeapon, hitPoint, Weapon.GetDamage());
-        _currentWeapon.IsRageAttack = false;
+        _rage.AddPoint(attack.RagePoints);
+        bool IsRageAttack = SimpleUtils.TryLuck(_luckRageAttack + _rage.Value);
+        Hit hit = new Hit(weapon, attack, hitPoint, IsRageAttack);
+        damageable.TakeDamage(hit, hit.BaseDamage);
     }
 
     private void OnChangedWeaponConfig(WeaponConfig weaponConfig)
     {
         RemoveWeapon();
         _currentWeapon = _storageWeapon.GetWeapon(weaponConfig.IdWeapon);
-        _currentWeapon.Hited += Hit;
+        _currentWeapon.Hited += OnHited;
         _currentWeapon.Initialize(weaponConfig, this);
 
         if (_isAutoActivationWeapon)
@@ -194,7 +197,7 @@ public class Fighter : MonoBehaviour, IDamageable, IFighterReadOnly, IAction, IM
 
         DeactivatedWeapon?.Invoke(_currentWeapon);
         _currentWeapon.ClearConfig();
-        _currentWeapon.Hited -= Hit;
+        _currentWeapon.Hited -= OnHited;
         _currentWeapon = null;
         RemovedWeapon?.Invoke();
     }
