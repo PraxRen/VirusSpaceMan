@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class Fighter : MonoBehaviour, IDamageable, IFighterReadOnly, IAction, IModeMoverChanger
 {
+    [SerializeField] private bool _debug = true;
     [Tooltip("Auto-Activate the weapon when it is changed")][SerializeField] private bool _isAutoActivationWeapon;
     [SerializeField] private Health _health;
     [SerializeField] private StorageWeapon _storageWeapon;
@@ -112,6 +113,11 @@ public class Fighter : MonoBehaviour, IDamageable, IFighterReadOnly, IAction, IM
 
     public bool CanAttack()
     {
+        if (_debug == false)
+        {
+            return false;
+        }
+
         if (IsAttack)
             return false;
 

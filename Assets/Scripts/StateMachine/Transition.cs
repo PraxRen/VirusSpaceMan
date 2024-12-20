@@ -1,4 +1,5 @@
 using System;
+using UnityEngine;
 
 public abstract class Transition : IReadOnlyTransition
 {
@@ -26,6 +27,10 @@ public abstract class Transition : IReadOnlyTransition
             throw new InvalidOperationException($"Ќевозможно изменить статус перехода состо€ни€ \"{GetType().Name}\" на \"{StatusState.Entered}\"!");
 
         ActivateAddon();
+
+        if (Status == StatusTransition.NeedTransit)
+            return;
+
         UpdateStatusTransition(StatusTransition.Activated);
     }
 
@@ -43,7 +48,13 @@ public abstract class Transition : IReadOnlyTransition
 
     public virtual void Tick(float deltaTime) { }
 
-    protected void SetNeedTransit() => UpdateStatusTransition(StatusTransition.NeedTransit);
+    protected void SetNeedTransit() 
+    {
+        if (Status == StatusTransition.Initialized || Status == StatusTransition.Deactivated)
+            UpdateStatusTransition(StatusTransition.Activated);
+
+        UpdateStatusTransition(StatusTransition.NeedTransit);
+    } 
 
     protected virtual void ActivateAddon() { }
 

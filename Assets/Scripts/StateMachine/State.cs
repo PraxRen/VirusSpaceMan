@@ -131,7 +131,6 @@ public abstract class State : IReadOnlyState
             if (transition.Status == StatusTransition.NeedTransit)
             {
                 transitionNeedTransit = transition;
-                break;
             }
         }
     }
@@ -151,7 +150,7 @@ public abstract class State : IReadOnlyState
             return;
 
         Status = state;
-        Debug.Log($"UpdateStatus: {Character.Transform.parent.name} | {GetType().Name} = {Status}");
+        //Debug.Log($"UpdateStatus: {Character.Transform.parent.name} | {GetType().Name} = {Status}");
         ChangedStatus?.Invoke(Status);
     }
 
@@ -163,7 +162,6 @@ public abstract class State : IReadOnlyState
         if (Status != StatusState.Entered && Status != StatusState.Completed)
             return;
 
-        Debug.Log($"OnChangedTransitionStatus: {Character.Transform.parent.name} | {GetType().Name} = {Status}");
         GetedNextState?.Invoke(transition.TargetState);
     }
 }

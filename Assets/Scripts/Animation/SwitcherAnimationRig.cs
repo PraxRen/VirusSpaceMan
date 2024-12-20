@@ -53,12 +53,8 @@ public class SwitcherAnimationRig : MonoBehaviour
 
         if (_hashCorutineJobs.ContainsKey(setting.Type))
         {
-            if (_hashCorutineJobs[setting.Type] == null)
-            {
-                var x = 1f;
-            }
-
             StopCoroutine(_hashCorutineJobs[setting.Type]);
+            _hashCorutineJobs.Remove(setting.Type);
         }
 
         if (setting.TimeUpdate == 0f)
@@ -85,6 +81,7 @@ public class SwitcherAnimationRig : MonoBehaviour
             yield return null;
         }
 
+        yield return null; //иначе если условие выше Mathf.Approximately(setting.Rig.weight, targetValue) == false не сработает то _hashCorutineJobs[setting.Type] будет иметь значение null
         setting.Rig.weight = targetValue;
         _hashCorutineJobs.Remove(setting.Type);
     }

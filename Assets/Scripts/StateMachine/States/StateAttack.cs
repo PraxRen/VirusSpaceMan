@@ -5,8 +5,8 @@ using UnityEngine.AI;
 public class StateAttack : State, IModeMoverProvider
 {
     private const float MinRadiusMovePosition = 0.7f;
-    private const float MinTimeUpdatePosition = 3f;
-    private const float MaxTimeUpdatePosition = 10f;
+    private const float MinTimeUpdatePosition = 100f;
+    private const float MaxTimeUpdatePosition = 100f;
     private const float MinFactorDistanceAtack = 0.1f;
     private const float MaxFactorDistanceAtack = 0.7f;
 

@@ -1,21 +1,13 @@
-using UnityEngine;
-
 public class TransitionScannerDamageableRemoveTarget : Transition
 {
     public TransitionScannerDamageableRemoveTarget(Character character, State currentState, State targetState) : base(character, currentState, targetState) { }
 
-    protected override void ActivateAddon()
+    public override void Tick(float deltaTime)
     {
-        Character.ScannerDamageable.RemovedCurrentTarget += OnRemovedCurrentTarget;
-    }
+        if (Status == StatusTransition.NeedTransit)
+            return;
 
-    protected override void DeactivateAddon()
-    {
-        Character.ScannerDamageable.RemovedCurrentTarget -= OnRemovedCurrentTarget;
-    }
-
-    private void OnRemovedCurrentTarget(Collider collider)
-    {
-        SetNeedTransit();
+        if (Character.ScannerDamageable.Target == null)
+            SetNeedTransit();
     }
 }
