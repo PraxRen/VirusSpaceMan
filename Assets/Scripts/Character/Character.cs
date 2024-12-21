@@ -92,7 +92,7 @@ public abstract class Character : MonoBehaviour, IReadOnlyCharacter
 
     private void OnChangedWeapon(IWeaponReadOnly weapon)
     {
-        ScannerDamageable.StartScan(Fighter.LayerMaskDamageable, weapon.Config.DistanceAttack);
+        ScannerDamageable.StartScan(weapon.Config.DistanceAttack);
     }
 
     private void OnRemovedWeapon()
@@ -115,7 +115,7 @@ public abstract class Character : MonoBehaviour, IReadOnlyCharacter
 
         if (Fighter.Weapon != null)
         {
-            ScannerDamageable.StartScan(Fighter.LayerMaskDamageable, Fighter.Weapon.Config.DistanceAttack);
+            ScannerDamageable.StartScan(Fighter.Weapon.Config.DistanceAttack);
         }
     }
 }

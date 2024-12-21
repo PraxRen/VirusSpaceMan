@@ -24,7 +24,7 @@ public abstract class Transition : IReadOnlyTransition
     public void Activate()
     {
         if (Status != StatusTransition.Initialized && Status != StatusTransition.Deactivated)
-            throw new InvalidOperationException($"Невозможно изменить статус перехода состояния \"{GetType().Name}\" на \"{StatusState.Entered}\"!");
+            throw new InvalidOperationException($"Ошибка активации \"{nameof(Transition)}\" \"{_currentState.GetType().Name}\"/\"{GetType().Name}\". Текущий статус -> \"{Status}\"!");
 
         ActivateAddon();
 
@@ -65,6 +65,7 @@ public abstract class Transition : IReadOnlyTransition
         if (status == Status)
             return;
 
+        //Debug.Log($"UpdateStatusTransition: \"{_currentState.GetType().Name}\"/\"{GetType().Name}\" | {Status} -> {status}");
         Status = status;
         ChangedStatus?.Invoke(this, Status);
     }

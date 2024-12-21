@@ -9,6 +9,7 @@ public class Scanner : MonoBehaviour
     [SerializeField][SerializeInterface(typeof(IScannerStrategy))] private ScriptableObject _scannerStrategyMonoBehaviour;
     [SerializeField] private float _defaultFrequencyUpdate;
     [SerializeField] private float _radiusBase;
+    [SerializeField] private LayerMask _layerMask;
 
     private List<Collider> _targets = new List<Collider>();
     private int _currentIndexTarget = -1;
@@ -16,7 +17,6 @@ public class Scanner : MonoBehaviour
     private Transform _transform;
     private WaitForSeconds _waitUpdateScan;
     private Coroutine _jobScanTargets;
-    private LayerMask _layerMask;
 
     public event Action<IReadOnlyCollection<Collider>> ChangedTargets;
     public event Action<Collider> ChangedCurrentTarget;
@@ -38,16 +38,21 @@ public class Scanner : MonoBehaviour
         CancelUpdateScan();
     }
 
-    public void StartScan(LayerMask layerMask)
+    public void StartScan()
     {
-        StartScan(layerMask, _radiusBase);
+        StartScan(_radiusBase);
     }
 
-    public void StartScan(LayerMask layerMask, float radius)
+    public void StartScan(float radius)
     {
+        if (enabled == false)
+            return;
+
+        if (gameObject.activeInHierarchy == false)
+            return;
+
         CancelUpdateScan();
         UpdateRadius(radius);
-        _layerMask = layerMask;
         _jobScanTargets = StartCoroutine(ScanTargets());
     }
 

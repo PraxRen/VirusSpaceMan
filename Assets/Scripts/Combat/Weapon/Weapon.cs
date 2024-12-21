@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using static UnityEditor.Experimental.GraphView.GraphView;
 
 public abstract class Weapon : MonoBehaviour, IWeaponReadOnly, ISerializationCallbackReceiver
 {
@@ -25,7 +26,7 @@ public abstract class Weapon : MonoBehaviour, IWeaponReadOnly, ISerializationCal
     public WeaponConfig Config => _config;
     public IFighterReadOnly Fighter => _fighter;
     public Attack CurrentAttack => _config.Attacks[_indexAttack];
-    public float FactorNoise => _config.FactorNoise;
+    public float FactorNoise => _config.FactorAuidioVolume;
     public SurfaceType SurfaceType => _config.SurfaceType;
     public Vector3 Position => _transform.position;
     public IReadOnlyCollection<Collider> Colliders => _colliders;
@@ -110,6 +111,7 @@ public abstract class Weapon : MonoBehaviour, IWeaponReadOnly, ISerializationCal
 
         if (_fighter == null)
             throw new ArgumentNullException(nameof(_fighter));
+
 
         RunDamageAddon();
     }

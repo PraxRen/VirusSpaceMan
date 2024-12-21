@@ -18,7 +18,8 @@ MonoBehaviour:
   _force: 0
   _distanceAttack: 0.1
   _cooldownAttack: 1
-  _factorNoise: 1
+  _distanceNoise: 3
+  _factorAuidioVolume: 0.5
   _surfaceType: 1
   _attacks:
   - {fileID: 11400000, guid: 3f418f67df761f246bf6b9cb69a505bf, type: 2}

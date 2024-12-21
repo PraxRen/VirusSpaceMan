@@ -35,6 +35,7 @@ public class Fighter : MonoBehaviour, IDamageable, IFighterReadOnly, IAction, IM
 
     public bool IsAttack { get; private set; }
     public IWeaponReadOnly Weapon => _currentWeapon;
+    public LayerMask LayerMask { get; private set; }
     public LayerMask LayerMaskDamageable => _layerMaskDamageable;
     public LayerMask LayerMaskCollision => _layerMaskCollision;
     public Vector3 Position => _transform.position;
@@ -51,6 +52,7 @@ public class Fighter : MonoBehaviour, IDamageable, IFighterReadOnly, IAction, IM
         _attackNotifier = (IAttackNotifier)_attackNotifierMonoBehaviour;
         LookTracker = (IReadOnlyTargetTracker)_lookTrackerMonoBehaviour;
         _currentDamageable = _health;
+        LayerMask = 1 << gameObject.layer;
     }
 
     private void OnEnable()

@@ -14,11 +14,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _id: 1a710b27-da2a-45e0-92d3-7067acf9bbd1
   _idWeapon: 86aeb65c-39f4-4a8d-887d-2ef9c75f7c03
-  _damage: 100
+  _damage: 10
   _force: 400
-  _distanceAttack: 5.5
+  _distanceAttack: 4.5
   _cooldownAttack: 0
-  _factorNoise: 0.5
+  _distanceNoise: 5.5
+  _factorAuidioVolume: 0.5
   _surfaceType: 2
   _attacks:
   - {fileID: 11400000, guid: f9d2096eb3e4f4841a8c2b6031018fd2, type: 2}

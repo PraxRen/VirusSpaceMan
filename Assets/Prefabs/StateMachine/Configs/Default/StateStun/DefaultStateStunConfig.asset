@@ -13,4 +13,4 @@ MonoBehaviour:
   m_Name: DefaultStateStunConfig
   m_EditorClassIdentifier: 
   _id: b143c347-a777-4a70-9be3-319d26ca94ab
-  _timeSecondsWaitUpdate: 0
+  _timeSecondsWaitUpdate: 0.25

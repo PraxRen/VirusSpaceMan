@@ -8,6 +8,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 321296511010564767, guid: 44be744388e3e254ab9946f7963209cc, type: 3}
+      propertyPath: _layerMaskCollision.m_Bits
+      value: 75841
+      objectReference: {fileID: 0}
+    - target: {fileID: 321296511010564767, guid: 44be744388e3e254ab9946f7963209cc, type: 3}
+      propertyPath: _layerMaskDamageable.m_Bits
+      value: 73792
+      objectReference: {fileID: 0}
     - target: {fileID: 2213702540375327997, guid: 44be744388e3e254ab9946f7963209cc, type: 3}
       propertyPath: m_Data.m_Target
       value: 
@@ -62,7 +70,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3944542201117102049, guid: 44be744388e3e254ab9946f7963209cc, type: 3}
       propertyPath: _radiusBase
-      value: 4
+      value: 2.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 3944542201117102049, guid: 44be744388e3e254ab9946f7963209cc, type: 3}
+      propertyPath: _layerMask.m_Bits
+      value: 65600
       objectReference: {fileID: 0}
     - target: {fileID: 6536734285014286234, guid: 44be744388e3e254ab9946f7963209cc, type: 3}
       propertyPath: m_AnchorMax.x
@@ -75,7 +87,7 @@ PrefabInstance:
     - target: {fileID: 6758731578635643536, guid: 44be744388e3e254ab9946f7963209cc, type: 3}
       propertyPath: _defaultCells.Array.data[0].<Item>k__BackingField
       value: 
-      objectReference: {fileID: 11400000, guid: 0df03ad6a2c93734d9fb403d88858f36, type: 2}
+      objectReference: {fileID: 11400000, guid: 6adcfd5db1426c84f8c8fa2c633a6d45, type: 2}
     - target: {fileID: 7943262969625516957, guid: 44be744388e3e254ab9946f7963209cc, type: 3}
       propertyPath: m_Name
       value: AICharacter

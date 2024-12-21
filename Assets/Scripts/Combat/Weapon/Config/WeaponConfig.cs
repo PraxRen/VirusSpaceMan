@@ -9,7 +9,8 @@ public class WeaponConfig : Item
     [SerializeField] private float _force;
     [Min(0f)][SerializeField] private float _distanceAttack;
     [Min(0f)][SerializeField] private float _cooldownAttack;
-    [Range(0f, 1f)][SerializeField] private float _factorNoise;
+    [Min(0f)][SerializeField] private float _distanceNoise;
+    [Range(0f, 1f)][SerializeField] private float _factorAuidioVolume;
     [SerializeField] private SurfaceType _surfaceType;
     [SerializeField] private List<Attack> _attacks;
 
@@ -18,7 +19,8 @@ public class WeaponConfig : Item
     public float Force => _force;
     public float DistanceAttack => _distanceAttack;
     public float CooldownAttack => _cooldownAttack;
-    public float FactorNoise => _factorNoise;
+    public float DistanceNoise => _distanceNoise;
+    public float FactorAuidioVolume => _factorAuidioVolume;
     public SurfaceType SurfaceType => _surfaceType;
     public IReadOnlyList<Attack> Attacks => _attacks;
 }
