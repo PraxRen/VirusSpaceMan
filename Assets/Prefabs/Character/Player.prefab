@@ -599,6 +599,10 @@ PrefabInstance:
       propertyPath: _layerMaskDamageable.m_Bits
       value: 37376
       objectReference: {fileID: 0}
+    - target: {fileID: 321296511010564767, guid: 44be744388e3e254ab9946f7963209cc, type: 3}
+      propertyPath: _layerMaskSimpleEventAttack.m_Bits
+      value: 512
+      objectReference: {fileID: 0}
     - target: {fileID: 882982864063756404, guid: 44be744388e3e254ab9946f7963209cc, type: 3}
       propertyPath: m_SortingOrder
       value: -1

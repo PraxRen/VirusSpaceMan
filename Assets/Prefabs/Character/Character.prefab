@@ -2070,6 +2070,8 @@ GameObject:
   - component: {fileID: 3910946193813396065}
   - component: {fileID: 3586588617121904956}
   - component: {fileID: 5736752719926799278}
+  - component: {fileID: 7118345940546107453}
+  - component: {fileID: 4358575433572536149}
   m_Layer: 0
   m_Name: Main
   m_TagString: Player
@@ -2469,6 +2471,9 @@ MonoBehaviour:
   _layerMaskCollision:
     serializedVersion: 2
     m_Bits: 3585
+  _layerMaskSimpleEventAttack:
+    serializedVersion: 2
+    m_Bits: 576
   _ignoreColliders:
   - {fileID: 2107567108416005254}
 --- !u!114 &269190155190720726
@@ -2739,6 +2744,33 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f71fee5099b149444a00207518e33a0f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &7118345940546107453
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3037592456749619465}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: baa674b72a8ca954cbc053f0395a91e0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &4358575433572536149
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3037592456749619465}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 94bcc1c32bdc2724fafe6aabf121e714, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _radiusCanReachTarget: 0.3
+  _initiatorsMonoBehaviour:
+  - {fileID: 321296511010564767}
 --- !u!1 &3063404305515597323
 GameObject:
   m_ObjectHideFlags: 0

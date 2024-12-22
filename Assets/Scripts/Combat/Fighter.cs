@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Fighter : MonoBehaviour, IDamageable, IFighterReadOnly, IAction, IModeMoverChanger
+public class Fighter : MonoBehaviour, IDamageable, IFighterReadOnly, IAction, IModeMoverChanger, ISimpleEventInitiator
 {
     [SerializeField] private bool _debug = true;
     [Tooltip("Auto-Activate the weapon when it is changed")][SerializeField] private bool _isAutoActivationWeapon;
@@ -16,6 +16,7 @@ public class Fighter : MonoBehaviour, IDamageable, IFighterReadOnly, IAction, IM
     [SerializeField][SerializeInterface(typeof(IReadOnlyTargetTracker))] private MonoBehaviour _lookTrackerMonoBehaviour;
     [SerializeField] private LayerMask _layerMaskDamageable;
     [SerializeField] private LayerMask _layerMaskCollision;
+    [SerializeField] private LayerMask _layerMaskSimpleEventAttack;
     [SerializeField] private Collider[] _ignoreColliders;
 
     private IChangerWeaponConfig _changerWeaponConfig;
@@ -23,6 +24,7 @@ public class Fighter : MonoBehaviour, IDamageable, IFighterReadOnly, IAction, IM
     private IDamageable _currentDamageable;
     private Weapon _currentWeapon;
     private Transform _transform;
+    private SimpleEvent _simpleAventAttack;
 
     public event Action<IWeaponReadOnly> ChangedWeapon;
     public event Action<IWeaponReadOnly> ActivatedWeapon;
@@ -32,10 +34,10 @@ public class Fighter : MonoBehaviour, IDamageable, IFighterReadOnly, IAction, IM
     public event Action<Hit, float> AfterTakeDamage;
     public event Action<IModeMoverProvider> AddedModeMover;
     public event Action<IModeMoverProvider> RemovedModeMover;
+    public event Action<ISimpleEventInitiator, SimpleEvent> SimpleEventStarted;
 
     public bool IsAttack { get; private set; }
     public IWeaponReadOnly Weapon => _currentWeapon;
-    public LayerMask LayerMask { get; private set; }
     public LayerMask LayerMaskDamageable => _layerMaskDamageable;
     public LayerMask LayerMaskCollision => _layerMaskCollision;
     public Vector3 Position => _transform.position;
@@ -52,7 +54,6 @@ public class Fighter : MonoBehaviour, IDamageable, IFighterReadOnly, IAction, IM
         _attackNotifier = (IAttackNotifier)_attackNotifierMonoBehaviour;
         LookTracker = (IReadOnlyTargetTracker)_lookTrackerMonoBehaviour;
         _currentDamageable = _health;
-        LayerMask = 1 << gameObject.layer;
     }
 
     private void OnEnable()
@@ -161,6 +162,7 @@ public class Fighter : MonoBehaviour, IDamageable, IFighterReadOnly, IAction, IM
             return;
 
         _currentWeapon.RunDamage();
+        SimpleEventStarted?.Invoke(this, _simpleAventAttack);
     }
 
     private void StopAttack()
@@ -195,6 +197,7 @@ public class Fighter : MonoBehaviour, IDamageable, IFighterReadOnly, IAction, IM
         if (_isAutoActivationWeapon)
             ActivateWeapon();
 
+        _simpleAventAttack = new SimpleEvent(TypeSimpleEvent.Attack, _layerMaskSimpleEventAttack, weaponConfig.DistanceNoise);
         ChangedWeapon?.Invoke(_currentWeapon);
     }
 
@@ -207,6 +210,7 @@ public class Fighter : MonoBehaviour, IDamageable, IFighterReadOnly, IAction, IM
         _currentWeapon.ClearConfig();
         _currentWeapon.Hited -= OnHited;
         _currentWeapon = null;
+        _simpleAventAttack = null;
         RemovedWeapon?.Invoke();
     }
 
