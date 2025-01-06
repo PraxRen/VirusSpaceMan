@@ -13,8 +13,6 @@ public class StateAttack : State, IModeMoverProvider
     private readonly Fighter _fighter;
     private readonly Mover _mover;
     private readonly NavMeshAgent _navMeshAgent;
-    private readonly CreatorSimpleEvent _creatorSimpleEvent;
-    private readonly SimpleEvent _simpleEventAlarm;
 
     private IDamageable _target;
     private float _timeUpdatePosition;
@@ -23,7 +21,7 @@ public class StateAttack : State, IModeMoverProvider
 
     public ModeMover ModeMover { get; }
 
-    public StateAttack(string id, AICharacter character, float timeSecondsWaitHandle, ModeMover modeMover, float radiusAlert, LayerMask layerMaskSimpleEventAlert) : base(id, character, timeSecondsWaitHandle)
+    public StateAttack(string id, AICharacter character, float timeSecondsWaitHandle, ModeMover modeMover) : base(id, character, timeSecondsWaitHandle)
     {
         if (character.TryGetComponent(out _fighter) == false)
             throw new InvalidOperationException($"Initialization error \"{nameof(State)}\"! The component \"{nameof(Fighter)}\" required for operation \"{GetType().Name}\".");
@@ -34,11 +32,7 @@ public class StateAttack : State, IModeMoverProvider
         if (character.TryGetComponent(out _navMeshAgent) == false)
             throw new InvalidOperationException($"Initialization error \"{nameof(State)}\"! The component \"{nameof(NavMeshAgent)}\" required for operation \"{GetType().Name}\".");
 
-        if (character.TryGetComponent(out _creatorSimpleEvent) == false)
-            throw new InvalidOperationException($"Initialization error \"{nameof(State)}\"! The component \"{nameof(CreatorSimpleEvent)}\" required for operation \"{GetType().Name}\".");
-
         ModeMover = modeMover;
-        _simpleEventAlarm = new SimpleEvent(TypeSimpleEvent.Alarm, layerMaskSimpleEventAlert, radiusAlert);
     }
 
     protected override void EnterAfterAddon()
@@ -54,7 +48,6 @@ public class StateAttack : State, IModeMoverProvider
         float offsetCenter = 0.2f;
         Character.LookTracker.SetTarget(_target, (_target.Rotation * Vector3.up) * (center + offsetCenter));
         Character.MoveTracker.SetTarget(_target, Vector3.zero);
-        _creatorSimpleEvent.Run(_fighter, _simpleEventAlarm);
     }
 
     protected override void TickAddon(float deltaTime)

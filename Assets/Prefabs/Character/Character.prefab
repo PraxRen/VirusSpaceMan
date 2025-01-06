@@ -2456,7 +2456,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _debug: 1
-  _isAutoActivationWeapon: 0
   _health: {fileID: 9156320183614822022}
   _storageWeapon: {fileID: 3278490414266983387}
   _actionScheduler: {fileID: 9063325606587652215}
@@ -5762,7 +5761,7 @@ GameObject:
   - component: {fileID: 2789975109385886845}
   m_Layer: 0
   m_Name: Character
-  m_TagString: Player
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

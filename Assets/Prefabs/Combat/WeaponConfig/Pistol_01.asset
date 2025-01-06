@@ -18,7 +18,7 @@ MonoBehaviour:
   _force: 400
   _distanceAttack: 4.5
   _cooldownAttack: 0
-  _distanceNoise: 5.5
+  _distanceNoise: 1
   _factorAuidioVolume: 0.5
   _surfaceType: 2
   _attacks:

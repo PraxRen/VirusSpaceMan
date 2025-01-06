@@ -36,7 +36,7 @@ public class CreatorSimpleEvent : MonoBehaviour, IReadOnlyCreatorSimpleEvent
 
     public bool CanReach(Transform transform) => (transform.position - _transform.position).sqrMagnitude < (_radiusCanReachTarget * _radiusCanReachTarget);
 
-    public void Run(ISimpleEventInitiator initiator, SimpleEvent simpleEvent)
+    private void Run(ISimpleEventInitiator initiator, SimpleEvent simpleEvent)
     {
         Collider[] colliders = Physics.OverlapSphere(_transform.position, simpleEvent.Radius, simpleEvent.LayerMask, QueryTriggerInteraction.Ignore);
 

@@ -5,7 +5,6 @@ using UnityEngine;
 public class Fighter : MonoBehaviour, IDamageable, IFighterReadOnly, IAction, IModeMoverChanger, ISimpleEventInitiator
 {
     [SerializeField] private bool _debug = true;
-    [Tooltip("Auto-Activate the weapon when it is changed")][SerializeField] private bool _isAutoActivationWeapon;
     [SerializeField] private Health _health;
     [SerializeField] private StorageWeapon _storageWeapon;
     [SerializeField] private ActionScheduler _actionScheduler;
@@ -117,9 +116,7 @@ public class Fighter : MonoBehaviour, IDamageable, IFighterReadOnly, IAction, IM
     public bool CanAttack()
     {
         if (_debug == false)
-        {
             return false;
-        }
 
         if (IsAttack)
             return false;
@@ -193,10 +190,6 @@ public class Fighter : MonoBehaviour, IDamageable, IFighterReadOnly, IAction, IM
         _currentWeapon = _storageWeapon.GetWeapon(weaponConfig.IdWeapon);
         _currentWeapon.Hited += OnHited;
         _currentWeapon.Initialize(weaponConfig, this);
-
-        if (_isAutoActivationWeapon)
-            ActivateWeapon();
-
         _simpleAventAttack = new SimpleEvent(TypeSimpleEvent.Attack, _layerMaskSimpleEventAttack, weaponConfig.DistanceNoise);
         ChangedWeapon?.Invoke(_currentWeapon);
     }
