@@ -16,6 +16,14 @@ PrefabInstance:
       propertyPath: _layerMaskDamageable.m_Bits
       value: 73792
       objectReference: {fileID: 0}
+    - target: {fileID: 1845547524693626225, guid: 44be744388e3e254ab9946f7963209cc, type: 3}
+      propertyPath: _hitReactionsMonoBehaviour.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 1845547524693626225, guid: 44be744388e3e254ab9946f7963209cc, type: 3}
+      propertyPath: _hitReactionsMonoBehaviour.Array.data[2]
+      value: 
+      objectReference: {fileID: 1887135985670931004}
     - target: {fileID: 2213702540375327997, guid: 44be744388e3e254ab9946f7963209cc, type: 3}
       propertyPath: m_Data.m_Target
       value: 
@@ -133,6 +141,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 3037592456749619465, guid: 44be744388e3e254ab9946f7963209cc, type: 3}
       insertIndex: -1
       addedObject: {fileID: 8737199240786971276}
+    - targetCorrespondingSourceObject: {fileID: 3037592456749619465, guid: 44be744388e3e254ab9946f7963209cc, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1887135985670931004}
   m_SourcePrefab: {fileID: 100100000, guid: 44be744388e3e254ab9946f7963209cc, type: 3}
 --- !u!114 &2859772508872846278 stripped
 MonoBehaviour:
@@ -185,7 +196,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _character: {fileID: 0}
-  _config: {fileID: 11400000, guid: b0306af0971db1843b9998309f58d4a3, type: 2}
+  _config: {fileID: 11400000, guid: 870ac34104dec52409f31daf7afec9ca, type: 2}
 --- !u!114 &8737199240786971276
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -199,3 +210,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _moveTracker: {fileID: 2859772508872846278}
+--- !u!114 &1887135985670931004
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7858805926000049803}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 78ed587a89a1bc24993bd14b42ea1d4b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _moveTargetTracker: {fileID: 2859772508872846278}

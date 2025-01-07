@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-public interface IFighterReadOnly
+public interface IFighterReadOnly : IDamageable
 {
     event Action<IWeaponReadOnly> ChangedWeapon;
     event Action<IWeaponReadOnly> ActivatedWeapon;

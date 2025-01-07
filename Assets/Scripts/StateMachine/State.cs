@@ -43,12 +43,13 @@ public abstract class State : IReadOnlyState
         ActivateTransitions(out Transition transitionNeedTransit);
         EnterAddon();
         UpdateStatus(StatusState.Entered);
-        EnterAfterAddon();
 
         if (transitionNeedTransit != null)
         {
             OnChangedTransitionStatus(transitionNeedTransit, StatusTransition.NeedTransit);
         }
+
+        EnterAfterAddon();
     }
 
     public void Exit()
@@ -100,7 +101,13 @@ public abstract class State : IReadOnlyState
 
     protected virtual void TickAddon(float deltaTime) { }
 
-    protected void Complete() => UpdateStatus(StatusState.Completed);
+    protected void Complete() 
+    {
+        if ((int)Status >= (int)StatusState.Completed)
+            return;
+
+        UpdateStatus(StatusState.Completed);
+    } 
 
     protected void AddTimer(Timer timer)
     {
@@ -150,7 +157,7 @@ public abstract class State : IReadOnlyState
             return;
 
         Status = state;
-        //Debug.Log($"UpdateStatus: {Character.Transform.parent.name} | {GetType().Name} = {Status}");
+        Debug.Log($"UpdateStatus: {Character.Transform.parent.name} | {GetType().Name} = {Status}");
         ChangedStatus?.Invoke(Status);
     }
 

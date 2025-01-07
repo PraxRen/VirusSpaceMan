@@ -21,7 +21,7 @@ public class StateMoverToTarget : State
         _mover.LookAtDirection(direction);
     }
 
-    protected override void EnterAfterAddon()
+    protected override void EnterAddon()
     {
         Navigation.ResetNavMeshAgent(Character.NavMeshAgent);
     }

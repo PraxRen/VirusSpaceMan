@@ -35,7 +35,7 @@ public class StateAttack : State, IModeMoverProvider
         ModeMover = modeMover;
     }
 
-    protected override void EnterAfterAddon()
+    protected override void EnterAddon()
     {
         Collider colliderTarget = Character.ScannerDamageable.Target;
 

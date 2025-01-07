@@ -10,7 +10,7 @@ public class StatePatrol : State
             throw new InvalidOperationException($"Initialization error \"{nameof(State)}\"! The component \"{nameof(Patrol)}\" required for operation \"{GetType().Name}\".");
     }
 
-    protected override void EnterAfterAddon()
+    protected override void EnterAddon()
     {
         _patrol.Run();
     }

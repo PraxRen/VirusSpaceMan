@@ -2,17 +2,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SetterTargetTrackerMove : MonoBehaviour
+public class SetterTargetTrackerMove : MonoBehaviour, IHitReaction
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    [SerializeField] private TargetTracker _moveTargetTracker;
 
-    // Update is called once per frame
-    void Update()
+    public bool CanHandleHit(Hit hit, float damage) => true;
+
+    public void HandleHit(Hit hit, float damage)
     {
-        
+        _moveTargetTracker.SetTarget(hit.Weapon.Fighter, Vector3.zero);
     }
 }

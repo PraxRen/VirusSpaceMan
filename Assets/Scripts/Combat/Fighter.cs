@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Fighter : MonoBehaviour, IDamageable, IFighterReadOnly, IAction, IModeMoverChanger, ISimpleEventInitiator
+public class Fighter : MonoBehaviour, IFighterReadOnly, IAction, IModeMoverChanger, ISimpleEventInitiator
 {
     [SerializeField] private bool _debug = true;
     [SerializeField] private Health _health;
