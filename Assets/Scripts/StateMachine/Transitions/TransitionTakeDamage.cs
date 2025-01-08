@@ -20,5 +20,8 @@ public class TransitionTakeDamage : Transition
         _mainDamageable.AfterTakeDamage -= OnAfterTakeDamage;
     }
 
-    private void OnAfterTakeDamage(Hit hit, float damage) => SetNeedTransit();
+    private void OnAfterTakeDamage(Hit hit, float damage) 
+    {
+        SetNeedTransit();
+    } 
 }

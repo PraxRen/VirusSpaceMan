@@ -4,9 +4,16 @@ using UnityEngine.UI;
 
 public class UIActivatorPanelSrollTarget : MonoBehaviour
 {
-    [SerializeField] private Scanner _scanner;
+    [SerializeField][SerializeInterface(typeof(IReadOnlyScanner))] private MonoBehaviour _scannerMonoBehaviour;
     [SerializeField] private Image _imageLeft;
     [SerializeField] private Image _imageRight;
+
+    private IReadOnlyScanner _scanner;
+
+    private void Awake()
+    {
+        _scanner = (IReadOnlyScanner)_scannerMonoBehaviour;
+    }
 
     private void OnEnable()
     {

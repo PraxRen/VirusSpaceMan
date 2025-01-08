@@ -33,6 +33,7 @@ public class SwitcherRagdoll : MonoBehaviour
 
     private LayerMask _groundLayer;
 
+    public event Action BeforeActivate;
     public event Action Activated;
     public event Action Deactivated;
     public event Action ExiteAnimationStandUp;
@@ -128,6 +129,7 @@ public class SwitcherRagdoll : MonoBehaviour
         }
 
         _jobAlignPositionToHips = StartCoroutine(AlignTransformToHips());
+        BeforeActivate?.Invoke();
         Activated?.Invoke();
     }
 

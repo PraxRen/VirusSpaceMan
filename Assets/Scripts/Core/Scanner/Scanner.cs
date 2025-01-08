@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-public class Scanner : MonoBehaviour
+public class Scanner : MonoBehaviour, IReadOnlyScanner
 {
     [SerializeField][SerializeInterface(typeof(IScannerStrategy))] private ScriptableObject _scannerStrategyMonoBehaviour;
     [SerializeField] private float _defaultFrequencyUpdate;
@@ -19,6 +19,7 @@ public class Scanner : MonoBehaviour
     private Coroutine _jobScanTargets;
 
     public event Action<IReadOnlyCollection<Collider>> ChangedTargets;
+    public event Action<Collider> BeforeChangedCurrentTarget;
     public event Action<Collider> ChangedCurrentTarget;
     public event Action<Collider> RemovedCurrentTarget;
     public event Action<float> ChangedRadius;
@@ -101,6 +102,7 @@ public class Scanner : MonoBehaviour
         if (Target == newTarget) 
             return;
 
+        BeforeChangedCurrentTarget?.Invoke(newTarget);
         Target = newTarget;
         ChangedCurrentTarget?.Invoke(Target);
     }

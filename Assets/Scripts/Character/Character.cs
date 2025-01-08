@@ -16,6 +16,7 @@ public abstract class Character : MonoBehaviour, IReadOnlyCharacter
     public TargetTracker LookTracker => _lookTracker;
     public TargetTracker MoveTracker => _moveTracker;
     public Scanner ScannerDamageable { get; private set; }
+    public Trigger TriggerDamageable { get; private set; }
     protected Mover Mover { get; private set; }
     protected Fighter Fighter { get; private set; }
     protected Interactor Interactor { get; private set; }
@@ -30,6 +31,7 @@ public abstract class Character : MonoBehaviour, IReadOnlyCharacter
         Mover = GetComponent<Mover>();
         Fighter = GetComponent<Fighter>();
         ScannerDamageable = GetComponent<Scanner>();
+        TriggerDamageable = GetComponent<Trigger>();
         Interactor = GetComponent<Interactor>();
         AwakeAddon();
     }
@@ -53,6 +55,7 @@ public abstract class Character : MonoBehaviour, IReadOnlyCharacter
         Mover.enabled = true;
         Fighter.enabled = true;
         ScannerDamageable.enabled = true;
+        TriggerDamageable.enabled = true;
         Interactor.enabled = true;
         EnableAddon();
     }
@@ -73,6 +76,7 @@ public abstract class Character : MonoBehaviour, IReadOnlyCharacter
         Mover.enabled = false;
         Fighter.enabled = false;
         ScannerDamageable.enabled = false;
+        TriggerDamageable.enabled = false;
         Interactor.enabled = false;
         DisableAddon();
     }
