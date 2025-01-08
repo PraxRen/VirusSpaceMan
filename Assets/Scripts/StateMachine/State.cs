@@ -157,7 +157,7 @@ public abstract class State : IReadOnlyState
             return;
 
         Status = state;
-        Debug.Log($"UpdateStatus: {Character.Transform.parent.name} | {GetType().Name} = {Status}");
+        //Debug.Log($"UpdateStatus: {Character.Transform.parent.name} | {GetType().Name} = {Status}");
         ChangedStatus?.Invoke(Status);
     }
 

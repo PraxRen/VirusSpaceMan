@@ -12,5 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 76a7575da0b0d394a8e5e5af611ddd2c, type: 3}
   m_Name: ModeMoverKarate
   m_EditorClassIdentifier: 
-  _speedMove: 0
-  _speedRotation: 0
+  _speedMove: -0.2
+  _speedRotation: -0.3
