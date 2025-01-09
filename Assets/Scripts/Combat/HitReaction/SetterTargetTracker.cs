@@ -1,9 +1,7 @@
-using System.Collections;
-using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-public class SetterTargetTrackerMove : MonoBehaviour
+public class SetterTargetTracker : MonoBehaviour
 {
     [SerializeField] private TargetTracker _moveTargetTracker;
     [SerializeField] private TargetTracker _lookTargetTracker;
@@ -11,11 +9,13 @@ public class SetterTargetTrackerMove : MonoBehaviour
     [SerializeField][SerializeInterface(typeof(IReadOnlyListenerSimpleEvent))] private MonoBehaviour _listenerSimpleEventMonoBehaviour;
     [SerializeField][SerializeInterface(typeof(IReadOnlyTrigger))] private MonoBehaviour _triggerMonoBehaviour;
     [SerializeField][SerializeInterface(typeof(IReadOnlyScanner))] private MonoBehaviour _scannerMonoBehaviour;
+    [SerializeField][SerializeInterface(typeof(IReadOnlyActivatorRagdoll))] private MonoBehaviour _activatorRagdollMonoBehaviour; 
 
     private IDamageable _mainDamageable;
     private IReadOnlyListenerSimpleEvent _listenerSimpleEvent;
     private IReadOnlyTrigger _trigger;
     private IReadOnlyScanner _scanner;
+    private IReadOnlyActivatorRagdoll _activatorRagdoll;
 
     private void Awake()
     {
@@ -23,6 +23,7 @@ public class SetterTargetTrackerMove : MonoBehaviour
         _listenerSimpleEvent = (IReadOnlyListenerSimpleEvent)_listenerSimpleEventMonoBehaviour;
         _trigger = (IReadOnlyTrigger)_triggerMonoBehaviour;
         _scanner = (IReadOnlyScanner)_scannerMonoBehaviour;
+        _activatorRagdoll = (IReadOnlyActivatorRagdoll)_activatorRagdollMonoBehaviour;
     }
 
     private void OnEnable()
@@ -30,15 +31,22 @@ public class SetterTargetTrackerMove : MonoBehaviour
         _mainDamageable.BeforeTakeDamage += OnBeforeTakeDamage;
         _listenerSimpleEvent.BeforeNotified += OnBeforeNotified;
         _trigger.BeforeChangedTarget += OnBeforeChangedTarget;
-        _scanner.BeforeChangedCurrentTarget += OnBeforeChangedCurrentTarget;
+        _trigger.RemovedTarget += OnRemovedTarget;
+        _scanner.BeforeChangedCurrentTarget += OnBeforeChangedTarget;
+        _scanner.RemovedCurrentTarget += OnRemovedTarget;
+        _activatorRagdoll.BeforeActivated += OnBeforeActivated;
     }
+
 
     private void OnDisable()
     {
         _mainDamageable.BeforeTakeDamage -= OnBeforeTakeDamage;
         _listenerSimpleEvent.BeforeNotified -= OnBeforeNotified;
         _trigger.BeforeChangedTarget -= OnBeforeChangedTarget;
-        _scanner.BeforeChangedCurrentTarget -= OnBeforeChangedCurrentTarget;
+        _trigger.RemovedTarget -= OnRemovedTarget;
+        _scanner.BeforeChangedCurrentTarget -= OnBeforeChangedTarget;
+        _scanner.RemovedCurrentTarget -= OnRemovedTarget;
+        _activatorRagdoll.BeforeActivated -= OnBeforeActivated;
     }
 
     private void SetTargetCollider(Collider collider)
@@ -100,8 +108,14 @@ public class SetterTargetTrackerMove : MonoBehaviour
         SetTargetCollider(collider);
     }
 
-    private void OnBeforeChangedCurrentTarget(Collider collider)
+    private void OnRemovedTarget(Collider collider)
     {
-        SetTargetCollider(collider);
+        _lookTargetTracker.ResetTarget();
+    }
+
+    private void OnBeforeActivated(Hit hit)
+    {
+        IFighterReadOnly fighter = hit.Weapon.Fighter;
+        SetTargetFighter(fighter);
     }
 }

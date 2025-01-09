@@ -101,7 +101,7 @@ public class StateMachine : MonoBehaviour, IModeMoverChanger
         if (state == null)
         {
 #if UNITY_EDITOR
-            //Debug.LogWarning($"State Machine not find \"{nameof(nextState)}\"");
+            Debug.LogWarning($"State Machine not find \"{nameof(nextState)}\"");
 #endif
             return;
         }

@@ -16,9 +16,9 @@ MonoBehaviour:
   _idWeapon: 86aeb65c-39f4-4a8d-887d-2ef9c75f7c03
   _damage: 10
   _force: 400
-  _distanceAttack: 4.5
+  _distanceAttack: 3.8
   _cooldownAttack: 0
-  _distanceNoise: 1
+  _distanceNoise: 20
   _factorAuidioVolume: 0.5
   _surfaceType: 2
   _attacks:

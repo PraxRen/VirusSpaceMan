@@ -10,8 +10,8 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 54f52eb69d3d5dc43bdfe3ebb20b8485, type: 3}
-  m_Name: EnemyTransitionTimer_Pursuit_SearchPlaceInterest
+  m_Name: EnemyTransitionTimer_SearchPlaceInterest_SearchPatrolPath
   m_EditorClassIdentifier: 
-  _currentStateConfig: {fileID: 11400000, guid: a07c48bf355fdc848815261d20625e79, type: 2}
-  _targetStateConfig: {fileID: 11400000, guid: 889d874492017e14e9fb4265a541171e, type: 2}
-  _timeTimer: 2
+  _currentStateConfig: {fileID: 11400000, guid: 889d874492017e14e9fb4265a541171e, type: 2}
+  _targetStateConfig: {fileID: 11400000, guid: 81230f0337f44ce4ea13b5e3dd723249, type: 2}
+  _timeTimer: 1

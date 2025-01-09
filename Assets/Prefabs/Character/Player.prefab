@@ -434,7 +434,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _image: {fileID: 8629780060005207835}
   _factorSize: 2.2
-  _scanner: {fileID: 8550682467483166896}
+  _scannerMonoBehaviour: {fileID: 8550682467483166896}
 --- !u!1001 &1808481103255162047
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -589,7 +589,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 321296511010564767, guid: 44be744388e3e254ab9946f7963209cc, type: 3}
       propertyPath: _luckRageAttack
-      value: 0.7
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 321296511010564767, guid: 44be744388e3e254ab9946f7963209cc, type: 3}
       propertyPath: _layerMaskCollision.m_Bits
@@ -775,6 +775,10 @@ PrefabInstance:
       propertyPath: m_WarningMessage
       value: 
       objectReference: {fileID: 0}
+    - target: {fileID: 6758731578635643536, guid: 44be744388e3e254ab9946f7963209cc, type: 3}
+      propertyPath: _defaultCells.Array.data[0].<Item>k__BackingField
+      value: 
+      objectReference: {fileID: 11400000, guid: 0df03ad6a2c93734d9fb403d88858f36, type: 2}
     - target: {fileID: 7384320443453687125, guid: 44be744388e3e254ab9946f7963209cc, type: 3}
       propertyPath: m_Layer
       value: 13
@@ -1133,6 +1137,7 @@ MonoBehaviour:
   _id: 
   _lookTracker: {fileID: 854495915079254380}
   _moveTracker: {fileID: 2346274011256384277}
+  _scannerDamageable: {fileID: 8550682467483166896}
   _healthMonoBehaviour: {fileID: 4541384262124319191}
 --- !u!114 &3416461741309272846
 MonoBehaviour:

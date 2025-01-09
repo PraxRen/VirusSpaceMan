@@ -6,4 +6,9 @@ public class StatePursuit : StateMoverToTarget, IModeMoverProvider
     }
 
     public ModeMover ModeMover { get; }
+
+    protected override void ExitAfterAddon()
+    {
+        base.ExitAfterAddon();
+    }
 }

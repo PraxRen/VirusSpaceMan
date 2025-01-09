@@ -1,9 +1,10 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(SwitcherRagdoll))]
-public class ActivatorRagdoll : MonoBehaviour, IHitReaction, IAction
+public class ActivatorRagdoll : MonoBehaviour, IReadOnlyActivatorRagdoll, IHitReaction, IAction
 {
     private const float ForceYOffset = 0.35f;
 
@@ -17,6 +18,10 @@ public class ActivatorRagdoll : MonoBehaviour, IHitReaction, IAction
     private IDamageable _damageable;
     private Coroutine _jobRunTimerForDeactivate;
 
+    public event Action<Hit> BeforeActivated;
+    public event Action<Hit> Activated;
+    public event Action Deactivated;
+
     private void Awake()
     {
         _transform = transform;
@@ -26,12 +31,12 @@ public class ActivatorRagdoll : MonoBehaviour, IHitReaction, IAction
 
     private void OnEnable()
     {
-        _switcherRagdoll.ExiteAnimationStandUp += OnExiteAnimationStandUp;
+        _switcherRagdoll.Deactivated += OnDeactivated;
     }
 
     private void OnDisable()
     {
-        _switcherRagdoll.ExiteAnimationStandUp -= OnExiteAnimationStandUp;
+        _switcherRagdoll.Deactivated -= OnDeactivated;
     }
 
     public void Cancel()
@@ -63,6 +68,7 @@ public class ActivatorRagdoll : MonoBehaviour, IHitReaction, IAction
 
     public void HandleHit(Hit hit, float damage)
     {
+        BeforeActivated?.Invoke(hit);
         _actionScheduler.StartAction(this);
         _actionScheduler.SetBlock(this);
         Vector3 force = CalculateForce(hit.Weapon, hit.Point);
@@ -79,6 +85,7 @@ public class ActivatorRagdoll : MonoBehaviour, IHitReaction, IAction
         }
 
         _switcherRagdoll.ApplyHit(force, hit.Point);
+        Activated?.Invoke(hit);
     }
 
     private Vector3 CalculateForce(IWeaponReadOnly weapon, Vector3 hitPoint)
@@ -129,8 +136,9 @@ public class ActivatorRagdoll : MonoBehaviour, IHitReaction, IAction
         }
     }
 
-    private void OnExiteAnimationStandUp()
+    private void OnDeactivated()
     {
         _actionScheduler.ClearAction(this);
+        Deactivated?.Invoke();
     }
 }

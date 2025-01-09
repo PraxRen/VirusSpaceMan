@@ -17,6 +17,7 @@ public class Trigger : MonoBehaviour, IReadOnlyTrigger
 
     public event Action<Collider> BeforeChangedTarget;
     public event Action<Collider> ChangedTarget;
+    public event Action<Collider> RemovedTarget;
 
     public Collider Target { get; private set; }
 
@@ -48,6 +49,9 @@ public class Trigger : MonoBehaviour, IReadOnlyTrigger
 
             if (countResult == 0)
             {
+                if (Target != null)
+                    RemovedTarget?.Invoke(Target);
+
                 Target = null;
                 continue;
             }

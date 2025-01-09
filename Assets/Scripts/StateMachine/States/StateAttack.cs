@@ -5,8 +5,8 @@ using UnityEngine.AI;
 public class StateAttack : State, IModeMoverProvider
 {
     private const float MinRadiusMovePosition = 0.7f;
-    private const float MinTimeUpdatePosition = 2.5f;
-    private const float MaxTimeUpdatePosition = 7f;
+    private const float MinTimeUpdatePosition = 2f;
+    private const float MaxTimeUpdatePosition = 5f;
     private const float MinFactorDistanceAtack = 0.1f;
     private const float MaxFactorDistanceAtack = 0.7f;
 
@@ -44,10 +44,6 @@ public class StateAttack : State, IModeMoverProvider
 
         UpdatePosition();
         _fighter.ActivateWeapon();
-        float center = colliderTarget.bounds.center.y - _target.Position.y;
-        float offsetCenter = 0.2f;
-        Character.LookTracker.SetTarget(_target, (_target.Rotation * Vector3.up) * (center + offsetCenter));
-        Character.MoveTracker.SetTarget(_target, Vector3.zero);
     }
 
     protected override void TickAddon(float deltaTime)
@@ -85,6 +81,5 @@ public class StateAttack : State, IModeMoverProvider
     protected override void ExitAfterAddon() 
     {
         _fighter.DeactivateWeapon();
-        Character.LookTracker.ResetTarget();
     }
 }

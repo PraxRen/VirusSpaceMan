@@ -65,7 +65,6 @@ public class Scanner : MonoBehaviour, IReadOnlyScanner
 
     public void UpdateRadius(float radius)
     {
-        Debug.Log($"UpdateRadius: {radius}");
         Radius = Mathf.Max(_radiusBase, radius);
         ChangedRadius?.Invoke(Radius);
     }

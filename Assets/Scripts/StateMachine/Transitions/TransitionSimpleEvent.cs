@@ -1,4 +1,5 @@
 using System;
+using UnityEngine;
 
 public class TransitionSimpleEvent : Transition
 {
@@ -28,6 +29,7 @@ public class TransitionSimpleEvent : Transition
         if (simpleEvent.Type != _typeSimpleAction)
             return;
 
+        Debug.Log($"TransitionSimpleEvent:");
         SetNeedTransit();
     }
 }   

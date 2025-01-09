@@ -33,10 +33,8 @@ public class SwitcherRagdoll : MonoBehaviour
 
     private LayerMask _groundLayer;
 
-    public event Action BeforeActivate;
     public event Action Activated;
     public event Action Deactivated;
-    public event Action ExiteAnimationStandUp;
 
     public bool IsActivated { get; private set; }
     public bool IsWaitAnimationStandUp { get; private set; }
@@ -129,7 +127,6 @@ public class SwitcherRagdoll : MonoBehaviour
         }
 
         _jobAlignPositionToHips = StartCoroutine(AlignTransformToHips());
-        BeforeActivate?.Invoke();
         Activated?.Invoke();
     }
 
@@ -280,7 +277,6 @@ public class SwitcherRagdoll : MonoBehaviour
 
         Cancel();
         IsWaitAnimationStandUp = false;
-        ExiteAnimationStandUp?.Invoke();
         Deactivated?.Invoke();
     }
 }

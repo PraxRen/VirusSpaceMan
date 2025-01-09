@@ -8,6 +8,7 @@ public abstract class Character : MonoBehaviour, IReadOnlyCharacter
     [SerializeField][ReadOnly] private string _id;
     [SerializeField] private TargetTracker _lookTracker;
     [SerializeField] private TargetTracker _moveTracker;
+    [SerializeField] private Scanner _scannerDamageable;
     [SerializeField][SerializeInterface(typeof(IHealth))] private MonoBehaviour _healthMonoBehaviour;
 
     public string Id => _id;
@@ -15,8 +16,7 @@ public abstract class Character : MonoBehaviour, IReadOnlyCharacter
     public IHealth Health { get; private set; }
     public TargetTracker LookTracker => _lookTracker;
     public TargetTracker MoveTracker => _moveTracker;
-    public Scanner ScannerDamageable { get; private set; }
-    public Trigger TriggerDamageable { get; private set; }
+    public Scanner ScannerDamageable => _scannerDamageable;
     protected Mover Mover { get; private set; }
     protected Fighter Fighter { get; private set; }
     protected Interactor Interactor { get; private set; }
@@ -30,8 +30,6 @@ public abstract class Character : MonoBehaviour, IReadOnlyCharacter
         Health = (IHealth)_healthMonoBehaviour;
         Mover = GetComponent<Mover>();
         Fighter = GetComponent<Fighter>();
-        ScannerDamageable = GetComponent<Scanner>();
-        TriggerDamageable = GetComponent<Trigger>();
         Interactor = GetComponent<Interactor>();
         AwakeAddon();
     }
@@ -40,8 +38,6 @@ public abstract class Character : MonoBehaviour, IReadOnlyCharacter
     {
         Fighter.ChangedWeapon += OnChangedWeapon;
         Fighter.RemovedWeapon += OnRemovedWeapon;
-        Interactor.StartedInteract += OnStartedInteract;
-        Interactor.StoppedInteract += OnStoppedInteract;
 
         if (Fighter.Weapon != null)
             OnChangedWeapon(Fighter.Weapon);
@@ -54,8 +50,7 @@ public abstract class Character : MonoBehaviour, IReadOnlyCharacter
 
         Mover.enabled = true;
         Fighter.enabled = true;
-        ScannerDamageable.enabled = true;
-        TriggerDamageable.enabled = true;
+        _scannerDamageable.enabled = true;
         Interactor.enabled = true;
         EnableAddon();
     }
@@ -64,8 +59,6 @@ public abstract class Character : MonoBehaviour, IReadOnlyCharacter
     {
         Fighter.ChangedWeapon -= OnChangedWeapon;
         Fighter.RemovedWeapon -= OnRemovedWeapon;
-        Interactor.StartedInteract -= OnStartedInteract;
-        Interactor.StoppedInteract -= OnStoppedInteract;
 
         if (_lookTracker != null && _lookTracker.gameObject.activeSelf)
             _lookTracker.gameObject.SetActive(false);
@@ -75,8 +68,7 @@ public abstract class Character : MonoBehaviour, IReadOnlyCharacter
 
         Mover.enabled = false;
         Fighter.enabled = false;
-        ScannerDamageable.enabled = false;
-        TriggerDamageable.enabled = false;
+        _scannerDamageable.enabled = false;
         Interactor.enabled = false;
         DisableAddon();
     }
@@ -102,24 +94,5 @@ public abstract class Character : MonoBehaviour, IReadOnlyCharacter
     private void OnRemovedWeapon()
     {
         ScannerDamageable.ResetRadius();
-    }
-
-    private void OnStartedInteract(IReadOnlyInteractor interactor, IReadOnlyObjectInteraction objectInteraction)
-    {
-        if (interactor != (IReadOnlyInteractor)Interactor)
-            return;
-
-        ScannerDamageable.ResetRadius();
-    }
-
-    private void OnStoppedInteract(IReadOnlyInteractor interactor, IReadOnlyObjectInteraction objectInteraction)
-    {
-        if (interactor != (IReadOnlyInteractor)Interactor)
-            return;
-
-        if (Fighter.Weapon != null)
-        {
-            ScannerDamageable.StartScan(Fighter.Weapon.Config.DistanceAttack);
-        }
     }
 }
