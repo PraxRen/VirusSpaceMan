@@ -8,7 +8,7 @@ public class ListenerSimpleEvent : MonoBehaviour, IReadOnlyListenerSimpleEvent
 
     public void Notify(IReadOnlyCreatorSimpleEvent creatorSimpleEvent, ISimpleEventInitiator initiator, SimpleEvent simpleEvent)
     {
-        Debug.Log($"ListenerSimpleEvent.Notify: {((CreatorSimpleEvent)creatorSimpleEvent).transform.parent.name} | {transform.parent.name} | {simpleEvent.Type}");
+        //Debug.Log($"ListenerSimpleEvent.Notify: {((CreatorSimpleEvent)creatorSimpleEvent).transform.parent.name} | {transform.parent.name} | {simpleEvent.Type}");
         BeforeNotified?.Invoke(creatorSimpleEvent, initiator, simpleEvent);
         Notified?.Invoke(creatorSimpleEvent, initiator, simpleEvent);
     }

@@ -10,6 +10,8 @@ public class TargetTracker : MonoBehaviour, IReadOnlyTargetTracker
     [Header("Gizmos")]
     [SerializeField] private Color _color;
     [SerializeField] private float _size;
+    [Header("Debug")]
+    [ReadOnly][SerializeField] private string _targetName;
 #endif
 
     private Transform _transform;
@@ -41,7 +43,7 @@ public class TargetTracker : MonoBehaviour, IReadOnlyTargetTracker
 
     public void Update()
     {
-        _transform.position = Vector3.MoveTowards(_transform.position, Target.Position + _offset, _speedUpdate * Time.deltaTime);
+        _transform.position = Vector3.MoveTowards(_transform.position, Target.Position + CalculateOffset(), _speedUpdate * Time.deltaTime);
     }
 
     public void SetTarget(ITarget target, Vector3 offset)
@@ -49,6 +51,10 @@ public class TargetTracker : MonoBehaviour, IReadOnlyTargetTracker
         Target = target;
         _offset = offset;
         _speedUpdate = _speedUpdatePositionTarget;
+#if UNITY_EDITOR
+        MonoBehaviour monoBehaviour = Target as MonoBehaviour;
+        _targetName = monoBehaviour == null ? "" : monoBehaviour.GetType().Name;
+#endif
     }
 
     public void ResetTarget()
@@ -56,5 +62,17 @@ public class TargetTracker : MonoBehaviour, IReadOnlyTargetTracker
         Target = _targetDefault;
         _offset = Vector3.zero;
         _speedUpdate = _speedUpdatePositionDefault;
+#if UNITY_EDITOR
+        MonoBehaviour monoBehaviour = Target as MonoBehaviour;
+        _targetName = monoBehaviour == null ? "" : monoBehaviour.GetType().Name;
+#endif
+    }
+
+
+    private Vector3 CalculateOffset()
+    {
+        return (Target.Rotation * SimpleUtils.GetVectorDirection(Target.AxisRight)) * _offset.x 
+             + (Target.Rotation * SimpleUtils.GetVectorDirection(Target.AxisUp)) * _offset.y 
+             + (Target.Rotation * SimpleUtils.GetVectorDirection(Target.AxisForward)) * _offset.z;
     }
 }

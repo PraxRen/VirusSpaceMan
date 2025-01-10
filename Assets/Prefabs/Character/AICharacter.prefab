@@ -18,7 +18,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1845547524693626225, guid: 44be744388e3e254ab9946f7963209cc, type: 3}
       propertyPath: _hitReactionsMonoBehaviour.Array.size
-      value: 3
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 1845547524693626225, guid: 44be744388e3e254ab9946f7963209cc, type: 3}
       propertyPath: _hitReactionsMonoBehaviour.Array.data[2]
@@ -238,7 +238,7 @@ NavMeshAgent:
   m_Radius: 0.28
   m_Speed: 1
   m_Acceleration: 0
-  avoidancePriority: 50
+  avoidancePriority: 0
   m_AngularSpeed: 0
   m_StoppingDistance: 0.12
   m_AutoTraverseOffMeshLink: 1

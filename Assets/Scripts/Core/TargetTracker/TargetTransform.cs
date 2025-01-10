@@ -1,3 +1,4 @@
+using TMPro.EditorUtilities;
 using UnityEngine;
 
 public class TargetTransform : ITarget
@@ -12,7 +13,11 @@ public class TargetTransform : ITarget
     }
 
     public Vector3 Position => _transform.position;
+    public Vector3 Center => _transform.position;
     public Quaternion Rotation => _transform.rotation;
+    public Axis AxisUp => Axis.Y;
+    public Axis AxisForward => Axis.Z;
+    public Axis AxisRight => Axis.X;
 
     public bool CanReach(Transform transform) 
     {

@@ -4,7 +4,6 @@ public interface IReadOnlyPlaceInterest : ITarget
 {
     event Action EnteredInteractor;
 
-    string Name { get; }
     bool IsEmpty { get; }
     bool HasInteractorInside { get; }
     IReadOnlyInteractor Interactor { get; }

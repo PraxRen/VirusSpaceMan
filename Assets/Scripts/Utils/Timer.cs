@@ -7,9 +7,13 @@ public class Timer
 
     public event Action<Timer> Completed;
 
+    private static int _idLast;
+    public int ID { get; private set; }
+
     public Timer(float time)
     {
-        Reset(time);
+        ID = ++_idLast;
+        SetTime(time);
     }
 
     public void Tick(float deltaTime)
@@ -19,15 +23,15 @@ public class Timer
 
         _time -= deltaTime;
 
-        if (_time <= 0)
-        {
-            _time = 0;
-            _isRunning = false;
-            Completed?.Invoke(this);
-        }
+        if (_time > 0)
+            return;
+
+        _time = 0;
+        _isRunning = false;
+        Completed?.Invoke(this);
     }
 
-    public void Reset(float time)
+    public void SetTime(float time)
     {
         _isRunning = true;
         _time = time;

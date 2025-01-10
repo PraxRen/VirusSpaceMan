@@ -44,7 +44,8 @@ public class StateMachine : MonoBehaviour, IModeMoverChanger
 
     private void Update()
     {
-        _currentState.Tick(Time.deltaTime);
+        if (_currentState.CanUpdate())
+            _currentState.Tick(Time.deltaTime);
     }
 
     private IEnumerator UpdateState()
@@ -82,7 +83,7 @@ public class StateMachine : MonoBehaviour, IModeMoverChanger
     private void SetCurrentState(State startState)
     {
 #if UNITY_EDITOR
-        Debug.Log($"SetCurrentState: {_character.Transform.parent.name} | {_currentState?.GetType().Name} -> {startState.GetType().Name}");
+        //Debug.Log($"SetCurrentState: {_character.Transform.parent.name} | {_currentState?.GetType().Name} -> {startState.GetType().Name}");
 #endif
         _currentState = startState;
         _currentState.GetedNextState += Transit;

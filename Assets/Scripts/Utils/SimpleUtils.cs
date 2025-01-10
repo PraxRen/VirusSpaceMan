@@ -40,4 +40,18 @@ public class SimpleUtils
 
         return center + new Vector3(x, 0f, z);
     }
+
+    public static Vector3 GetVectorDirection(Axis axis) 
+    {
+        return axis switch
+        {
+            Axis.X => Vector3.right,
+            Axis.NegativeX => Vector3.left,
+            Axis.Y => Vector3.up,
+            Axis.NegativeY => Vector3.down,
+            Axis.Z => Vector3.forward,
+            Axis.NegativeZ => Vector3.back,
+            _ => throw new System.NotImplementedException(),
+        };
+    }
 }

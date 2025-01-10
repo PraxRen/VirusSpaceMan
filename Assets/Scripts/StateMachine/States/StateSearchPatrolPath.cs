@@ -44,7 +44,7 @@ public class StateSearchPatrolPath : State
     protected override void ExitAfterAddon()
     {
         _timerDelayComplete.Completed -= OnTimerCompleted;
-        _timerDelayComplete.Reset(_timeDelayComplete);
+        _timerDelayComplete.SetTime(_timeDelayComplete);
         _isFoundPatrolPath = false;
     }
 

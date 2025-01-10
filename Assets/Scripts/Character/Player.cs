@@ -69,12 +69,10 @@ public class Player : Character
     {
         Fighter.ActivateWeapon();
 
-        if (collider.TryGetComponent(out ITarget target) == false)
+        if (collider.TryGetComponent(out IDamageable damageable) == false)
             return;
 
-        float center = collider.bounds.center.y - target.Position.y;
-        float offsetCenter = 0.2f;
-        LookTracker.SetTarget(target, (target.Rotation * Vector3.up) * (center + offsetCenter));
+        LookTracker.SetTarget(damageable, damageable.Center - damageable.Position);
     }
 
     private void OnRemovedTarget(Collider target)

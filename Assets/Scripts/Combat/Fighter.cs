@@ -22,7 +22,6 @@ public class Fighter : MonoBehaviour, IFighterReadOnly, IAction, IModeMoverChang
     private IAttackNotifier _attackNotifier;
     private IDamageable _currentDamageable;
     private Weapon _currentWeapon;
-    private Transform _transform;
     private SimpleEvent _simpleAventAttack;
 
     public event Action<IWeaponReadOnly> ChangedWeapon;
@@ -39,8 +38,12 @@ public class Fighter : MonoBehaviour, IFighterReadOnly, IAction, IModeMoverChang
     public IWeaponReadOnly Weapon => _currentWeapon;
     public LayerMask LayerMaskDamageable => _layerMaskDamageable;
     public LayerMask LayerMaskCollision => _layerMaskCollision;
-    public Vector3 Position => _transform.position;
-    public Quaternion Rotation => _transform.rotation;
+    public Vector3 Position => _currentDamageable.Position;
+    public Vector3 Center => _currentDamageable.Center;
+    public Quaternion Rotation => _currentDamageable.Rotation;
+    public Axis AxisUp => _currentDamageable.AxisUp;
+    public Axis AxisForward => _currentDamageable.AxisForward;
+    public Axis AxisRight => _currentDamageable.AxisRight;
     public IReadOnlyCollection<Collider> IgnoreColliders => _ignoreColliders;
     public SurfaceType SurfaceType => _currentDamageable.SurfaceType;
     public float FactorNoise => _currentDamageable.FactorNoise;
@@ -48,7 +51,6 @@ public class Fighter : MonoBehaviour, IFighterReadOnly, IAction, IModeMoverChang
 
     private void Awake()
     {
-        _transform = transform;
         _changerWeaponConfig = (IChangerWeaponConfig)_changerWeaponConfigMonoBehaviour;
         _attackNotifier = (IAttackNotifier)_attackNotifierMonoBehaviour;
         LookTracker = (IReadOnlyTargetTracker)_lookTrackerMonoBehaviour;
@@ -179,7 +181,7 @@ public class Fighter : MonoBehaviour, IFighterReadOnly, IAction, IModeMoverChang
             return;
 
         _rage.AddPoint(attack.RagePoints);
-        bool IsRageAttack = SimpleUtils.TryLuck(_luckRageAttack + _rage.Value);
+        bool IsRageAttack = SimpleUtils.TryLuck(_luckRageAttack * _rage.Value);
         Hit hit = new Hit(weapon, attack, hitPoint, IsRageAttack);
         damageable.TakeDamage(hit, hit.BaseDamage);
     }

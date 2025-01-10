@@ -22,7 +22,7 @@ public class TransitionTimer : Transition
     protected override void DeactivateAddon()
     {
         _timer.Completed -= OnCompleted;
-        _timer.Reset(_timeTimer);
+        _timer.SetTime(_timeTimer);
     }
 
     private void OnCompleted(Timer timer) => SetNeedTransit();

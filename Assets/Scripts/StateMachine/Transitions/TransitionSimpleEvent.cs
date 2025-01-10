@@ -29,7 +29,7 @@ public class TransitionSimpleEvent : Transition
         if (simpleEvent.Type != _typeSimpleAction)
             return;
 
-        Debug.Log($"TransitionSimpleEvent:");
+        Debug.Log($"TransitionSimpleEvent: {Character.Transform.parent.name}");
         SetNeedTransit();
     }
 }   

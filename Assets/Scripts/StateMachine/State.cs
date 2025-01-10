@@ -59,6 +59,7 @@ public abstract class State : IReadOnlyState
 
         ExitBeforeAddon();
         DeactivateTransitions();
+        RemoveTimers();
         Complete();
         ExitAddon();
         UpdateStatus(StatusState.Exited);
@@ -81,6 +82,9 @@ public abstract class State : IReadOnlyState
 
         foreach(Timer timer in _timers.ToList())
         {
+            if (_timers.Contains(timer) == false)
+                continue;
+
             timer.Tick(deltaTime);
         }
 
@@ -112,17 +116,16 @@ public abstract class State : IReadOnlyState
     protected void AddTimer(Timer timer)
     {
         if (_timers.Contains(timer))
-        {
-            throw new InvalidOperationException($"This {nameof(Timer)} been added!");
-        }
+            throw new InvalidOperationException($"\"{GetType().Name}\". This {nameof(Timer)} been added!");
 
-        timer.Completed += OnTimerCompleted;
         _timers.Add(timer);
     }
 
-    private void OnTimerCompleted(Timer timer)
+    protected void RemoveTimer(Timer timer)
     {
-        timer.Completed -= OnTimerCompleted;
+        if (_timers.Contains(timer) == false)
+            return;
+
         _timers.Remove(timer);
     }
 
@@ -149,6 +152,12 @@ public abstract class State : IReadOnlyState
             transition.ChangedStatus -= OnChangedTransitionStatus;
             transition.Deactivate();
         }
+    }
+
+    private void RemoveTimers()
+    {
+        foreach(var timer in _timers.ToList())
+            RemoveTimer(timer);
     }
 
     private void UpdateStatus(StatusState state)

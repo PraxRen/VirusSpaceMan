@@ -468,7 +468,7 @@ Rigidbody:
   m_IsKinematic: 1
   m_Interpolate: 0
   m_Constraints: 0
-  m_CollisionDetection: 0
+  m_CollisionDetection: 1
 --- !u!144 &7064974133658772213
 CharacterJoint:
   m_ObjectHideFlags: 0
@@ -555,6 +555,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _mainDamageableMonoBehaviour: {fileID: 321296511010564767}
+  _collider: {fileID: 7589917670823177872}
+  _offsetCenterCollider: {x: 0, y: 0, z: 0}
+  _axisUp: 2
+  _axisForward: 4
+  _axisRight: 0
   _healthMonoBehaviour: {fileID: 9156320183614822022}
 --- !u!1 &1287013263993601665
 GameObject:
@@ -674,7 +679,7 @@ Rigidbody:
   m_IsKinematic: 1
   m_Interpolate: 0
   m_Constraints: 0
-  m_CollisionDetection: 0
+  m_CollisionDetection: 1
 --- !u!144 &7770556443294462722
 CharacterJoint:
   m_ObjectHideFlags: 0
@@ -746,6 +751,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _mainDamageableMonoBehaviour: {fileID: 321296511010564767}
+  _collider: {fileID: 2105676820823824723}
+  _offsetCenterCollider: {x: 0, y: 0, z: 0}
+  _axisUp: 0
+  _axisForward: 4
+  _axisRight: 0
   _healthMonoBehaviour: {fileID: 9156320183614822022}
 --- !u!1 &1328809516297581451
 GameObject:
@@ -1417,7 +1427,7 @@ Rigidbody:
   m_IsKinematic: 1
   m_Interpolate: 0
   m_Constraints: 0
-  m_CollisionDetection: 0
+  m_CollisionDetection: 1
 --- !u!144 &2934750163988151607
 CharacterJoint:
   m_ObjectHideFlags: 0
@@ -1489,6 +1499,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _mainDamageableMonoBehaviour: {fileID: 321296511010564767}
+  _collider: {fileID: 3978248673814084749}
+  _offsetCenterCollider: {x: 0, y: 0, z: 0}
+  _axisUp: 0
+  _axisForward: 4
+  _axisRight: 0
   _healthMonoBehaviour: {fileID: 9156320183614822022}
 --- !u!1 &2486339615146553408
 GameObject:
@@ -1576,7 +1591,7 @@ Rigidbody:
   m_IsKinematic: 1
   m_Interpolate: 0
   m_Constraints: 0
-  m_CollisionDetection: 0
+  m_CollisionDetection: 1
 --- !u!144 &6883739390291789207
 CharacterJoint:
   m_ObjectHideFlags: 0
@@ -1663,6 +1678,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _mainDamageableMonoBehaviour: {fileID: 321296511010564767}
+  _collider: {fileID: 3419428124193379037}
+  _offsetCenterCollider: {x: 0, y: 0.1, z: 0}
+  _axisUp: 1
+  _axisForward: 4
+  _axisRight: 0
   _healthMonoBehaviour: {fileID: 9156320183614822022}
 --- !u!1 &2641859202592422795
 GameObject:
@@ -1911,7 +1931,7 @@ Rigidbody:
   m_IsKinematic: 1
   m_Interpolate: 0
   m_Constraints: 0
-  m_CollisionDetection: 0
+  m_CollisionDetection: 1
 --- !u!144 &8369547625638242789
 CharacterJoint:
   m_ObjectHideFlags: 0
@@ -1998,6 +2018,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _mainDamageableMonoBehaviour: {fileID: 321296511010564767}
+  _collider: {fileID: 3291411050564144002}
+  _offsetCenterCollider: {x: 0, y: 0, z: 0}
+  _axisUp: 3
+  _axisForward: 4
+  _axisRight: 0
   _healthMonoBehaviour: {fileID: 9156320183614822022}
 --- !u!1 &2891375089597628435
 GameObject:
@@ -2422,6 +2447,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _interactionNotifierMonoBehaviour: {fileID: 2383351116305322014}
+  _collider: {fileID: 2107567108416005254}
+  _offsetCenterCollider: {x: 0, y: 0.3, z: 0}
   _switcherGraphics: {fileID: 3586588617121904956}
   _lookTracker: {fileID: 5461797471941535293}
   _layerObjectInteraction:
@@ -2757,6 +2784,8 @@ MonoBehaviour:
   _radiusCanReachTarget: 0.3
   _initiatorsMonoBehaviour:
   - {fileID: 321296511010564767}
+  _collider: {fileID: 2107567108416005254}
+  _offsetCenterCollider: {x: 0, y: 0.3, z: 0}
 --- !u!1 &3063404305515597323
 GameObject:
   m_ObjectHideFlags: 0
@@ -2923,7 +2952,7 @@ Rigidbody:
   m_IsKinematic: 1
   m_Interpolate: 0
   m_Constraints: 0
-  m_CollisionDetection: 0
+  m_CollisionDetection: 1
 --- !u!144 &5153445614592296655
 CharacterJoint:
   m_ObjectHideFlags: 0
@@ -3010,6 +3039,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _mainDamageableMonoBehaviour: {fileID: 321296511010564767}
+  _collider: {fileID: 2128061588004876500}
+  _offsetCenterCollider: {x: 0, y: 0, z: 0}
+  _axisUp: 2
+  _axisForward: 4
+  _axisRight: 0
   _healthMonoBehaviour: {fileID: 9156320183614822022}
 --- !u!1 &3215453186104392635
 GameObject:
@@ -3223,7 +3257,7 @@ Rigidbody:
   m_IsKinematic: 1
   m_Interpolate: 0
   m_Constraints: 0
-  m_CollisionDetection: 0
+  m_CollisionDetection: 1
 --- !u!144 &6488167908580535467
 CharacterJoint:
   m_ObjectHideFlags: 0
@@ -3295,6 +3329,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _mainDamageableMonoBehaviour: {fileID: 321296511010564767}
+  _collider: {fileID: 3986885455943444355}
+  _offsetCenterCollider: {x: 0, y: 0, z: 0}
+  _axisUp: 1
+  _axisForward: 4
+  _axisRight: 0
   _healthMonoBehaviour: {fileID: 9156320183614822022}
 --- !u!1 &4011328451651092301
 GameObject:
@@ -4261,6 +4300,7 @@ MonoBehaviour:
   _speedUpdatePositionTarget: 20
   _color: {r: 1, g: 0.9462535, b: 0, a: 1}
   _size: 0.1
+  _targetName: 
 --- !u!1 &6115903967580041821
 GameObject:
   m_ObjectHideFlags: 0
@@ -4449,7 +4489,7 @@ Rigidbody:
   m_IsKinematic: 1
   m_Interpolate: 0
   m_Constraints: 0
-  m_CollisionDetection: 0
+  m_CollisionDetection: 1
 --- !u!144 &973035627860640689
 CharacterJoint:
   m_ObjectHideFlags: 0
@@ -4521,6 +4561,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _mainDamageableMonoBehaviour: {fileID: 321296511010564767}
+  _collider: {fileID: 3941778071382702957}
+  _offsetCenterCollider: {x: 0, y: 0, z: 0}
+  _axisUp: 1
+  _axisForward: 4
+  _axisRight: 0
   _healthMonoBehaviour: {fileID: 9156320183614822022}
 --- !u!1 &6309503181161045023
 GameObject:
@@ -5451,7 +5496,7 @@ Rigidbody:
   m_IsKinematic: 1
   m_Interpolate: 0
   m_Constraints: 0
-  m_CollisionDetection: 0
+  m_CollisionDetection: 1
 --- !u!144 &1300197762379434895
 CharacterJoint:
   m_ObjectHideFlags: 0
@@ -5538,6 +5583,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _mainDamageableMonoBehaviour: {fileID: 321296511010564767}
+  _collider: {fileID: 7410753625657254987}
+  _offsetCenterCollider: {x: 0, y: 0, z: 0}
+  _axisUp: 2
+  _axisForward: 4
+  _axisRight: 0
   _healthMonoBehaviour: {fileID: 9156320183614822022}
 --- !u!1 &7441252179275499397
 GameObject:
@@ -5986,7 +6036,7 @@ Rigidbody:
   m_IsKinematic: 1
   m_Interpolate: 0
   m_Constraints: 0
-  m_CollisionDetection: 0
+  m_CollisionDetection: 1
 --- !u!144 &2810265510177306753
 CharacterJoint:
   m_ObjectHideFlags: 0
@@ -6073,6 +6123,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _mainDamageableMonoBehaviour: {fileID: 321296511010564767}
+  _collider: {fileID: 5208023559618117256}
+  _offsetCenterCollider: {x: 0, y: 0, z: 0}
+  _axisUp: 3
+  _axisForward: 4
+  _axisRight: 0
   _healthMonoBehaviour: {fileID: 9156320183614822022}
 --- !u!1 &8332500917328418441
 GameObject:
@@ -6284,7 +6339,7 @@ Rigidbody:
   m_IsKinematic: 1
   m_Interpolate: 0
   m_Constraints: 0
-  m_CollisionDetection: 0
+  m_CollisionDetection: 1
 --- !u!114 &3301201167163740476
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6310,6 +6365,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _mainDamageableMonoBehaviour: {fileID: 321296511010564767}
+  _collider: {fileID: 2110776444284242845}
+  _offsetCenterCollider: {x: 0, y: 0, z: 0}
+  _axisUp: 1
+  _axisForward: 4
+  _axisRight: 0
   _healthMonoBehaviour: {fileID: 9156320183614822022}
 --- !u!1 &8900254281716544027
 GameObject:
@@ -6360,6 +6420,7 @@ MonoBehaviour:
   _speedUpdatePositionTarget: 30
   _color: {r: 0, g: 1, b: 0.07561898, a: 1}
   _size: 0.1
+  _targetName: 
 --- !u!1 &8931950087524203268
 GameObject:
   m_ObjectHideFlags: 0
@@ -6474,6 +6535,8 @@ MonoBehaviour:
   _factorNoise: 1
   _surfaceType: 1
   _radiusCanReachTarget: 1
+  _collider: {fileID: 2107567108416005254}
+  _offsetCenterCollider: {x: 0, y: 0.3, z: 0}
 --- !u!1 &9214217703873248260
 GameObject:
   m_ObjectHideFlags: 0
@@ -6713,10 +6776,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 8784573539506709409}
     m_Modifications:
-    - target: {fileID: 18282997318879325, guid: 6b1057e4fcd86eb4eb3e94d8891c2abf, type: 3}
-      propertyPath: m_Layer
-      value: 8
-      objectReference: {fileID: 0}
     - target: {fileID: 556775768924616464, guid: 6b1057e4fcd86eb4eb3e94d8891c2abf, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0.129
@@ -6757,61 +6816,13 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: -96.589
       objectReference: {fileID: 0}
-    - target: {fileID: 719784826201962651, guid: 6b1057e4fcd86eb4eb3e94d8891c2abf, type: 3}
-      propertyPath: m_LocalScale.x
-      value: 1.1
-      objectReference: {fileID: 0}
-    - target: {fileID: 719784826201962651, guid: 6b1057e4fcd86eb4eb3e94d8891c2abf, type: 3}
-      propertyPath: m_LocalScale.y
-      value: 1.1
-      objectReference: {fileID: 0}
-    - target: {fileID: 719784826201962651, guid: 6b1057e4fcd86eb4eb3e94d8891c2abf, type: 3}
-      propertyPath: m_LocalScale.z
-      value: 1.1
-      objectReference: {fileID: 0}
-    - target: {fileID: 719784826201962651, guid: 6b1057e4fcd86eb4eb3e94d8891c2abf, type: 3}
-      propertyPath: m_ConstrainProportionsScale
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 1762146023083933654, guid: 6b1057e4fcd86eb4eb3e94d8891c2abf, type: 3}
       propertyPath: m_Name
       value: Pistol_01
       objectReference: {fileID: 0}
     - target: {fileID: 1762146023083933654, guid: 6b1057e4fcd86eb4eb3e94d8891c2abf, type: 3}
-      propertyPath: m_Layer
-      value: 8
-      objectReference: {fileID: 0}
-    - target: {fileID: 1762146023083933654, guid: 6b1057e4fcd86eb4eb3e94d8891c2abf, type: 3}
       propertyPath: m_IsActive
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2589647105504424288, guid: 6b1057e4fcd86eb4eb3e94d8891c2abf, type: 3}
-      propertyPath: m_Layer
-      value: 8
-      objectReference: {fileID: 0}
-    - target: {fileID: 3321333055386218917, guid: 6b1057e4fcd86eb4eb3e94d8891c2abf, type: 3}
-      propertyPath: m_Layer
-      value: 8
-      objectReference: {fileID: 0}
-    - target: {fileID: 3726847206977902086, guid: 6b1057e4fcd86eb4eb3e94d8891c2abf, type: 3}
-      propertyPath: m_Layer
-      value: 8
-      objectReference: {fileID: 0}
-    - target: {fileID: 5045632088816597099, guid: 6b1057e4fcd86eb4eb3e94d8891c2abf, type: 3}
-      propertyPath: m_Layer
-      value: 8
-      objectReference: {fileID: 0}
-    - target: {fileID: 7882081657675688158, guid: 6b1057e4fcd86eb4eb3e94d8891c2abf, type: 3}
-      propertyPath: m_LocalScale.x
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 7882081657675688158, guid: 6b1057e4fcd86eb4eb3e94d8891c2abf, type: 3}
-      propertyPath: m_LocalScale.y
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 7882081657675688158, guid: 6b1057e4fcd86eb4eb3e94d8891c2abf, type: 3}
-      propertyPath: m_LocalScale.z
-      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

@@ -59,8 +59,8 @@ public class ActivatorRagdoll : MonoBehaviour, IReadOnlyActivatorRagdoll, IHitRe
             if (hit.IsRageAttack == false)
                 return false;
             
-            if (_switcherRagdoll.IsActivated)
-                return false;
+            //if (_switcherRagdoll.IsActivated)
+            //    return false;
         }
 
         return true;

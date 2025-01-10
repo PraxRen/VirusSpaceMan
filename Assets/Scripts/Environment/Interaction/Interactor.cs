@@ -10,6 +10,8 @@ public class Interactor : MonoBehaviour, IAction, IReadOnlyInteractor
     private const float FactorForwardLimit = 1f;
 
     [SerializeField][SerializeInterface(typeof(IInteractionNotifier))] private MonoBehaviour _interactionNotifierMonoBehaviour;
+    [SerializeField] private Collider _collider;
+    [SerializeField] private Vector3 _offsetCenterCollider;
     [SerializeField] private SwitcherGraphics _switcherGraphics;
     [SerializeField] private TargetTracker _lookTracker;
     [SerializeField] private LayerMask _layerObjectInteraction;
@@ -34,7 +36,11 @@ public class Interactor : MonoBehaviour, IAction, IReadOnlyInteractor
     public IReadOnlyObjectInteraction ObjectInteraction => _currentObjectInteraction;
     public LayerMask LayerObjectInteraction => _layerObjectInteraction;
     public Vector3 Position => _transform.position;
+    public Vector3 Center => _collider.bounds.center + _offsetCenterCollider;
     public Quaternion Rotation => _transform.rotation;
+    public Axis AxisUp => Axis.Y;
+    public Axis AxisForward => Axis.Z;
+    public Axis AxisRight => Axis.X;
 
     private void Awake()
     {

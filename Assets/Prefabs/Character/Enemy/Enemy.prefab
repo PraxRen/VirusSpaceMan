@@ -69,10 +69,6 @@ PrefabInstance:
       value: 15360
       objectReference: {fileID: 0}
     - target: {fileID: 6821572272037767923, guid: 7d42cd749514eaf4ea6c228b66310aad, type: 3}
-      propertyPath: _hitReactionsMonoBehaviour.Array.size
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 6821572272037767923, guid: 7d42cd749514eaf4ea6c228b66310aad, type: 3}
       propertyPath: _hitReactionsMonoBehaviour.Array.data[2]
       value: 
       objectReference: {fileID: 0}

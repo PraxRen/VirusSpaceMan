@@ -11,12 +11,18 @@ public class Health : MonoBehaviour, IHealth, IDamageable, IAttribute, IAction
     [SerializeField] private SurfaceType _surfaceType;
     [Header(nameof(ITarget))]
     [SerializeField] private float _radiusCanReachTarget = 0.3f;
+    [SerializeField] private Collider _collider;
+    [SerializeField] private Vector3 _offsetCenterCollider;
 
     private Transform _transform;
     private float _lastTimeHit;
 
     public Vector3 Position => _transform.position;
+    public Vector3 Center => _collider.bounds.center + _offsetCenterCollider;
     public Quaternion Rotation => _transform.rotation;
+    public Axis AxisUp => Axis.Y;
+    public Axis AxisForward => Axis.Z;
+    public Axis AxisRight => Axis.X;
     public float MaxValue => _maxValue;
     public float Value { get; private set; }
     public bool IsDied { get; private set; }
@@ -30,7 +36,7 @@ public class Health : MonoBehaviour, IHealth, IDamageable, IAttribute, IAction
 
     private void Awake()
     {
-        _transform = transform;
+        _transform = transform.parent;
     }
 
     private void Start()

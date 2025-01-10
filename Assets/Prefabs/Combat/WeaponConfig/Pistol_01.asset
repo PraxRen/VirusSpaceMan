@@ -18,12 +18,12 @@ MonoBehaviour:
   _force: 400
   _distanceAttack: 3.8
   _cooldownAttack: 0
-  _distanceNoise: 20
+  _distanceNoise: 7
   _factorAuidioVolume: 0.5
   _surfaceType: 2
   _attacks:
   - {fileID: 11400000, guid: f9d2096eb3e4f4841a8c2b6031018fd2, type: 2}
-  _accuracy: 0.75
+  _accuracy: 1
   _projectileConfig: {fileID: 11400000, guid: 5df596e617e0f9f429cd493f08e48f07, type: 2}
   _typeAnimationLayer: 4
   _typeAnimationRig: 2

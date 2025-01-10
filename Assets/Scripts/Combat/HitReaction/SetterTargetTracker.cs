@@ -49,45 +49,16 @@ public class SetterTargetTracker : MonoBehaviour
         _activatorRagdoll.BeforeActivated -= OnBeforeActivated;
     }
 
-    private void SetTargetCollider(Collider collider)
+    private void SetTarget(ITarget target)
     {
-        if (collider.TryGetComponent(out ITarget target) == false)
-            return;
-
-        float center = collider.bounds.center.y - target.Position.y;
-        float offsetCenter = 0.2f;
-        Vector3 offset = (target.Rotation * Vector3.up) * (center + offsetCenter);
-        SetTarget(target, Vector3.zero, offset);
-    }
-
-    private void SetTargetFighter(IFighterReadOnly fighter)
-    {
-        Collider colliderFighter = fighter.IgnoreColliders.FirstOrDefault();
-        Vector3 offset = fighter.Rotation * Vector3.up;
-
-        if (colliderFighter != null && colliderFighter.TryGetComponent(out IFighterReadOnly fighterInCollider))
-        {
-            if (fighterInCollider == fighter)
-            {
-                float center = colliderFighter.bounds.center.y - fighter.Position.y;
-                float offsetCenter = 0.2f;
-                offset *= (center + offsetCenter);
-            }
-        }
-
-        SetTarget(fighter, Vector3.zero, offset);
-    }
-
-    private void SetTarget(ITarget target, Vector3 offsetForMove, Vector3 offsetForLook)
-    {
-        _moveTargetTracker.SetTarget(target, offsetForMove);
-        _lookTargetTracker.SetTarget(target, offsetForLook);
+        _moveTargetTracker.SetTarget(target, Vector3.zero);
+        _lookTargetTracker.SetTarget(target, target.Center - target.Position);
     }
 
     private void OnBeforeTakeDamage(Hit hit, float damage)
     {
         IFighterReadOnly fighter = hit.Weapon.Fighter;
-        SetTargetFighter(fighter);
+        SetTarget(fighter);
     }
 
     private void OnBeforeNotified(IReadOnlyCreatorSimpleEvent creatorSimpleEven, ISimpleEventInitiator simpleEventInitiator, SimpleEvent simpleEvent)
@@ -95,27 +66,25 @@ public class SetterTargetTracker : MonoBehaviour
         if (simpleEvent.Type != TypeSimpleEvent.Attack)
             return;
 
-        IFighterReadOnly fighter = simpleEvent as IFighterReadOnly;
-
-        if (fighter == null)
-            return;
-
-        SetTargetFighter(fighter);
+        SetTarget(creatorSimpleEven);
     }
 
     private void OnBeforeChangedTarget(Collider collider)
     {
-        SetTargetCollider(collider);
-    }
+        if (collider.TryGetComponent(out IDamageable damageable) == false)
+            return;
 
-    private void OnRemovedTarget(Collider collider)
-    {
-        _lookTargetTracker.ResetTarget();
+        SetTarget(damageable);
     }
 
     private void OnBeforeActivated(Hit hit)
     {
         IFighterReadOnly fighter = hit.Weapon.Fighter;
-        SetTargetFighter(fighter);
+        SetTarget(fighter);
+    }
+
+    private void OnRemovedTarget(Collider collider)
+    {
+        _lookTargetTracker.ResetTarget();
     }
 }

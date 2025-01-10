@@ -19,8 +19,11 @@ public class PlaceInterest : MonoBehaviour, IReadOnlyPlaceInterest
     public bool HasInteractorInside { get; private set; }
     public IReadOnlyInteractor Interactor { get; private set; }
     public Vector3 Position => _transform.position;
+    public Vector3 Center => _transform.position;
     public Quaternion Rotation => _transform.rotation;
-    public string Name => $"\"{_transform.parent.name}/{name}\"";
+    public Axis AxisUp => Axis.Y;
+    public Axis AxisForward => Axis.Z;
+    public Axis AxisRight => Axis.X;
 
     private void Awake()
     {

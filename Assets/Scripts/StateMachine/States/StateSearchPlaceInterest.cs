@@ -44,7 +44,7 @@ public class StateSearchPlaceInterest : State
     protected override void ExitAfterAddon()
     {
         _timerDelayComplete.Completed -= OnTimerCompleted;
-        _timerDelayComplete.Reset(_timeDelayComplete);
+        _timerDelayComplete.SetTime(_timeDelayComplete);
         _isFoundPlace = false;
         _placeInterest = null;
     }

@@ -6,13 +6,19 @@ public class CreatorSimpleEvent : MonoBehaviour, IReadOnlyCreatorSimpleEvent
 {
     [SerializeField] private float _radiusCanReachTarget = 0.3f;
     [SerializeField][SerializeInterface(typeof(ISimpleEventInitiator))] private MonoBehaviour[] _initiatorsMonoBehaviour;
+    [SerializeField] private Collider _collider;
+    [SerializeField] private Vector3 _offsetCenterCollider;
 
     private Transform _transform;
     private ListenerSimpleEvent _listenerSimpleEvent;
     private ISimpleEventInitiator[] _initiators;
 
     public Vector3 Position => _transform.position;
+    public Vector3 Center => _collider.bounds.center + _offsetCenterCollider;
     public Quaternion Rotation => _transform.rotation;
+    public Axis AxisUp => Axis.Y;
+    public Axis AxisForward => Axis.Z;
+    public Axis AxisRight => Axis.X;
 
     private void Awake()
     {

@@ -13,5 +13,7 @@ MonoBehaviour:
   m_Name: DebugStateMachine
   m_EditorClassIdentifier: 
   _stateConfigs:
-  - {fileID: 11400000, guid: ac62372e7da450444a7832495a55537b, type: 2}
-  _transitionConfigs: []
+  - {fileID: 11400000, guid: 8127f6eceae006042b89237fb5c661f5, type: 2}
+  - {fileID: 11400000, guid: 981251ec648f46e4c8afd07c3a127bb1, type: 2}
+  _transitionConfigs:
+  - {fileID: 11400000, guid: 4b1a395d810fa5a479d64ded0ae359f1, type: 2}
