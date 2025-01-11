@@ -31,6 +31,12 @@ public class Scanner : MonoBehaviour, IReadOnlyScanner
     {
         Gizmos.color = Color.yellow;
         Gizmos.DrawWireSphere(transform.position, Mathf.Max(Radius, _radiusBase));
+
+        if (Target == null)
+            return;
+
+        Gizmos.color = Color.black;
+        Gizmos.DrawCube(Target.bounds.center, new Vector3(0.28f,2,0.28f));
     }
 
     private void Awake()
@@ -74,15 +80,19 @@ public class Scanner : MonoBehaviour, IReadOnlyScanner
         if (_targets.Count == 0)
             return;
 
+        UpdateSort();
         _currentIndexTarget = _currentIndexTarget == _targets.Count - 1 ? 0 : _currentIndexTarget + 1;
         UpdateTarget();
     }
+
+
 
     public void PreviousTarget()
     {
         if (_targets.Count == 0)
             return;
 
+        UpdateSort();
         _currentIndexTarget = _currentIndexTarget == 0 ? _targets.Count - 1 : _currentIndexTarget - 1;
         UpdateTarget();
     }
@@ -158,6 +168,13 @@ public class Scanner : MonoBehaviour, IReadOnlyScanner
             _currentIndexTarget = _targets.Count - 1;
 
         UpdateTarget();
+    }
+
+    private void UpdateSort()
+    {
+        Collider currentTarget = _targets[_currentIndexTarget];
+        _targets = _scannerStrategy.Sort(_targets, _transform).ToList();
+        _currentIndexTarget = _targets.FindIndex(target => target == currentTarget);
     }
 
     private void CancelUpdateScan()

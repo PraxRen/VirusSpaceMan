@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-public interface IDamageable : ISurface, ITarget
+public interface IDamageable : ITarget, ISurface, ISimpleEventInitiator
 {
     event Action<Hit, float> BeforeTakeDamage;
     event Action<Hit, float> AfterTakeDamage;

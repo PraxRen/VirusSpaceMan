@@ -15,3 +15,6 @@ MonoBehaviour:
   _id: c297b0b4-11ef-45d8-900d-7d130d19e051
   _timeSecondsWaitUpdate: 0
   _modeMover: {fileID: 11400000, guid: 7a61745eaa5cd7c4ea74e763d94b5cef, type: 2}
+  _layerMaskSimpleEventAttack:
+    serializedVersion: 2
+    m_Bits: 512

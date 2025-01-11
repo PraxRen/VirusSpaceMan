@@ -13,15 +13,19 @@ public class StateAttack : State, IModeMoverProvider
     private readonly Fighter _fighter;
     private readonly Mover _mover;
     private readonly NavMeshAgent _navMeshAgent;
+    private readonly ActivatorSimpleEvent _activatorSimpleEvent;
+    private readonly ListenerSimpleEvent _listenerSimpleEvent;
+    private readonly LayerMask _layerMaskSimpleEventAttack;
 
     private IDamageable _target;
     private float _timeUpdatePosition;
     private float _timerUpdatePosition;
     private Vector3 _positionMove;
+    private SimpleEvent _simpleEventAttack;
 
     public ModeMover ModeMover { get; }
 
-    public StateAttack(string id, AICharacter character, float timeSecondsWaitHandle, ModeMover modeMover) : base(id, character, timeSecondsWaitHandle)
+    public StateAttack(string id, AICharacter character, float timeSecondsWaitHandle, ModeMover modeMover, LayerMask layerMaskSimpleEventAttack) : base(id, character, timeSecondsWaitHandle)
     {
         if (character.TryGetComponent(out _fighter) == false)
             throw new InvalidOperationException($"Initialization error \"{nameof(State)}\"! The component \"{nameof(Fighter)}\" required for operation \"{GetType().Name}\".");
@@ -32,7 +36,32 @@ public class StateAttack : State, IModeMoverProvider
         if (character.TryGetComponent(out _navMeshAgent) == false)
             throw new InvalidOperationException($"Initialization error \"{nameof(State)}\"! The component \"{nameof(NavMeshAgent)}\" required for operation \"{GetType().Name}\".");
 
+        if (character.TryGetComponent(out _activatorSimpleEvent) == false)
+            throw new InvalidOperationException($"Initialization error \"{nameof(State)}\"! The component \"{nameof(ActivatorSimpleEvent)}\" required for operation \"{GetType().Name}\".");
+
+        if (character.TryGetComponent(out _listenerSimpleEvent) == false)
+            throw new InvalidOperationException($"Initialization error \"{nameof(State)}\"! The component \"{nameof(ListenerSimpleEvent)}\" required for operation \"{GetType().Name}\".");
+
         ModeMover = modeMover;
+        _layerMaskSimpleEventAttack = layerMaskSimpleEventAttack;
+    }
+
+    public override void Update()
+    {
+        if ((_positionMove - Character.Transform.position).sqrMagnitude > MinRadiusMovePosition * MinRadiusMovePosition)
+        {
+            Vector2 directionMove = Navigation.CalculateDirectionVector2(_navMeshAgent, Character.Transform, _positionMove);
+            _mover.Move(directionMove);
+        }
+
+        Vector3 directionLook = (_target.Position - Character.Transform.position).normalized;
+        _mover.LookAtDirection(new Vector2(directionLook.x, directionLook.z));
+
+        if (_fighter.CanAttack() == false)
+            return;
+        
+        _fighter.Attack();
+        _activatorSimpleEvent.Run(_fighter, _target, _simpleEventAttack);
     }
 
     protected override void EnterAddon()
@@ -42,8 +71,17 @@ public class StateAttack : State, IModeMoverProvider
         if (colliderTarget == null || colliderTarget.TryGetComponent(out _target) == false)
             throw new InvalidOperationException($"The component \"{nameof(IDamageable)}\" required for operation \"{GetType().Name}\"");
 
-        UpdatePosition();
+        _listenerSimpleEvent.RemoveSupportType(TypeSimpleEvent.Attack);
+        _simpleEventAttack = new SimpleEvent(TypeSimpleEvent.Attack, _layerMaskSimpleEventAttack, _fighter.Weapon.Config.DistanceNoise);
+        _fighter.ChangedWeapon += OnChangedWeapon;
         _fighter.ActivateWeapon();
+        UpdatePosition();
+    }
+
+    protected override void ExitAfterAddon()
+    {
+        _fighter.DeactivateWeapon();
+        _listenerSimpleEvent.AddSupportType(TypeSimpleEvent.Attack);
     }
 
     protected override void TickAddon(float deltaTime)
@@ -63,23 +101,8 @@ public class StateAttack : State, IModeMoverProvider
         _timerUpdatePosition = 0f;
     }
 
-    public override void Update()
+    private void OnChangedWeapon(IWeaponReadOnly weapon)
     {
-        if ((_positionMove - Character.Transform.position).sqrMagnitude > MinRadiusMovePosition * MinRadiusMovePosition)
-        {
-            Vector2 directionMove = Navigation.CalculateDirectionVector2(_navMeshAgent, Character.Transform, _positionMove);
-            _mover.Move(directionMove);
-        }
-
-        Vector3 directionLook = (_target.Position - Character.Transform.position).normalized;
-        _mover.LookAtDirection(new Vector2(directionLook.x, directionLook.z));
-
-        if (_fighter.CanAttack())
-            _fighter.Attack();
-    }
-
-    protected override void ExitAfterAddon() 
-    {
-        _fighter.DeactivateWeapon();
+        _simpleEventAttack = new SimpleEvent(TypeSimpleEvent.Attack, _layerMaskSimpleEventAttack, weapon.Config.DistanceNoise);
     }
 }

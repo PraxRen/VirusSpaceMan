@@ -24,7 +24,7 @@ public class TransitionSimpleEvent : Transition
         _listenerSimpleEvent.Notified -= OnNotified;
     }
 
-    private void OnNotified(IReadOnlyCreatorSimpleEvent creatorSimpleEvent, ISimpleEventInitiator simpleEventInitiator, SimpleEvent simpleEvent)
+    private void OnNotified(ISimpleEventCreator creatorSimpleEvent, ISimpleEventInitiator simpleEventInitiator, SimpleEvent simpleEvent)
     {
         if (simpleEvent.Type != _typeSimpleAction)
             return;

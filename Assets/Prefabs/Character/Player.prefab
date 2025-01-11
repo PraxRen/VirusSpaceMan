@@ -593,7 +593,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 321296511010564767, guid: 44be744388e3e254ab9946f7963209cc, type: 3}
       propertyPath: _luckRageAttack
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 321296511010564767, guid: 44be744388e3e254ab9946f7963209cc, type: 3}
       propertyPath: _layerMaskCollision.m_Bits
@@ -1143,6 +1143,9 @@ MonoBehaviour:
   _moveTracker: {fileID: 2346274011256384277}
   _scannerDamageable: {fileID: 8550682467483166896}
   _healthMonoBehaviour: {fileID: 4541384262124319191}
+  _layerMaskSimpleEventAttack:
+    serializedVersion: 2
+    m_Bits: 512
 --- !u!114 &3416461741309272846
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -10,9 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 429fba33a6817d34bbab9d8703e191f6, type: 3}
-  m_Name: DefualtPistolBullet
+  m_Name: LazerPistolBullet_Red
   m_EditorClassIdentifier: 
-  _prefab: {fileID: 2122796519216704487, guid: 61ebe15849780be4d809b20d66759991, type: 3}
+  _prefab: {fileID: 2122796519216704487, guid: bc4f3cdb2616d1c40af04752d29f15ed, type: 3}
   _speed: 17.5
   _damage: 0
   _factorNoise: 0.7

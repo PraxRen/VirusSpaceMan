@@ -11,6 +11,7 @@ public class TargetTracker : MonoBehaviour, IReadOnlyTargetTracker
     [SerializeField] private Color _color;
     [SerializeField] private float _size;
     [Header("Debug")]
+    [ReadOnly][SerializeField] private string _characterName;
     [ReadOnly][SerializeField] private string _targetName;
 #endif
 
@@ -30,6 +31,9 @@ public class TargetTracker : MonoBehaviour, IReadOnlyTargetTracker
 
     private void Awake()
     {
+#if UNITY_EDITOR
+        _characterName = transform.parent.name;
+#endif
         _transform = transform;
         _targetDefault = new TargetTransform(_pointDefault, 0f);
         _transform.parent = null;

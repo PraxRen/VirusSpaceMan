@@ -5,9 +5,23 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "NewAngleToTargetScannerStrategy", menuName = "Core/ScannerStrategy/AngleToTargetScannerStrategy")]
 public class AngleToTargetScannerStrategy : ScriptableObject, IScannerStrategy
 {
+    private static Transform _cameraTransform;
+    private Transform CameraTransform
+    {
+        get
+        {
+            if (_cameraTransform == null)
+            {
+                _cameraTransform = Camera.main.transform;
+            }
+
+            return _cameraTransform;
+        }
+    }
+
     public IEnumerable<Collider> Sort(IEnumerable<Collider> targets, Transform transform)
     {
-        return targets.OrderBy(target => GetAngleToTarget(transform, target.transform.position)).ToList();
+        return targets.OrderBy(target => GetAngleToTarget(CameraTransform, target.transform.position)).ToList();
     }
 
     private float GetAngleToTarget(Transform transform, Vector3 targetPosition)

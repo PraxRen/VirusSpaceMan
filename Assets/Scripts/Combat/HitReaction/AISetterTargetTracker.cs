@@ -1,7 +1,7 @@
 using System.Linq;
 using UnityEngine;
 
-public class SetterTargetTracker : MonoBehaviour
+public class AISetterTargetTracker : MonoBehaviour
 {
     [SerializeField] private TargetTracker _moveTargetTracker;
     [SerializeField] private TargetTracker _lookTargetTracker;
@@ -61,12 +61,22 @@ public class SetterTargetTracker : MonoBehaviour
         SetTarget(fighter);
     }
 
-    private void OnBeforeNotified(IReadOnlyCreatorSimpleEvent creatorSimpleEven, ISimpleEventInitiator simpleEventInitiator, SimpleEvent simpleEvent)
+    private void OnBeforeNotified(ISimpleEventCreator creatorSimpleEven, ISimpleEventInitiator simpleEventInitiator, SimpleEvent simpleEvent)
     {
         if (simpleEvent.Type != TypeSimpleEvent.Attack)
             return;
 
-        SetTarget(creatorSimpleEven);
+        ITarget target = simpleEventInitiator;
+
+        if (creatorSimpleEven is Fighter fighter)
+        {
+            if (fighter.TryGetComponent(out Player player))
+            {
+                target = creatorSimpleEven;
+            }
+        }
+
+        SetTarget(target);
     }
 
     private void OnBeforeChangedTarget(Collider collider)

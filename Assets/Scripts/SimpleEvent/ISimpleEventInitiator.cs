@@ -1,6 +1,3 @@
-using System;
-
-public interface ISimpleEventInitiator
+public interface ISimpleEventInitiator : ITarget
 {
-    event Action<ISimpleEventInitiator, SimpleEvent> SimpleEventStarted;
 }

@@ -158,6 +158,10 @@ PrefabInstance:
       propertyPath: m_AnchorMax.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3869101199821581297, guid: b2ae4f7d10bb5224db3664389d0df2bc, type: 3}
+      propertyPath: _defaultCells.Array.data[0].<Item>k__BackingField
+      value: 
+      objectReference: {fileID: 11400000, guid: e29dbf75833497f45b3966a29cacc80a, type: 2}
     - target: {fileID: 4769504802292002687, guid: b2ae4f7d10bb5224db3664389d0df2bc, type: 3}
       propertyPath: m_AnchorMax.x
       value: 0

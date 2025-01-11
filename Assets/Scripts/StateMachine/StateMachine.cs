@@ -4,11 +4,13 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
+[RequireComponent(typeof(AISetterTargetTracker))]
 public class StateMachine : MonoBehaviour, IModeMoverChanger
 {
     [SerializeField] private AICharacter _character;
     [SerializeField] private StateMachineConfig _config;
 
+    private AISetterTargetTracker _aISetterTargetTracker;
     private List<State> _states;
     private State _defaultState;
     private State _currentState;
@@ -20,6 +22,11 @@ public class StateMachine : MonoBehaviour, IModeMoverChanger
 
     public IReadOnlyState State => _currentState;
 
+    private void Awake()
+    {
+        _aISetterTargetTracker = GetComponent<AISetterTargetTracker>();
+    }
+
     private void OnEnable()
     {
         if (_currentState == null)
@@ -27,12 +34,14 @@ public class StateMachine : MonoBehaviour, IModeMoverChanger
 
         SetCurrentState(_currentState);
         RunUpdateState();
+        _aISetterTargetTracker.enabled = true;
     }
 
     private void OnDisable()
     {
         ExitCurrentState();
         CancelJobUpdateState();
+        _aISetterTargetTracker.enabled = false;
     }
 
     private void Start()

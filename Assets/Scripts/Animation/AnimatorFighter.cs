@@ -38,6 +38,16 @@ public class AnimatorFighter : MonoBehaviour, IAttackNotifier
         _fighter.DeactivatedWeapon -= OnDeactivatedWeapon;
     }
 
+    public void Activate()
+    {
+        enabled = true;
+    }
+
+    public void Deactivate()
+    {
+        enabled = false;
+    }
+
     public bool CanCreateAttack()
     {
         return _switcherAnimationLayer.IsNotWork && _switcherAnimationRig.IsNotWork;

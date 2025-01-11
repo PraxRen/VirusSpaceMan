@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Fighter : MonoBehaviour, IFighterReadOnly, IAction, IModeMoverChanger, ISimpleEventInitiator
+public class Fighter : MonoBehaviour, IFighterReadOnly, IAction, IModeMoverChanger, ISimpleEventCreator, ISimpleEventInitiator
 {
     [SerializeField] private bool _debug = true;
     [SerializeField] private Health _health;
@@ -15,14 +15,13 @@ public class Fighter : MonoBehaviour, IFighterReadOnly, IAction, IModeMoverChang
     [SerializeField][SerializeInterface(typeof(IReadOnlyTargetTracker))] private MonoBehaviour _lookTrackerMonoBehaviour;
     [SerializeField] private LayerMask _layerMaskDamageable;
     [SerializeField] private LayerMask _layerMaskCollision;
-    [SerializeField] private LayerMask _layerMaskSimpleEventAttack;
     [SerializeField] private Collider[] _ignoreColliders;
 
     private IChangerWeaponConfig _changerWeaponConfig;
     private IAttackNotifier _attackNotifier;
     private IDamageable _currentDamageable;
     private Weapon _currentWeapon;
-    private SimpleEvent _simpleAventAttack;
+
 
     public event Action<IWeaponReadOnly> ChangedWeapon;
     public event Action<IWeaponReadOnly> ActivatedWeapon;
@@ -32,7 +31,6 @@ public class Fighter : MonoBehaviour, IFighterReadOnly, IAction, IModeMoverChang
     public event Action<Hit, float> AfterTakeDamage;
     public event Action<IModeMoverProvider> AddedModeMover;
     public event Action<IModeMoverProvider> RemovedModeMover;
-    public event Action<ISimpleEventInitiator, SimpleEvent> SimpleEventStarted;
 
     public bool IsAttack { get; private set; }
     public IWeaponReadOnly Weapon => _currentWeapon;
@@ -64,6 +62,8 @@ public class Fighter : MonoBehaviour, IFighterReadOnly, IAction, IModeMoverChang
         _attackNotifier.StartingAttack += OnStartingAttack;
         _attackNotifier.RunningDamage += OnRunningDamage;
         _attackNotifier.StoppingAttack += StopAttack;
+        _rage.enabled = true;
+        _attackNotifier.Activate();
     }
 
     private void OnDisable()
@@ -73,6 +73,8 @@ public class Fighter : MonoBehaviour, IFighterReadOnly, IAction, IModeMoverChang
         _attackNotifier.StartingAttack -= OnStartingAttack;
         _attackNotifier.RunningDamage -= OnRunningDamage;
         _attackNotifier.StoppingAttack -= StopAttack;
+        _rage.enabled = false;
+        _attackNotifier.Deactivate();
     }
 
     public void Cancel() => StopAttack();
@@ -161,7 +163,6 @@ public class Fighter : MonoBehaviour, IFighterReadOnly, IAction, IModeMoverChang
             return;
 
         _currentWeapon.RunDamage();
-        SimpleEventStarted?.Invoke(this, _simpleAventAttack);
     }
 
     private void StopAttack()
@@ -192,7 +193,6 @@ public class Fighter : MonoBehaviour, IFighterReadOnly, IAction, IModeMoverChang
         _currentWeapon = _storageWeapon.GetWeapon(weaponConfig.IdWeapon);
         _currentWeapon.Hited += OnHited;
         _currentWeapon.Initialize(weaponConfig, this);
-        _simpleAventAttack = new SimpleEvent(TypeSimpleEvent.Attack, _layerMaskSimpleEventAttack, weaponConfig.DistanceNoise);
         ChangedWeapon?.Invoke(_currentWeapon);
     }
 
@@ -205,7 +205,6 @@ public class Fighter : MonoBehaviour, IFighterReadOnly, IAction, IModeMoverChang
         _currentWeapon.ClearConfig();
         _currentWeapon.Hited -= OnHited;
         _currentWeapon = null;
-        _simpleAventAttack = null;
         RemovedWeapon?.Invoke();
     }
 

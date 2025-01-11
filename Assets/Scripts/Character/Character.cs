@@ -86,9 +86,12 @@ public abstract class Character : MonoBehaviour, IReadOnlyCharacter
 
     protected virtual void StartAddon() { }
 
+    protected virtual void AddonOnChangedWeapon(IWeaponReadOnly weapon) { }
+
     private void OnChangedWeapon(IWeaponReadOnly weapon)
     {
         ScannerDamageable.StartScan(weapon.Config.DistanceAttack);
+        AddonOnChangedWeapon(weapon);
     }
 
     private void OnRemovedWeapon()

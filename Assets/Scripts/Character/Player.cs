@@ -1,13 +1,18 @@
 using UnityEngine;
 
-[RequireComponent(typeof(PlayerInputReader))]
+[RequireComponent(typeof(PlayerInputReader), typeof(ActivatorSimpleEvent))]
 public class Player : Character
 {
+    [SerializeField] private LayerMask _layerMaskSimpleEventAttack;
+
     private PlayerInputReader _inputReader;
+    private ActivatorSimpleEvent _activatorSimpleEvent;
+    private SimpleEvent _simpleEventAttack;
 
     protected override void AwakeAddon()
     {
         _inputReader = GetComponent<PlayerInputReader>();
+        _activatorSimpleEvent = GetComponent<ActivatorSimpleEvent>();
     }
 
     protected override void EnableAddon()
@@ -24,6 +29,11 @@ public class Player : Character
         ScannerDamageable.RemovedCurrentTarget -= OnRemovedTarget;
         _inputReader.ChangedScrollNextTarget -= OnChangedScrollNextTarget;
         _inputReader.ChangedScrollPreviousTarget -= OnChangedScrollPreviousTarget;
+    }
+
+    protected override void AddonOnChangedWeapon(IWeaponReadOnly weapon)
+    {
+        _simpleEventAttack = new SimpleEvent(TypeSimpleEvent.Attack, _layerMaskSimpleEventAttack, weapon.Config.DistanceNoise);
     }
 
     private void Update()
@@ -63,6 +73,7 @@ public class Player : Character
             return;
 
         Fighter.Attack();
+        _activatorSimpleEvent.Run(Fighter, (IDamageable)LookTracker.Target, _simpleEventAttack);
     }
 
     private void OnChangedTarget(Collider collider)
