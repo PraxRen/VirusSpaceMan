@@ -1,6 +1,6 @@
 using System;
 
-public interface IHealth
+public interface IHealth : IDamageable, IAttribute
 {
     event Action Died;
 

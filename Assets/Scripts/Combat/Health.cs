@@ -2,7 +2,7 @@ using System;
 using System.Linq;
 using UnityEngine;
 
-public class Health : MonoBehaviour, IHealth, IDamageable, IAttribute, IAction
+public class Health : MonoBehaviour, IHealth, IAction
 {
     [SerializeField] private float _maxValue;
     [SerializeField] private float _cooldownHit;

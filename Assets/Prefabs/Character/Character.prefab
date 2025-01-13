@@ -529,7 +529,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _rig: {fileID: 7015634239191071604}
   _target: {fileID: 8369486107288104915}
-  _timeUpdateRigWeight: 0.18
+  _timeUpdateRigWeight: 0.28
 --- !u!114 &3250606983343586504
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1652,7 +1652,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _rig: {fileID: 2362489190248771483}
   _target: {fileID: 6692705318614893452}
-  _timeUpdateRigWeight: 0.18
+  _timeUpdateRigWeight: 0.28
 --- !u!114 &7500677021254892266
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1992,7 +1992,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _rig: {fileID: 8205589264982638678}
   _target: {fileID: 8456526935766767877}
-  _timeUpdateRigWeight: 0.18
+  _timeUpdateRigWeight: 0.28
 --- !u!114 &3030089846923866252
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2448,7 +2448,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _interactionNotifierMonoBehaviour: {fileID: 2383351116305322014}
   _collider: {fileID: 2107567108416005254}
-  _offsetCenterCollider: {x: 0, y: 0.3, z: 0}
+  _offsetCenterCollider: {x: 0, y: 0.2, z: 0}
   _switcherGraphics: {fileID: 3586588617121904956}
   _lookTracker: {fileID: 5461797471941535293}
   _layerObjectInteraction:
@@ -2686,7 +2686,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _actionScheduler: {fileID: 9063325606587652215}
-  _mainDamageableMonoBehaviour: {fileID: 9156320183614822022}
+  _healthMonoBehaviour: {fileID: 9156320183614822022}
   _timeResetIgnoreColliders: 1.5
   _timeDeactivate: 2.2
 --- !u!114 &6195853445073212177
@@ -3006,7 +3006,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _rig: {fileID: 4964556509372110548}
   _target: {fileID: 3370820275971528576}
-  _timeUpdateRigWeight: 0.18
+  _timeUpdateRigWeight: 0.28
 --- !u!114 &8801893100897590609
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5551,7 +5551,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _rig: {fileID: 7485266785728552269}
   _target: {fileID: 4376319719462807594}
-  _timeUpdateRigWeight: 0.18
+  _timeUpdateRigWeight: 0.28
 --- !u!114 &7495965542726964302
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6091,7 +6091,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _rig: {fileID: 3970454503103982138}
   _target: {fileID: 4363758946142097049}
-  _timeUpdateRigWeight: 0.18
+  _timeUpdateRigWeight: 0.28
 --- !u!114 &4037114253302674423
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6531,7 +6531,7 @@ MonoBehaviour:
   _surfaceType: 1
   _radiusCanReachTarget: 1
   _collider: {fileID: 2107567108416005254}
-  _offsetCenterCollider: {x: 0, y: 0.3, z: 0}
+  _offsetCenterCollider: {x: 0, y: 0.2, z: 0}
   _handlersSelectionTargetMonoBehaviour: []
 --- !u!1 &9214217703873248260
 GameObject:

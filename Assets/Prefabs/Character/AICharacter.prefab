@@ -84,6 +84,10 @@ PrefabInstance:
       propertyPath: _layerMask.m_Bits
       value: 65600
       objectReference: {fileID: 0}
+    - target: {fileID: 4329916323989289973, guid: 44be744388e3e254ab9946f7963209cc, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 6536734285014286234, guid: 44be744388e3e254ab9946f7963209cc, type: 3}
       propertyPath: m_AnchorMax.x
       value: 0
@@ -162,6 +166,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 3037592456749619465, guid: 44be744388e3e254ab9946f7963209cc, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1887135985670931004}
+    - targetCorrespondingSourceObject: {fileID: 4266322526906495764, guid: 44be744388e3e254ab9946f7963209cc, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 4514159033547347026}
     - targetCorrespondingSourceObject: {fileID: 9124299308207633513, guid: 44be744388e3e254ab9946f7963209cc, type: 3}
       insertIndex: -1
       addedObject: {fileID: 7063763929927728100}
@@ -351,6 +358,32 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9796ab8b7a892034887942310f844a5a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &8872469018687822967 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4329916323989289973, guid: 44be744388e3e254ab9946f7963209cc, type: 3}
+  m_PrefabInstance: {fileID: 5131751053120776066}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &8935882590821422230 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4266322526906495764, guid: 44be744388e3e254ab9946f7963209cc, type: 3}
+  m_PrefabInstance: {fileID: 5131751053120776066}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &4514159033547347026
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8935882590821422230}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9e86143b00940f84688d6b498330062b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _healthMonoBehaviour: {fileID: 4046040977844596996}
+  _uiHealthGameObject: {fileID: 8872469018687822967}
+  _isDisableAfterDied: 1
+  _isEnableAfterTakeDamage: 1
 --- !u!1001 &7114562122236800413
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -16,6 +16,7 @@ public class AttributeTextUI : MonoBehaviour
     private void OnEnable()
     {
         _attribute.ValueChanged += OnValueChenged;
+        OnValueChenged();
     }
 
     private void OnDisable()

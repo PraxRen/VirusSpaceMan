@@ -19,14 +19,14 @@ public abstract class AICharacter : Character
     protected override void EnableAddon()
     {
         _navMeshAgent.enabled = true;
-        _stateMachine.enabled = true;
         _triggerDamageable.enabled = true;
+        _stateMachine.enabled = true;
     }
 
     protected override void DisableAddon()
     {
         _navMeshAgent.enabled = false;
-        _stateMachine.enabled = false;
         _triggerDamageable.enabled = false;
+        _stateMachine.enabled = false;
     }
 }

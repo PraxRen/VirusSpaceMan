@@ -9,13 +9,13 @@ public class ActivatorRagdoll : MonoBehaviour, IReadOnlyActivatorRagdoll, IHitRe
     private const float ForceYOffset = 0.35f;
 
     [SerializeField] private ActionScheduler _actionScheduler;
-    [SerializeField][SerializeInterface(typeof(IDamageable))] private MonoBehaviour _mainDamageableMonoBehaviour;
+    [SerializeField][SerializeInterface(typeof(IHealth))] private MonoBehaviour _healthMonoBehaviour;
     [Min(0f)][SerializeField] private float _timeResetIgnoreColliders;
     [Min(0f)][SerializeField] private float _timeDeactivate;
 
     private Transform _transform;
     private SwitcherRagdoll _switcherRagdoll;
-    private IDamageable _damageable;
+    private IHealth _health;
     private Coroutine _jobRunTimerForDeactivate;
 
     public event Action<Hit> BeforeActivated;
@@ -26,7 +26,7 @@ public class ActivatorRagdoll : MonoBehaviour, IReadOnlyActivatorRagdoll, IHitRe
     {
         _transform = transform;
         _switcherRagdoll = GetComponent<SwitcherRagdoll>();
-        _damageable = (IDamageable)_mainDamageableMonoBehaviour;
+        _health = (IHealth)_healthMonoBehaviour;
     }
 
     private void OnEnable()
@@ -51,16 +51,13 @@ public class ActivatorRagdoll : MonoBehaviour, IReadOnlyActivatorRagdoll, IHitRe
         if (enabled == false)
             return false;
 
-        if (_damageable.CanDie(hit, damage) == false)
+        if (_health.CanDie(hit, damage) == false)
         {
             if (_actionScheduler.CanStartAction(this) == false)
                 return false;
 
             if (hit.IsRageAttack == false)
                 return false;
-            
-            //if (_switcherRagdoll.IsActivated)
-            //    return false;
         }
 
         return true;
@@ -78,7 +75,7 @@ public class ActivatorRagdoll : MonoBehaviour, IReadOnlyActivatorRagdoll, IHitRe
         _switcherRagdoll.SetIgnoreColliders(ignoreColliders, true, _timeResetIgnoreColliders);
         _switcherRagdoll.Activete();
 
-        if (_damageable.CanDie(hit, damage) == false)
+        if (_health.CanDie(hit, damage) == false)
         {
             CancelJobTimerForDeactivate();
             _jobRunTimerForDeactivate = StartCoroutine(RunTimerForDeactivateRagdoll(_timeDeactivate));
@@ -111,7 +108,7 @@ public class ActivatorRagdoll : MonoBehaviour, IReadOnlyActivatorRagdoll, IHitRe
     {
         float timer = 0f;
 
-        while (_switcherRagdoll.IsActivated)
+        while (_switcherRagdoll.IsActivated && _health.IsDied == false)
         {
             timer += Time.deltaTime;
 
