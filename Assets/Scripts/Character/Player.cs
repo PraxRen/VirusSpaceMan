@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 [RequireComponent(typeof(PlayerInputReader), typeof(ActivatorSimpleEvent))]
@@ -18,7 +19,7 @@ public class Player : Character
     protected override void EnableAddon()
     {
         ScannerDamageable.ChangedCurrentTarget += OnChangedTarget;
-        ScannerDamageable.RemovedCurrentTarget += OnRemovedTarget;
+        ScannerDamageable.ClearTargets += OnClearTargets;
         _inputReader.ChangedScrollNextTarget += OnChangedScrollNextTarget;
         _inputReader.ChangedScrollPreviousTarget += OnChangedScrollPreviousTarget;
     }
@@ -26,7 +27,7 @@ public class Player : Character
     protected override void DisableAddon()
     {
         ScannerDamageable.ChangedCurrentTarget -= OnChangedTarget;
-        ScannerDamageable.RemovedCurrentTarget -= OnRemovedTarget;
+        ScannerDamageable.ClearTargets -= OnClearTargets;
         _inputReader.ChangedScrollNextTarget -= OnChangedScrollNextTarget;
         _inputReader.ChangedScrollPreviousTarget -= OnChangedScrollPreviousTarget;
     }
@@ -78,17 +79,19 @@ public class Player : Character
 
     private void OnChangedTarget(Collider collider)
     {
+        if (collider.TryGetComponent(out IDamageable target) == false)
+            throw new InvalidOperationException();
+
+        LookTracker.Target?.HandleDeselection();
+        LookTracker.SetTarget(target, target.Center - target.Position);
+        target.HandleSelection();
         Fighter.ActivateWeapon();
-
-        if (collider.TryGetComponent(out IDamageable damageable) == false)
-            return;
-
-        LookTracker.SetTarget(damageable, damageable.Center - damageable.Position);
     }
 
-    private void OnRemovedTarget(Collider target)
+    private void OnClearTargets()
     {
         Fighter.DeactivateWeapon();
+        LookTracker.Target.HandleDeselection();
         LookTracker.ResetTarget();
     }
 

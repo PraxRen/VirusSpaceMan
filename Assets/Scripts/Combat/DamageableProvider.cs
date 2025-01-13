@@ -32,6 +32,9 @@ public class DamageableProvider : MonoBehaviour, IDamageable
         _mainDamageable = (IDamageable)_mainDamageableMonoBehaviour;
         AwakeAddon();
     }
+    public void HandleSelection() => _mainDamageable.HandleSelection();
+
+    public void HandleDeselection() => _mainDamageable.HandleDeselection();
 
     public bool CanReach(Transform transform) => _mainDamageable.CanReach(transform);
 

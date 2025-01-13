@@ -54,6 +54,10 @@ public class PlaceInterest : MonoBehaviour, IReadOnlyPlaceInterest
         Gizmos.DrawWireSphere(transform.position, _radius);
     }
 
+    public void HandleSelection() { }
+
+    public void HandleDeselection() { }
+
     public void Initialize(ZoneInterest zoneInterest, WaitForSeconds waitUpdateCollision)
     {
         _zoneInterest = zoneInterest;

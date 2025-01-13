@@ -77,6 +77,10 @@ public class Fighter : MonoBehaviour, IFighterReadOnly, IAction, IModeMoverChang
         _attackNotifier.Deactivate();
     }
 
+    public void HandleSelection() => _currentDamageable.HandleSelection();
+
+    public void HandleDeselection() => _currentDamageable.HandleDeselection();
+
     public void Cancel() => StopAttack();
 
     public bool CanTakeDamage() => _currentDamageable.CanTakeDamage();

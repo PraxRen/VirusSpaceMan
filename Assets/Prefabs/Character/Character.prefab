@@ -2496,9 +2496,6 @@ MonoBehaviour:
   _layerMaskCollision:
     serializedVersion: 2
     m_Bits: 3585
-  _layerMaskSimpleEventAttack:
-    serializedVersion: 2
-    m_Bits: 576
   _ignoreColliders:
   - {fileID: 2107567108416005254}
 --- !u!114 &269190155190720726
@@ -2753,7 +2750,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3cf781ab16977254ca7627e95a15fd29, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _root: {fileID: 8080342942110110639}
+  _mainTransform: {fileID: 4696154127899978740}
   _graphics:
   - {fileID: 5065699436768028071}
   - {fileID: 3041995858415716374}
@@ -2769,6 +2766,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: baa674b72a8ca954cbc053f0395a91e0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _supportTypes: 
 --- !u!114 &4358575433572536149
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2781,11 +2779,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 94bcc1c32bdc2724fafe6aabf121e714, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _radiusCanReachTarget: 0.3
-  _initiatorsMonoBehaviour:
-  - {fileID: 321296511010564767}
-  _collider: {fileID: 2107567108416005254}
-  _offsetCenterCollider: {x: 0, y: 0.3, z: 0}
 --- !u!1 &3063404305515597323
 GameObject:
   m_ObjectHideFlags: 0
@@ -4300,6 +4293,7 @@ MonoBehaviour:
   _speedUpdatePositionTarget: 20
   _color: {r: 1, g: 0.9462535, b: 0, a: 1}
   _size: 0.1
+  _characterName: 
   _targetName: 
 --- !u!1 &6115903967580041821
 GameObject:
@@ -6420,6 +6414,7 @@ MonoBehaviour:
   _speedUpdatePositionTarget: 30
   _color: {r: 0, g: 1, b: 0.07561898, a: 1}
   _size: 0.1
+  _characterName: 
   _targetName: 
 --- !u!1 &8931950087524203268
 GameObject:
@@ -6537,6 +6532,7 @@ MonoBehaviour:
   _radiusCanReachTarget: 1
   _collider: {fileID: 2107567108416005254}
   _offsetCenterCollider: {x: 0, y: 0.3, z: 0}
+  _handlersSelectionTargetMonoBehaviour: []
 --- !u!1 &9214217703873248260
 GameObject:
   m_ObjectHideFlags: 0

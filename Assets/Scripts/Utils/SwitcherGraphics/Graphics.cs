@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public class Graphics : MonoBehaviour
@@ -18,7 +19,6 @@ public class Graphics : MonoBehaviour
             particle.Stop();
             particle.Play();
         }
-
     }
 
     public void Deactivate() 

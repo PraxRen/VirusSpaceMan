@@ -10,4 +10,8 @@ public interface ITarget
     public Axis AxisRight { get; }
 
     public bool CanReach(Transform transform);
+
+    public void HandleSelection();
+
+    public void HandleDeselection();
 }

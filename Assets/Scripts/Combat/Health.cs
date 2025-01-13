@@ -1,10 +1,12 @@
 using System;
+using System.Linq;
 using UnityEngine;
 
 public class Health : MonoBehaviour, IHealth, IDamageable, IAttribute, IAction
 {
     [SerializeField] private float _maxValue;
     [SerializeField] private float _cooldownHit;
+    [Header(nameof(IAction))]
     [SerializeField] private ActionScheduler _actionScheduler;
     [Header(nameof(ISurface))]
     [SerializeField] private float _factorNoise = 1f;
@@ -13,9 +15,11 @@ public class Health : MonoBehaviour, IHealth, IDamageable, IAttribute, IAction
     [SerializeField] private float _radiusCanReachTarget = 0.3f;
     [SerializeField] private Collider _collider;
     [SerializeField] private Vector3 _offsetCenterCollider;
+    [SerializeField][SerializeInterface(typeof(IHandlerSelectionTarget))] private MonoBehaviour[] _handlersSelectionTargetMonoBehaviour;
 
     private Transform _transform;
     private float _lastTimeHit;
+    private IHandlerSelectionTarget[] _handlerSelectionTarget;
 
     public Vector3 Position => _transform.position;
     public Vector3 Center => _collider.bounds.center + _offsetCenterCollider;
@@ -37,11 +41,24 @@ public class Health : MonoBehaviour, IHealth, IDamageable, IAttribute, IAction
     private void Awake()
     {
         _transform = transform.parent;
+        _handlerSelectionTarget = _handlersSelectionTargetMonoBehaviour.Cast<IHandlerSelectionTarget>().ToArray();
     }
 
     private void Start()
     {
         UpdateValue(_maxValue);
+    }
+
+    public void HandleSelection()
+    {
+        foreach (IHandlerSelectionTarget handler in _handlerSelectionTarget) 
+            handler.Select();
+    }
+
+    public void HandleDeselection()
+    {
+        foreach (IHandlerSelectionTarget handler in _handlerSelectionTarget) 
+            handler.Deselect();
     }
 
     public void Cancel() { }

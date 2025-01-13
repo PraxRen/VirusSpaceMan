@@ -31,9 +31,9 @@ public class AISetterTargetTracker : MonoBehaviour
         _mainDamageable.BeforeTakeDamage += OnBeforeTakeDamage;
         _listenerSimpleEvent.BeforeNotified += OnBeforeNotified;
         _trigger.BeforeChangedTarget += OnBeforeChangedTarget;
-        _trigger.RemovedTarget += OnRemovedTarget;
+        _trigger.RemovedTarget += ClearTargets;
         _scanner.BeforeChangedCurrentTarget += OnBeforeChangedTarget;
-        _scanner.RemovedCurrentTarget += OnRemovedTarget;
+        _scanner.ClearTargets += ClearTargets;
         _activatorRagdoll.BeforeActivated += OnBeforeActivated;
     }
 
@@ -43,9 +43,9 @@ public class AISetterTargetTracker : MonoBehaviour
         _mainDamageable.BeforeTakeDamage -= OnBeforeTakeDamage;
         _listenerSimpleEvent.BeforeNotified -= OnBeforeNotified;
         _trigger.BeforeChangedTarget -= OnBeforeChangedTarget;
-        _trigger.RemovedTarget -= OnRemovedTarget;
+        _trigger.RemovedTarget -= ClearTargets;
         _scanner.BeforeChangedCurrentTarget -= OnBeforeChangedTarget;
-        _scanner.RemovedCurrentTarget -= OnRemovedTarget;
+        _scanner.ClearTargets -= ClearTargets;
         _activatorRagdoll.BeforeActivated -= OnBeforeActivated;
     }
 
@@ -93,7 +93,7 @@ public class AISetterTargetTracker : MonoBehaviour
         SetTarget(fighter);
     }
 
-    private void OnRemovedTarget(Collider collider)
+    private void ClearTargets()
     {
         _lookTargetTracker.ResetTarget();
     }

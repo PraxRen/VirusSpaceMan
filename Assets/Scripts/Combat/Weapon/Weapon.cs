@@ -25,7 +25,15 @@ public abstract class Weapon : MonoBehaviour, IWeaponReadOnly, ISerializationCal
     public string Id => _id;
     public WeaponConfig Config => _config;
     public IFighterReadOnly Fighter => _fighter;
-    public Attack CurrentAttack => _config.Attacks[_indexAttack];
+    //public Attack CurrentAttack => _config.Attacks[_indexAttack];
+    public Attack CurrentAttack 
+    {
+        get 
+        {
+            Debug.Log($"CurrentAttack: {((Fighter)Fighter).transform.parent.name} | {_indexAttack}");
+            return _config.Attacks[_indexAttack];
+        }
+    }
     public float FactorNoise => _config.FactorAuidioVolume;
     public SurfaceType SurfaceType => _config.SurfaceType;
     public Vector3 Position => _transform.position;
@@ -72,6 +80,7 @@ public abstract class Weapon : MonoBehaviour, IWeaponReadOnly, ISerializationCal
             indexNext = 0;
 
         _indexAttack = indexNext;
+        Debug.Log($"UpdateIndexAttack: {((Fighter)Fighter).transform.parent.name} | {_indexAttack}");
     }
 
     public bool CanAttack()
@@ -213,6 +222,7 @@ public abstract class Weapon : MonoBehaviour, IWeaponReadOnly, ISerializationCal
     private void ResetIndexAttack()
     {
         _indexAttack = -1;
+        Debug.Log($"ResetIndexAttack: {((Fighter)Fighter).transform.parent.name}");
     }
 
     void ISerializationCallbackReceiver.OnAfterDeserialize()

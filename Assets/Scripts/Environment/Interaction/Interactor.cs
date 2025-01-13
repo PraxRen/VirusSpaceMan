@@ -65,6 +65,10 @@ public class Interactor : MonoBehaviour, IAction, IReadOnlyInteractor
         Cancel();
     }
 
+    public void HandleSelection() { }
+
+    public void HandleDeselection() { }
+
     public void Cancel()
     {
         CancelMoveToObjectInteraction();

@@ -21,7 +21,7 @@ public class Scanner : MonoBehaviour, IReadOnlyScanner
     public event Action<IReadOnlyCollection<Collider>> ChangedTargets;
     public event Action<Collider> BeforeChangedCurrentTarget;
     public event Action<Collider> ChangedCurrentTarget;
-    public event Action<Collider> RemovedCurrentTarget;
+    public event Action ClearTargets;
     public event Action<float> ChangedRadius;
 
     public Collider Target { get; private set; }
@@ -85,8 +85,6 @@ public class Scanner : MonoBehaviour, IReadOnlyScanner
         UpdateTarget();
     }
 
-
-
     public void PreviousTarget()
     {
         if (_targets.Count == 0)
@@ -97,47 +95,33 @@ public class Scanner : MonoBehaviour, IReadOnlyScanner
         UpdateTarget();
     }
 
-    private void UpdateTarget()
-    {
-        if (_targets.Count == 0 && Target != null)
-        {
-            RemovedCurrentTarget?.Invoke(Target);
-            Target = null;
-            return;
-        }
 
-        Collider newTarget = _targets[_currentIndexTarget];
-
-        if (Target == newTarget) 
-            return;
-
-        BeforeChangedCurrentTarget?.Invoke(newTarget);
-        Target = newTarget;
-        ChangedCurrentTarget?.Invoke(Target);
-    }
 
     private IEnumerator ScanTargets()
     {
         while (true)
         {
             Collider[] colliders = Physics.OverlapSphere(_transform.position, Radius, _layerMask, QueryTriggerInteraction.Ignore);
-            UpdateTargets(colliders);
+            HandleTargets(colliders);
             yield return _waitUpdateScan;
         }
     }
 
-    private void UpdateTargets(Collider[] hitColliders)
+    private void HandleTargets(Collider[] newTargets)
     {
-        bool isStartEmptyTargets = _targets.Count == 0;
+        bool isEmptyNewTargets = newTargets.Length == 0;
+        bool isEmptyStartOldTargets = _targets.Count == 0;
+        bool hasCurrentTarget = Target != null;
+
         bool isChangedTargets = false;
 
-        if (hitColliders.Length == 0 && isStartEmptyTargets == false)
+        if (isEmptyNewTargets && isEmptyStartOldTargets == false)
         {
-            _targets.Clear();
-            isChangedTargets = true;
+            ClearAllTargets();
+            return;
         }
 
-        foreach (Collider hitCollider in hitColliders) 
+        foreach (Collider hitCollider in newTargets) 
         {
             if (_targets.Contains(hitCollider) == false)
             {
@@ -146,12 +130,15 @@ public class Scanner : MonoBehaviour, IReadOnlyScanner
             }
         }
 
-        foreach (Collider hitCollider in _targets.ToList())
+        foreach (Collider oldTarget in _targets.ToList())
         {
-            if (hitColliders.Contains(hitCollider) == false)
+            if (newTargets.Contains(oldTarget) == false)
             {
-                _targets.Remove(hitCollider);
+                _targets.Remove(oldTarget);
                 isChangedTargets = true;
+
+                if (oldTarget == Target)
+                    hasCurrentTarget = false;
             }
         }
 
@@ -159,15 +146,66 @@ public class Scanner : MonoBehaviour, IReadOnlyScanner
             return;
 
         _targets = _scannerStrategy.Sort(_targets, _transform).ToList();
-        ChangedTargets?.Invoke(_targets);
 
-        if (isStartEmptyTargets && _targets.Count > 0)
+        if (hasCurrentTarget)
+        {
+            _currentIndexTarget = _targets.FindIndex(target => target == Target);
+        }
+        else
+        {
             _currentIndexTarget = 0;
+            UpdateTarget();
+        }
 
-        if (_currentIndexTarget >= _targets.Count)
-            _currentIndexTarget = _targets.Count - 1;
+        ChangedTargets?.Invoke(_targets);
+        ////------------------------------------------------------------
 
-        UpdateTarget();
+
+
+
+
+
+
+
+        //if (isEmptyStartOldTargets && isEmptyCurrentTarget == false)
+        //{
+        //    DeselectedTarget?.Invoke(Target);
+        //    Target = null;
+        //    return;
+        //}
+
+        //if (isEmptyCurrentTarget)
+        //{
+        //    _targets = _scannerStrategy.Sort(_targets, _transform).ToList();
+
+        //    if (isEmptyStartOldTargets && _targets.Count > 0)
+        //        _currentIndexTarget = 0;
+
+        //    if (_currentIndexTarget >= _targets.Count)
+        //        _currentIndexTarget = _targets.Count - 1;
+
+        //    UpdateTarget();
+        //}
+        //else
+        //{
+        //    _currentIndexTarget = _targets.FindIndex(target => target == Target);
+        //}
+    }
+
+    private void ClearAllTargets()
+    {
+        _targets.Clear();
+        Target = null;
+        _currentIndexTarget = -1;
+        ClearTargets?.Invoke();
+    }
+
+    private void UpdateTarget()
+    {
+        Collider newTarget = _targets[_currentIndexTarget];
+        BeforeChangedCurrentTarget?.Invoke(newTarget);
+        Target = newTarget;
+        ChangedCurrentTarget?.Invoke(Target);
     }
 
     private void UpdateSort()

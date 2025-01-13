@@ -19,6 +19,10 @@ public class TargetTransform : ITarget
     public Axis AxisForward => Axis.Z;
     public Axis AxisRight => Axis.X;
 
+    public void HandleSelection() { }
+
+    public void HandleDeselection() { }
+
     public bool CanReach(Transform transform) 
     {
         return (transform.position - _transform.position).sqrMagnitude < (_radius * _radius);

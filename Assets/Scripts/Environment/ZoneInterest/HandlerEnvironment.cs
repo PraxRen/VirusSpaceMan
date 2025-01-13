@@ -11,6 +11,7 @@ public class HandlerEnvironment : MonoBehaviour, IReadOnlyHandlerEnvironment
 
     private void Awake()
     {
+        _defaultZone = FindFirstObjectByType<Environment>();
         SetZone(_defaultZone);
     }
 

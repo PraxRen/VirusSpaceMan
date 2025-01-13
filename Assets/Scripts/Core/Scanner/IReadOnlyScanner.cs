@@ -7,7 +7,7 @@ public interface IReadOnlyScanner
     event Action<IReadOnlyCollection<Collider>> ChangedTargets;
     event Action<Collider> BeforeChangedCurrentTarget;
     event Action<Collider> ChangedCurrentTarget;
-    event Action<Collider> RemovedCurrentTarget;
+    event Action ClearTargets;
     event Action<float> ChangedRadius;
 
     Collider Target { get; }

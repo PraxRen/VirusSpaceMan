@@ -16,11 +16,14 @@ public class Waypoint : MonoBehaviour, ITarget, ICloneable
     public Axis AxisRight => Axis.X;
     public float Radius => _radius;
 
-
     private void Awake()
     {
         _transform = transform;
     }
+
+    public void HandleSelection() { }
+
+    public void HandleDeselection() { }
 
     public void Initialize(PatrolPath patrolPath)
     {

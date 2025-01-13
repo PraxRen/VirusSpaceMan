@@ -3,14 +3,14 @@ using UnityEngine;
 
 public class SwitcherGraphics : MonoBehaviour
 {
-    [SerializeField] private Transform _root;
+    [SerializeField] private Transform _mainTransform;
     [ReadOnly][SerializeField] private Graphics[] _graphics;
 
 #if UNITY_EDITOR
     [ContextMenu("Find Graphics")]
     private void FindGraphics()
     {
-        _graphics = _root.GetComponentsInChildren<Graphics>();
+        _graphics = _mainTransform.GetComponentsInChildren<Graphics>();
     }
 #endif
 

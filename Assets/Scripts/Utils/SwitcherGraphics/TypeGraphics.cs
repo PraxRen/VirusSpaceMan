@@ -2,5 +2,6 @@ public enum TypeGraphics
 {
     None,
     Hammer,
-    Ñigarette
+    Ñigarette,
+    Target,
 }
