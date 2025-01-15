@@ -1,7 +1,9 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using static UnityEditor.Experimental.GraphView.GraphView;
 
 public abstract class Weapon : MonoBehaviour, IWeaponReadOnly, ISerializationCallbackReceiver
 {
@@ -18,17 +20,24 @@ public abstract class Weapon : MonoBehaviour, IWeaponReadOnly, ISerializationCal
     private Transform _transform;
 
     public event Action StartedAttack;
-    public event Action<IDamageable, Vector3> Hited;
+    public event Action<IDamageable, IWeaponReadOnly, Attack, Vector3> Hited;
 
     public string Id => _id;
     public WeaponConfig Config => _config;
     public IFighterReadOnly Fighter => _fighter;
-    public Attack CurrentAttack => _config.Attacks[_indexAttack];
-    public float FactorNoise => _config.FactorNoise;
+    //public Attack CurrentAttack => _config.Attacks[_indexAttack];
+    public Attack CurrentAttack 
+    {
+        get 
+        {
+            Debug.Log($"CurrentAttack: {((Fighter)Fighter).transform.parent.name} | {_indexAttack}");
+            return _config.Attacks[_indexAttack];
+        }
+    }
+    public float FactorNoise => _config.FactorAuidioVolume;
     public SurfaceType SurfaceType => _config.SurfaceType;
     public Vector3 Position => _transform.position;
     public IReadOnlyCollection<Collider> Colliders => _colliders;
-    public bool IsRageAttack { get; set; }
     protected Transform Transform => _transform;
 
     private void Awake()
@@ -55,7 +64,7 @@ public abstract class Weapon : MonoBehaviour, IWeaponReadOnly, ISerializationCal
 
     public float GetDamage()
     {
-        return _config.Damage + _config.Attacks[_indexAttack].Damage + GetDamageAddon();
+        return _config.Damage + GetDamageAddon();
     }
 
     public void UpdateIndexAttack()
@@ -71,6 +80,7 @@ public abstract class Weapon : MonoBehaviour, IWeaponReadOnly, ISerializationCal
             indexNext = 0;
 
         _indexAttack = indexNext;
+        Debug.Log($"UpdateIndexAttack: {((Fighter)Fighter).transform.parent.name} | {_indexAttack}");
     }
 
     public bool CanAttack()
@@ -99,7 +109,6 @@ public abstract class Weapon : MonoBehaviour, IWeaponReadOnly, ISerializationCal
             throw new ArgumentNullException(nameof(_fighter));
 
         _lastTimeAttack = Time.time;
-        IsRageAttack = false;
         StartAttackAddon();
         StartedAttack?.Invoke();
     }
@@ -111,6 +120,7 @@ public abstract class Weapon : MonoBehaviour, IWeaponReadOnly, ISerializationCal
 
         if (_fighter == null)
             throw new ArgumentNullException(nameof(_fighter));
+
 
         RunDamageAddon();
     }
@@ -168,7 +178,7 @@ public abstract class Weapon : MonoBehaviour, IWeaponReadOnly, ISerializationCal
         return true;
     }
 
-    protected void HandleCollide(Collider targetCollider, Vector3 hitPoint)
+    protected void HandleCollide(Collider targetCollider, Attack attack, Vector3 hitPoint)
     {
         if (targetCollider.TryGetComponent(out ICollidable collidable))
         {
@@ -179,7 +189,7 @@ public abstract class Weapon : MonoBehaviour, IWeaponReadOnly, ISerializationCal
         {
             if (SimpleUtils.IsLayerInclud(targetCollider.gameObject, _fighter.LayerMaskDamageable))
             {
-                Hited?.Invoke(damageable, hitPoint);
+                Hited?.Invoke(damageable, this, attack, hitPoint);
             }
         }
     }
@@ -212,6 +222,7 @@ public abstract class Weapon : MonoBehaviour, IWeaponReadOnly, ISerializationCal
     private void ResetIndexAttack()
     {
         _indexAttack = -1;
+        Debug.Log($"ResetIndexAttack: {((Fighter)Fighter).transform.parent.name}");
     }
 
     void ISerializationCallbackReceiver.OnAfterDeserialize()

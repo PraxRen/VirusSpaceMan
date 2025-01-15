@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-public interface IFighterReadOnly
+public interface IFighterReadOnly : IDamageable
 {
     event Action<IWeaponReadOnly> ChangedWeapon;
     event Action<IWeaponReadOnly> ActivatedWeapon;
@@ -11,7 +11,7 @@ public interface IFighterReadOnly
 
     bool IsAttack { get; }
     IWeaponReadOnly Weapon { get; }
-    IReadOnlyLookTarget LookTarget { get; }
+    IReadOnlyTargetTracker LookTracker { get; }
     LayerMask LayerMaskDamageable { get; }
     LayerMask LayerMaskCollision { get; }
     public IReadOnlyCollection<Collider> IgnoreColliders { get; }

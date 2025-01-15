@@ -5,13 +5,15 @@ public class UIRadiusScanner : MonoBehaviour
 {
     [SerializeField] private Image _image;
     [SerializeField] private float _factorSize;
-    [SerializeField] Scanner _scanner;
+    [SerializeField][SerializeInterface(typeof(IReadOnlyScanner))] private MonoBehaviour _scannerMonoBehaviour;
 
+    private IReadOnlyScanner _scanner;
     private RectTransform _imageTransform;
 
     private void Awake()
     {
         _imageTransform = _image.transform as RectTransform;
+        _scanner = (IReadOnlyScanner)_scannerMonoBehaviour;
     }
 
     private void OnEnable()

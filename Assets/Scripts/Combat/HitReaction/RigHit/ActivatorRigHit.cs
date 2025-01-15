@@ -2,8 +2,10 @@ using UnityEngine;
 using UnityEngine.UIElements;
 
 [RequireComponent(typeof(SwitcherRigHit))]
-public class ActivatorRigHit : MonoBehaviour, IHitReaction
+public class ActivatorRigHit : MonoBehaviour, IHitReaction, IAction
 {
+    [SerializeField] private ActionScheduler _actionScheduler;
+
     private Transform _transform;
     private SwitcherRigHit _switherRigHit;
 
@@ -13,18 +15,27 @@ public class ActivatorRigHit : MonoBehaviour, IHitReaction
         _switherRigHit = GetComponent<SwitcherRigHit>();
     }
 
-    public bool CanHandleHit(IWeaponReadOnly weapon, Vector3 hitPoint, float damage)
+    public bool CanHandleHit(Hit hit, float damage)
     {
-        return enabled;
+        if (enabled == false) 
+            return false;
+
+        if (_actionScheduler.CanStartAction(this) == false)
+            return false;
+
+        return true;
     }
 
-    public void HandleHit(IWeaponReadOnly weapon, Vector3 hitPoint, float damage)
+    public void Cancel() { }
+
+    public void HandleHit(Hit hit, float damage)
     {
-        Vector3 forceDirection = CalculateForceDirection(weapon, hitPoint);
+        Vector3 forceDirection = CalculateForceDirection(hit.Weapon, hit.Point);
 #if UNITY_EDITOR
-        Debug.DrawLine(hitPoint, hitPoint + forceDirection, Color.yellow, 2f);
+        Debug.DrawLine(hit.Point, hit.Point + forceDirection, Color.yellow, 2f);
 #endif
-        _switherRigHit.ApplyHit(forceDirection, hitPoint);
+        _switherRigHit.ApplyHit(forceDirection, hit.Point);
+        _actionScheduler.StartAction(this);
     }
 
     private Vector3 CalculateForceDirection(IWeaponReadOnly weapon, Vector3 hitPoint)

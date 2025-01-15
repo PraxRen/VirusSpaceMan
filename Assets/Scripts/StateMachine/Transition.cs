@@ -1,39 +1,36 @@
 using System;
 using UnityEngine;
 
-public abstract class Transition : ScriptableObject, IReadOnlyTransition
+public abstract class Transition : IReadOnlyTransition
 {
-    [SerializeField] private State _targetState;
+    private readonly State _currentState;
+    private readonly State _targetState;
 
-    private State _currentState;
 
     public event Action<IReadOnlyTransition, StatusTransition> ChangedStatus;
 
     public StatusTransition Status { get; private set; }
     public IReadOnlyState CurrentState => _currentState;
     public IReadOnlyState TargetState => _targetState;
-    public IReadOnlyCharacter Character { get; private set; }
+    protected Character Character { get; }
 
-    public void Initialize(IReadOnlyCharacter character, State currentState)
+    public Transition(Character character, State currentState, State targetState)
     {
-        if (Status != StatusTransition.None)
-            throw new InvalidOperationException($"Ошибка инициализации \"{nameof(Transition)}\"! \"{GetType().Name}\" у \"{nameof(State)} -{_currentState.GetType().Name}\" уже инициализирован.");
-
         Character = character ?? throw new ArgumentNullException(nameof(character));
         _currentState = currentState ?? throw new ArgumentNullException(nameof(currentState));
-        InitializeAddon();
-        UpdateStatusTransition(StatusTransition.Initialized);
+        _targetState = targetState ?? throw new ArgumentNullException(nameof(targetState));
     }
 
     public void Activate()
     {
-        if ((int)Status < (int)StatusTransition.Initialized)
-        {
-            string message = $"Ошибка активации \"{nameof(Transition)}\"! \"{GetType().Name}\" не инициализирован.";
-            throw new InvalidOperationException(message);
-        }
+        if (Status != StatusTransition.Initialized && Status != StatusTransition.Deactivated)
+            throw new InvalidOperationException($"Ошибка активации \"{nameof(Transition)}\" \"{_currentState.GetType().Name}\"/\"{GetType().Name}\". Текущий статус -> \"{Status}\"!");
 
         ActivateAddon();
+
+        if (Status == StatusTransition.NeedTransit)
+            return;
+
         UpdateStatusTransition(StatusTransition.Activated);
     }
 
@@ -49,11 +46,15 @@ public abstract class Transition : ScriptableObject, IReadOnlyTransition
         UpdateStatusTransition(StatusTransition.Deactivated);
     }
 
-    public virtual void Handle(float deltaTime) { }
+    public virtual void Tick(float deltaTime) { }
 
-    protected void SetNeedTransit() => UpdateStatusTransition(StatusTransition.NeedTransit);
+    protected void SetNeedTransit() 
+    {
+        if (Status == StatusTransition.Initialized || Status == StatusTransition.Deactivated)
+            UpdateStatusTransition(StatusTransition.Activated);
 
-    protected virtual void InitializeAddon() { }
+        UpdateStatusTransition(StatusTransition.NeedTransit);
+    } 
 
     protected virtual void ActivateAddon() { }
 
@@ -64,6 +65,7 @@ public abstract class Transition : ScriptableObject, IReadOnlyTransition
         if (status == Status)
             return;
 
+        //Debug.Log($"UpdateStatusTransition: \"{_currentState.GetType().Name}\"/\"{GetType().Name}\" | {Status} -> {status}");
         Status = status;
         ChangedStatus?.Invoke(this, Status);
     }

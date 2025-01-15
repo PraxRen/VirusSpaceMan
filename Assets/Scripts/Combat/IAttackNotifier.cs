@@ -9,4 +9,7 @@ public interface IAttackNotifier
     bool CanCreateAttack();
     void CreateAttack();
     void CancelAttack();
+
+    void Activate();
+    void Deactivate();
 }

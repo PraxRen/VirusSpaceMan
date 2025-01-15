@@ -1,36 +1,75 @@
+using System;
 using UnityEngine;
 
-[RequireComponent(typeof(IMover))]
+[RequireComponent(typeof(Mover), typeof(Fighter), typeof(Scanner))]
+[RequireComponent(typeof(Interactor))]
 public abstract class Character : MonoBehaviour, IReadOnlyCharacter
 {
-    [SerializeField] private LookTarget _lookTarget;
+    [SerializeField][ReadOnly] private string _id;
+    [SerializeField] private TargetTracker _lookTracker;
+    [SerializeField] private TargetTracker _moveTracker;
+    [SerializeField] private Scanner _scannerDamageable;
+    [SerializeField][SerializeInterface(typeof(IHealth))] private MonoBehaviour _healthMonoBehaviour;
 
-    private IMover _mover;
+    public string Id => _id;
+    public Transform Transform { get; private set; }
+    public IHealth Health { get; private set; }
+    public TargetTracker LookTracker => _lookTracker;
+    public TargetTracker MoveTracker => _moveTracker;
+    public Scanner ScannerDamageable => _scannerDamageable;
+    protected Mover Mover { get; private set; }
+    protected Fighter Fighter { get; private set; }
+    protected Interactor Interactor { get; private set; }
 
-    protected Transform Transform { get; private set; }
-    protected IMover Mover => _mover;
-    protected LookTarget LookTarget => _lookTarget;
-    
     private void Awake()
     {
+        if (string.IsNullOrWhiteSpace(_id))
+            _id = Guid.NewGuid().ToString();
+
         Transform = transform;
-        _mover = GetComponent<IMover>();
+        Health = (IHealth)_healthMonoBehaviour;
+        Mover = GetComponent<Mover>();
+        Fighter = GetComponent<Fighter>();
+        Interactor = GetComponent<Interactor>();
         AwakeAddon();
     }
 
     private void OnEnable()
     {
-        if (_lookTarget.gameObject.activeSelf == false)
-            _lookTarget.gameObject.SetActive(true);
+        Fighter.ChangedWeapon += OnChangedWeapon;
+        Fighter.RemovedWeapon += OnRemovedWeapon;
 
+        if (Fighter.Weapon != null)
+            OnChangedWeapon(Fighter.Weapon);
+
+        if (_lookTracker.gameObject.activeSelf == false)
+            _lookTracker.gameObject.SetActive(true);
+
+        if (_moveTracker.gameObject.activeSelf == false)
+            _moveTracker.gameObject.SetActive(true);
+
+        Mover.enabled = true;
+        Fighter.enabled = true;
+        _scannerDamageable.enabled = true;
+        Interactor.enabled = true;
         EnableAddon();
     }
 
     private void OnDisable()
     {
-        if (_lookTarget != null && _lookTarget.gameObject.activeSelf)
-            _lookTarget.gameObject.SetActive(false);
+        Fighter.ChangedWeapon -= OnChangedWeapon;
+        Fighter.RemovedWeapon -= OnRemovedWeapon;
 
+        if (_lookTracker != null && _lookTracker.gameObject.activeSelf)
+            _lookTracker.gameObject.SetActive(false);
+
+        if (_moveTracker != null && _moveTracker.gameObject.activeSelf)
+            _moveTracker.gameObject.SetActive(false);
+
+        Mover.enabled = false;
+        Fighter.enabled = false;
+        _scannerDamageable.enabled = false;
+        Interactor.enabled = false;
         DisableAddon();
     }
 
@@ -46,4 +85,17 @@ public abstract class Character : MonoBehaviour, IReadOnlyCharacter
     protected virtual void DisableAddon() { }
 
     protected virtual void StartAddon() { }
+
+    protected virtual void AddonOnChangedWeapon(IWeaponReadOnly weapon) { }
+
+    private void OnChangedWeapon(IWeaponReadOnly weapon)
+    {
+        ScannerDamageable.StartScan(weapon.Config.DistanceAttack);
+        AddonOnChangedWeapon(weapon);
+    }
+
+    private void OnRemovedWeapon()
+    {
+        ScannerDamageable.ResetRadius();
+    }
 }

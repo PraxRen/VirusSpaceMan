@@ -38,6 +38,16 @@ public class AnimatorFighter : MonoBehaviour, IAttackNotifier
         _fighter.DeactivatedWeapon -= OnDeactivatedWeapon;
     }
 
+    public void Activate()
+    {
+        enabled = true;
+    }
+
+    public void Deactivate()
+    {
+        enabled = false;
+    }
+
     public bool CanCreateAttack()
     {
         return _switcherAnimationLayer.IsNotWork && _switcherAnimationRig.IsNotWork;
@@ -45,13 +55,13 @@ public class AnimatorFighter : MonoBehaviour, IAttackNotifier
 
     public void CreateAttack()
     {
-        _animator.SetBool(CharacterAnimatorData.Params.IsAttack, true);
-        _animator.SetFloat(CharacterAnimatorData.Params.IndexAttack, _fighter.Weapon.CurrentAttack.AnimationIndex);
+        _animator.SetBool(DataCharacterAnimator.Params.IsAttack, true);
+        _animator.SetFloat(DataCharacterAnimator.Params.IndexAttack, _fighter.Weapon.CurrentAttack.AnimationIndex);
     }
 
     public void CancelAttack()
     {
-        _animator.SetBool(CharacterAnimatorData.Params.IsAttack, false);
+        _animator.SetBool(DataCharacterAnimator.Params.IsAttack, false);
     }
 
     private void OnActivatedWeapon(IWeaponReadOnly weapon)

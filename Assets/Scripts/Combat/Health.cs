@@ -1,17 +1,32 @@
 using System;
+using System.Linq;
 using UnityEngine;
 
-public class Health : MonoBehaviour, IDamageable, IAttribute
+public class Health : MonoBehaviour, IHealth, IAction
 {
     [SerializeField] private float _maxValue;
     [SerializeField] private float _cooldownHit;
+    [Header(nameof(IAction))]
+    [SerializeField] private ActionScheduler _actionScheduler;
+    [Header(nameof(ISurface))]
     [SerializeField] private float _factorNoise = 1f;
     [SerializeField] private SurfaceType _surfaceType;
+    [Header(nameof(ITarget))]
+    [SerializeField] private float _radiusCanReachTarget = 0.3f;
+    [SerializeField] private Collider _collider;
+    [SerializeField] private Vector3 _offsetCenterCollider;
+    [SerializeField][SerializeInterface(typeof(IHandlerSelectionTarget))] private MonoBehaviour[] _handlersSelectionTargetMonoBehaviour;
 
     private Transform _transform;
     private float _lastTimeHit;
+    private IHandlerSelectionTarget[] _handlerSelectionTarget;
 
     public Vector3 Position => _transform.position;
+    public Vector3 Center => _collider.bounds.center + _offsetCenterCollider;
+    public Quaternion Rotation => _transform.rotation;
+    public Axis AxisUp => Axis.Y;
+    public Axis AxisForward => Axis.Z;
+    public Axis AxisRight => Axis.X;
     public float MaxValue => _maxValue;
     public float Value { get; private set; }
     public bool IsDied { get; private set; }
@@ -20,12 +35,13 @@ public class Health : MonoBehaviour, IDamageable, IAttribute
 
     public event Action ValueChanged;
     public event Action Died;
-    public event Action<IWeaponReadOnly, Vector3, float> BeforeTakeDamage;
-    public event Action<IWeaponReadOnly, Vector3, float> AfterTakeDamage;
+    public event Action<Hit, float> BeforeTakeDamage;
+    public event Action<Hit, float> AfterTakeDamage;
 
     private void Awake()
     {
-        _transform = transform;
+        _transform = transform.parent;
+        _handlerSelectionTarget = _handlersSelectionTargetMonoBehaviour.Cast<IHandlerSelectionTarget>().ToArray();
     }
 
     private void Start()
@@ -33,11 +49,27 @@ public class Health : MonoBehaviour, IDamageable, IAttribute
         UpdateValue(_maxValue);
     }
 
-    public bool CanTakeDamage(IWeaponReadOnly weapon)
+    public void HandleSelection()
     {
-        if (weapon == null)
-            throw new ArgumentNullException(nameof(weapon));
+        foreach (IHandlerSelectionTarget handler in _handlerSelectionTarget) 
+            handler.Select();
+    }
 
+    public void HandleDeselection()
+    {
+        foreach (IHandlerSelectionTarget handler in _handlerSelectionTarget) 
+            handler.Deselect();
+    }
+
+    public void Cancel() { }
+
+    public bool CanReach(Transform transform) 
+    {
+        return (transform.position - _transform.position).sqrMagnitude < (_radiusCanReachTarget * _radiusCanReachTarget);
+    }
+
+    public bool CanTakeDamage()
+    {
         if (IsDied)
             return false;
 
@@ -47,24 +79,21 @@ public class Health : MonoBehaviour, IDamageable, IAttribute
         return true;
     }
 
-    public void TakeDamage(IWeaponReadOnly weapon, Vector3 hitPoint, float damage)
+    public void TakeDamage(Hit hit, float damage)
     {
-        if (weapon == null)
-            throw new ArgumentNullException(nameof(weapon));
-
         if (damage < 0)
             throw new ArgumentOutOfRangeException(nameof(damage));
 
-        BeforeTakeDamage?.Invoke(weapon, hitPoint, damage);
+        BeforeTakeDamage?.Invoke(hit, damage);
         UpdateValue(Value - damage);
 
         if (Value == 0)
             Die();
 
-        AfterTakeDamage?.Invoke(weapon, hitPoint, damage);
+        AfterTakeDamage?.Invoke(hit, damage);
     }
 
-    public bool CanDie(IWeaponReadOnly weapon, float damage)
+    public bool CanDie(Hit hit, float damage)
     {
         return (Value - damage) > 0 ? false : true;
     }
@@ -82,6 +111,8 @@ public class Health : MonoBehaviour, IDamageable, IAttribute
             return;
 
         IsDied = true;
+        _actionScheduler.StartAction(this);
+        _actionScheduler.SetBlock(this);
         Died?.Invoke();
     }
 }

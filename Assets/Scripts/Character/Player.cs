@@ -1,42 +1,40 @@
+using System;
 using UnityEngine;
 
-[RequireComponent(typeof(PlayerInputReader), typeof(Fighter), typeof(Scanner))]
+[RequireComponent(typeof(PlayerInputReader), typeof(ActivatorSimpleEvent))]
 public class Player : Character
 {
+    [SerializeField] private LayerMask _layerMaskSimpleEventAttack;
+
     private PlayerInputReader _inputReader;
-    private Scanner _scanner;
-    private Fighter _fighter;
+    private ActivatorSimpleEvent _activatorSimpleEvent;
+    private SimpleEvent _simpleEventAttack;
 
     protected override void AwakeAddon()
     {
         _inputReader = GetComponent<PlayerInputReader>();
-        _fighter = GetComponent<Fighter>();
-        _scanner = GetComponent<Scanner>();
+        _activatorSimpleEvent = GetComponent<ActivatorSimpleEvent>();
     }
 
     protected override void EnableAddon()
     {
-        _fighter.ChangedWeapon += OnChangedWeapon;
-        _fighter.RemovedWeapon += OnRemovedWeapon;
-        _scanner.ChangedCurrentTarget += OnChangedTarget;
-        _scanner.RemovedCurrentTarget += OnRemovedTarget;
+        ScannerDamageable.ChangedCurrentTarget += OnChangedTarget;
+        ScannerDamageable.ClearTargets += OnClearTargets;
         _inputReader.ChangedScrollNextTarget += OnChangedScrollNextTarget;
         _inputReader.ChangedScrollPreviousTarget += OnChangedScrollPreviousTarget;
-
-        if (_fighter.Weapon != null)
-        {
-            _scanner.StartScan(_fighter.LayerMaskDamageable, _fighter.Weapon.Config.DistanceAttack);
-        }
     }
 
     protected override void DisableAddon()
     {
-        _fighter.ChangedWeapon -= OnChangedWeapon;
-        _fighter.RemovedWeapon -= OnRemovedWeapon;
-        _scanner.ChangedCurrentTarget -= OnChangedTarget;
-        _scanner.RemovedCurrentTarget -= OnRemovedTarget;
+        ScannerDamageable.ChangedCurrentTarget -= OnChangedTarget;
+        ScannerDamageable.ClearTargets -= OnClearTargets;
         _inputReader.ChangedScrollNextTarget -= OnChangedScrollNextTarget;
         _inputReader.ChangedScrollPreviousTarget -= OnChangedScrollPreviousTarget;
+    }
+
+    protected override void AddonOnChangedWeapon(IWeaponReadOnly weapon)
+    {
+        _simpleEventAttack = new SimpleEvent(TypeSimpleEvent.Attack, _layerMaskSimpleEventAttack, weapon.Config.DistanceNoise);
     }
 
     private void Update()
@@ -51,59 +49,59 @@ public class Player : Character
             return;
 
         if (Mover.CanMove() == false)
+        {
+            if (Interactor.IsActive)
+                Interactor.Cancel();
+
             return;
+        }
+
+        if (ScannerDamageable.Target == null)
+            Mover.LookAtDirection(_inputReader.DirectionMove);
 
         Mover.Move(_inputReader.DirectionMove);
-        Mover.LookAtDirection(_inputReader.DirectionMove);
     }
 
     private void HandleCombat()
     {
-        if (_scanner.Target == null)
+        if (ScannerDamageable.Target == null)
             return;
 
-        Vector3 direction = (LookTarget.Position - Transform.position).normalized;
+        Vector3 direction = (LookTracker.Position - Transform.position).normalized;
         Mover.LookAtDirection(new Vector2(direction.x, direction.z));
 
-        if (_fighter.CanAttack() == false)
+        if (Fighter.CanAttack() == false)
             return;
 
-        _fighter.Attack();
+        Fighter.Attack();
+        _activatorSimpleEvent.Run(Fighter, (IDamageable)LookTracker.Target, _simpleEventAttack);
     }
 
-    private void OnChangedTarget(Collider target)
+    private void OnChangedTarget(Collider collider)
     {
-        _fighter.ActivateWeapon();
-        Transform targetTransform = target.transform;
-        float center = target.bounds.center.y - targetTransform.position.y;
-        float offsetCenter = 0.2f;
-        LookTarget.SetTarget(targetTransform, Vector3.up * (center + offsetCenter));
+        if (collider.TryGetComponent(out IDamageable target) == false)
+            throw new InvalidOperationException();
+
+        LookTracker.Target?.HandleDeselection();
+        LookTracker.SetTarget(target, target.Center - target.Position);
+        target.HandleSelection();
+        Fighter.ActivateWeapon();
     }
 
-    private void OnRemovedTarget(Collider target)
+    private void OnClearTargets()
     {
-        _fighter.DeactivateWeapon();
-        LookTarget.ResetTarget();
-    }
-
-    private void OnChangedWeapon(IWeaponReadOnly weapon)
-    {
-        _scanner.StartScan(_fighter.LayerMaskDamageable, weapon.Config.DistanceAttack);
-    }
-
-    private void OnRemovedWeapon()
-    {
-        _scanner.ResetRadius();
+        Fighter.DeactivateWeapon();
+        LookTracker.Target.HandleDeselection();
+        LookTracker.ResetTarget();
     }
 
     private void OnChangedScrollNextTarget()
     {
-        _scanner.NextTarget();
-
+        ScannerDamageable.NextTarget();
     }
 
     private void OnChangedScrollPreviousTarget()
     {
-        _scanner.PreviousTarget();
+        ScannerDamageable.PreviousTarget();
     }
 }

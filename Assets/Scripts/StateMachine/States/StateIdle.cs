@@ -1,7 +1,6 @@
-using UnityEngine;
-
-[CreateAssetMenu(fileName = "NewStateIdle", menuName = "StateMachine/StateIdle")]
 public class StateIdle : State
 {
+    public StateIdle(string id, AICharacter character, float timeSecondsWaitHandle) : base(id, character, timeSecondsWaitHandle) { }
+
     protected override void EnterAfterAddon() => Complete();
 }

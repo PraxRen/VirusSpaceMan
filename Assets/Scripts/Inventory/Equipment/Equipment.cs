@@ -10,17 +10,6 @@ public class Equipment : MonoBehaviour, IEquipmentReadOnly
 
     public event Action<IEquipmentCellReanOnly> ChangedCell;
 
-    private void OnValidate()
-    {
-        if (_defaultCells == null)
-            return;
-
-        if (_equipmentCells == null)
-            return;
-
-        Start();
-    }
-
     private void Awake()
     {
         Initialize();
@@ -30,8 +19,10 @@ public class Equipment : MonoBehaviour, IEquipmentReadOnly
     {
         foreach (EquipmentCell cell in _equipmentCells) 
         {
-            if (cell.Item != null)
-                UpdateCell(cell.Type, cell.Item);
+            EquipmentCell equipmentCellDefault = _defaultCells.FirstOrDefault(defaultCell => defaultCell.Type == cell.Type);
+
+            if (equipmentCellDefault != null)
+                UpdateCell(cell.Type, equipmentCellDefault.Item);
         }
     }
 
@@ -55,9 +46,7 @@ public class Equipment : MonoBehaviour, IEquipmentReadOnly
 
         for (int i = 0; i < types.Length; i++) 
         {
-            EquipmentCell equipmentCellDefault = _defaultCells.FirstOrDefault(cell => cell.Type == types[i]);
-            Item item = equipmentCellDefault?.Item;
-            _equipmentCells[i] = new EquipmentCell(types[i], item);
+            _equipmentCells[i] = new EquipmentCell(types[i], null);
         }
     }
 

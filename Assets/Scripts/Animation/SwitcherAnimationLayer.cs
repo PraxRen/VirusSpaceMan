@@ -7,33 +7,28 @@ public class SwitcherAnimationLayer : MonoBehaviour
     [SerializeField] private Animator _animator;
 
     private Dictionary<int, Coroutine> _hashCorutineJobs = new Dictionary<int, Coroutine>();
-    private TypeAnimationLayer _defaultAnimationLayer = TypeAnimationLayer.Default;
-    private TypeAnimationLayer _currentAnimationLayer = TypeAnimationLayer.Default;
 
+    public TypeAnimationLayer DefaultAnimationLayer { get; private set; } = TypeAnimationLayer.Default;
+    public TypeAnimationLayer CurrentAnimationLayer { get; private set; } = TypeAnimationLayer.Default;
     public bool IsNotWork => _hashCorutineJobs.Count == 0;
-
-    public void SetDefaultAnimationLayer(TypeAnimationLayer animationLayer)
-    {
-        _defaultAnimationLayer = animationLayer;
-    }
 
     public void SetAnimationLayer(TypeAnimationLayer animationLayer, float pathTime = 0f)
     {
-        if (_currentAnimationLayer == animationLayer)
+        if (CurrentAnimationLayer == animationLayer)
             return;
 
-        SetNewAnimationLayer(_currentAnimationLayer, animationLayer, pathTime);
-        _currentAnimationLayer = animationLayer;
+        SetNewAnimationLayer(CurrentAnimationLayer, animationLayer, pathTime);
+        CurrentAnimationLayer = animationLayer;
     }
 
     public void ApplyDefaultAnimationLayer(float pathTime = 0f)
     {
-        SetAnimationLayer(_defaultAnimationLayer, pathTime);
+        SetAnimationLayer(DefaultAnimationLayer, pathTime);
     }
 
     public int GetIndexCurrentMoverAnimationLayer()
     {
-        string name = _currentAnimationLayer.ToString();
+        string name = CurrentAnimationLayer.ToString();
         int result = _animator.GetLayerIndex(name);
         return result;
     }

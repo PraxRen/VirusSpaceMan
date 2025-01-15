@@ -1,10 +1,14 @@
 using System;
 using UnityEngine;
 
-[RequireComponent(typeof(Rigidbody))]
+[RequireComponent(typeof(Rigidbody), typeof(Collider))]
 public abstract class Projectile : MonoBehaviour, ISurface
 {
+    private const float RadiusRaycatsForward = 0.2f;
+    private const float DistanceRaycatsForward = 1f;
+
     private Rigidbody _rigidbody;
+    private Collider _collider;
     private IRangedWeaponReadOnly _rangedWeapon;
     private ProjectileConfig _projectileConfig;
 
@@ -12,12 +16,14 @@ public abstract class Projectile : MonoBehaviour, ISurface
     public event Action<Projectile> Destroyed;
 
     public Transform Transform { get; private set; }
+    public Attack Attack { get; private set; }
     public float FactorNoise => _projectileConfig.FactorNoise;
     public SurfaceType SurfaceType => _projectileConfig.SurfaceType;
 
     private void Awake()
     {
         _rigidbody = GetComponent<Rigidbody>();
+        _collider = GetComponent<Collider>();
         Transform = transform;
     }
 
@@ -44,14 +50,25 @@ public abstract class Projectile : MonoBehaviour, ISurface
         HandleCollide(targetCollider);
     }
 
+    private void Update()
+    {
+        bool isCollide = Physics.SphereCast(transform.position, RadiusRaycatsForward, transform.forward, out RaycastHit hit, DistanceRaycatsForward);
+
+        if (isCollide == true && _rangedWeapon.CanCollide(hit.collider) == false)
+        {
+            Physics.IgnoreCollision(_collider, hit.collider);
+        }
+    }
+
     public void Initialize(IRangedWeaponReadOnly rangedWeapon)
     {
         _rangedWeapon = rangedWeapon;
         _projectileConfig = ((RangedWeaponConfig)rangedWeapon.Config).ProjectileConfig;
     }
 
-    public void Shoot(Vector3 direction)
+    public void Shoot(Vector3 direction, Attack attack)
     {
+        Attack = attack;
         Transform.forward = direction;
         _rigidbody.AddForce(Transform.forward * _projectileConfig.Speed, ForceMode.Impulse);
         ShootAddon();

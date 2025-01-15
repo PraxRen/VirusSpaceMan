@@ -25,7 +25,7 @@ public class MatrixActionEditor : Editor
 
         for (int j = 0; j < size; j++)
         {
-            EditorGUILayout.LabelField(types[j].ToString(), GUILayout.Width(50));
+            EditorGUILayout.LabelField(types[j].ToString(), GUILayout.Width(65));
         }
 
         EditorGUILayout.EndHorizontal();
@@ -33,12 +33,12 @@ public class MatrixActionEditor : Editor
         for (int i = 0; i < size; i++)
         {
             EditorGUILayout.BeginHorizontal();
-            EditorGUILayout.LabelField(types[i].ToString(), GUILayout.Width(70));
+            EditorGUILayout.LabelField(types[i].ToString(), GUILayout.Width(65));
 
             for (int j = 0; j < size; j++)
             {
                 int index = i * size + j;
-                matrix[index] = EditorGUILayout.Toggle(matrix[index], GUILayout.Width(50));
+                matrix[index] = EditorGUILayout.Toggle(matrix[index], GUILayout.Width(65));
             }
 
             EditorGUILayout.EndHorizontal();

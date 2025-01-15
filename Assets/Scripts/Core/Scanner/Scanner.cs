@@ -4,11 +4,12 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-public class Scanner : MonoBehaviour
+public class Scanner : MonoBehaviour, IReadOnlyScanner
 {
     [SerializeField][SerializeInterface(typeof(IScannerStrategy))] private ScriptableObject _scannerStrategyMonoBehaviour;
     [SerializeField] private float _defaultFrequencyUpdate;
     [SerializeField] private float _radiusBase;
+    [SerializeField] private LayerMask _layerMask;
 
     private List<Collider> _targets = new List<Collider>();
     private int _currentIndexTarget = -1;
@@ -16,16 +17,28 @@ public class Scanner : MonoBehaviour
     private Transform _transform;
     private WaitForSeconds _waitUpdateScan;
     private Coroutine _jobScanTargets;
-    private float _radius;
-    private LayerMask _layerMask;
 
     public event Action<IReadOnlyCollection<Collider>> ChangedTargets;
+    public event Action<Collider> BeforeChangedCurrentTarget;
     public event Action<Collider> ChangedCurrentTarget;
-    public event Action<Collider> RemovedCurrentTarget;
+    public event Action ClearTargets;
     public event Action<float> ChangedRadius;
 
     public Collider Target { get; private set; }
-    
+    public float Radius { get; private set; }
+
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = Color.yellow;
+        Gizmos.DrawWireSphere(transform.position, Mathf.Max(Radius, _radiusBase));
+
+        if (Target == null)
+            return;
+
+        Gizmos.color = Color.black;
+        Gizmos.DrawCube(Target.bounds.center, new Vector3(0.28f,2,0.28f));
+    }
+
     private void Awake()
     {
         _transform = transform;
@@ -38,16 +51,16 @@ public class Scanner : MonoBehaviour
         CancelUpdateScan();
     }
 
-    public void StartScan(LayerMask layerMask)
+    public void StartScan(float radius)
     {
-        StartScan(layerMask, _radiusBase);
-    }
+        if (enabled == false)
+            return;
 
-    public void StartScan(LayerMask layerMask, float radius)
-    {
+        if (gameObject.activeInHierarchy == false)
+            return;
+
         CancelUpdateScan();
         UpdateRadius(radius);
-        _layerMask = layerMask;
         _jobScanTargets = StartCoroutine(ScanTargets());
     }
 
@@ -58,8 +71,8 @@ public class Scanner : MonoBehaviour
 
     public void UpdateRadius(float radius)
     {
-        _radius = Mathf.Max(_radiusBase, radius);
-        ChangedRadius?.Invoke(_radius);
+        Radius = Mathf.Max(_radiusBase, radius);
+        ChangedRadius?.Invoke(Radius);
     }
 
     public void NextTarget()
@@ -67,6 +80,7 @@ public class Scanner : MonoBehaviour
         if (_targets.Count == 0)
             return;
 
+        UpdateSort();
         _currentIndexTarget = _currentIndexTarget == _targets.Count - 1 ? 0 : _currentIndexTarget + 1;
         UpdateTarget();
     }
@@ -76,50 +90,38 @@ public class Scanner : MonoBehaviour
         if (_targets.Count == 0)
             return;
 
+        UpdateSort();
         _currentIndexTarget = _currentIndexTarget == 0 ? _targets.Count - 1 : _currentIndexTarget - 1;
         UpdateTarget();
     }
 
-    private void UpdateTarget()
-    {
-        if (_targets.Count == 0 && Target != null)
-        {
-            RemovedCurrentTarget?.Invoke(Target);
-            Target = null;
-            return;
-        }
 
-        Collider newTarget = _targets[_currentIndexTarget];
-
-        if (Target == newTarget) 
-            return;
-
-        Target = newTarget;
-        ChangedCurrentTarget?.Invoke(Target);
-    }
 
     private IEnumerator ScanTargets()
     {
         while (true)
         {
-            Collider[] colliders = Physics.OverlapSphere(_transform.position, _radius, _layerMask, QueryTriggerInteraction.Ignore);
-            UpdateTargets(colliders);
+            Collider[] colliders = Physics.OverlapSphere(_transform.position, Radius, _layerMask, QueryTriggerInteraction.Ignore);
+            HandleTargets(colliders);
             yield return _waitUpdateScan;
         }
     }
 
-    private void UpdateTargets(Collider[] hitColliders)
+    private void HandleTargets(Collider[] newTargets)
     {
-        bool isStartEmptyTargets = _targets.Count == 0;
+        bool isEmptyNewTargets = newTargets.Length == 0;
+        bool isEmptyStartOldTargets = _targets.Count == 0;
+        bool hasCurrentTarget = Target != null;
+
         bool isChangedTargets = false;
 
-        if (hitColliders.Length == 0 && isStartEmptyTargets == false)
+        if (isEmptyNewTargets && isEmptyStartOldTargets == false)
         {
-            _targets.Clear();
-            isChangedTargets = true;
+            ClearAllTargets();
+            return;
         }
 
-        foreach (Collider hitCollider in hitColliders) 
+        foreach (Collider hitCollider in newTargets) 
         {
             if (_targets.Contains(hitCollider) == false)
             {
@@ -128,12 +130,15 @@ public class Scanner : MonoBehaviour
             }
         }
 
-        foreach (Collider hitCollider in _targets.ToList())
+        foreach (Collider oldTarget in _targets.ToList())
         {
-            if (hitColliders.Contains(hitCollider) == false)
+            if (newTargets.Contains(oldTarget) == false)
             {
-                _targets.Remove(hitCollider);
+                _targets.Remove(oldTarget);
                 isChangedTargets = true;
+
+                if (oldTarget == Target)
+                    hasCurrentTarget = false;
             }
         }
 
@@ -141,15 +146,73 @@ public class Scanner : MonoBehaviour
             return;
 
         _targets = _scannerStrategy.Sort(_targets, _transform).ToList();
-        ChangedTargets?.Invoke(_targets);
 
-        if (isStartEmptyTargets && _targets.Count > 0)
+        if (hasCurrentTarget)
+        {
+            _currentIndexTarget = _targets.FindIndex(target => target == Target);
+        }
+        else
+        {
             _currentIndexTarget = 0;
+            UpdateTarget();
+        }
 
-        if (_currentIndexTarget >= _targets.Count)
-            _currentIndexTarget = _targets.Count - 1;
+        ChangedTargets?.Invoke(_targets);
+        ////------------------------------------------------------------
 
-        UpdateTarget();
+
+
+
+
+
+
+
+        //if (isEmptyStartOldTargets && isEmptyCurrentTarget == false)
+        //{
+        //    DeselectedTarget?.Invoke(Target);
+        //    Target = null;
+        //    return;
+        //}
+
+        //if (isEmptyCurrentTarget)
+        //{
+        //    _targets = _scannerStrategy.Sort(_targets, _transform).ToList();
+
+        //    if (isEmptyStartOldTargets && _targets.Count > 0)
+        //        _currentIndexTarget = 0;
+
+        //    if (_currentIndexTarget >= _targets.Count)
+        //        _currentIndexTarget = _targets.Count - 1;
+
+        //    UpdateTarget();
+        //}
+        //else
+        //{
+        //    _currentIndexTarget = _targets.FindIndex(target => target == Target);
+        //}
+    }
+
+    private void ClearAllTargets()
+    {
+        _targets.Clear();
+        Target = null;
+        _currentIndexTarget = -1;
+        ClearTargets?.Invoke();
+    }
+
+    private void UpdateTarget()
+    {
+        Collider newTarget = _targets[_currentIndexTarget];
+        BeforeChangedCurrentTarget?.Invoke(newTarget);
+        Target = newTarget;
+        ChangedCurrentTarget?.Invoke(Target);
+    }
+
+    private void UpdateSort()
+    {
+        Collider currentTarget = _targets[_currentIndexTarget];
+        _targets = _scannerStrategy.Sort(_targets, _transform).ToList();
+        _currentIndexTarget = _targets.FindIndex(target => target == currentTarget);
     }
 
     private void CancelUpdateScan()
@@ -160,12 +223,4 @@ public class Scanner : MonoBehaviour
         StopCoroutine(_jobScanTargets);
         _jobScanTargets = null;
     }
-
-#if UNITY_EDITOR
-    private void OnDrawGizmos()
-    {
-        Gizmos.color = Color.yellow;
-        Gizmos.DrawWireSphere(transform.position, Mathf.Max(_radius, _radiusBase));
-    }
-#endif
 }

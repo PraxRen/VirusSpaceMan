@@ -1,14 +1,12 @@
 using System;
 using UnityEngine;
 
-public interface IDamageable : ISurface
+public interface IDamageable : ITarget, ISurface, ISimpleEventInitiator
 {
-    public Vector3 Position { get; }
+    event Action<Hit, float> BeforeTakeDamage;
+    event Action<Hit, float> AfterTakeDamage;
 
-    event Action<IWeaponReadOnly, Vector3, float> BeforeTakeDamage;
-    event Action<IWeaponReadOnly, Vector3, float> AfterTakeDamage;
-
-    bool CanTakeDamage(IWeaponReadOnly weapon);
-    void TakeDamage(IWeaponReadOnly weapon, Vector3 hitPoint, float damage);
-    bool CanDie(IWeaponReadOnly weapon, float damage);
+    bool CanTakeDamage();
+    void TakeDamage(Hit hit, float damage);
+    bool CanDie(Hit hit, float damage);
 }

@@ -29,6 +29,7 @@ public class Limb : MonoBehaviour
 
         Rigidbody.drag = Drag;
         Rigidbody.angularDrag = AngularDrag;
+        Rigidbody.collisionDetectionMode = CollisionDetectionMode.Continuous;
         PhysicMaterial ragdollDefaultPhysicMaterial = Resources.Load<PhysicMaterial>(PathToPhysicMaterial);
         Collider.material = ragdollDefaultPhysicMaterial;
         ActivateRagdoll(false);

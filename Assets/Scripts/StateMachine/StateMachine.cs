@@ -1,73 +1,106 @@
 using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-public class StateMachine : MonoBehaviour
+[RequireComponent(typeof(AISetterTargetTracker))]
+public class StateMachine : MonoBehaviour, IModeMoverChanger
 {
-    [SerializeField][SerializeInterface(typeof(IReadOnlyCharacter))] private MonoBehaviour _characterMonoBehaviour;
-    [SerializeField] private State[] _states;
+    [SerializeField] private AICharacter _character;
+    [SerializeField] private StateMachineConfig _config;
 
-    private IReadOnlyCharacter _character;
+    private AISetterTargetTracker _aISetterTargetTracker;
+    private List<State> _states;
     private State _defaultState;
     private State _currentState;
+    private Coroutine _jobUpdateState;
 
     public event Action<IReadOnlyState> ChangedState;
+    public event Action<IModeMoverProvider> AddedModeMover;
+    public event Action<IModeMoverProvider> RemovedModeMover;
 
     public IReadOnlyState State => _currentState;
 
     private void Awake()
     {
-        _character = (IReadOnlyCharacter)_characterMonoBehaviour;
+        _aISetterTargetTracker = GetComponent<AISetterTargetTracker>();
     }
 
     private void OnEnable()
     {
+        if (_currentState == null)
+            return;
+
         SetCurrentState(_currentState);
+        RunUpdateState();
+        _aISetterTargetTracker.enabled = true;
     }
 
     private void OnDisable()
     {
         ExitCurrentState();
+        CancelJobUpdateState();
+        _aISetterTargetTracker.enabled = false;
     }
 
     private void Start()
     {
         InitializeStates();
         SetCurrentState(_defaultState);
+        RunUpdateState();
     }
 
     private void Update()
     {
-        if (_currentState == null)
+        if (_currentState.CanUpdate())
+            _currentState.Tick(Time.deltaTime);
+    }
+
+    private IEnumerator UpdateState()
+    {
+        while (true)
+        {
+            if (_currentState.CanUpdate())
+                _currentState.Update();
+
+            yield return _currentState.WaitHandle;
+        }
+    }
+
+    private void RunUpdateState()
+    {
+        CancelJobUpdateState();
+        _jobUpdateState = StartCoroutine(UpdateState());
+    }
+
+    private void CancelJobUpdateState()
+    {
+        if (_jobUpdateState == null)
             return;
-
-        float deltasTime = Time.deltaTime;
-
-        if (_currentState.CanHandle(deltasTime))
-            return;
-
-        _currentState.Handle(deltasTime);
+        
+        StopCoroutine(_jobUpdateState);
+        _jobUpdateState = null;
     }
 
     private void InitializeStates()
     {
-        if (_states.Length == 0)
-            return;
-
-        foreach (State state in _states)
-            state.Initialize(_character);
-
+        _states = new List<State>(_config.CreatStates(_character));
         _defaultState = _states[0];
     }
 
     private void SetCurrentState(State startState)
     {
-        if (startState == null)
-            return;
-
+#if UNITY_EDITOR
+        Debug.Log($"SetCurrentState: {_character.Transform.parent.name} | {_currentState?.GetType().Name} -> {startState.GetType().Name}");
+#endif
         _currentState = startState;
         _currentState.GetedNextState += Transit;
         _currentState.Enter();
+
+        if (_currentState is IModeMoverProvider modeMoverProvider)
+            AddedModeMover?.Invoke(modeMoverProvider);
+
         ChangedState?.Invoke(_currentState);
     }
 
@@ -76,7 +109,12 @@ public class StateMachine : MonoBehaviour
         State state = _states.FirstOrDefault(state => state.Id == nextState.Id);
 
         if (state == null)
+        {
+#if UNITY_EDITOR
+            Debug.LogWarning($"State Machine not find \"{nameof(nextState)}\"");
+#endif
             return;
+        }
 
         ExitCurrentState();
         SetCurrentState(state);
@@ -84,10 +122,10 @@ public class StateMachine : MonoBehaviour
 
     private void ExitCurrentState()
     {
-        if (_currentState == null)
-            return;
-
         _currentState.GetedNextState -= Transit;
         _currentState.Exit();
+
+        if (_currentState is IModeMoverProvider modeMoverProvider)
+            RemovedModeMover?.Invoke(modeMoverProvider);
     }
 }

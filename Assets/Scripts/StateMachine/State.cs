@@ -1,36 +1,37 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
-public abstract class State : ScriptableObject, IReadOnlyState, ISerializationCallbackReceiver
+public abstract class State : IReadOnlyState
 {
-    [SerializeField][ReadOnly] private string _id;
-    [SerializeField] private List<Transition> _transitions;
+    private List<Transition> _transitions;
+    private List<Timer> _timers;
 
     public event Action<StatusState> ChangedStatus;
     public event Action<IReadOnlyState> GetedNextState;
 
-    public string Id => _id;
+    public string Id { get; }
+    public WaitForSeconds WaitHandle { get; }
     public StatusState Status { get; private set; }
-    public IReadOnlyCharacter Character { get; private set; }
     public IReadOnlyCollection<IReadOnlyTransition> Transitions => _transitions;
+    protected AICharacter Character { get; private set; }
 
-    public void Initialize(IReadOnlyCharacter character)
+    public State(string id, AICharacter character, float timeSecondsWaitHandle)
     {
-        if (Status != StatusState.None)
-            throw new InvalidOperationException($"Состояние \"{GetType().Name}\" уже инициализировано!");
-
-        InitializeBeforeAddon(character);
+        Id = id;
         Character = character;
+        WaitHandle = new WaitForSeconds(timeSecondsWaitHandle);
+        _transitions = new List<Transition>();
+        _timers = new List<Timer>();
+    }
 
-        foreach (var transition in _transitions)
-        {
-            transition.Initialize(character, this);
-        }
+    public void AddTransition(Transition transition)
+    {
+        if (_transitions.Contains(transition))
+            throw new InvalidOperationException();
 
-        InitializeAddon();
-        UpdateStatus(StatusState.Initialized);
-        InitializeAfterAddon();
+        _transitions.Add(transition);
     }
 
     public void Enter()
@@ -42,12 +43,13 @@ public abstract class State : ScriptableObject, IReadOnlyState, ISerializationCa
         ActivateTransitions(out Transition transitionNeedTransit);
         EnterAddon();
         UpdateStatus(StatusState.Entered);
-        EnterAfterAddon();
 
         if (transitionNeedTransit != null)
         {
             OnChangedTransitionStatus(transitionNeedTransit, StatusTransition.NeedTransit);
         }
+
+        EnterAfterAddon();
     }
 
     public void Exit()
@@ -56,42 +58,38 @@ public abstract class State : ScriptableObject, IReadOnlyState, ISerializationCa
             throw new InvalidOperationException($"Невозможно изменить статус состояния \"{GetType().Name}\" на \"{StatusState.Exited}\"!");
 
         ExitBeforeAddon();
-
-        foreach (var transition in _transitions)
-        {
-            transition.ChangedStatus -= OnChangedTransitionStatus;
-            transition.Deactivate();
-        }
-
-        UpdateStatus(StatusState.Completed);
+        DeactivateTransitions();
+        RemoveTimers();
+        Complete();
         ExitAddon();
         UpdateStatus(StatusState.Exited);
         ExitAfterAddon();
     }
 
-    public bool CanHandle(float deltaTime)
+    public bool CanUpdate()
     {
-        if (Status != StatusState.Entered)
-            return false;
-
-        return CanUpdateAddon(deltaTime);
+        return Status == StatusState.Entered;
     }
 
-    public void Handle(float deltaTime) 
+    public virtual void Update() { }
+
+    public void Tick(float deltaTime)
     {
-        foreach (Transition transition in _transitions)
+        foreach(Transition transition in _transitions)
         {
-            transition.Handle(deltaTime);
+            transition.Tick(deltaTime);
         }
 
-        UpdateAddon(deltaTime);
-    }
+        foreach(Timer timer in _timers.ToList())
+        {
+            if (_timers.Contains(timer) == false)
+                continue;
 
-    protected virtual void InitializeBeforeAddon(IReadOnlyCharacter aiCharacter) { }
+            timer.Tick(deltaTime);
+        }
 
-    protected virtual void InitializeAddon() { }
-
-    protected virtual void InitializeAfterAddon() { }
+        TickAddon(deltaTime);
+    } 
 
     protected virtual void EnterBeforeAddon() { }
 
@@ -105,11 +103,31 @@ public abstract class State : ScriptableObject, IReadOnlyState, ISerializationCa
 
     protected virtual void ExitAfterAddon() { }
 
-    protected virtual bool CanUpdateAddon(float deltaTime) => true;
+    protected virtual void TickAddon(float deltaTime) { }
 
-    protected virtual void UpdateAddon(float deltaTime) { }
+    protected void Complete() 
+    {
+        if ((int)Status >= (int)StatusState.Completed)
+            return;
 
-    protected void Complete() => UpdateStatus(StatusState.Completed);
+        UpdateStatus(StatusState.Completed);
+    } 
+
+    protected void AddTimer(Timer timer)
+    {
+        if (_timers.Contains(timer))
+            throw new InvalidOperationException($"\"{GetType().Name}\". This {nameof(Timer)} been added!");
+
+        _timers.Add(timer);
+    }
+
+    protected void RemoveTimer(Timer timer)
+    {
+        if (_timers.Contains(timer) == false)
+            return;
+
+        _timers.Remove(timer);
+    }
 
     private void ActivateTransitions(out Transition transitionNeedTransit)
     {
@@ -123,19 +141,32 @@ public abstract class State : ScriptableObject, IReadOnlyState, ISerializationCa
             if (transition.Status == StatusTransition.NeedTransit)
             {
                 transitionNeedTransit = transition;
-                break;
             }
         }
+    }
+
+    private void DeactivateTransitions()
+    {
+        foreach (var transition in _transitions)
+        {
+            transition.ChangedStatus -= OnChangedTransitionStatus;
+            transition.Deactivate();
+        }
+    }
+
+    private void RemoveTimers()
+    {
+        foreach(var timer in _timers.ToList())
+            RemoveTimer(timer);
     }
 
     private void UpdateStatus(StatusState state)
     {
         if (Status == state)
-        {
             return;
-        }
 
         Status = state;
+        //Debug.Log($"UpdateStatus: {Character.Transform.parent.name} | {GetType().Name} = {Status}");
         ChangedStatus?.Invoke(Status);
     }
 
@@ -144,14 +175,9 @@ public abstract class State : ScriptableObject, IReadOnlyState, ISerializationCa
         if (statusTransition != StatusTransition.NeedTransit)
             return;
 
+        if (Status != StatusState.Entered && Status != StatusState.Completed)
+            return;
+
         GetedNextState?.Invoke(transition.TargetState);
     }
-
-    void ISerializationCallbackReceiver.OnAfterDeserialize()
-    {
-        if (string.IsNullOrWhiteSpace(_id))
-            _id = Guid.NewGuid().ToString();
-    }
-
-    void ISerializationCallbackReceiver.OnBeforeSerialize() { }
 }

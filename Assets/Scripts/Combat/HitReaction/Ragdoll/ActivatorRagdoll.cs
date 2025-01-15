@@ -1,37 +1,42 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(SwitcherRagdoll))]
-public class ActivatorRagdoll : MonoBehaviour, IHitReaction, IAction
+public class ActivatorRagdoll : MonoBehaviour, IReadOnlyActivatorRagdoll, IHitReaction, IAction
 {
     private const float ForceYOffset = 0.35f;
 
     [SerializeField] private ActionScheduler _actionScheduler;
-    [SerializeField][SerializeInterface(typeof(IDamageable))] private MonoBehaviour _mainDamageableMonoBehaviour;
+    [SerializeField][SerializeInterface(typeof(IHealth))] private MonoBehaviour _healthMonoBehaviour;
     [Min(0f)][SerializeField] private float _timeResetIgnoreColliders;
     [Min(0f)][SerializeField] private float _timeDeactivate;
 
     private Transform _transform;
     private SwitcherRagdoll _switcherRagdoll;
-    private IDamageable _damageable;
+    private IHealth _health;
     private Coroutine _jobRunTimerForDeactivate;
+
+    public event Action<Hit> BeforeActivated;
+    public event Action<Hit> Activated;
+    public event Action Deactivated;
 
     private void Awake()
     {
         _transform = transform;
         _switcherRagdoll = GetComponent<SwitcherRagdoll>();
-        _damageable = (IDamageable)_mainDamageableMonoBehaviour;
+        _health = (IHealth)_healthMonoBehaviour;
     }
 
     private void OnEnable()
     {
-        _switcherRagdoll.ExiteAnimationStandUp += OnExiteAnimationStandUp;
+        _switcherRagdoll.Deactivated += OnDeactivated;
     }
 
     private void OnDisable()
     {
-        _switcherRagdoll.ExiteAnimationStandUp -= OnExiteAnimationStandUp;
+        _switcherRagdoll.Deactivated -= OnDeactivated;
     }
 
     public void Cancel()
@@ -41,29 +46,43 @@ public class ActivatorRagdoll : MonoBehaviour, IHitReaction, IAction
         _actionScheduler.ClearAction(this);
     }
 
-    public bool CanHandleHit(IWeaponReadOnly weapon, Vector3 hitPoint, float damage)
+    public bool CanHandleHit(Hit hit, float damage)
     {
-        return enabled && weapon.IsRageAttack && _switcherRagdoll.IsActivated == false;
+        if (enabled == false)
+            return false;
+
+        if (_health.CanDie(hit, damage) == false)
+        {
+            if (_actionScheduler.CanStartAction(this) == false)
+                return false;
+
+            if (hit.IsRageAttack == false)
+                return false;
+        }
+
+        return true;
     }
 
-    public void HandleHit(IWeaponReadOnly weapon, Vector3 hitPoint, float damage)
+    public void HandleHit(Hit hit, float damage)
     {
+        BeforeActivated?.Invoke(hit);
         _actionScheduler.StartAction(this);
         _actionScheduler.SetBlock(this);
-        Vector3 force = CalculateForce(weapon, hitPoint);
+        Vector3 force = CalculateForce(hit.Weapon, hit.Point);
         List<Collider> ignoreColliders = new List<Collider>();
-        ignoreColliders.AddRange(weapon.Colliders);
-        ignoreColliders.AddRange(weapon.Fighter.IgnoreColliders);
+        ignoreColliders.AddRange(hit.Weapon.Colliders);
+        ignoreColliders.AddRange(hit.Weapon.Fighter.IgnoreColliders);
         _switcherRagdoll.SetIgnoreColliders(ignoreColliders, true, _timeResetIgnoreColliders);
         _switcherRagdoll.Activete();
 
-        if (_damageable.CanDie(weapon, damage) == false)
+        if (_health.CanDie(hit, damage) == false)
         {
             CancelJobTimerForDeactivate();
             _jobRunTimerForDeactivate = StartCoroutine(RunTimerForDeactivateRagdoll(_timeDeactivate));
         }
 
-        _switcherRagdoll.ApplyHit(force, hitPoint);
+        _switcherRagdoll.ApplyHit(force, hit.Point);
+        Activated?.Invoke(hit);
     }
 
     private Vector3 CalculateForce(IWeaponReadOnly weapon, Vector3 hitPoint)
@@ -89,7 +108,7 @@ public class ActivatorRagdoll : MonoBehaviour, IHitReaction, IAction
     {
         float timer = 0f;
 
-        while (_switcherRagdoll.IsActivated)
+        while (_switcherRagdoll.IsActivated && _health.IsDied == false)
         {
             timer += Time.deltaTime;
 
@@ -114,8 +133,9 @@ public class ActivatorRagdoll : MonoBehaviour, IHitReaction, IAction
         }
     }
 
-    private void OnExiteAnimationStandUp()
+    private void OnDeactivated()
     {
         _actionScheduler.ClearAction(this);
+        Deactivated?.Invoke();
     }
 }

@@ -16,6 +16,7 @@ public class AttributeBar : MonoBehaviour
     private void OnEnable()
     {
         Attribute.ValueChanged += OnValueChanged;
+        OnValueChanged();
     }
 
     private void OnDisable()

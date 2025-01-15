@@ -7,9 +7,11 @@ public class SwitcherAnimationRig : MonoBehaviour
 {
     private DataAnimationRig _data;
     private Dictionary<TypeAnimationRig, Coroutine> _hashCorutineJobs = new Dictionary<TypeAnimationRig, Coroutine>();
-    private AnimationRigSetting _defaultAnimationSetting;
+    private AnimationRigSetting _defaultAnimationSetting;    
     private AnimationRigSetting _currentAnimationSetting;
 
+    public TypeAnimationRig DefaultTypeAnimationRig => _defaultAnimationSetting.Type;
+    public TypeAnimationRig CurrentTypeAnimationRig => _currentAnimationSetting.Type;
     public bool IsNotWork => _hashCorutineJobs.Count == 0;
 
     private void Awake()
@@ -21,10 +23,11 @@ public class SwitcherAnimationRig : MonoBehaviour
 
     public void ApplyDefaultAnimationRig()
     {
-        SetAnimationRig(_defaultAnimationSetting.Type, 1f);
+        float valueDefault = 1f;
+        SetAnimationRig(_defaultAnimationSetting.Type, valueDefault);
     }
 
-    public void SetAnimationRig(TypeAnimationRig type, float targetValue)
+    public void SetAnimationRig(TypeAnimationRig type, float targetValue = 1f)
     {
         if (_currentAnimationSetting.Type == type)
             return;
@@ -37,7 +40,7 @@ public class SwitcherAnimationRig : MonoBehaviour
     private void SetNewAnimationRig(AnimationRigSetting oldAnimationRig, AnimationRigSetting newAnimationRig, float targetValue)
     {
         SetWeightRig(oldAnimationRig, 0f);
-        SetWeightRig(newAnimationRig, 1f);
+        SetWeightRig(newAnimationRig, targetValue);
     }
 
     private void SetWeightRig(AnimationRigSetting setting, float targetValue)
@@ -51,6 +54,7 @@ public class SwitcherAnimationRig : MonoBehaviour
         if (_hashCorutineJobs.ContainsKey(setting.Type))
         {
             StopCoroutine(_hashCorutineJobs[setting.Type]);
+            _hashCorutineJobs.Remove(setting.Type);
         }
 
         if (setting.TimeUpdate == 0f)
@@ -77,6 +81,7 @@ public class SwitcherAnimationRig : MonoBehaviour
             yield return null;
         }
 
+        yield return null; //иначе если условие выше Mathf.Approximately(setting.Rig.weight, targetValue) == false не сработает то _hashCorutineJobs[setting.Type] будет иметь значение null
         setting.Rig.weight = targetValue;
         _hashCorutineJobs.Remove(setting.Type);
     }
