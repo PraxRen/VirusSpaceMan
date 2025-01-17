@@ -188,11 +188,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _id: 3bcc4681-937b-4fcf-8d01-39fef347b869
-  _surfaceType: 2
+  _graphics: {fileID: 7297706176398267658}
+  _colliders: []
   _radiusDamage: 0.2
   _pointRaycast: {fileID: 0}
 --- !u!4 &5629993478776456639 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4241147188687757140, guid: b340b5a1a2d707e4999f02a362844eab, type: 3}
+  m_PrefabInstance: {fileID: 8429144041662044907}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &7297706176398267658 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1278174306915405793, guid: b340b5a1a2d707e4999f02a362844eab, type: 3}
   m_PrefabInstance: {fileID: 8429144041662044907}
   m_PrefabAsset: {fileID: 0}

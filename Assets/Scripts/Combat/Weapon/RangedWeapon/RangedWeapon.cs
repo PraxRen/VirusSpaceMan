@@ -11,6 +11,16 @@ public abstract class RangedWeapon : Weapon, IRangedWeaponReadOnly
     public RangedWeaponConfig RangedWeaponConfig {  get; private set; }
 
 
+    protected override void ActivateAddon()
+    {
+        _spawnerProjectile.enabled = true;
+    }
+
+    protected override void DeactivateAddon()
+    {
+        _spawnerProjectile.enabled = false;
+    }
+
     protected override void InitializeAddon(WeaponConfig config, IFighterReadOnly fighter)
     {
         RangedWeaponConfig = (RangedWeaponConfig)config;

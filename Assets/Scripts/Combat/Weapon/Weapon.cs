@@ -10,6 +10,7 @@ public abstract class Weapon : MonoBehaviour, IWeaponReadOnly, ISerializationCal
     private float TimeResetIndexAttack = 2f;
 
     [SerializeField][ReadOnly] private string _id;
+    [SerializeField] private GameObject _graphics;
     [SerializeField] private Collider[] _colliders;
 
     private WeaponConfig _config;
@@ -25,21 +26,20 @@ public abstract class Weapon : MonoBehaviour, IWeaponReadOnly, ISerializationCal
     public string Id => _id;
     public WeaponConfig Config => _config;
     public IFighterReadOnly Fighter => _fighter;
-    //public Attack CurrentAttack => _config.Attacks[_indexAttack];
-    public Attack CurrentAttack 
-    {
-        get 
-        {
-            Debug.Log($"CurrentAttack: {((Fighter)Fighter).transform.parent.name} | {_indexAttack}");
-            return _config.Attacks[_indexAttack];
-        }
-    }
+    public Attack CurrentAttack => _config.Attacks[_indexAttack];
     public float FactorNoise => _config.FactorAuidioVolume;
     public SurfaceType SurfaceType => _config.SurfaceType;
     public Vector3 Position => _transform.position;
     public IReadOnlyCollection<Collider> Colliders => _colliders;
     protected Transform Transform => _transform;
 
+#if UNITY_EDITOR
+    [ContextMenu("Reset ID")]
+    private void ClearId()
+    {
+        _id = null;
+    }
+#endif
     private void Awake()
     {
         _transform = transform;
@@ -48,17 +48,19 @@ public abstract class Weapon : MonoBehaviour, IWeaponReadOnly, ISerializationCal
 
     private void OnEnable()
     {
-        ResetIndexAttack();
+        Activate();
         EnableAddon();
     }
 
     private void OnDisable()
     {
+        Deactivate();
         DisableAddon();
     }
 
     private void Start()
     {
+        Deactivate();
         StartAddon();
     }
 
@@ -148,7 +150,9 @@ public abstract class Weapon : MonoBehaviour, IWeaponReadOnly, ISerializationCal
         if (_isActivated)
             return;
 
-        gameObject.SetActive(true);
+        _graphics.SetActive(true);
+        ResetIndexAttack();
+        ActivateAddon();
         _isActivated = true;
     }
 
@@ -157,7 +161,8 @@ public abstract class Weapon : MonoBehaviour, IWeaponReadOnly, ISerializationCal
         if (_isActivated == false)
             return;
 
-        gameObject.SetActive(false);
+        _graphics.SetActive(false);
+        DeactivateAddon();
         _isActivated = false;
     }
 
@@ -211,6 +216,10 @@ public abstract class Weapon : MonoBehaviour, IWeaponReadOnly, ISerializationCal
 
     protected virtual void InitializeAddon(WeaponConfig config, IFighterReadOnly fighter) { }
 
+    protected virtual void ActivateAddon() { }
+
+    protected virtual void DeactivateAddon() { } 
+
     protected virtual bool CanAttackAddon() => true;
 
     protected virtual void StartAttackAddon() { }
@@ -222,7 +231,6 @@ public abstract class Weapon : MonoBehaviour, IWeaponReadOnly, ISerializationCal
     private void ResetIndexAttack()
     {
         _indexAttack = -1;
-        Debug.Log($"ResetIndexAttack: {((Fighter)Fighter).transform.parent.name}");
     }
 
     void ISerializationCallbackReceiver.OnAfterDeserialize()

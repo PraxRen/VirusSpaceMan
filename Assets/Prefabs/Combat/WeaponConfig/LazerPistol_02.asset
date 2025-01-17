@@ -10,10 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c95c29a4cb878584b8f4e8f262d2a68d, type: 3}
-  m_Name: LazerPistol_01
+  m_Name: LazerPistol_02
   m_EditorClassIdentifier: 
   _id: 1a710b27-da2a-45e0-92d3-7067acf9bbd1
-  _idWeapon: 86aeb65c-39f4-4a8d-887d-2ef9c75f7c03
+  _idWeapon: b5afae7c-3cac-4bb0-9bb9-068de7914d54
   _damage: 100
   _force: 400
   _distanceAttack: 3.8

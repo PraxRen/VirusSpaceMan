@@ -47,7 +47,7 @@ public abstract class Projectile : MonoBehaviour, ISurface
         if (_rangedWeapon.CanCollide(targetCollider) == false)
             return;
 
-        HandleCollide(targetCollider);
+        HandleCollide(collision);
     }
 
     private void Update()
@@ -80,9 +80,9 @@ public abstract class Projectile : MonoBehaviour, ISurface
 
     protected virtual void DisableAddon() { }
 
-    protected virtual void BeforeHandleCollideAddon(Collider collider) { }
+    protected virtual void BeforeHandleCollideAddon(Collision collision) { }
     
-    protected virtual void AfterHandleCollideAddon() { }
+    protected virtual void AfterHandleCollideAddon(Collision collision) { }
 
     protected virtual bool CanCollideAddon(Collider collider) => true;
 
@@ -92,10 +92,10 @@ public abstract class Projectile : MonoBehaviour, ISurface
         Destroyed?.Invoke(this);
     }
 
-    private void HandleCollide(Collider collider)
+    private void HandleCollide(Collision collision)
     {
-        BeforeHandleCollideAddon(collider);
-        Collided?.Invoke(this, collider);
-        AfterHandleCollideAddon();
+        BeforeHandleCollideAddon(collision);
+        Collided?.Invoke(this, collision.collider);
+        AfterHandleCollideAddon(collision);
     }
 }
