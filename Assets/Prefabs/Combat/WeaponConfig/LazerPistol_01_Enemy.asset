@@ -9,22 +9,24 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c95c29a4cb878584b8f4e8f262d2a68d, type: 3}
+  m_Script: {fileID: 11500000, guid: e9f4e8d01d219f14a8b14898121f8b88, type: 3}
   m_Name: LazerPistol_01_Enemy
   m_EditorClassIdentifier: 
-  _id: 1a710b27-da2a-45e0-92d3-7067acf9bbd1
+  _id: 88193a93-8e2b-4b61-bcd7-2af5eca74049
+  _description: 
   _idWeapon: 86aeb65c-39f4-4a8d-887d-2ef9c75f7c03
-  _damage: 10
+  _damage: 100
   _force: 400
-  _distanceAttack: 5
+  _distanceAttack: 3.8
   _cooldownAttack: 0
   _distanceNoise: 7
   _factorAuidioVolume: 0.5
   _surfaceType: 2
   _attacks:
   - {fileID: 11400000, guid: f9d2096eb3e4f4841a8c2b6031018fd2, type: 2}
-  _accuracy: 0.7
-  _projectileConfig: {fileID: 11400000, guid: 78145ac27ccaf7e47889fe28047209f0, type: 2}
+  _equipmentType: 0
   _typeAnimationLayer: 4
   _typeAnimationRig: 2
   _modeMover: {fileID: 11400000, guid: 5125f1417baf42c4f9f0a0baa3bc06d2, type: 2}
+  _accuracy: 0.7
+  _projectileConfig: {fileID: 11400000, guid: 78145ac27ccaf7e47889fe28047209f0, type: 2}

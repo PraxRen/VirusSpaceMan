@@ -1,0 +1,1 @@
+public interface IReadOnlyEquipment : IReadOnlyStorage<IEquipmentItem> { }

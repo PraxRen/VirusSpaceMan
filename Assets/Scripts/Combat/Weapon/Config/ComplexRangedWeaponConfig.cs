@@ -1,13 +1,11 @@
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "NewComplexRangedWeaponConfig", menuName = "Combat/ComplexRangedWeaponConfig")]
-public class ComplexRangedWeaponConfig : RangedWeaponConfig, IAnimationLayerProvider, IAnimationRigProvider, IModeMoverProvider
+[CreateAssetMenu(fileName = "NewRangedWeaponConfig", menuName = "Combat/RangedWeaponConfig")]
+public class ComplexRangedWeaponConfig : ComplexWeaponConfig, IComplexRangedWeaponConfig
 {
-    [SerializeField] private TypeAnimationLayer _typeAnimationLayer;
-    [SerializeField] private TypeAnimationRig _typeAnimationRig;
-    [SerializeField] private ModeMover _modeMover;
+    [Range(0, 1)][SerializeField] private float _accuracy;
+    [SerializeField] private ProjectileConfig _projectileConfig;
 
-    public TypeAnimationLayer TypeAnimationLayer => _typeAnimationLayer;
-    public TypeAnimationRig TypeAnimationRig => _typeAnimationRig;
-    public ModeMover ModeMover => _modeMover;
+    public float Accuracy => _accuracy;
+    public ProjectileConfig ProjectileConfig => _projectileConfig;
 }

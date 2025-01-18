@@ -8,7 +8,7 @@ public interface IWeaponReadOnly : ISurface
     event Action<IDamageable, IWeaponReadOnly, Attack, Vector3> Hited;
 
     string Id { get; }
-    WeaponConfig Config { get; }
+    IWeaponConfig Config { get; }
     IFighterReadOnly Fighter { get; }
     Attack CurrentAttack { get; }
     Vector3 Position { get; }

@@ -63,7 +63,7 @@ public abstract class Projectile : MonoBehaviour, ISurface
     public void Initialize(IRangedWeaponReadOnly rangedWeapon)
     {
         _rangedWeapon = rangedWeapon;
-        _projectileConfig = ((RangedWeaponConfig)rangedWeapon.Config).ProjectileConfig;
+        _projectileConfig = ((IRangedWeaponConfig)rangedWeapon.Config).ProjectileConfig;
     }
 
     public void Shoot(Vector3 direction, Attack attack)

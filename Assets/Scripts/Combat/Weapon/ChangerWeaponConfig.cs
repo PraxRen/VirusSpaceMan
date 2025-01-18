@@ -3,41 +3,47 @@ using UnityEngine;
 
 public class ChangerWeaponConfig : MonoBehaviour, IChangerWeaponConfig
 {
-    [SerializeField][SerializeInterface(typeof(IEquipmentReadOnly))] private MonoBehaviour _equipmentMonoBehaviour;
+    [SerializeField][SerializeInterface(typeof(IReadOnlyStorage<IEquipmentItem>))] private MonoBehaviour _equipmentMonoBehaviour;
 
-    private IEquipmentReadOnly _equipment;
+    private IReadOnlyStorage<IEquipmentItem> _equipment;
 
-    public event Action<WeaponConfig> ChangedWeaponConfig;
+    public event Action<IWeaponConfig> ChangedWeaponConfig;
     public event Action RemovedWeaponConfig;
 
     private void Awake()
     {
-        _equipment = (IEquipmentReadOnly)_equipmentMonoBehaviour;
+        _equipment = (IReadOnlyStorage<IEquipmentItem>)_equipmentMonoBehaviour;
     }
 
     private void OnEnable()
     {
-        _equipment.ChangedCell += OnChangedCell;
+        _equipment.ChangedSlot += OnChangedSlot;
     }
 
     private void OnDisable()
     {
-        _equipment.ChangedCell -= OnChangedCell;
+        _equipment.ChangedSlot -= OnChangedSlot;
     }
 
-    private void OnChangedCell(IEquipmentCellReanOnly equipmentCell)
+    private void OnChangedSlot(IReadOnlySlot<IEquipmentItem> slot)
     {
-        if (equipmentCell.Type != EquipmentType.Weapon)
+        IReadOnlyEquipmentSlot equipmentSlot = slot as IReadOnlyEquipmentSlot;
+
+        if (equipmentSlot == null)
+        {
+            Debug.Log("!!!!!!!!!!!!");
+            return;
+        }
+
+        if (equipmentSlot.Type != EquipmentType.Weapon)
             return;
 
-        WeaponConfig weaponConfig = equipmentCell.Item as WeaponConfig;
-
-        if (weaponConfig == null)
+        if (equipmentSlot.IsEmpty)
         {
             RemovedWeaponConfig?.Invoke();
             return;
         }
 
-        ChangedWeaponConfig?.Invoke(weaponConfig);
+        ChangedWeaponConfig?.Invoke((IWeaponConfig)equipmentSlot.Item);
     }
 }

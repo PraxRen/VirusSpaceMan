@@ -191,7 +191,7 @@ public class Fighter : MonoBehaviour, IFighterReadOnly, IAction, IModeMoverChang
         damageable.TakeDamage(hit, hit.BaseDamage);
     }
 
-    private void OnChangedWeaponConfig(WeaponConfig weaponConfig)
+    private void OnChangedWeaponConfig(IWeaponConfig weaponConfig)
     {
         RemoveWeapon();
         _currentWeapon = _storageWeapon.GetWeapon(weaponConfig.IdWeapon);

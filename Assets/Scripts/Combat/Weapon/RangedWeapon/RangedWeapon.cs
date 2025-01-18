@@ -2,13 +2,15 @@ using UnityEngine;
 
 public abstract class RangedWeapon : Weapon, IRangedWeaponReadOnly
 {
+    public static readonly float MaxRadiusAccuracy = 1.0f;
+
     [SerializeField] private SpawnerProjectile _spawnerProjectile;
     [SerializeField] private Transform _startPoint;
 
     private Projectile _lastProjectile;
 
     public Transform StartPoint => _startPoint;
-    public RangedWeaponConfig RangedWeaponConfig {  get; private set; }
+    public IRangedWeaponConfig RangedWeaponConfig {  get; private set; }
 
 
     protected override void ActivateAddon()
@@ -21,9 +23,9 @@ public abstract class RangedWeapon : Weapon, IRangedWeaponReadOnly
         _spawnerProjectile.enabled = false;
     }
 
-    protected override void InitializeAddon(WeaponConfig config, IFighterReadOnly fighter)
+    protected override void InitializeAddon(IWeaponConfig config, IFighterReadOnly fighter)
     {
-        RangedWeaponConfig = (RangedWeaponConfig)config;
+        RangedWeaponConfig = (IRangedWeaponConfig)config;
         _spawnerProjectile.Initialize();
     }
 
@@ -49,7 +51,7 @@ public abstract class RangedWeapon : Weapon, IRangedWeaponReadOnly
 
     private Vector3 GetTargetPosition()
     {
-        float adjustedRadius = RangedWeaponConfig.MaxRadiusAccuracy * (1 - RangedWeaponConfig.Accuracy);
+        float adjustedRadius = MaxRadiusAccuracy * (1 - RangedWeaponConfig.Accuracy);
         Vector2 randomPointInCircle = Random.insideUnitCircle * adjustedRadius;
         Vector3 targetPosition = Fighter.LookTracker.Position + new Vector3(randomPointInCircle.x, randomPointInCircle.y, 0f);
 

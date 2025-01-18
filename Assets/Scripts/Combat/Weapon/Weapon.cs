@@ -13,7 +13,7 @@ public abstract class Weapon : MonoBehaviour, IWeaponReadOnly, ISerializationCal
     [SerializeField] private GameObject _graphics;
     [SerializeField] private Collider[] _colliders;
 
-    private WeaponConfig _config;
+    private IWeaponConfig _config;
     private IFighterReadOnly _fighter;
     private float _lastTimeAttack;
     private bool _isActivated;
@@ -24,7 +24,7 @@ public abstract class Weapon : MonoBehaviour, IWeaponReadOnly, ISerializationCal
     public event Action<IDamageable, IWeaponReadOnly, Attack, Vector3> Hited;
 
     public string Id => _id;
-    public WeaponConfig Config => _config;
+    public IWeaponConfig Config => _config;
     public IFighterReadOnly Fighter => _fighter;
     public Attack CurrentAttack => _config.Attacks[_indexAttack];
     public float FactorNoise => _config.FactorAuidioVolume;
@@ -138,7 +138,7 @@ public abstract class Weapon : MonoBehaviour, IWeaponReadOnly, ISerializationCal
         StopAttackAddon();
     }
 
-    public void Initialize(WeaponConfig config, IFighterReadOnly fighter)
+    public void Initialize(IWeaponConfig config, IFighterReadOnly fighter)
     {
         _config = config;
         _fighter = fighter;
@@ -214,7 +214,7 @@ public abstract class Weapon : MonoBehaviour, IWeaponReadOnly, ISerializationCal
     
     protected virtual void DisableAddon() { }
 
-    protected virtual void InitializeAddon(WeaponConfig config, IFighterReadOnly fighter) { }
+    protected virtual void InitializeAddon(IWeaponConfig config, IFighterReadOnly fighter) { }
 
     protected virtual void ActivateAddon() { }
 

@@ -1,34 +1,31 @@
-using System;
 using UnityEngine;
 
-public abstract class Item : ScriptableObject, IEquatable<Item>, ISerializationCallbackReceiver
+public abstract class Item : ScriptableObject, IObjectItem, ISerializationCallbackReceiver
 {
     [SerializeField][ReadOnly] private string _id;
     [SerializeField][TextArea] private string _description;
+    [Min(1)][SerializeField] private int _limit;
 
     public string Id => _id;
+    public int Limit => _limit;
     public string Description => _description;
 
-    public static bool operator ==(Item itemOne, Item itemTwo)
+    #if UNITY_EDITOR
+    [ContextMenu("Reset ID")]
+    private void ClearId()
     {
-        if (itemOne is null)
-        {
-            if (itemTwo is null)
-                return true;
-
-            return false;
-        }
-
-        return itemOne.Equals(itemTwo);
+        _id = null;
+        ((ISerializationCallbackReceiver)this).OnAfterDeserialize();
     }
-
-    public static bool operator !=(Item itemOne, Item itemTwo) => !(itemOne == itemTwo);
+#endif
 
     public override int GetHashCode() => _id.GetHashCode();
 
     public override bool Equals(object obj) => Equals(obj as Item);
 
-    public bool Equals(Item item)
+    public bool Equals(Item item) => Equals(item as IObjectItem);
+
+    public bool Equals(IObjectItem item)
     {
         if (item == null)
             return false;

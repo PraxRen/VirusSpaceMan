@@ -2,6 +2,6 @@ using System;
 
 public interface IChangerWeaponConfig 
 {
-    event Action<WeaponConfig> ChangedWeaponConfig;
+    event Action<IWeaponConfig> ChangedWeaponConfig;
     event Action RemovedWeaponConfig;
 }
