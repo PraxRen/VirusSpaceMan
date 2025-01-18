@@ -1,8 +1,20 @@
 using System;
 using System.Collections.Generic;
+using UnityEngine;
 
 public class Equipment : StorageMonoBehaviour<IEquipmentItem>
 {
+    [SerializeField] DefaultEquipmentSlots _default;
+
+    private void Start()
+    {
+        foreach (DefaultEquipmentSlots.SettingEquipmentSlot setting in _default.Slots)
+        {
+            if (TryAddItem(setting.Item, 1) == false)
+                throw new InvalidOperationException($"Error setting default values for {nameof(EquipmentSlot)}");            
+        }
+    }
+
     protected override IEnumerable<BaseSlot<IEquipmentItem>> GetSlots()
     {
         foreach (EquipmentType type in Enum.GetValues(typeof(EquipmentType)))

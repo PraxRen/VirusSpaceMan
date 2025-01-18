@@ -2559,11 +2559,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 126598b87fb597d4f9399c328965a230, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _defaultCells:
-  - <Item>k__BackingField: {fileID: 11400000, guid: 6adcfd5db1426c84f8c8fa2c633a6d45, type: 2}
-    <Count>k__BackingField: 1
-    <MaxCount>k__BackingField: 1
-    <Type>k__BackingField: 0
+  _default: {fileID: 11400000, guid: 9282efcc252266445bd1803e6764aa5f, type: 2}
 --- !u!114 &1488390295189184661
 MonoBehaviour:
   m_ObjectHideFlags: 0

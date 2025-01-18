@@ -50,7 +50,7 @@ public class Storage<T> : IStorage<T> where T : IObjectItem
 
     public bool TryAddItem(T item, int count)
     {
-        BaseSlot<T> slot = _slots.FirstOrDefault(slot => slot.Item.Id == item.Id) ?? _slots.FirstOrDefault(slot => slot.IsEmpty);
+        BaseSlot<T> slot = _slots.FirstOrDefault(slot => slot.IsEmpty == false && slot.Item.Id == item.Id) ?? _slots.FirstOrDefault(slot => slot.IsEmpty);
 
         if (slot == null) 
             return false;
