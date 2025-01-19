@@ -6,7 +6,8 @@ public class Storage<T> : IStorage<T> where T : IObjectItem
 {
     private readonly BaseSlot<T>[] _slots;
 
-    public event Action<IReadOnlySlot<T>> ChangedSlot;
+    public event Action<IReadOnlySlot<T>, T> AddedItem;
+    public event Action<IReadOnlySlot<T>, T> RemovedItem;
 
     public Storage(IEnumerable<BaseSlot<T>> slots)
     {
@@ -44,7 +45,7 @@ public class Storage<T> : IStorage<T> where T : IObjectItem
         if (foundSlot.TryAddItem(item, count) == false)
             return false;
 
-        ChangedSlot?.Invoke(foundSlot);
+        AddedItem?.Invoke(foundSlot, item);
         return true;
     }
 
@@ -71,10 +72,12 @@ public class Storage<T> : IStorage<T> where T : IObjectItem
         if (foundSlot == null)
             return false;
 
+        T item = foundSlot.Item;
+
         if (foundSlot.TryRemoveItem(count) == false)
             return false;
 
-        ChangedSlot?.Invoke(foundSlot);
+        RemovedItem?.Invoke(foundSlot, item);
         return true;
     }
 

@@ -17,33 +17,33 @@ public class ChangerWeaponConfig : MonoBehaviour, IChangerWeaponConfig
 
     private void OnEnable()
     {
-        _equipment.ChangedSlot += OnChangedSlot;
+        _equipment.AddedItem += OnAddedItem;
+        _equipment.RemovedItem += OnRemovedItem;
     }
 
     private void OnDisable()
     {
-        _equipment.ChangedSlot -= OnChangedSlot;
+        _equipment.AddedItem -= OnAddedItem;
+        _equipment.RemovedItem -= OnRemovedItem;
     }
 
-    private void OnChangedSlot(IReadOnlySlot<IEquipmentItem> slot)
+    private void OnRemovedItem(IReadOnlySlot<IEquipmentItem> slot, IEquipmentItem item)
     {
-        IReadOnlyEquipmentSlot equipmentSlot = slot as IReadOnlyEquipmentSlot;
-
-        if (equipmentSlot == null)
-        {
-            Debug.Log("!!!!!!!!!!!!");
-            return;
-        }
+        IReadOnlyEquipmentSlot equipmentSlot = (IReadOnlyEquipmentSlot)slot;
 
         if (equipmentSlot.Type != EquipmentType.Weapon)
             return;
 
-        if (equipmentSlot.IsEmpty)
-        {
-            RemovedWeaponConfig?.Invoke();
-            return;
-        }
+        RemovedWeaponConfig?.Invoke();
+    }
 
-        ChangedWeaponConfig?.Invoke((IWeaponConfig)equipmentSlot.Item);
+    private void OnAddedItem(IReadOnlySlot<IEquipmentItem> slot, IEquipmentItem item)
+    {
+        IReadOnlyEquipmentSlot equipmentSlot = (IReadOnlyEquipmentSlot)slot;
+
+        if (equipmentSlot.Type != EquipmentType.Weapon)
+            return;
+
+        ChangedWeaponConfig?.Invoke((IWeaponConfig)item);
     }
 }

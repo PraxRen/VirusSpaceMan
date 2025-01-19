@@ -14,6 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _id: fa01fcdf-39e1-4b96-befe-813ab48c95cf
   _description: 
+  _limit: 1
   _idWeapon: 2cc8b2c4-4ce5-4794-b250-0c5f418f381e
   _damage: 0
   _force: 0
