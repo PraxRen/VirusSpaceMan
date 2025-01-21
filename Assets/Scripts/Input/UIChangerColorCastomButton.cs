@@ -2,14 +2,15 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 
+[RequireComponent(typeof(IReadOnlyButton))]
 public class UIChangerColorCastomButton : MonoBehaviour
-{
-    [SerializeField] private UICastomButton _button;
+{   
     [SerializeField] private Image _image;
     [SerializeField] private Color _colorDefault;
     [SerializeField] private Color _colorDown;
     [SerializeField] private float _timeUpdateColor;
 
+    private IReadOnlyButton _button;
     private Coroutine _jobUpdateColor;
 
     private void OnValidate()
@@ -18,6 +19,11 @@ public class UIChangerColorCastomButton : MonoBehaviour
             return;
 
         _image.color = _colorDefault;
+    }
+
+    private void Awake()
+    {
+        _button = GetComponent<IReadOnlyButton>();
     }
 
     private void OnEnable()
