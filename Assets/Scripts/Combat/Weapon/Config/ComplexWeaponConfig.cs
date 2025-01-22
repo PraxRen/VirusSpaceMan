@@ -22,6 +22,8 @@ public class ComplexWeaponConfig : Item, IComplexWeaponConfig
     [SerializeField] private TypeAnimationRig _typeAnimationRig;
     [Header("ModeMoverProvider")]
     [SerializeField] private ModeMover _modeMover;
+    [Header("Sale")]
+    [SerializeField] private SettingGameCurrencies _settingGameCurrencies;
 
     public string IdWeapon => _idWeapon;
     public float Damage => _damage;
@@ -36,4 +38,5 @@ public class ComplexWeaponConfig : Item, IComplexWeaponConfig
     public TypeAnimationLayer TypeAnimationLayer => _typeAnimationLayer;
     public TypeAnimationRig TypeAnimationRig => _typeAnimationRig;
     public ModeMover ModeMover => _modeMover;
+    public SettingGameCurrencies SettingGameCurrencies => _settingGameCurrencies;
 }

@@ -32,3 +32,9 @@ MonoBehaviour:
   _typeAnimationLayer: 2
   _typeAnimationRig: 1
   _modeMover: {fileID: 11400000, guid: 9c06c0e4ef332674a8823a6a24270bc3, type: 2}
+  _settingGameCurrencies:
+    _currencies:
+    - _type: 0
+      _price: 1
+    - _type: 1
+      _price: 1

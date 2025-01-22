@@ -2527,7 +2527,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d15abe9937402254f8c69fb83dd5e7c2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _button: {fileID: 974454099}
   _image: {fileID: 974454100}
   _colorDefault: {r: 1, g: 0, b: 0, a: 1}
   _colorDown: {r: 1, g: 0, b: 0, a: 0.34901962}
@@ -3475,7 +3474,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7394927946005314348, guid: 21685c10a89cef242847b4a2c729e36c, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -12.93
+      value: -8.24
       objectReference: {fileID: 0}
     - target: {fileID: 7394927946005314348, guid: 21685c10a89cef242847b4a2c729e36c, type: 3}
       propertyPath: m_LocalRotation.w
@@ -3773,11 +3772,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7089104936429261207, guid: b0325fc8c79f30347a82bdb58e4dea37, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 5.000097
+      value: 5.0002604
       objectReference: {fileID: 0}
     - target: {fileID: 7089104936429261207, guid: b0325fc8c79f30347a82bdb58e4dea37, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 6.8379517
+      value: 10.810597
       objectReference: {fileID: 0}
     - target: {fileID: 7089104936429261207, guid: b0325fc8c79f30347a82bdb58e4dea37, type: 3}
       propertyPath: m_LocalPosition.z

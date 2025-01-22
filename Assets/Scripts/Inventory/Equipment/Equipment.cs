@@ -6,7 +6,7 @@ public class Equipment : StorageMonoBehaviour<IEquipmentItem>
 {
     [SerializeField] DefaultEquipmentSlots _default;
 
-    private void Start()
+    protected override void StartAddon()
     {
         foreach (DefaultEquipmentSlots.SettingEquipmentSlot setting in _default.Slots)
         {

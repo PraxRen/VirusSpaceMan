@@ -1,10 +1,12 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
-using static UnityEditor.Progress;
 
 public abstract class StorageMonoBehaviour<T> : MonoBehaviour, IStorage<T> where T : IObjectItem
 {
+#if UNITY_EDITOR
+    [SerializeField][ReadOnly] private List<string> _idsDebug;
+#endif
     private Storage<T> _storage;
 
     public event Action<IReadOnlySlot<T>, T> AddedItem;
@@ -13,16 +15,22 @@ public abstract class StorageMonoBehaviour<T> : MonoBehaviour, IStorage<T> where
     public int LimitSlots => _storage.LimitSlots;
     public IReadOnlyCollection<IReadOnlySlot<T>> Slots => _storage.Slots;
 
-    private void Awake()
+    private void Start()
     {
         _storage = new Storage<T>(GetSlots());
-        AwakeAddon();
+        _storage.AddedItem += OnAddedItem;
+        _storage.RemovedItem += OnRemovedItem;
+        StartAddon();
     }
 
     private void OnEnable()
     {
-        _storage.AddedItem += OnAddedItem;
-        _storage.RemovedItem += OnRemovedItem;
+        if (_storage != null)
+        {
+            _storage.AddedItem += OnAddedItem;
+            _storage.RemovedItem += OnRemovedItem;
+        }
+
         EnableAddon();
     }
 
@@ -47,7 +55,7 @@ public abstract class StorageMonoBehaviour<T> : MonoBehaviour, IStorage<T> where
 
     protected abstract IEnumerable<BaseSlot<T>> GetSlots();
 
-    protected virtual void AwakeAddon() { }
+    protected virtual void StartAddon() { }
 
     protected virtual void EnableAddon() { }
 
@@ -61,11 +69,17 @@ public abstract class StorageMonoBehaviour<T> : MonoBehaviour, IStorage<T> where
     {
         HandlenRemovedItem(slot, item);
         RemovedItem?.Invoke(slot, item);
+#if UNITY_EDITOR
+        _idsDebug.Remove(item.Id);
+#endif
     }
 
     private void OnAddedItem(IReadOnlySlot<T> slot, T item)
     {
         HandleAddedItem(slot, item);
         AddedItem?.Invoke(slot, item);
-    } 
+#if UNITY_EDITOR
+        _idsDebug.Add(item.Id);
+#endif
+    }
 }
