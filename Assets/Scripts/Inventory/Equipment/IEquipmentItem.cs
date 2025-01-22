@@ -1,4 +1,4 @@
 public interface IEquipmentItem : IObjectItem
 {
-    public EquipmentType EquipmentType { get; }
+    public EquipmentType Type { get; }
 }

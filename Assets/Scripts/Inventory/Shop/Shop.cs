@@ -1,15 +1,18 @@
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Shop : StorageMonoBehaviour<ISaleItem>
+public class Shop : MonoBehaviour
 {
-    [SerializeField] private ShopConfig _config;
-
-    protected override IEnumerable<BaseSlot<ISaleItem>> GetSlots()
+    // Start is called before the first frame update
+    void Start()
     {
-        foreach (ISaleItem item in _config.SaleItems)
-        {
-            yield return new Slot<ISaleItem>(item, 1);
-        }
+        
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+        
     }
 }

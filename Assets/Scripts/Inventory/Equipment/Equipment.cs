@@ -6,20 +6,16 @@ public class Equipment : StorageMonoBehaviour<IEquipmentItem>
 {
     [SerializeField] DefaultEquipmentSlots _default;
 
-    protected override void StartAddon()
+    protected override IEnumerable<BaseSlot<IEquipmentItem>> CreateSlots()
     {
         foreach (DefaultEquipmentSlots.SettingEquipmentSlot setting in _default.Slots)
         {
-            if (TryAddItem(setting.Item, 1) == false)
-                throw new InvalidOperationException($"Error setting default values for {nameof(EquipmentSlot)}");            
-        }
-    }
+            EquipmentSlot equipmentSlot = new EquipmentSlot(setting.Item.Type);
 
-    protected override IEnumerable<BaseSlot<IEquipmentItem>> GetSlots()
-    {
-        foreach (EquipmentType type in Enum.GetValues(typeof(EquipmentType)))
-        {
-            yield return new EquipmentSlot(type);
+            if (equipmentSlot.TryAddItem(setting.Item, 1) == false)
+                throw new InvalidOperationException($"Error setting default values for {nameof(EquipmentSlot)}");
+
+            yield return equipmentSlot;
         }
     }
 }

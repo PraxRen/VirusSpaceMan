@@ -13,24 +13,18 @@ public abstract class StorageMonoBehaviour<T> : MonoBehaviour, IStorage<T> where
     public event Action<IReadOnlySlot<T>, T> RemovedItem;
 
     public int LimitSlots => _storage.LimitSlots;
-    public IReadOnlyCollection<IReadOnlySlot<T>> Slots => _storage.Slots;
+    public IReadOnlyList<IReadOnlySlot<T>> Slots => _storage.Slots;
 
-    private void Start()
+    private void Awake()
     {
-        _storage = new Storage<T>(GetSlots());
-        _storage.AddedItem += OnAddedItem;
-        _storage.RemovedItem += OnRemovedItem;
-        StartAddon();
+        _storage = new Storage<T>();
+        AwakeAddon();
     }
 
     private void OnEnable()
     {
-        if (_storage != null)
-        {
-            _storage.AddedItem += OnAddedItem;
-            _storage.RemovedItem += OnRemovedItem;
-        }
-
+        _storage.AddedItem += OnAddedItem;
+        _storage.RemovedItem += OnRemovedItem;
         EnableAddon();
     }
 
@@ -39,6 +33,12 @@ public abstract class StorageMonoBehaviour<T> : MonoBehaviour, IStorage<T> where
         _storage.AddedItem -= OnAddedItem;
         _storage.RemovedItem -= OnRemovedItem;
         DisableAddon();
+    }
+
+    private void Start()
+    {
+        _storage.Initilize(CreateSlots());
+        AwakeStart();
     }
 
     public bool TryAddItem(IReadOnlySlot<T> slot, T item, int count) => _storage.TryAddItem(slot, item, count);
@@ -53,9 +53,11 @@ public abstract class StorageMonoBehaviour<T> : MonoBehaviour, IStorage<T> where
 
     public bool HasItem(T item) => _storage.HasItem(item);
 
-    protected abstract IEnumerable<BaseSlot<T>> GetSlots();
+    protected abstract IEnumerable<BaseSlot<T>> CreateSlots();
 
-    protected virtual void StartAddon() { }
+    protected virtual void AwakeAddon() { }
+
+    protected virtual void AwakeStart() { }
 
     protected virtual void EnableAddon() { }
 

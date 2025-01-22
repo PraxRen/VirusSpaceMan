@@ -2,8 +2,8 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "NewShopConfig", menuName = "Inventory/Shop/ShopConfig")]
-public class ShopConfig : ScriptableObject
+[CreateAssetMenu(fileName = "NewShopStorageConfig", menuName = "Inventory/Shop/ShopStorageConfig")]
+public class ShopStorageConfig : ScriptableObject
 {
     [SerializeField][SerializeInterface(typeof(ISaleItem))] ScriptableObject[] _saleItemsScriptableObject;
 
@@ -17,5 +17,5 @@ public class ShopConfig : ScriptableObject
         _saleItems = _saleItemsScriptableObject.Cast<ISaleItem>().ToArray();
     }
 
-    public IReadOnlyCollection<ISaleItem> SaleItems => _saleItems;
+    public IReadOnlyList<ISaleItem> SaleItems => _saleItems;
 }

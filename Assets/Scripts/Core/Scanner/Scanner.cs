@@ -95,8 +95,6 @@ public class Scanner : MonoBehaviour, IReadOnlyScanner
         UpdateTarget();
     }
 
-
-
     private IEnumerator ScanTargets()
     {
         while (true)
@@ -158,38 +156,6 @@ public class Scanner : MonoBehaviour, IReadOnlyScanner
         }
 
         ChangedTargets?.Invoke(_targets);
-        ////------------------------------------------------------------
-
-
-
-
-
-
-
-
-        //if (isEmptyStartOldTargets && isEmptyCurrentTarget == false)
-        //{
-        //    DeselectedTarget?.Invoke(Target);
-        //    Target = null;
-        //    return;
-        //}
-
-        //if (isEmptyCurrentTarget)
-        //{
-        //    _targets = _scannerStrategy.Sort(_targets, _transform).ToList();
-
-        //    if (isEmptyStartOldTargets && _targets.Count > 0)
-        //        _currentIndexTarget = 0;
-
-        //    if (_currentIndexTarget >= _targets.Count)
-        //        _currentIndexTarget = _targets.Count - 1;
-
-        //    UpdateTarget();
-        //}
-        //else
-        //{
-        //    _currentIndexTarget = _targets.FindIndex(target => target == Target);
-        //}
     }
 
     private void ClearAllTargets()

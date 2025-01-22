@@ -4,12 +4,12 @@ using System.Linq;
 
 public class Storage<T> : IStorage<T> where T : IObjectItem
 {
-    private readonly BaseSlot<T>[] _slots;
+    private List<BaseSlot<T>> _slots;
 
     public event Action<IReadOnlySlot<T>, T> AddedItem;
     public event Action<IReadOnlySlot<T>, T> RemovedItem;
 
-    public Storage(IEnumerable<BaseSlot<T>> slots)
+    public void Initilize(IEnumerable<BaseSlot<T>> slots)
     {
         if (slots == null || slots.Count() == 0)
             throw new ArgumentNullException(nameof(slots));
@@ -19,12 +19,20 @@ public class Storage<T> : IStorage<T> where T : IObjectItem
         if (newSlots.Length == 0)
             throw new ArgumentOutOfRangeException(nameof(slots));
 
-        _slots = newSlots;
-        LimitSlots = _slots.Length;
+        _slots = new List<BaseSlot<T>>();
+        LimitSlots = _slots.Count;
+
+        foreach (BaseSlot<T> slot in slots)
+        {
+            _slots.Add(slot);
+
+            if (slot.Item != null)
+                AddedItem?.Invoke(slot, slot.Item);
+        }
     }
 
-    public int LimitSlots { get; }
-    public IReadOnlyCollection<IReadOnlySlot<T>> Slots => _slots;
+    public int LimitSlots { get; private set; }
+    public IReadOnlyList<IReadOnlySlot<T>> Slots => _slots;
 
     public bool TryAddItem(IReadOnlySlot<T> slot, T item, int count)
     {

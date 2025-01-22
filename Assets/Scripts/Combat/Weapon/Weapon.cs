@@ -82,7 +82,6 @@ public abstract class Weapon : MonoBehaviour, IWeaponReadOnly, ISerializationCal
             indexNext = 0;
 
         _indexAttack = indexNext;
-        Debug.Log($"UpdateIndexAttack: {((Fighter)Fighter).transform.parent.name} | {_indexAttack}");
     }
 
     public bool CanAttack()

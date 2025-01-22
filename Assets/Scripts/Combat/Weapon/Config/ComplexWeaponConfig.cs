@@ -34,7 +34,7 @@ public class ComplexWeaponConfig : Item, IComplexWeaponConfig
     public float FactorAuidioVolume => _factorAuidioVolume;
     public SurfaceType SurfaceType => _surfaceType;
     public IReadOnlyList<Attack> Attacks => _attacks;
-    public EquipmentType EquipmentType => _equipmentType;
+    public EquipmentType Type => _equipmentType;
     public TypeAnimationLayer TypeAnimationLayer => _typeAnimationLayer;
     public TypeAnimationRig TypeAnimationRig => _typeAnimationRig;
     public ModeMover ModeMover => _modeMover;
