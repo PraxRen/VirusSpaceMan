@@ -38,3 +38,4 @@ MonoBehaviour:
       _price: 1
     - _type: 1
       _price: 1
+  _prefabGraphics: {fileID: 6931336238912174239, guid: 1be21c22fb2a1e547bd3c640b06ae5b1, type: 3}

@@ -29,5 +29,12 @@ MonoBehaviour:
   _typeAnimationLayer: 4
   _typeAnimationRig: 2
   _modeMover: {fileID: 11400000, guid: 5125f1417baf42c4f9f0a0baa3bc06d2, type: 2}
+  _settingGameCurrencies:
+    _currencies:
+    - _type: 0
+      _price: 1
+    - _type: 1
+      _price: 1
+  _prefabGraphics: {fileID: 6849621036684198309, guid: 23fb912a9f42be54c8f13f95366c20a5, type: 3}
   _accuracy: 0.85
   _projectileConfig: {fileID: 11400000, guid: 5df596e617e0f9f429cd493f08e48f07, type: 2}

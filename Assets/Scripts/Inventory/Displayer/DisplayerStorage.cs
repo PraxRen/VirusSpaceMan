@@ -17,7 +17,7 @@ public class DisplayerStorage<T> : IDisplayerStorage<T> where T : IObjectItem
 
         foreach (IReadOnlySlot<T> slot in storage.Slots)
         {
-            _displayerSlots.Add(displayerSlotFactory.Create(slot));
+            _displayerSlots.Add(displayerSlotFactory.Create(slot, this));
         }
 
         ActiveDisplayerSlotChanged?.Invoke(ActiveDisplayerSlot);

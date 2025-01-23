@@ -3,6 +3,7 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "NewRangedWeaponConfig", menuName = "Combat/RangedWeaponConfig")]
 public class ComplexRangedWeaponConfig : ComplexWeaponConfig, IComplexRangedWeaponConfig
 {
+    [Header("RangedWeapon")]
     [Range(0, 1)][SerializeField] private float _accuracy;
     [SerializeField] private ProjectileConfig _projectileConfig;
 

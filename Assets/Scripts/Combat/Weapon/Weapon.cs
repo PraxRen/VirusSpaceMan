@@ -10,7 +10,7 @@ public abstract class Weapon : MonoBehaviour, IWeaponReadOnly, ISerializationCal
     private float TimeResetIndexAttack = 2f;
 
     [SerializeField][ReadOnly] private string _id;
-    [SerializeField] private GameObject _graphics;
+    [SerializeField] private Graphics _graphics;
     [SerializeField] private Collider[] _colliders;
 
     private IWeaponConfig _config;
@@ -149,7 +149,7 @@ public abstract class Weapon : MonoBehaviour, IWeaponReadOnly, ISerializationCal
         if (_isActivated)
             return;
 
-        _graphics.SetActive(true);
+        _graphics.Activate();
         ResetIndexAttack();
         ActivateAddon();
         _isActivated = true;
@@ -160,7 +160,7 @@ public abstract class Weapon : MonoBehaviour, IWeaponReadOnly, ISerializationCal
         if (_isActivated == false)
             return;
 
-        _graphics.SetActive(false);
+        _graphics.Deactivate();
         DeactivateAddon();
         _isActivated = false;
     }

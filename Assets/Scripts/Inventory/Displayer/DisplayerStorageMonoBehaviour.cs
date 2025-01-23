@@ -12,6 +12,8 @@ public abstract class DisplayerStorageMonoBehaviour<T> : MonoBehaviour, IDisplay
 
     public event Action<IReadOnlyDisplayerSlot<T>> ActiveDisplayerSlotChanged;
 
+    public Transform Transform { get; private set; }
+
     private void OnValidate()
     {
         if (_storageMonoBehaviour != null)
@@ -39,6 +41,7 @@ public abstract class DisplayerStorageMonoBehaviour<T> : MonoBehaviour, IDisplay
 
     private void Awake()
     {
+        Transform = transform;
         _displayerStorage = new DisplayerStorage<T>();
     }
 

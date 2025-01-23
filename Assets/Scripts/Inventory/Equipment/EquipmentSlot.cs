@@ -9,35 +9,6 @@ public class EquipmentSlot : BaseSlot<IEquipmentItem>, IReadOnlyEquipmentSlot
 
     public EquipmentType Type { get; }
 
-    public override bool TryAddItem(IEquipmentItem item, int count)
-    {
-        if (item == null)
-            throw new ArgumentNullException(nameof(item));
-
-        if (count != 1)
-            throw new ArgumentOutOfRangeException(nameof(count));
-
-        if (IsEmpty == false)
-            throw new InvalidOperationException($"Ñannot add an {nameof(IEquipmentItem)} to an occupied {nameof(EquipmentSlot)}");
-
-        Item = item;
-        Count = 1;
-        return true;
-    }
-
-    public override bool TryRemoveItem(int count)
-    {
-        if (count != 1)
-            throw new ArgumentOutOfRangeException(nameof(count));
-
-        if (IsEmpty)
-            return false;
-
-        Item = default;
-        Count = 0;
-        return true;
-    }
-
     public override bool TryGiveItem(out IEquipmentItem item, int count)
     {
         if (count != 1)
@@ -56,6 +27,35 @@ public class EquipmentSlot : BaseSlot<IEquipmentItem>, IReadOnlyEquipmentSlot
             return false;
         }
 
+        return true;
+    }
+
+    protected override bool TryAddItemAddon(IEquipmentItem item, int count)
+    {
+        if (item == null)
+            throw new ArgumentNullException(nameof(item));
+
+        if (count != 1)
+            throw new ArgumentOutOfRangeException(nameof(count));
+
+        if (IsEmpty == false)
+            throw new InvalidOperationException($"Ñannot add an {nameof(IEquipmentItem)} to an occupied {nameof(EquipmentSlot)}");
+
+        Item = item;
+        Count = 1;
+        return true;
+    }
+
+    protected override bool TryRemoveItemAddon(int count)
+    {
+        if (count != 1)
+            throw new ArgumentOutOfRangeException(nameof(count));
+
+        if (IsEmpty)
+            return false;
+
+        Item = default;
+        Count = 0;
         return true;
     }
 }
