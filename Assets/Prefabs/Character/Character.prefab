@@ -2084,7 +2084,7 @@ GameObject:
   - component: {fileID: 8834457130469672473}
   - component: {fileID: 6758731578635643536}
   - component: {fileID: 1488390295189184661}
-  - component: {fileID: 3278490414266983387}
+  - component: {fileID: 7495617401826814584}
   - component: {fileID: 5188332940812238398}
   - component: {fileID: 5220180375558150730}
   - component: {fileID: 1845547524693626225}
@@ -2096,6 +2096,8 @@ GameObject:
   - component: {fileID: 3586588617121904956}
   - component: {fileID: 7118345940546107453}
   - component: {fileID: 4358575433572536149}
+  - component: {fileID: 3389045110412524147}
+  - component: {fileID: 1029645822313355628}
   m_Layer: 0
   m_Name: Main
   m_TagString: Player
@@ -2483,7 +2485,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _debug: 1
   _health: {fileID: 9156320183614822022}
-  _storageWeapon: {fileID: 3278490414266983387}
+  _weaponContainer: {fileID: 7495617401826814584}
   _actionScheduler: {fileID: 9063325606587652215}
   _rage: {fileID: 8834457130469672473}
   _luckRageAttack: 0
@@ -2559,7 +2561,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 126598b87fb597d4f9399c328965a230, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _default: {fileID: 11400000, guid: 9282efcc252266445bd1803e6764aa5f, type: 2}
+  _idsDebug: []
+  _slotFactoryScriptableObject: {fileID: 11400000, guid: c68fbeef476182043aac2385c7b3ba13, type: 2}
 --- !u!114 &1488390295189184661
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2573,7 +2576,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _equipmentMonoBehaviour: {fileID: 6758731578635643536}
---- !u!114 &3278490414266983387
+--- !u!114 &7495617401826814584
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -2582,7 +2585,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 3037592456749619465}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ab21fcb67f9818240a3fd39d0c593c91, type: 3}
+  m_Script: {fileID: 11500000, guid: ffcaa511712e6924eb206c57400fb35b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _weapons:
@@ -2776,6 +2779,36 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 94bcc1c32bdc2724fafe6aabf121e714, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &3389045110412524147
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3037592456749619465}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f02227d5cfdf44c4eaba8f45ca371109, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _idsDebug: []
+  _slotFactoryScriptableObject: {fileID: 11400000, guid: b1ed87d43b3da9840b9ffd2c538120bb, type: 2}
+--- !u!114 &1029645822313355628
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3037592456749619465}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7efe748e8fe0d2c4a8042d8d3bddb01f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _equipment: {fileID: 6758731578635643536}
+  _inventory: {fileID: 3389045110412524147}
+  _defaultEquipmentSlots: {fileID: 11400000, guid: 93ce659f2fd9ecd45868bb7a5e6e9a8a, type: 2}
+  _defaultInventorySlots: {fileID: 11400000, guid: d58f19523eb912d488617fab5d222d5a, type: 2}
 --- !u!1 &3063404305515597323
 GameObject:
   m_ObjectHideFlags: 0

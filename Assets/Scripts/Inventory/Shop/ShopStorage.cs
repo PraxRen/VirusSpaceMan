@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Inventory : Storage<IObjectItem>
+public class ShopStorage : Storage<ISaleItem>
 {
 }

@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 20bd64b4dda1b674a93689b32cb05bc7, type: 3}
   m_Name: DefaultEquipmentSlots_Enemy
   m_EditorClassIdentifier: 
-  _slots:
+  _values:
   - _type: 0
     _itemScriptableObject: {fileID: 11400000, guid: 11725651b03a47e48b3c8b8f404a136b, type: 2}
+    _count: 1

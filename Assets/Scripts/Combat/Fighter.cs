@@ -6,7 +6,7 @@ public class Fighter : MonoBehaviour, IFighterReadOnly, IAction, IModeMoverChang
 {
     [SerializeField] private bool _debug = true;
     [SerializeField] private Health _health;
-    [SerializeField] private StorageWeapon _storageWeapon;
+    [SerializeField] private WeaponContainer _weaponContainer;
     [SerializeField] private ActionScheduler _actionScheduler;
     [SerializeField] private Rage _rage;
     [Range(0f, 1f)][SerializeField] private float _luckRageAttack;
@@ -194,7 +194,7 @@ public class Fighter : MonoBehaviour, IFighterReadOnly, IAction, IModeMoverChang
     private void OnChangedWeaponConfig(IWeaponConfig weaponConfig)
     {
         RemoveWeapon();
-        _currentWeapon = _storageWeapon.GetWeapon(weaponConfig.IdWeapon);
+        _currentWeapon = _weaponContainer.GetWeapon(weaponConfig.IdWeapon);
         _currentWeapon.Hited += OnHited;
         _currentWeapon.Initialize(weaponConfig, this);
         ChangedWeapon?.Invoke(_currentWeapon);

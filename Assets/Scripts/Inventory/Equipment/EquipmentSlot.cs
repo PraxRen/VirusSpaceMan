@@ -7,6 +7,12 @@ public class EquipmentSlot : BaseSlot<IEquipmentItem>, IReadOnlyEquipmentSlot
         Type = type;
     }
 
+    public EquipmentSlot(IEquipmentItem item, int count)
+    {
+        Type = item.Type;
+        TryAddItemAddon(item, count);
+    }
+
     public EquipmentType Type { get; }
 
     public override bool TryGiveItem(out IEquipmentItem item, int count)
@@ -40,6 +46,9 @@ public class EquipmentSlot : BaseSlot<IEquipmentItem>, IReadOnlyEquipmentSlot
 
         if (IsEmpty == false)
             throw new InvalidOperationException($"Ñannot add an {nameof(IEquipmentItem)} to an occupied {nameof(EquipmentSlot)}");
+
+        if (Type != item.Type)
+            throw new InvalidOperationException($"Type mismatch");
 
         Item = item;
         Count = 1;

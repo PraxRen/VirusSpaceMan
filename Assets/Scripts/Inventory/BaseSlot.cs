@@ -18,14 +18,20 @@ public abstract class BaseSlot<T> : IReadOnlySlot<T> where T : IObjectItem
     public bool TryAddItem(T item, int count)
     {
         bool result = TryAddItemAddon(item, count);
-        AddedItem?.Invoke(item, count);
+
+        if (result)
+            AddedItem?.Invoke(item, count);
+
         return result;
     }
 
     public bool TryRemoveItem(int count)
     {
         bool result = TryRemoveItemAddon(count);
-        RemovedItem?.Invoke(Item, count);
+
+        if (result)
+            RemovedItem?.Invoke(Item, count);
+
         return result;
     }
 

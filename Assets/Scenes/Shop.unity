@@ -235,7 +235,8 @@ GameObject:
   m_Component:
   - component: {fileID: 398553419}
   - component: {fileID: 398553421}
-  - component: {fileID: 398553420}
+  - component: {fileID: 398553423}
+  - component: {fileID: 398553422}
   m_Layer: 0
   m_Name: WeaponShop
   m_TagString: Untagged
@@ -251,27 +252,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 398553418}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalRotation: {x: -0, y: -0.70710677, z: -0, w: 0.7071068}
+  m_LocalPosition: {x: 3.15, y: 2.47, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1418223609}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &398553420
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 398553418}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6d10c89908a982e4e940ce19ee98b1ba, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _storageMonoBehaviour: {fileID: 398553421}
-  _displayerSlotFactoryScriptableObject: {fileID: 11400000, guid: 15609254c9becba42b25db7b4139c7cd, type: 2}
+  m_LocalEulerAnglesHint: {x: 0, y: -90, z: 0}
 --- !u!114 &398553421
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -285,51 +272,35 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _idsDebug: []
-  _config: {fileID: 11400000, guid: d7b0eb17fe764a24cbff3be9786c8c63, type: 2}
---- !u!1 &776479474
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 776479476}
-  - component: {fileID: 776479475}
-  m_Layer: 0
-  m_Name: GameObject
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &776479475
+  _slotFactoryScriptableObject: {fileID: 11400000, guid: 4ca52cfe2c7cfbf4eb4b18b02a089a06, type: 2}
+--- !u!114 &398553422
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 776479474}
+  m_GameObject: {fileID: 398553418}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d062a183fee89164aaaacbd6f374c1bb, type: 3}
+  m_Script: {fileID: 11500000, guid: 373c03979d1cc9943ad205e4654ebb5b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!4 &776479476
-Transform:
+  _storage: {fileID: 398553421}
+  _displayerShopStorage: {fileID: 398553423}
+  _saleSlots: {fileID: 11400000, guid: 275341de618a287469026341f4a47ade, type: 2}
+--- !u!114 &398553423
+MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 776479474}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_GameObject: {fileID: 398553418}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 488ea953608178f4dbf9e9ebe273023d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _displayerSlotFactoryScriptableObject: {fileID: 11400000, guid: df4db8edad842bd4497644a82dd08df8, type: 2}
 --- !u!1001 &789885313
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -821,4 +792,3 @@ SceneRoots:
   - {fileID: 1072976419}
   - {fileID: 2062856531}
   - {fileID: 1418223608}
-  - {fileID: 776479476}

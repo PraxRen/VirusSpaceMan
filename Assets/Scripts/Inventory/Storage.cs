@@ -1,38 +1,84 @@
-using System.Collections.Generic;
 using System;
+using System.Collections.Generic;
 using System.Linq;
+using UnityEngine;
 
-public class Storage<T> : IStorage<T> where T : IObjectItem
+public abstract class Storage<T> : MonoBehaviour, IReadOnlyStorage<T> where T : IObjectItem
 {
+#if UNITY_EDITOR
+    [SerializeField][ReadOnly] private List<string> _idsDebug;
+#endif
+    [SerializeField] private ScriptableObject _slotFactoryScriptableObject;
+
+    private ISlotFactory<T> _slotFactory;
     private List<BaseSlot<T>> _slots;
 
     public event Action<IReadOnlySlot<T>, T> AddedItem;
     public event Action<IReadOnlySlot<T>, T> RemovedItem;
+    public event Action Initialized;
 
-    public void Initilize(IEnumerable<BaseSlot<T>> slots)
+    public IReadOnlyList<IReadOnlySlot<T>> Slots => _slots;
+
+    private void OnValidate()
     {
-        if (slots == null || slots.Count() == 0)
-            throw new ArgumentNullException(nameof(slots));
+        if (_slotFactoryScriptableObject == null)
+            return;
 
-        BaseSlot<T>[] newSlots = slots.ToArray();
+        _slotFactory = _slotFactoryScriptableObject as ISlotFactory<T>;
 
-        if (newSlots.Length == 0)
-            throw new ArgumentOutOfRangeException(nameof(slots));
-
-        _slots = new List<BaseSlot<T>>();
-        LimitSlots = _slots.Count;
-
-        foreach (BaseSlot<T> slot in slots)
+        if (_slotFactory == null)
         {
-            _slots.Add(slot);
-
-            if (slot.Item != null)
-                AddedItem?.Invoke(slot, slot.Item);
+            _slotFactoryScriptableObject = null;
+            Debug.LogWarning($"{nameof(_slotFactoryScriptableObject)} is not {nameof(ISlotFactory<T>)}");
         }
     }
 
-    public int LimitSlots { get; private set; }
-    public IReadOnlyList<IReadOnlySlot<T>> Slots => _slots;
+    private void Awake()
+    {
+        AwakeAddon();
+    }
+
+    private void OnEnable()
+    {
+        EnableAddon();
+    }
+
+    private void OnDisable()
+    {
+        DisableAddon();
+    }
+
+    private void Start()
+    {
+        AwakeStart();
+    }
+
+    public void Initialize(IEnumerable<IDataSlot<T>> dataItems)
+    {
+        if (dataItems == null)
+            throw new ArgumentNullException(nameof(dataItems));
+
+        if (dataItems.Count() == 0)
+            throw new ArgumentOutOfRangeException(nameof(dataItems));
+
+        _slots = new List<BaseSlot<T>>();
+
+        foreach (IDataSlot<T> dataItem in dataItems)
+        {
+            BaseSlot<T> slot = _slotFactory.Create(dataItem, this);
+            _slots.Add(slot);
+            
+            if (slot.Item != null)
+            {
+#if UNITY_EDITOR
+                _idsDebug.Add(slot.Item.Id);
+#endif
+                AddedItem?.Invoke(slot, slot.Item);
+            }
+        }
+
+        Initialized?.Invoke();
+    }
 
     public bool TryAddItem(IReadOnlySlot<T> slot, T item, int count)
     {
@@ -53,6 +99,9 @@ public class Storage<T> : IStorage<T> where T : IObjectItem
         if (foundSlot.TryAddItem(item, count) == false)
             return false;
 
+#if UNITY_EDITOR
+        _idsDebug.Add(item.Id);
+#endif
         AddedItem?.Invoke(foundSlot, item);
         return true;
     }
@@ -61,7 +110,7 @@ public class Storage<T> : IStorage<T> where T : IObjectItem
     {
         BaseSlot<T> slot = _slots.FirstOrDefault(slot => slot.IsEmpty == false && slot.Item.Id == item.Id) ?? _slots.FirstOrDefault(slot => slot.IsEmpty);
 
-        if (slot == null) 
+        if (slot == null)
             return false;
 
         return TryAddItem(slot, item, count);
@@ -85,14 +134,17 @@ public class Storage<T> : IStorage<T> where T : IObjectItem
         if (foundSlot.TryRemoveItem(count) == false)
             return false;
 
+#if UNITY_EDITOR
+        _idsDebug.Remove(item.Id);
+#endif
         RemovedItem?.Invoke(foundSlot, item);
         return true;
     }
 
-    public bool TryRemoveItem(T item, int count) 
+    public bool TryRemoveItem(T item, int count)
     {
         BaseSlot<T> slot = _slots.FirstOrDefault(slot => slot.Item.Id == item.Id);
-        
+
         if (slot == null)
             return false;
 
@@ -109,7 +161,7 @@ public class Storage<T> : IStorage<T> where T : IObjectItem
 
         item = default;
         BaseSlot<T> foundSlot = _slots.FirstOrDefault(insideSlot => insideSlot.Id == slot.Id);
-        
+
         if (foundSlot == null)
             return false;
 
@@ -117,4 +169,12 @@ public class Storage<T> : IStorage<T> where T : IObjectItem
     }
 
     public bool HasItem(T item) => _slots.Any(slot => slot.Item.Id == item.Id);
+
+    protected virtual void AwakeAddon() { }
+
+    protected virtual void AwakeStart() { }
+
+    protected virtual void EnableAddon() { }
+
+    protected virtual void DisableAddon() { }
 }

@@ -505,7 +505,7 @@ PrefabInstance:
       objectReference: {fileID: 88914280985365669}
     - target: {fileID: 2144771935013928198, guid: 653af2d372795cb4d8d0cc3a42002b70, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0.0002670288
+      value: 0.00026655197
       objectReference: {fileID: 0}
     - target: {fileID: 2144771935013928198, guid: 653af2d372795cb4d8d0cc3a42002b70, type: 3}
       propertyPath: m_LocalPosition.y
@@ -604,6 +604,10 @@ PrefabInstance:
       propertyPath: m_SortingOrder
       value: -1
       objectReference: {fileID: 0}
+    - target: {fileID: 1029645822313355628, guid: 44be744388e3e254ab9946f7963209cc, type: 3}
+      propertyPath: _defaultEquipmentSlots
+      value: 
+      objectReference: {fileID: 11400000, guid: 9282efcc252266445bd1803e6764aa5f, type: 2}
     - target: {fileID: 1229377964215972082, guid: 44be744388e3e254ab9946f7963209cc, type: 3}
       propertyPath: m_Layer
       value: 13
@@ -836,17 +840,14 @@ PrefabInstance:
       addedObject: {fileID: 828470217688917880}
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 3037592456749619465, guid: 44be744388e3e254ab9946f7963209cc, type: 3}
-      insertIndex: -1
+      insertIndex: 33
       addedObject: {fileID: 7287111569578834294}
     - targetCorrespondingSourceObject: {fileID: 3037592456749619465, guid: 44be744388e3e254ab9946f7963209cc, type: 3}
-      insertIndex: -1
+      insertIndex: 34
       addedObject: {fileID: 1467294813791243584}
     - targetCorrespondingSourceObject: {fileID: 3037592456749619465, guid: 44be744388e3e254ab9946f7963209cc, type: 3}
-      insertIndex: -1
+      insertIndex: 35
       addedObject: {fileID: 3416461741309272846}
-    - targetCorrespondingSourceObject: {fileID: 3037592456749619465, guid: 44be744388e3e254ab9946f7963209cc, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 8007324062378908962}
   m_SourcePrefab: {fileID: 100100000, guid: 44be744388e3e254ab9946f7963209cc, type: 3}
 --- !u!4 &88914280985365669 stripped
 Transform:
@@ -1157,25 +1158,6 @@ MonoBehaviour:
     m_Bits: 16384
   _radius: 5
   _debug: 107
---- !u!114 &8007324062378908962
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7651693161451257432}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f02227d5cfdf44c4eaba8f45ca371109, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _countSlot: 10
-  _debug:
-  - {fileID: 11400000, guid: 4a4816c883957d94680ab7985a3eb702, type: 2}
-  - {fileID: 11400000, guid: a388bd12f0bf0424d9e6fad4d4c52144, type: 2}
-  - {fileID: 11400000, guid: 6adcfd5db1426c84f8c8fa2c633a6d45, type: 2}
-  - {fileID: 11400000, guid: 0df03ad6a2c93734d9fb403d88858f36, type: 2}
-  _idsItems: []
 --- !u!4 &7768974569824192178 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3154496010664534499, guid: 44be744388e3e254ab9946f7963209cc, type: 3}

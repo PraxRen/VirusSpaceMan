@@ -1,18 +1,19 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class Shop : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    [SerializeField] private ShopStorage _storage;
+    [SerializeField] private DisplayerShopStorage _displayerShopStorage;
+    [SerializeField] private DefaultSaleSlots _saleSlots;
+
+    private void Start()
     {
-        
+        Initialize();
     }
 
-    // Update is called once per frame
-    void Update()
+    private void Initialize()
     {
-        
+        _storage.Initialize(_saleSlots.Values);
+        _displayerShopStorage.Initialize(_storage);
     }
 }
