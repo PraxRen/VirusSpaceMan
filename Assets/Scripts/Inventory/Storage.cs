@@ -18,7 +18,7 @@ public abstract class Storage<T> : MonoBehaviour, IReadOnlyStorage<T> where T : 
     public event Action Initialized;
 
     public IReadOnlyList<IReadOnlySlot<T>> Slots => _slots;
-
+            
     private void OnValidate()
     {
         if (_slotFactoryScriptableObject == null)

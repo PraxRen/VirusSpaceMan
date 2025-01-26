@@ -3,7 +3,7 @@ using UnityEngine;
 
 [CreateAssetMenu(fileName = "NewDisplayerSaleSlotFactory", menuName = "Inventory/Shop/DisplayerSaleSlotFactory")]
 public class DisplayerSaleSlotFactory : ScriptableObject, IDisplayerSlotFactory<ISaleItem>
-{ 
+{
     [SerializeField] private DisplayerSaleSlot3D _prefab;
 
     public IDisplayerSlot<ISaleItem> Create(IReadOnlySlot<ISaleItem> slot, IReadOnlyDisplayerStorage<ISaleItem> displayerStorage)
