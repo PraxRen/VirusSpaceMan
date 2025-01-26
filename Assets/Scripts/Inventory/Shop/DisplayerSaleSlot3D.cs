@@ -34,26 +34,54 @@ public class DisplayerSaleSlot3D : MonoBehaviour, IDisplayerSlot<ISaleItem>
         Slot.RemovedItem -= OnRemovedItem;
     }
 
-    public void Initilize(IReadOnlySlot<ISaleItem> slot)
+    public void Initialize(IReadOnlySlot<ISaleItem> slot)
     {
         if (slot == null)
             throw new ArgumentNullException(nameof(slot));
 
-        if (Slot != null)
-        {
-            Slot.AddedItem -= OnAddedItem;
-            Slot.RemovedItem -= OnRemovedItem;
-        }
-
+        ClearSlot();
         Slot = slot;
         Slot.AddedItem += OnAddedItem;
         Slot.RemovedItem += OnRemovedItem;
+        InitializeItem(Slot.Item);
+    }
+
+    private void InitializeItem(ISaleItem item)
+    {
+        if (item == null)
+            return;
+
         _saleItem = Slot.Item;
 
+        switch (_saleItem)
+        {
+            case IComplexWeaponConfig w:
+                InitializeWeaponItem(w);
+                break; 
+        }
+        
         if (_saleItem is IGraphicsItem graphicsItem)
         {
-            Instantiate(graphicsItem.PrefabGraphics, _transfrom);
+            _graphics = Instantiate(graphicsItem.PrefabGraphics, _transfrom);
+            _graphics.Activate();
         }
+    }
+
+    private void InitializeWeaponItem(IComplexWeaponConfig complexWeapon)
+    {
+
+    }
+
+
+
+    private void ClearSlot()
+    {
+        if (Slot == null)
+            return;
+
+        Slot.AddedItem -= OnAddedItem;
+        Slot.RemovedItem -= OnRemovedItem;
+        Slot = null;
     }
 
     private void OnAddedItem(ISaleItem saleItem, int count)

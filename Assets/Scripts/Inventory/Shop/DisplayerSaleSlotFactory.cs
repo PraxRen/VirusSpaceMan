@@ -14,7 +14,7 @@ public class DisplayerSaleSlotFactory : ScriptableObject, IDisplayerSlotFactory<
             throw new ArgumentNullException(nameof(displayerShopStorage));
 
         DisplayerSaleSlot3D displayerSaleSlot3D = Instantiate(_prefab, displayerShopStorage.Transform);
-        displayerSaleSlot3D.Initilize(slot);
+        displayerSaleSlot3D.Initialize(slot);
         return displayerSaleSlot3D;
     }
 }

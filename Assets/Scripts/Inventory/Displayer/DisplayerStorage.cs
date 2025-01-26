@@ -5,7 +5,7 @@ using UnityEngine;
 public abstract class DisplayerStorage<T> : MonoBehaviour, IReadOnlyDisplayerStorage<T> where T : IObjectItem
 {
     [SerializeField] private ScriptableObject _displayerSlotFactoryScriptableObject;
-
+    
     private IDisplayerSlotFactory<T> _displayerSlotFactory;
     private List<IDisplayerSlot<T>> _displayerSlots = new List<IDisplayerSlot<T>>();
     private int _indexActiveSlot;
