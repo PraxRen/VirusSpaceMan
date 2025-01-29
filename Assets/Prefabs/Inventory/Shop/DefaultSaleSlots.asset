@@ -15,7 +15,3 @@ MonoBehaviour:
   _values:
   - _itemScriptableObject: {fileID: 11400000, guid: 6adcfd5db1426c84f8c8fa2c633a6d45, type: 2}
     _count: 1
-  - _itemScriptableObject: {fileID: 11400000, guid: a388bd12f0bf0424d9e6fad4d4c52144, type: 2}
-    _count: 1
-  - _itemScriptableObject: {fileID: 11400000, guid: 4a4816c883957d94680ab7985a3eb702, type: 2}
-    _count: 1

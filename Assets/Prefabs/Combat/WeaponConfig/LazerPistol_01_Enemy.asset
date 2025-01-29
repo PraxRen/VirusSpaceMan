@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: LazerPistol_01_Enemy
   m_EditorClassIdentifier: 
   _id: 88193a93-8e2b-4b61-bcd7-2af5eca74049
+  _name: 
   _description: 
   _limit: 1
   _idWeapon: 86aeb65c-39f4-4a8d-887d-2ef9c75f7c03
@@ -36,5 +37,8 @@ MonoBehaviour:
     - _type: 1
       _price: 1
   _prefabGraphics: {fileID: 6849621036684198309, guid: 23fb912a9f42be54c8f13f95366c20a5, type: 3}
+  _offsetPosition: {x: 0, y: 0.2, z: 0}
+  _rotation: {x: 0, y: 90, z: 0}
+  _scale: {x: 2, y: 2, z: 2}
   _accuracy: 0.7
   _projectileConfig: {fileID: 11400000, guid: 78145ac27ccaf7e47889fe28047209f0, type: 2}

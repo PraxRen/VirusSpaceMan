@@ -3,10 +3,12 @@ using UnityEngine;
 public abstract class Item : ScriptableObject, IObjectItem, ISerializationCallbackReceiver
 {
     [SerializeField][ReadOnly] private string _id;
+    [SerializeField] private string _name;
     [SerializeField][TextArea] private string _description;
     [Min(1)][SerializeField] private int _limit;
 
     public string Id => _id;
+    public string Name => _name;
     public int Limit => _limit;
     public string Description => _description;
 

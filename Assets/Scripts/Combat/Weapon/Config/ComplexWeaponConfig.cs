@@ -26,6 +26,9 @@ public class ComplexWeaponConfig : Item, IComplexWeaponConfig
     [SerializeField] private SettingGameCurrencies _settingGameCurrencies;
     [Header("Graphics")]
     [SerializeField] private Graphics _prefabGraphics;
+    [SerializeField] private Vector3 _offsetPosition;
+    [SerializeField] private Vector3 _rotation;
+    [SerializeField] private Vector3 _scale;
 
     public string IdWeapon => _idWeapon;
     public float Damage => _damage;
@@ -42,4 +45,7 @@ public class ComplexWeaponConfig : Item, IComplexWeaponConfig
     public ModeMover ModeMover => _modeMover;
     public SettingGameCurrencies SettingGameCurrencies => _settingGameCurrencies;
     public Graphics PrefabGraphics => _prefabGraphics;
+    public Vector3 OffsetPosition => _offsetPosition;
+    public Vector3 StartRotation => _rotation;
+    public Vector3 Scale => _scale;
 }

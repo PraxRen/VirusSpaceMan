@@ -33,14 +33,14 @@ public abstract class DisplayerSlot3D<T> : MonoBehaviour, IDisplayerSlot<T> wher
         Slot.RemovedItem += OnRemovedItem;
 
         if (Slot.Item != null)
-            InitializeItem(Slot.Item);
+            Initialize(Slot.Item);
     }
 
     public abstract void Hide();
 
     public abstract void Show();
 
-    protected abstract void InitializeItem(T item);
+    protected abstract void Initialize(T item);
 
     protected abstract void ClearItem();
 
@@ -58,7 +58,7 @@ public abstract class DisplayerSlot3D<T> : MonoBehaviour, IDisplayerSlot<T> wher
         if (Item != null)
             return;
 
-        InitializeItem(item);
+        Initialize(item);
     }
 
     private void OnRemovedItem(T item, int count)

@@ -7,7 +7,13 @@ public class Graphics : MonoBehaviour
     [SerializeField] private Renderer[] _renderers;
     [SerializeField] private ParticleSystem[] _particles;
 
+    public Transform Transform { get; private set; }
     public TypeGraphics Type => _type;
+
+    private void Awake()
+    {
+        Transform = transform;
+    }
 
     public void Activate()
     {

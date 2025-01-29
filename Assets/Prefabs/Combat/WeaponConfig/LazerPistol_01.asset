@@ -13,7 +13,8 @@ MonoBehaviour:
   m_Name: LazerPistol_01
   m_EditorClassIdentifier: 
   _id: 1a710b27-da2a-45e0-92d3-7067acf9bbd1
-  _description: 
+  _name: Lazer Pistol
+  _description: Simple and reliable...
   _limit: 1
   _idWeapon: 86aeb65c-39f4-4a8d-887d-2ef9c75f7c03
   _damage: 100
@@ -36,5 +37,8 @@ MonoBehaviour:
     - _type: 1
       _price: 1
   _prefabGraphics: {fileID: 6849621036684198309, guid: 23fb912a9f42be54c8f13f95366c20a5, type: 3}
+  _offsetPosition: {x: 0, y: 0.2, z: 0}
+  _rotation: {x: 0, y: 90, z: 0}
+  _scale: {x: 2, y: 2, z: 2}
   _accuracy: 0.85
   _projectileConfig: {fileID: 11400000, guid: 5df596e617e0f9f429cd493f08e48f07, type: 2}

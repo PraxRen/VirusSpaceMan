@@ -1,3 +1,3 @@
-public interface IComplexWeaponConfig : IWeaponConfig, IEquipmentItem, IAnimationLayerProvider, IAnimationRigProvider, IModeMoverProvider, ISaleItem, IGraphicsItem
+public interface IComplexWeaponConfig : IWeaponConfig, IEquipmentItem, IAnimationLayerProvider, IAnimationRigProvider, IModeMoverProvider, IGraphicsSaleItem
 {
 }
