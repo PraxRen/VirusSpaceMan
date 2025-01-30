@@ -12,4 +12,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1dc2a636e4f1a1c4e96bacd620507ea4, type: 3}
   m_Name: DisplayerSaleSlotFactory
   m_EditorClassIdentifier: 
-  _prefab: {fileID: 3953777333607010734, guid: 8167147dc1fcd0842b24b743f4b8df4e, type: 3}
+  _prefab: {fileID: 1102686808141402327, guid: 8167147dc1fcd0842b24b743f4b8df4e, type: 3}
