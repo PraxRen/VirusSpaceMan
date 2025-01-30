@@ -12,6 +12,6 @@ public class SettingGameCurrencies
         _currencies = new List<GameCurrency>();
 
         foreach (TypeGameCurrency typeGameCurrency in Enum.GetValues(typeof(TypeGameCurrency))) 
-            _currencies.Add(new GameCurrency(typeGameCurrency, 1f));                
+            _currencies.Add(new GameCurrency(typeGameCurrency, 1f, null));                
     }
 }

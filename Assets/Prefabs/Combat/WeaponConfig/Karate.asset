@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: Karate
   m_EditorClassIdentifier: 
   _id: fa01fcdf-39e1-4b96-befe-813ab48c95cf
+  _name: 
   _description: 
   _limit: 1
   _idWeapon: 2cc8b2c4-4ce5-4794-b250-0c5f418f381e
@@ -36,6 +37,11 @@ MonoBehaviour:
     _currencies:
     - _type: 0
       _price: 1
+      _icon: {fileID: 21300000, guid: 6ca9d76efa67fa54495b59ad0c2aeae4, type: 3}
     - _type: 1
       _price: 1
+      _icon: {fileID: 21300000, guid: 599c14d6a42651c438130da52c5be9a8, type: 3}
   _prefabGraphics: {fileID: 6931336238912174239, guid: 1be21c22fb2a1e547bd3c640b06ae5b1, type: 3}
+  _offsetPosition: {x: 0, y: 0, z: 0}
+  _rotation: {x: 0, y: 0, z: 0}
+  _scale: {x: 0, y: 0, z: 0}
