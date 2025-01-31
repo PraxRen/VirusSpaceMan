@@ -6,8 +6,8 @@ using UnityEngine.UI;
 public struct GameCurrency
 {
     [SerializeField][ReadOnly] private TypeGameCurrency _type;
-    [Range(1f, 1000000f)][SerializeField] private float _price;
-    [SerializeField] private Sprite _icon;
+    [SerializeField][ReadOnly] private Sprite _icon;
+    [Range(0f, 1000000f)][SerializeField] private float _price;
 
     public GameCurrency(TypeGameCurrency type, float price, Sprite icon)
     {
