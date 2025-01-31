@@ -33,7 +33,7 @@ MonoBehaviour:
   _settingGameCurrencies:
     _currencies:
     - _type: 0
-      _price: 1
+      _price: 100
       _icon: {fileID: 21300000, guid: 6ca9d76efa67fa54495b59ad0c2aeae4, type: 3}
     - _type: 1
       _price: 1

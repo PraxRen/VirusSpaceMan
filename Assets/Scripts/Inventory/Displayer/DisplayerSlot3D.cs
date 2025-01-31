@@ -3,6 +3,9 @@ using UnityEngine;
 
 public abstract class DisplayerSlot3D<T> : MonoBehaviour, IDisplayerSlot<T> where T : IObjectItem
 {
+    [SerializeField] private Transform _pointGraphics;
+    [SerializeField] private UIDisplayerItem _ui;
+
     public event Action<IReadOnlyDisplayerSlot<T>> Selected;
 
     public IReadOnlySlot<T> Slot { get; private set; }
@@ -22,7 +25,7 @@ public abstract class DisplayerSlot3D<T> : MonoBehaviour, IDisplayerSlot<T> wher
         ClearSlot();
     }
 
-    public void Initialize(IReadOnlySlot<T> slot)
+    public void InitializeSlot(IReadOnlySlot<T> slot)
     {
         if (slot == null)
             throw new ArgumentNullException(nameof(slot));
@@ -32,15 +35,68 @@ public abstract class DisplayerSlot3D<T> : MonoBehaviour, IDisplayerSlot<T> wher
         Slot.AddedItem += OnAddedItem;
         Slot.RemovedItem += OnRemovedItem;
 
-        if (Slot.Item != null)
-            Initialize(Slot.Item);
+        if (Slot.Item == null)
+            return;
+
+        ResetItem(Slot.Item);
+
+    }
+
+    private void ResetItem(T item)
+    {
+        switch (item)
+        {
+            case IComplexRangedWeaponConfig complexRangedWeaponConfig:
+                InitializeItem(complexRangedWeaponConfig);
+                break;
+            case IComplexWeaponConfig complexWeaponConfig:
+                InitializeItem(complexWeaponConfig);
+                break;
+            case ISaleItem saleItem:
+                InitializeItem(saleItem);
+                break;
+            default:
+                InitializeItem(item);
+                break;
+        }
+    }
+
+    private void InitializeItem(IComplexRangedWeaponConfig complexRangedWeaponConfig)
+    {
+        InitializeItem((IComplexWeaponConfig)complexRangedWeaponConfig);
+        _ui.AddProperty(UIDisplayerItem.PropertyName.Accuracy, complexRangedWeaponConfig.Accuracy);
+    }
+
+    private void InitializeItem(IComplexWeaponConfig complexWeaponConfig)
+    {
+        InitializeItem((ISaleItem)complexWeaponConfig);
+        Graphics graphics = Instantiate(complexWeaponConfig.PrefabGraphics, _pointGraphics);
+        graphics.Transform.localPosition += complexWeaponConfig.OffsetPosition;
+        graphics.Transform.localEulerAngles = complexWeaponConfig.StartRotation;
+        graphics.Transform.localScale = complexWeaponConfig.Scale;
+        _ui.AddProperty(UIDisplayerItem.PropertyName.Damage, complexWeaponConfig.Damage);
+        _ui.AddProperty(UIDisplayerItem.PropertyName.Distance, complexWeaponConfig.Damage);
+    }
+
+    private void InitializeItem(ISaleItem item)
+    {
+        InitializeItem((IObjectItem)item);
+
+        foreach (GameCurrency currency in item.SettingGameCurrencies.Currencies)
+        {
+            _ui.SetPrice(currency);
+        }
+    }
+
+    private void InitializeItem(IObjectItem item)
+    {
+        _ui.SetName(item.Name);
+        _ui.SetDescription(item.Description);
     }
 
     public abstract void Hide();
 
     public abstract void Show();
-
-    protected abstract void Initialize(T item);
 
     protected abstract void ClearItem();
 
@@ -58,7 +114,7 @@ public abstract class DisplayerSlot3D<T> : MonoBehaviour, IDisplayerSlot<T> wher
         if (Item != null)
             return;
 
-        Initialize(item);
+        ResetItem(item);
     }
 
     private void OnRemovedItem(T item, int count)
