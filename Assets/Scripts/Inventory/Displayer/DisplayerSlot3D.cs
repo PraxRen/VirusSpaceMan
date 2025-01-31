@@ -82,9 +82,9 @@ public abstract class DisplayerSlot3D<T> : MonoBehaviour, IDisplayerSlot<T> wher
     {
         InitializeItem((IObjectItem)item);
 
-        foreach (GameCurrency currency in item.SettingGameCurrencies.Currencies)
+        foreach (Price price in item.SettingGameCurrencies.Prices)
         {
-            _ui.SetPrice(currency);
+            _ui.SetPrice(price);
         }
     }
 

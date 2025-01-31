@@ -7,9 +7,10 @@ public class UIDisplayerPrice : MonoBehaviour
     [SerializeField] private Image _image;
     [SerializeField] private TextMeshProUGUI _text;
 
-    public void Initialize(GameCurrency gameCurrency)
+    public void Initialize(Price price)
     {
-        _image.sprite = gameCurrency.Icon;
-        _text.text = gameCurrency.Price.ToString();
+        _image.sprite = price.GameCurrency.Icon;
+        _image.color = price.GameCurrency.Color;
+        _text.text = price.Value.ToString();
     }
 }

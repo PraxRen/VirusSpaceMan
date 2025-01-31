@@ -1,22 +1,20 @@
-using System;
 using UnityEngine;
-using UnityEngine.UI;
 
 [System.Serializable]
 public struct GameCurrency
 {
-    [SerializeField][ReadOnly] private TypeGameCurrency _type;
-    [SerializeField][ReadOnly] private Sprite _icon;
-    [Range(0f, 1000000f)][SerializeField] private float _price;
+    [SerializeField] private TypeGameCurrency _type;
+    [SerializeField] private Sprite _icon;
+    [SerializeField] private Color _color;
 
-    public GameCurrency(TypeGameCurrency type, float price, Sprite icon)
+    public GameCurrency(TypeGameCurrency type, Sprite icon, Color color)
     {
         _type = type;
-        _price = price <= 0 ? throw new ArgumentOutOfRangeException(nameof(price)) : price;
         _icon = icon;
+        _color = color;
     }
 
-    public TypeGameCurrency Type => _type;  
-    public float Price => _price;
+    public TypeGameCurrency Type => _type;
     public Sprite Icon => _icon;
+    public Color Color => _color;
 }

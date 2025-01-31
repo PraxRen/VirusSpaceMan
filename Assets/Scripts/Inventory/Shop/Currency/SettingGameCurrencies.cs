@@ -6,15 +6,15 @@ using UnityEngine;
 [System.Serializable]
 public class SettingGameCurrencies
 {
-    [SerializeField] private List<GameCurrency> _currencies;
+    [SerializeField] private List<Price> _prices;
 
     public SettingGameCurrencies()
     {
-        _currencies = new List<GameCurrency>();
+        _prices = new List<Price>();
 
-        foreach (TypeGameCurrency typeGameCurrency in Enum.GetValues(typeof(TypeGameCurrency))) 
-            _currencies.Add(new GameCurrency(typeGameCurrency, 1f, null));                
+        //foreach (GameCurrency gameCurrency in GameSettings.ShopConfig.Currencies)
+        //    _prices.Add(new Price(gameCurrency, 1f));                
     }
 
-    public IReadOnlyCollection<GameCurrency> Currencies => _currencies;
+    public IReadOnlyCollection<Price> Prices => _prices;
 }

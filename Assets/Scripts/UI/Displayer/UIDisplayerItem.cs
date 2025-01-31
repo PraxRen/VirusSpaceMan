@@ -47,11 +47,11 @@ public class UIDisplayerItem : MonoBehaviour
         _textDescription.text = description ?? throw new ArgumentNullException(nameof(description));
     }
 
-    public void SetPrice(GameCurrency gameCurrency)
+    public void SetPrice(Price price)
     {
         _priceContent.gameObject.SetActive(true);
         UIDisplayerPrice displayerPrice = Instantiate(_prefabPrice, _currenciesContent);
-        displayerPrice.Initialize(gameCurrency);
+        displayerPrice.Initialize(price);
     }
 
     public void AddProperty(UIDisplayerItem.PropertyName name, float value)
