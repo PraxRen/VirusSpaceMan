@@ -136,6 +136,67 @@
                     "isPartOfComposite": true
                 }
             ]
+        },
+        {
+            "name": "Shop",
+            "id": "e6211fd3-7be0-4780-b40c-ae10b5f35910",
+            "actions": [
+                {
+                    "name": "ScrollSaleItem",
+                    "type": "Value",
+                    "id": "041f26f9-8216-480e-bd6c-6461a801e1a6",
+                    "expectedControlType": "Vector2",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "fc2ab687-bebf-4bff-8a90-5c1a258ea5ae",
+                    "path": "<Mouse>/scroll",
+                    "interactions": "",
+                    "processors": "NormalizeVector2",
+                    "groups": "",
+                    "action": "ScrollSaleItem",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "2D Vector",
+                    "id": "552fe555-5bbc-466c-b1c9-2a9dab1e95be",
+                    "path": "2DVector",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "ScrollSaleItem",
+                    "isComposite": true,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "up",
+                    "id": "7ac432ce-51df-4c95-8d51-fcbff06cf724",
+                    "path": "<Keyboard>/rightArrow",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "ScrollSaleItem",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "down",
+                    "id": "100f05b9-6951-45c4-950f-7ae5bbb64902",
+                    "path": "<Keyboard>/leftArrow",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "ScrollSaleItem",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                }
+            ]
         }
     ],
     "controlSchemes": []

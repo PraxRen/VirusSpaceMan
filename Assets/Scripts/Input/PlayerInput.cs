@@ -158,6 +158,67 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
                     ""isPartOfComposite"": true
                 }
             ]
+        },
+        {
+            ""name"": ""Shop"",
+            ""id"": ""e6211fd3-7be0-4780-b40c-ae10b5f35910"",
+            ""actions"": [
+                {
+                    ""name"": ""ScrollSaleItem"",
+                    ""type"": ""Value"",
+                    ""id"": ""041f26f9-8216-480e-bd6c-6461a801e1a6"",
+                    ""expectedControlType"": ""Vector2"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""fc2ab687-bebf-4bff-8a90-5c1a258ea5ae"",
+                    ""path"": ""<Mouse>/scroll"",
+                    ""interactions"": """",
+                    ""processors"": ""NormalizeVector2"",
+                    ""groups"": """",
+                    ""action"": ""ScrollSaleItem"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""2D Vector"",
+                    ""id"": ""552fe555-5bbc-466c-b1c9-2a9dab1e95be"",
+                    ""path"": ""2DVector"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""ScrollSaleItem"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""up"",
+                    ""id"": ""7ac432ce-51df-4c95-8d51-fcbff06cf724"",
+                    ""path"": ""<Keyboard>/rightArrow"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""ScrollSaleItem"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""down"",
+                    ""id"": ""100f05b9-6951-45c4-950f-7ae5bbb64902"",
+                    ""path"": ""<Keyboard>/leftArrow"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""ScrollSaleItem"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                }
+            ]
         }
     ],
     ""controlSchemes"": []
@@ -166,6 +227,9 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
         m_Player = asset.FindActionMap("Player", throwIfNotFound: true);
         m_Player_Move = m_Player.FindAction("Move", throwIfNotFound: true);
         m_Player_ScrollTarget = m_Player.FindAction("ScrollTarget", throwIfNotFound: true);
+        // Shop
+        m_Shop = asset.FindActionMap("Shop", throwIfNotFound: true);
+        m_Shop_ScrollSaleItem = m_Shop.FindAction("ScrollSaleItem", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -277,9 +341,59 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
         }
     }
     public PlayerActions @Player => new PlayerActions(this);
+
+    // Shop
+    private readonly InputActionMap m_Shop;
+    private List<IShopActions> m_ShopActionsCallbackInterfaces = new List<IShopActions>();
+    private readonly InputAction m_Shop_ScrollSaleItem;
+    public struct ShopActions
+    {
+        private @PlayerInput m_Wrapper;
+        public ShopActions(@PlayerInput wrapper) { m_Wrapper = wrapper; }
+        public InputAction @ScrollSaleItem => m_Wrapper.m_Shop_ScrollSaleItem;
+        public InputActionMap Get() { return m_Wrapper.m_Shop; }
+        public void Enable() { Get().Enable(); }
+        public void Disable() { Get().Disable(); }
+        public bool enabled => Get().enabled;
+        public static implicit operator InputActionMap(ShopActions set) { return set.Get(); }
+        public void AddCallbacks(IShopActions instance)
+        {
+            if (instance == null || m_Wrapper.m_ShopActionsCallbackInterfaces.Contains(instance)) return;
+            m_Wrapper.m_ShopActionsCallbackInterfaces.Add(instance);
+            @ScrollSaleItem.started += instance.OnScrollSaleItem;
+            @ScrollSaleItem.performed += instance.OnScrollSaleItem;
+            @ScrollSaleItem.canceled += instance.OnScrollSaleItem;
+        }
+
+        private void UnregisterCallbacks(IShopActions instance)
+        {
+            @ScrollSaleItem.started -= instance.OnScrollSaleItem;
+            @ScrollSaleItem.performed -= instance.OnScrollSaleItem;
+            @ScrollSaleItem.canceled -= instance.OnScrollSaleItem;
+        }
+
+        public void RemoveCallbacks(IShopActions instance)
+        {
+            if (m_Wrapper.m_ShopActionsCallbackInterfaces.Remove(instance))
+                UnregisterCallbacks(instance);
+        }
+
+        public void SetCallbacks(IShopActions instance)
+        {
+            foreach (var item in m_Wrapper.m_ShopActionsCallbackInterfaces)
+                UnregisterCallbacks(item);
+            m_Wrapper.m_ShopActionsCallbackInterfaces.Clear();
+            AddCallbacks(instance);
+        }
+    }
+    public ShopActions @Shop => new ShopActions(this);
     public interface IPlayerActions
     {
         void OnMove(InputAction.CallbackContext context);
         void OnScrollTarget(InputAction.CallbackContext context);
+    }
+    public interface IShopActions
+    {
+        void OnScrollSaleItem(InputAction.CallbackContext context);
     }
 }

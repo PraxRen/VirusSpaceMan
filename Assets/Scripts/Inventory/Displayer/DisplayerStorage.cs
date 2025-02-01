@@ -36,13 +36,27 @@ public abstract class DisplayerStorage<T> : MonoBehaviour, IReadOnlyDisplayerSto
 
     public void Next()
     {
-        _indexActiveSlot = _indexActiveSlot == _displayerSlots.Count - 1 ? 0 : _indexActiveSlot + 1;
+        int newIndex = _indexActiveSlot == _displayerSlots.Count - 1 ? 0 : _indexActiveSlot + 1;
+
+        if (newIndex == _indexActiveSlot)
+            return;
+
+        _displayerSlots[_indexActiveSlot].Hide();
+        _indexActiveSlot = newIndex;
+        _displayerSlots[_indexActiveSlot].Show();
         ActiveDisplayerSlotChanged?.Invoke(ActiveDisplayerSlot);
     }
 
     public void Previous()
     {
-        _indexActiveSlot = _indexActiveSlot == 0 ? _displayerSlots.Count - 1 : _indexActiveSlot - 1;
+        int newIndex = _indexActiveSlot == 0 ? _displayerSlots.Count - 1 : _indexActiveSlot - 1;
+
+        if (newIndex == _indexActiveSlot)
+            return;
+
+        _displayerSlots[_indexActiveSlot].Hide();
+        _indexActiveSlot = newIndex;
+        _displayerSlots[_indexActiveSlot].Show();
         ActiveDisplayerSlotChanged?.Invoke(ActiveDisplayerSlot);
     }
 

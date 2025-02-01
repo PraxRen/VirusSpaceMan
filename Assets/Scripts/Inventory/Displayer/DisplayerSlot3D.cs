@@ -94,9 +94,15 @@ public abstract class DisplayerSlot3D<T> : MonoBehaviour, IDisplayerSlot<T> wher
         _ui.SetDescription(item.Description);
     }
 
-    public abstract void Hide();
+    public void Hide()
+    {
 
-    public abstract void Show();
+    }
+
+    public void Show()
+    {
+
+    }
 
     protected abstract void ClearItem();
 

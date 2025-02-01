@@ -40,4 +40,6 @@ public abstract class BaseSlot<T> : IReadOnlySlot<T> where T : IObjectItem
     protected abstract bool TryAddItemAddon(T item, int count);
 
     protected abstract bool TryRemoveItemAddon(int count);
+
+    public IObjectItem GetItem() => Item;
 }
