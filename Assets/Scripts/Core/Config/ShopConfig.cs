@@ -6,5 +6,10 @@ public class ShopConfig
 {
     [SerializeField] private GameCurrency[] _currencies;
 
+    public ShopConfig(GameCurrency[] currencies)
+    {
+        _currencies = currencies;
+    }
+
     public IReadOnlyCollection<GameCurrency> Currencies => _currencies;
 }

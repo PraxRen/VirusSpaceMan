@@ -4,17 +4,18 @@ using UnityEngine;
 public struct GameCurrency
 {
     [SerializeField] private TypeGameCurrency _type;
-    [SerializeField] private Sprite _icon;
+    [SerializeField] private string _iconResourceName;
     [SerializeField] private Color _color;
 
-    public GameCurrency(TypeGameCurrency type, Sprite icon, Color color)
+    public GameCurrency(TypeGameCurrency type, string iconResourceName, Color color)
     {
         _type = type;
-        _icon = icon;
+        _iconResourceName = iconResourceName;
         _color = color;
     }
 
     public TypeGameCurrency Type => _type;
-    public Sprite Icon => _icon;
+    public string IconResourceName => _iconResourceName;
+    public Sprite Icon => Resources.Load<Sprite>(_iconResourceName);
     public Color Color => _color;
 }

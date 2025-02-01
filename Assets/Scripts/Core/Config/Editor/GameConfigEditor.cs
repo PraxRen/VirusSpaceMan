@@ -8,11 +8,9 @@ public class GameConfigEditor : Editor
     {
         base.OnInspectorGUI();
 
-        GameConfig config = (GameConfig)target;
-
-        if (GUILayout.Button("Сохранить в JSON"))
+        if (GUILayout.Button("Generate GameSetting.cs"))
         {
-            config.SaveToJson();
+            GameSettingGenerator.GenerateGameSetting();
         }
     }
 }

@@ -31,7 +31,17 @@ MonoBehaviour:
   _typeAnimationRig: 2
   _modeMover: {fileID: 11400000, guid: 5125f1417baf42c4f9f0a0baa3bc06d2, type: 2}
   _settingGameCurrencies:
-    _prices: []
+    _prices:
+    - _gameCurrency:
+        _type: 0
+        _iconResourceName: 
+        _color: {r: 1, g: 1, b: 1, a: 1}
+      _value: 1
+    - _gameCurrency:
+        _type: 1
+        _iconResourceName: 
+        _color: {r: 1, g: 1, b: 1, a: 1}
+      _value: 1
   _prefabGraphics: {fileID: 6849621036684198309, guid: 23fb912a9f42be54c8f13f95366c20a5, type: 3}
   _offsetPosition: {x: 0, y: 0.2, z: 0}
   _rotation: {x: 0, y: 90, z: 0}

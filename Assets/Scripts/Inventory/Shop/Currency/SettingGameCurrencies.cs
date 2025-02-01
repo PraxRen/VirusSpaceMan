@@ -1,5 +1,3 @@
-using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -12,8 +10,8 @@ public class SettingGameCurrencies
     {
         _prices = new List<Price>();
 
-        //foreach (GameCurrency gameCurrency in GameSettings.ShopConfig.Currencies)
-        //    _prices.Add(new Price(gameCurrency, 1f));                
+        foreach (GameCurrency gameCurrency in GameSetting.ShopConfig.Currencies)
+            _prices.Add(new Price(gameCurrency, 1f));
     }
 
     public IReadOnlyCollection<Price> Prices => _prices;

@@ -5,7 +5,7 @@ using UnityEngine.UI;
 [System.Serializable]
 public struct Price
 {
-    [SerializeField][ReadOnly] private GameCurrency _gameCurrency;
+    [SerializeField] private GameCurrency _gameCurrency;
     [Range(0f, 1000000f)][SerializeField] private float _value;
 
     public Price(GameCurrency gameCurrency, float value)
