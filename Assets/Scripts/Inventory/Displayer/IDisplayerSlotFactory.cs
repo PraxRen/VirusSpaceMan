@@ -1,4 +1,4 @@
-public interface IDisplayerSlotFactory<T> where T : IObjectItem
+public interface IDisplayerSlotFactory
 {
-    IDisplayerSlot<T> Create(IReadOnlySlot<T> slot, IReadOnlyDisplayerStorage<T> displayerStorage);
+    IDisplayerSlot Create(ISimpleSlot slot, IReadOnlyDisplayerStorage displayerStorage);
 }

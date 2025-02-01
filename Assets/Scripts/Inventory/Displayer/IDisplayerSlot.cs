@@ -1,6 +1,6 @@
-public interface IDisplayerSlot<T> : IReadOnlyDisplayerSlot<T> where T : IObjectItem
+public interface IDisplayerSlot : IReadOnlyDisplayerSlot
 {
-    void InitializeSlot(IReadOnlySlot<T> slot);
+    void InitializeSlot(ISimpleSlot slot);
 
     void Hide();
 

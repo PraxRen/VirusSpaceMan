@@ -2,8 +2,8 @@ using System;
 
 public abstract class BaseSlot<T> : IReadOnlySlot<T> where T : IObjectItem
 {
-    public event Action<T, int> AddedItem;
-    public event Action<T, int> RemovedItem;
+    public event Action AddedItem;
+    public event Action RemovedItem;
 
     protected BaseSlot() 
     {
@@ -20,7 +20,7 @@ public abstract class BaseSlot<T> : IReadOnlySlot<T> where T : IObjectItem
         bool result = TryAddItemAddon(item, count);
 
         if (result)
-            AddedItem?.Invoke(item, count);
+            AddedItem?.Invoke();
 
         return result;
     }
@@ -30,7 +30,7 @@ public abstract class BaseSlot<T> : IReadOnlySlot<T> where T : IObjectItem
         bool result = TryRemoveItemAddon(count);
 
         if (result)
-            RemovedItem?.Invoke(Item, count);
+            RemovedItem?.Invoke();
 
         return result;
     }

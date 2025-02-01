@@ -1,8 +1,8 @@
 using System;
 
-public interface IReadOnlyDisplayerStorage<T> where T : IObjectItem
+public interface IReadOnlyDisplayerStorage
 {
-    event Action<IReadOnlyDisplayerSlot<T>> ActiveDisplayerSlotChanged;
+    event Action<IReadOnlyDisplayerSlot> ActiveDisplayerSlotChanged;
 
-    IReadOnlyDisplayerSlot<T> ActiveDisplayerSlot { get; }
+    IReadOnlyDisplayerSlot ActiveDisplayerSlot { get; }
 }

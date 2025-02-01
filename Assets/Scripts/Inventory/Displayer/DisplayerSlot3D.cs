@@ -1,15 +1,18 @@
 using System;
+using Unity.VisualScripting;
 using UnityEngine;
 
-public abstract class DisplayerSlot3D<T> : MonoBehaviour, IDisplayerSlot<T> where T : IObjectItem
+public class DisplayerSlot3D : MonoBehaviour, IDisplayerSlot
 {
     [SerializeField] private Transform _pointGraphics;
     [SerializeField] private UIDisplayerItem _ui;
 
-    public event Action<IReadOnlyDisplayerSlot<T>> Selected;
+    private Graphics _graphics;
 
-    public IReadOnlySlot<T> Slot { get; private set; }
-    protected T Item { get; private set; }
+    public event Action<ISimpleSlot> Selected;
+
+    public ISimpleSlot Slot { get; private set; }
+    public IGraphicsItem Item { get; private set; }
 
     private void OnEnable()
     {
@@ -25,7 +28,7 @@ public abstract class DisplayerSlot3D<T> : MonoBehaviour, IDisplayerSlot<T> wher
         ClearSlot();
     }
 
-    public void InitializeSlot(IReadOnlySlot<T> slot)
+    public void InitializeSlot(ISimpleSlot slot)
     {
         if (slot == null)
             throw new ArgumentNullException(nameof(slot));
@@ -34,16 +37,19 @@ public abstract class DisplayerSlot3D<T> : MonoBehaviour, IDisplayerSlot<T> wher
         Slot = slot;
         Slot.AddedItem += OnAddedItem;
         Slot.RemovedItem += OnRemovedItem;
+        IGraphicsItem item = Slot.GetItem() as IGraphicsItem;
 
-        if (Slot.Item == null)
+        if (item == null)
             return;
 
-        ResetItem(Slot.Item);
-
+        ResetItem(item);
     }
 
-    private void ResetItem(T item)
+    private void ResetItem(IGraphicsItem item)
     {
+        if (item == null)
+            return;
+
         switch (item)
         {
             case IComplexRangedWeaponConfig complexRangedWeaponConfig:
@@ -52,8 +58,8 @@ public abstract class DisplayerSlot3D<T> : MonoBehaviour, IDisplayerSlot<T> wher
             case IComplexWeaponConfig complexWeaponConfig:
                 InitializeItem(complexWeaponConfig);
                 break;
-            case ISaleItem saleItem:
-                InitializeItem(saleItem);
+            case IGraphicsSaleItem graphicsSaleItem:
+                InitializeItem(graphicsSaleItem);
                 break;
             default:
                 InitializeItem(item);
@@ -69,18 +75,17 @@ public abstract class DisplayerSlot3D<T> : MonoBehaviour, IDisplayerSlot<T> wher
 
     private void InitializeItem(IComplexWeaponConfig complexWeaponConfig)
     {
-        InitializeItem((ISaleItem)complexWeaponConfig);
-        Graphics graphics = Instantiate(complexWeaponConfig.PrefabGraphics, _pointGraphics);
-        graphics.Transform.localPosition += complexWeaponConfig.OffsetPosition;
-        graphics.Transform.localEulerAngles = complexWeaponConfig.StartRotation;
-        graphics.Transform.localScale = complexWeaponConfig.Scale;
+        InitializeItem((IGraphicsSaleItem)complexWeaponConfig);
         _ui.AddProperty(UIDisplayerItem.PropertyName.Damage, complexWeaponConfig.Damage);
         _ui.AddProperty(UIDisplayerItem.PropertyName.Distance, complexWeaponConfig.Damage);
     }
 
-    private void InitializeItem(ISaleItem item)
+    private void InitializeItem(IGraphicsSaleItem item)
     {
-        InitializeItem((IObjectItem)item);
+        InitializeItem((IGraphicsItem)item);
+        _graphics.Transform.localPosition += item.OffsetPosition;
+        _graphics.Transform.localEulerAngles = item.StartRotation;
+        _graphics.Transform.localScale = item.Scale;
 
         foreach (Price price in item.SettingGameCurrencies.Prices)
         {
@@ -88,23 +93,30 @@ public abstract class DisplayerSlot3D<T> : MonoBehaviour, IDisplayerSlot<T> wher
         }
     }
 
-    private void InitializeItem(IObjectItem item)
+    private void InitializeItem(IGraphicsItem item)
     {
         _ui.SetName(item.Name);
         _ui.SetDescription(item.Description);
+        _graphics = Instantiate(item.PrefabGraphics, _pointGraphics);
+        Item = item;
     }
 
     public void Hide()
     {
-
+        _graphics.Deactivate();
+        _ui.gameObject.SetActive(false);
     }
 
     public void Show()
     {
-
+        _graphics.Activate();
+        _ui.gameObject.SetActive(true);
     }
 
-    protected abstract void ClearItem();
+    public void ClearItem()
+    {
+
+    }
 
     private void ClearSlot()
     {
@@ -115,20 +127,20 @@ public abstract class DisplayerSlot3D<T> : MonoBehaviour, IDisplayerSlot<T> wher
         Slot.RemovedItem -= OnRemovedItem;
     }
 
-    private void OnAddedItem(T item, int count)
+    private void OnAddedItem()
     {
         if (Item != null)
             return;
 
-        ResetItem(item);
+        ResetItem(Slot.GetItem() as IGraphicsItem);
     }
 
-    private void OnRemovedItem(T item, int count)
+    private void OnRemovedItem()
     {
         if (Item == null)
             return;
 
-        if (item != null)
+        if (Slot.GetItem() != null)
             return;
 
         ClearItem();

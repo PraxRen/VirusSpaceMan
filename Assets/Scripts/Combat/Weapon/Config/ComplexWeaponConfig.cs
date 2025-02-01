@@ -48,4 +48,12 @@ public class ComplexWeaponConfig : Item, IComplexWeaponConfig
     public Vector3 OffsetPosition => _offsetPosition;
     public Vector3 StartRotation => _rotation;
     public Vector3 Scale => _scale;
+
+#if UNITY_EDITOR
+    [ContextMenu("Reset SettingGameCurrencies")]
+    private void ResetSettingGameCurrencies()
+    {
+        _settingGameCurrencies = new SettingGameCurrencies();
+    }
+#endif
 }

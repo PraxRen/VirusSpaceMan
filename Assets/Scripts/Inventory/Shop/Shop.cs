@@ -4,7 +4,7 @@ public class Shop : MonoBehaviour
 {
     [SerializeField] private ShopInputReader _shopInputReader;
     [SerializeField] private ShopStorage _storage;
-    [SerializeField] private DisplayerShopStorage _displayerShopStorage;
+    [SerializeField] private DisplayerStorage _displayerStorage;
     [SerializeField] private DefaultSaleSlots _saleSlots;
 
     private void OnEnable()
@@ -28,16 +28,16 @@ public class Shop : MonoBehaviour
     private void Initialize()
     {
         _storage.Initialize(_saleSlots.Values);
-        _displayerShopStorage.Initialize(_storage);
+        _displayerStorage.Initialize(_storage);
     }
 
     private void OnChangedScrollNextTarget()
     {
-        _displayerShopStorage.Next();
+        _displayerStorage.Next();
     }
 
     private void OnChangedScrollPreviousTarget()
     {
-        _displayerShopStorage.Previous();
+        _displayerStorage.Previous();
     }
 }

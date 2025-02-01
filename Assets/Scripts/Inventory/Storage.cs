@@ -177,4 +177,6 @@ public abstract class Storage<T> : MonoBehaviour, IReadOnlyStorage<T> where T : 
     protected virtual void EnableAddon() { }
 
     protected virtual void DisableAddon() { }
+
+    public IReadOnlyList<ISimpleSlot> GetSlots() => Slots;
 }

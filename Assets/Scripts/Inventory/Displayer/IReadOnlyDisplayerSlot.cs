@@ -1,8 +1,8 @@
 using System;
 
-public interface IReadOnlyDisplayerSlot<T> where T : IObjectItem
+public interface IReadOnlyDisplayerSlot
 {
-    public event Action<IReadOnlyDisplayerSlot<T>> Selected;
+    public event Action<ISimpleSlot> Selected;
 
-    public IReadOnlySlot<T> Slot { get; }
+    public ISimpleSlot Slot { get; }
 }

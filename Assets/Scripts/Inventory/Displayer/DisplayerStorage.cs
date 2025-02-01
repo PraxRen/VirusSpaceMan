@@ -2,36 +2,23 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-public abstract class DisplayerStorage<T> : MonoBehaviour, IReadOnlyDisplayerStorage<T> where T : IObjectItem
+public class DisplayerStorage : MonoBehaviour, IReadOnlyDisplayerStorage
 {
-    [SerializeField] private ScriptableObject _displayerSlotFactoryScriptableObject;
+    [SerializeField][SerializeInterface(typeof(IDisplayerSlotFactory))] private ScriptableObject _displayerSlotFactoryScriptableObject;
     
-    private IDisplayerSlotFactory<T> _displayerSlotFactory;
-    private List<IDisplayerSlot<T>> _displayerSlots = new List<IDisplayerSlot<T>>();
+    private IDisplayerSlotFactory _displayerSlotFactory;
+    private List<IDisplayerSlot> _displayerSlots = new List<IDisplayerSlot>();
     private int _indexActiveSlot;
 
-    public event Action<IReadOnlyDisplayerSlot<T>> ActiveDisplayerSlotChanged;
+    public event Action<IReadOnlyDisplayerSlot> ActiveDisplayerSlotChanged;
 
-    public IReadOnlyDisplayerSlot<T> ActiveDisplayerSlot => _displayerSlots[_indexActiveSlot];
+    public IReadOnlyDisplayerSlot ActiveDisplayerSlot => _displayerSlots[_indexActiveSlot];
     public Transform Transform { get; private set; }
-
-    private void OnValidate()
-    {
-        if (_displayerSlotFactoryScriptableObject != null)
-        {
-            _displayerSlotFactory = _displayerSlotFactoryScriptableObject as IDisplayerSlotFactory<T>;
-
-            if (_displayerSlotFactory == null)
-            {
-                _displayerSlotFactoryScriptableObject = null;
-                Debug.LogWarning($"{nameof(_displayerSlotFactoryScriptableObject)} is not {nameof(IDisplayerSlotFactory<T>)}");
-            }
-        }
-    }
 
     private void Awake()
     {
         Transform = transform;
+        _displayerSlotFactory = (IDisplayerSlotFactory)_displayerSlotFactoryScriptableObject;
     }
 
     public void Next()
@@ -60,12 +47,13 @@ public abstract class DisplayerStorage<T> : MonoBehaviour, IReadOnlyDisplayerSto
         ActiveDisplayerSlotChanged?.Invoke(ActiveDisplayerSlot);
     }
 
-    public void Initialize(IReadOnlyStorage<T> storage)
+    public void Initialize(ISimpleStorage simpleStorage)
     {
-        foreach (IReadOnlySlot<T> slot in storage.Slots)
+        foreach (ISimpleSlot slot in simpleStorage.GetSlots())
             _displayerSlots.Add(_displayerSlotFactory.Create(slot, this));
 
         _indexActiveSlot = 0;
+        _displayerSlots[_indexActiveSlot].Show();
         ActiveDisplayerSlotChanged?.Invoke(ActiveDisplayerSlot);
     }
 }

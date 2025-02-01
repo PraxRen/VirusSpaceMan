@@ -34,13 +34,13 @@ MonoBehaviour:
     _prices:
     - _gameCurrency:
         _type: 0
-        _iconResourceName: 
+        _iconResourceName: Credit
         _color: {r: 1, g: 1, b: 1, a: 1}
       _value: 1
     - _gameCurrency:
         _type: 1
-        _iconResourceName: 
-        _color: {r: 1, g: 1, b: 1, a: 1}
+        _iconResourceName: Quark
+        _color: {r: 0.501961, g: 0.003922, b: 0.866667, a: 1}
       _value: 1
   _prefabGraphics: {fileID: 6849621036684198309, guid: 23fb912a9f42be54c8f13f95366c20a5, type: 3}
   _offsetPosition: {x: 0, y: 0.2, z: 0}

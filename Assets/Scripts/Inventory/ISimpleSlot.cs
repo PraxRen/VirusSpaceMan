@@ -1,9 +1,10 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+using System;
 
 public interface ISimpleSlot
 {
+    event Action AddedItem;
+    event Action RemovedItem;
+
     public string Id { get; }
     public int Count { get; }
     public bool IsEmpty { get; }

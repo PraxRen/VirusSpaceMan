@@ -33,14 +33,18 @@ MonoBehaviour:
   _typeAnimationRig: 1
   _modeMover: {fileID: 11400000, guid: 1312ba16dccd4b246bca667272de42e4, type: 2}
   _settingGameCurrencies:
-    _currencies:
-    - _type: 0
-      _price: 1
-      _icon: {fileID: 21300000, guid: 6ca9d76efa67fa54495b59ad0c2aeae4, type: 3}
-    - _type: 1
-      _price: 1
-      _icon: {fileID: 21300000, guid: 599c14d6a42651c438130da52c5be9a8, type: 3}
+    _prices:
+    - _gameCurrency:
+        _type: 0
+        _iconResourceName: Credit
+        _color: {r: 1, g: 1, b: 1, a: 1}
+      _value: 1
+    - _gameCurrency:
+        _type: 1
+        _iconResourceName: Quark
+        _color: {r: 0.501961, g: 0.003922, b: 0.866667, a: 1}
+      _value: 1
   _prefabGraphics: {fileID: 3498431288964806621, guid: c727549115639d44294f25236061f84e, type: 3}
-  _offsetPosition: {x: 0, y: 0, z: 0}
-  _rotation: {x: 0, y: 0, z: 0}
-  _scale: {x: 0, y: 0, z: 0}
+  _offsetPosition: {x: 0, y: 0.25, z: -0.616}
+  _rotation: {x: 90, y: 0, z: 0}
+  _scale: {x: 2, y: 2, z: 2}
