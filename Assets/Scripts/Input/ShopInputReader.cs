@@ -6,9 +6,11 @@ public class ShopInputReader : MonoBehaviour, PlayerInput.IShopActions
 {
     private PlayerInput _playerInput;
 
-    public event Action ChangedScrollNextTarget;
-    public event Action ChangedScrollPreviousTarget;
-    public event Action CanceledScrollTarget;
+    public event Action ChangedScrollNextItem;
+    public event Action ChangedScrollPreviousItem;
+    public event Action CanceledScrollItem;
+    public event Action DownCancel;
+    public event Action UpCancel;
 
     public float ScrollTarget { get; private set; }
 
@@ -37,15 +39,23 @@ public class ShopInputReader : MonoBehaviour, PlayerInput.IShopActions
 
         if (ScrollTarget == 0)
         {
-            CanceledScrollTarget?.Invoke();
+            CanceledScrollItem?.Invoke();
             return;
         }
 
         bool isNext = ScrollTarget > 0;
 
         if (isNext)
-            ChangedScrollNextTarget?.Invoke();
+            ChangedScrollNextItem?.Invoke();
         else
-            ChangedScrollPreviousTarget?.Invoke();
+            ChangedScrollPreviousItem?.Invoke();
+    }
+
+    public void OnCancel(InputAction.CallbackContext context)
+    {
+        if (context.performed)
+            DownCancel?.Invoke();
+        else if (context.canceled)
+            UpCancel?.Invoke();
     }
 }

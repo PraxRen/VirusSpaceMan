@@ -18,16 +18,26 @@ public class UICastomButton : MonoBehaviour, IReadOnlyButton, IPointerDownHandle
         _rectTransform = GetComponent<RectTransform>();
     }
 
-    void IPointerDownHandler.OnPointerDown(PointerEventData eventData)
+    public void Down()
     {
         ClickDown?.Invoke();
     }
 
-    void IPointerUpHandler.OnPointerUp(PointerEventData eventData)
+    public void Up(bool isInsideBorders = false)
     {
         ClickUp?.Invoke();
 
-        if (_isValidateBounds && RectTransformUtility.RectangleContainsScreenPoint(_rectTransform, eventData.position, eventData.pressEventCamera))
+        if (_isValidateBounds && isInsideBorders)
             ClickUpInBounds?.Invoke();
+    }
+
+    void IPointerDownHandler.OnPointerDown(PointerEventData eventData)
+    {
+        Down();
+    }
+
+    void IPointerUpHandler.OnPointerUp(PointerEventData eventData)
+    {
+        Up(RectTransformUtility.RectangleContainsScreenPoint(_rectTransform, eventData.position, eventData.pressEventCamera));
     }
 }

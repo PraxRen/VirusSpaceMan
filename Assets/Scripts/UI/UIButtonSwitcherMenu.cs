@@ -1,7 +1,7 @@
 using UnityEngine;
 
 [RequireComponent(typeof(IReadOnlyButton))]
-public class UISwitcherMenu : MonoBehaviour
+public class UIButtonSwitcherMenu : MonoBehaviour
 {
     [SerializeField][SerializeInterface(typeof(IMenu))] private MonoBehaviour _menuMonoBehaviour;
 

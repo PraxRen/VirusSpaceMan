@@ -171,6 +171,15 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""Cancel"",
+                    ""type"": ""Button"",
+                    ""id"": ""62375f4a-efe5-4e6f-a01c-ac23d0725b26"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -217,6 +226,17 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
                     ""action"": ""ScrollSaleItem"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""16cec402-373a-46fc-bd15-e8793a759cab"",
+                    ""path"": ""<Keyboard>/escape"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Cancel"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -230,6 +250,7 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
         // Shop
         m_Shop = asset.FindActionMap("Shop", throwIfNotFound: true);
         m_Shop_ScrollSaleItem = m_Shop.FindAction("ScrollSaleItem", throwIfNotFound: true);
+        m_Shop_Cancel = m_Shop.FindAction("Cancel", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -346,11 +367,13 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
     private readonly InputActionMap m_Shop;
     private List<IShopActions> m_ShopActionsCallbackInterfaces = new List<IShopActions>();
     private readonly InputAction m_Shop_ScrollSaleItem;
+    private readonly InputAction m_Shop_Cancel;
     public struct ShopActions
     {
         private @PlayerInput m_Wrapper;
         public ShopActions(@PlayerInput wrapper) { m_Wrapper = wrapper; }
         public InputAction @ScrollSaleItem => m_Wrapper.m_Shop_ScrollSaleItem;
+        public InputAction @Cancel => m_Wrapper.m_Shop_Cancel;
         public InputActionMap Get() { return m_Wrapper.m_Shop; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -363,6 +386,9 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
             @ScrollSaleItem.started += instance.OnScrollSaleItem;
             @ScrollSaleItem.performed += instance.OnScrollSaleItem;
             @ScrollSaleItem.canceled += instance.OnScrollSaleItem;
+            @Cancel.started += instance.OnCancel;
+            @Cancel.performed += instance.OnCancel;
+            @Cancel.canceled += instance.OnCancel;
         }
 
         private void UnregisterCallbacks(IShopActions instance)
@@ -370,6 +396,9 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
             @ScrollSaleItem.started -= instance.OnScrollSaleItem;
             @ScrollSaleItem.performed -= instance.OnScrollSaleItem;
             @ScrollSaleItem.canceled -= instance.OnScrollSaleItem;
+            @Cancel.started -= instance.OnCancel;
+            @Cancel.performed -= instance.OnCancel;
+            @Cancel.canceled -= instance.OnCancel;
         }
 
         public void RemoveCallbacks(IShopActions instance)
@@ -395,5 +424,6 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
     public interface IShopActions
     {
         void OnScrollSaleItem(InputAction.CallbackContext context);
+        void OnCancel(InputAction.CallbackContext context);
     }
 }

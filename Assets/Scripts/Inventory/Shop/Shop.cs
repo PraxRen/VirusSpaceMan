@@ -9,14 +9,14 @@ public class Shop : MonoBehaviour
 
     private void OnEnable()
     {
-        _shopInputReader.ChangedScrollNextTarget += OnChangedScrollNextTarget;
-        _shopInputReader.ChangedScrollPreviousTarget += OnChangedScrollPreviousTarget;
+        _shopInputReader.ChangedScrollNextItem += OnChangedScrollNextItem;
+        _shopInputReader.ChangedScrollPreviousItem += OnChangedScrollPreviousItem;
     }
 
     private void OnDisable()
     {
-        _shopInputReader.ChangedScrollNextTarget -= OnChangedScrollNextTarget;
-        _shopInputReader.ChangedScrollPreviousTarget -= OnChangedScrollPreviousTarget;
+        _shopInputReader.ChangedScrollNextItem -= OnChangedScrollNextItem;
+        _shopInputReader.ChangedScrollPreviousItem -= OnChangedScrollPreviousItem;
 
     }
 
@@ -31,12 +31,12 @@ public class Shop : MonoBehaviour
         _displayerStorage.Initialize(_storage);
     }
 
-    private void OnChangedScrollNextTarget()
+    private void OnChangedScrollNextItem()
     {
         _displayerStorage.Next();
     }
 
-    private void OnChangedScrollPreviousTarget()
+    private void OnChangedScrollPreviousItem()
     {
         _displayerStorage.Previous();
     }
