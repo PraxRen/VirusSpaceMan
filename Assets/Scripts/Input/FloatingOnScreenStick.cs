@@ -39,6 +39,12 @@ public class FloatingOnScreenStick : OnScreenControl, IPointerDownHandler, IPoin
         _pointerDownPosition = _startPosition;
     }
 
+    protected override void OnEnable()
+    {
+        ResetControl();
+        base.OnEnable();
+    }
+
     private Vector2 ClampPosition(Vector2 startPosition)
     {
         float limitWidth = (Screen.width - Math.Abs(_rectTransform.sizeDelta.x * _rectTransform.localScale.x)) / 2 - (_sizeStick.x / 2);
@@ -75,9 +81,11 @@ public class FloatingOnScreenStick : OnScreenControl, IPointerDownHandler, IPoin
 
     void IPointerUpHandler.OnPointerUp(PointerEventData eventData)
     {
-        if (eventData == null)
-            throw new ArgumentNullException(nameof(eventData));
+        ResetControl();
+    }
 
+    private void ResetControl()
+    {
         _stickImage.enabled = false;
         _knobImage.enabled = false;
         _stickRectTransform.anchoredPosition = _startPosition;

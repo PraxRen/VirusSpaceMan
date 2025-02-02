@@ -5,7 +5,7 @@ using UnityEngine.InputSystem;
 using System.Linq;
 using UnityEngine.InputSystem.Utilities;
 
-[CustomEditor(typeof(UICastomButtonInputProxy))]
+[CustomEditor(typeof(UIButtonInputProxy))]
 public class UICastomButtonInputProxyEditor : Editor
 {
     private const string NameFieldActionAsset = "_inputActionAsset";

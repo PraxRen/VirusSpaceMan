@@ -3,14 +3,17 @@ using UnityEngine;
 [RequireComponent(typeof(IReadOnlyButton))]
 public class UIButtonSwitcherMenu : MonoBehaviour
 {
-    [SerializeField][SerializeInterface(typeof(IMenu))] private MonoBehaviour _menuMonoBehaviour;
+    [SerializeField][SerializeInterface(typeof(IMenu))] private MonoBehaviour _currentMenuMonoBehaviour;
+    [SerializeField][SerializeInterface(typeof(IMenu))] private MonoBehaviour _targetMonoBehaviour;
 
-    private IMenu _menu;
+    private IMenu _currentMenu;
+    private IMenu _targetMenu;
     private IReadOnlyButton _button;
 
     private void Awake()
     {
-        _menu = (IMenu)_menuMonoBehaviour;
+        _currentMenu = (IMenu)_currentMenuMonoBehaviour;
+        _targetMenu = (IMenu)_targetMonoBehaviour;
         _button = GetComponent<IReadOnlyButton>();
     }
 
@@ -26,6 +29,7 @@ public class UIButtonSwitcherMenu : MonoBehaviour
 
     private void OnClickUpInBounds()
     {
-        _menu.Activate();
+        _currentMenu.Deactivate();
+        _targetMenu.Activate();
     }
 }

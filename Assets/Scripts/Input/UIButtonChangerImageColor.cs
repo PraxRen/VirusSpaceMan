@@ -3,7 +3,7 @@ using UnityEngine;
 using UnityEngine.UI;
 
 [RequireComponent(typeof(IReadOnlyButton))]
-public class UICastomButtonChangerImageColor : MonoBehaviour
+public class UIButtonChangerImageColor : MonoBehaviour
 {   
     [SerializeField] private Image _image;
     [SerializeField] private Color _colorDefault;
@@ -30,6 +30,7 @@ public class UICastomButtonChangerImageColor : MonoBehaviour
     {
         _button.ClickDown += OnClickDown;
         _button.ClickUp += OnClickUp;
+        _image.color = _colorDefault;
     }
 
 

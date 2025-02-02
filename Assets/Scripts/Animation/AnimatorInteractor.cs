@@ -15,6 +15,7 @@ public class AnimatorInteractor : MonoBehaviour, IInteractionNotifier
     private TypeAnimationLayer _beforeRunTypeAnimationLayer;
     private TypeAnimationRig _beforeRunTypeAnimationRig;
     private bool _isRunning;
+    private GameObject _gameObject;
 
     public event Action BeforeInteract;
     public event Action Interacted;
@@ -22,6 +23,7 @@ public class AnimatorInteractor : MonoBehaviour, IInteractionNotifier
 
     private void Awake()
     {
+        _gameObject = gameObject;
         _animator = GetComponent<Animator>();
         _switcherAnimationLayer = GetComponent<SwitcherAnimationLayer>();
         _switcherAnimationRig = GetComponent<SwitcherAnimationRig>();
@@ -55,6 +57,12 @@ public class AnimatorInteractor : MonoBehaviour, IInteractionNotifier
     public void Stop()
     {
         _isRunning = false;
+
+        if (enabled == false)
+            return;
+
+        if (_gameObject.activeInHierarchy == false)
+            return;
 
         if (_handlerInteraction.ObjectInteraction != null)
         {

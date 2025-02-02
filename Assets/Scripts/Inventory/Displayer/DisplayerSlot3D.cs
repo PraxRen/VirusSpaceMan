@@ -8,8 +8,6 @@ public class DisplayerSlot3D : MonoBehaviour, IDisplayerSlot
 
     private Graphics _graphics;
 
-    public event Action<ISimpleSlot> Selected;
-
     public ISimpleSlot Slot { get; private set; }
     public IGraphicsItem Item { get; private set; }
 

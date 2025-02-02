@@ -2,7 +2,7 @@ using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class UICastomButtonInputProxy : MonoBehaviour
+public class UIButtonInputProxy : MonoBehaviour
 {
     [Header("Button")]
     [SerializeField] private UICastomButton _targetButton;

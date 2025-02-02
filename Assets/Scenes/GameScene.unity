@@ -348,10 +348,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 3708534120439451155, guid: 27a0dac7c0f1bf94d9d1166466132d7a, type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: -0.522583
-      objectReference: {fileID: 0}
     - target: {fileID: 5506473684995196067, guid: 27a0dac7c0f1bf94d9d1166466132d7a, type: 3}
       propertyPath: _scannerMonoBehaviour
       value: 
@@ -360,6 +356,14 @@ PrefabInstance:
       propertyPath: _timeScaler
       value: 
       objectReference: {fileID: 2038418548}
+    - target: {fileID: 6571250255516882514, guid: 27a0dac7c0f1bf94d9d1166466132d7a, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -0.5227051
+      objectReference: {fileID: 0}
+    - target: {fileID: 7867924763052264694, guid: 27a0dac7c0f1bf94d9d1166466132d7a, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0.6282959
+      objectReference: {fileID: 0}
     - target: {fileID: 8102537257852483486, guid: 27a0dac7c0f1bf94d9d1166466132d7a, type: 3}
       propertyPath: m_Name
       value: CanvasGameScene

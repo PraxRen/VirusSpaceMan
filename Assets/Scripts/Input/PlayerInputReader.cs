@@ -9,6 +9,8 @@ public class PlayerInputReader : MonoBehaviour, PlayerInput.IPlayerActions
     public event Action ChangedScrollNextTarget;
     public event Action ChangedScrollPreviousTarget;
     public event Action CanceledScrollTarget;
+    public event Action DownCancel;
+    public event Action UpCancel;
 
     public Vector2 DirectionMove { get; private set; }
     public float ScrollTarget { get; private set; } 
@@ -53,5 +55,13 @@ public class PlayerInputReader : MonoBehaviour, PlayerInput.IPlayerActions
             ChangedScrollNextTarget?.Invoke();
         else
             ChangedScrollPreviousTarget?.Invoke();
+    }
+
+    public void OnCancel(InputAction.CallbackContext context)
+    {
+        if (context.performed)
+            DownCancel?.Invoke();
+        else if (context.canceled)
+            UpCancel?.Invoke();
     }
 }
