@@ -8,15 +8,21 @@ public class SwitcherAnimationLayer : MonoBehaviour
     [SerializeField] private Animator _animator;
     [SerializeField] private SettingAnimationLayer _defaultSetting;
 
+    private SettingAnimationLayer _currentSetting;
     private Dictionary<int, Coroutine> _hashCorutineJobs = new Dictionary<int, Coroutine>();
 
     public SettingAnimationLayer DefaultSetting => _defaultSetting;
-    public SettingAnimationLayer CurrentSetting { get; private set; }
+    public SettingAnimationLayer CurrentSetting 
+    { 
+        get => _currentSetting ?? _defaultSetting;
+        private set => _currentSetting = value; 
+    }
+
     public bool IsNotWork => _hashCorutineJobs.Count == 0;
 
     private void Awake()
     {
-        CurrentSetting = DefaultSetting;
+        _currentSetting = _defaultSetting;
     }
 
     public void ApplyDefaultSetting(float pathTime = 0f)

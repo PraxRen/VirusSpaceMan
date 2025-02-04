@@ -16,6 +16,10 @@ PrefabInstance:
       propertyPath: _layerMaskDamageable.m_Bits
       value: 73792
       objectReference: {fileID: 0}
+    - target: {fileID: 1029645822313355628, guid: 44be744388e3e254ab9946f7963209cc, type: 3}
+      propertyPath: _defaultEquipmentSlots
+      value: 
+      objectReference: {fileID: 11400000, guid: 7526d896661a8d340a165cb954b6a2e9, type: 2}
     - target: {fileID: 1845547524693626225, guid: 44be744388e3e254ab9946f7963209cc, type: 3}
       propertyPath: _hitReactionsMonoBehaviour.Array.size
       value: 2

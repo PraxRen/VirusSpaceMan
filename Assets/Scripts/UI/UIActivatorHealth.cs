@@ -22,7 +22,12 @@ public class UIActivatorHealth : MonoBehaviour
     private void OnEnable()
     {
         if (_isDisableAfterDied)
+        {
             _health.Died += OnDied;
+
+            if (_health.IsDied)
+                OnDied();
+        }
 
         if (_isEnableAfterTakeDamage)
             _health.AfterTakeDamage += OnAfterTakeDamage;
@@ -44,6 +49,9 @@ public class UIActivatorHealth : MonoBehaviour
 
     private void OnAfterTakeDamage(Hit hit, float damage)
     {
+        if (_health.IsDied)
+            return;
+
         _uiHealthGameObject.SetActive(true);
     }
 }

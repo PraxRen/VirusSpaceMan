@@ -4,6 +4,8 @@ using UnityEngine;
 [RequireComponent(typeof(Animator), typeof(SwitcherAnimationLayer), typeof(SwitcherAnimationRig))]
 public class AnimatorFighter : MonoBehaviour, IAttackNotifier
 {
+    private const int IndexAddonAnimationLayerForAttack = 0;
+
     [SerializeField][SerializeInterface(typeof(IFighterReadOnly))] private MonoBehaviour _fighterMonoBehaviour;
     [Range(0, 1)][SerializeField] private float _weightForAnimationEvent;
     [SerializeField] private float _timeChangeAnimationLayer = 0.15f;
@@ -56,7 +58,7 @@ public class AnimatorFighter : MonoBehaviour, IAttackNotifier
     public void CreateAttack()
     {
         if (_fighter.Weapon.Config is IAnimationLayerProvider animationLayerProvider)
-            _switcherAnimationLayer.SetAddonLayer(animationLayerProvider.SettingAnimationLayer.Addons[0], 0);
+            _switcherAnimationLayer.SetAddonLayer(animationLayerProvider.SettingAnimationLayer.Addons[IndexAddonAnimationLayerForAttack]);
 
         _animator.SetBool(DataCharacterAnimator.Params.IsAttack, true);
         _animator.SetFloat(DataCharacterAnimator.Params.IndexAttack, _fighter.Weapon.CurrentAttack.AnimationIndex);
@@ -119,7 +121,7 @@ public class AnimatorFighter : MonoBehaviour, IAttackNotifier
             return;
 
         if (_fighter.Weapon.Config is IAnimationLayerProvider animationLayerProvider)
-            _switcherAnimationLayer.RemoveAddonLayer(animationLayerProvider.SettingAnimationLayer.Addons[0], 0f);
+            _switcherAnimationLayer.RemoveAddonLayer(animationLayerProvider.SettingAnimationLayer.Addons[IndexAddonAnimationLayerForAttack]);
 
         StoppingAttack?.Invoke();
     }
