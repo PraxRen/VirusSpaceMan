@@ -30,7 +30,7 @@ public class AnimatorMover : MonoBehaviour, IStepNotifier
     //AnimationEvent
     private void OnFootstepAnimationEvent(AnimationEvent animationEvent)
     {
-        if (_switcherAnimationLayer.GetIndexCurrentMoverAnimationLayer() != animationEvent.intParameter)
+        if (_switcherAnimationLayer.GetIndexCurrentSetting() != animationEvent.intParameter)
             return;
 
         if (animationEvent.animatorClipInfo.weight < _weightForAnimationEvent)

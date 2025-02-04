@@ -2139,7 +2139,7 @@ Animator:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3037592456749619465}
   m_Enabled: 1
-  m_Avatar: {fileID: 9000000, guid: 7941fb438fce4704a969038c6486c21e, type: 2}
+  m_Avatar: {fileID: 9000000, guid: 48e95e6efa2ada44783c14f22206bb0b, type: 3}
   m_Controller: {fileID: 9100000, guid: 5393db1ac97ad9746a790a679790b5e4, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
@@ -2349,6 +2349,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _animator: {fileID: 6653952958776505252}
+  _defaultSetting: {fileID: 11400000, guid: 890084a2add87804e82c1f615cb021cb, type: 2}
 --- !u!114 &3461560036343353493
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -1,4 +1,4 @@
 public interface IAnimationLayerProvider
 {
-    TypeAnimationLayer TypeAnimationLayer { get; }
+    SettingAnimationLayer SettingAnimationLayer { get; }
 }

@@ -55,6 +55,9 @@ public class AnimatorFighter : MonoBehaviour, IAttackNotifier
 
     public void CreateAttack()
     {
+        if (_fighter.Weapon.Config is IAnimationLayerProvider animationLayerProvider)
+            _switcherAnimationLayer.SetAddonLayer(animationLayerProvider.SettingAnimationLayer.Addons[0], 0);
+
         _animator.SetBool(DataCharacterAnimator.Params.IsAttack, true);
         _animator.SetFloat(DataCharacterAnimator.Params.IndexAttack, _fighter.Weapon.CurrentAttack.AnimationIndex);
     }
@@ -67,7 +70,7 @@ public class AnimatorFighter : MonoBehaviour, IAttackNotifier
     private void OnActivatedWeapon(IWeaponReadOnly weapon)
     {
         if (weapon.Config is IAnimationLayerProvider animationLayerProvider)
-            _switcherAnimationLayer.SetAnimationLayer(animationLayerProvider.TypeAnimationLayer, _timeChangeAnimationLayer);
+            _switcherAnimationLayer.SetSetting(animationLayerProvider.SettingAnimationLayer, _timeChangeAnimationLayer);
 
         if (weapon.Config is IAnimationRigProvider animationRigProvider)
             _switcherAnimationRig.SetAnimationRig(animationRigProvider.TypeAnimationRig, 1f);
@@ -76,7 +79,7 @@ public class AnimatorFighter : MonoBehaviour, IAttackNotifier
     private void OnDeactivatedWeapon(IWeaponReadOnly weapon)
     {
         if (weapon.Config is IAnimationLayerProvider animationLayerProvider)
-            _switcherAnimationLayer.ApplyDefaultAnimationLayer(_timeChangeAnimationLayer);
+            _switcherAnimationLayer.ApplyDefaultSetting(_timeChangeAnimationLayer);
 
         if (weapon.Config is IAnimationRigProvider animationRigProvider)
             _switcherAnimationRig.ApplyDefaultAnimationRig();
@@ -85,7 +88,7 @@ public class AnimatorFighter : MonoBehaviour, IAttackNotifier
     //AnimationEvent
     private void OnStartingAttackAnimationEvent(AnimationEvent animationEvent)
     {
-        if (_switcherAnimationLayer.GetIndexCurrentMoverAnimationLayer() != animationEvent.intParameter)
+        if (_switcherAnimationLayer.GetIndexCurrentSetting() != animationEvent.intParameter)
             return;
 
         if (animationEvent.animatorClipInfo.weight < _weightForAnimationEvent)
@@ -97,7 +100,7 @@ public class AnimatorFighter : MonoBehaviour, IAttackNotifier
     //AnimationEvent
     private void OnRunningDamageAnimationEvent(AnimationEvent animationEvent)
     {
-        if (_switcherAnimationLayer.GetIndexCurrentMoverAnimationLayer() != animationEvent.intParameter)
+        if (_switcherAnimationLayer.GetIndexCurrentSetting() != animationEvent.intParameter)
             return;
 
         if (animationEvent.animatorClipInfo.weight < _weightForAnimationEvent)
@@ -109,11 +112,14 @@ public class AnimatorFighter : MonoBehaviour, IAttackNotifier
     //AnimationEvent
     private void OnStoppingAttackAnimationEvent(AnimationEvent animationEvent)
     {
-        if (_switcherAnimationLayer.GetIndexCurrentMoverAnimationLayer() != animationEvent.intParameter)
+        if (_switcherAnimationLayer.GetIndexCurrentSetting() != animationEvent.intParameter)
             return;
 
         if (animationEvent.animatorClipInfo.weight < _weightForAnimationEvent)
             return;
+
+        if (_fighter.Weapon.Config is IAnimationLayerProvider animationLayerProvider)
+            _switcherAnimationLayer.RemoveAddonLayer(animationLayerProvider.SettingAnimationLayer.Addons[0], 0f);
 
         StoppingAttack?.Invoke();
     }

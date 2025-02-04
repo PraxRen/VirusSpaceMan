@@ -213,7 +213,7 @@ public class SwitcherRagdoll : MonoBehaviour
     {
         //_collider.enabled = true;
         _animator.enabled = true;
-        int indexAnimatorLayer = _switcherAnimationLayer.GetIndexCurrentMoverAnimationLayer();
+        int indexAnimatorLayer = _switcherAnimationLayer.GetIndexCurrentSetting();
         _animator.Play(GetNameAnimationStandUp(), indexAnimatorLayer, 0);
         IsWaitAnimationStandUp = true;
     }

@@ -12,7 +12,7 @@ public class AnimatorInteractor : MonoBehaviour, IInteractionNotifier
     private SwitcherAnimationLayer _switcherAnimationLayer;
     private SwitcherAnimationRig _switcherAnimationRig;
     private IReadOnlyInteractor _handlerInteraction;
-    private TypeAnimationLayer _beforeRunTypeAnimationLayer;
+    private SettingAnimationLayer _beforeRunTypeAnimationLayer;
     private TypeAnimationRig _beforeRunTypeAnimationRig;
     private bool _isRunning;
     private GameObject _gameObject;
@@ -39,8 +39,8 @@ public class AnimatorInteractor : MonoBehaviour, IInteractionNotifier
     {
         if (_handlerInteraction.ObjectInteraction.Config is IAnimationLayerProvider animationLayerProvider)
         {
-            _beforeRunTypeAnimationLayer = _switcherAnimationLayer.CurrentAnimationLayer;
-            _switcherAnimationLayer.SetAnimationLayer(animationLayerProvider.TypeAnimationLayer, _timeChangeAnimationLayer);
+            _beforeRunTypeAnimationLayer = _switcherAnimationLayer.CurrentSetting;
+            _switcherAnimationLayer.SetSetting(animationLayerProvider.SettingAnimationLayer, _timeChangeAnimationLayer);
         }
 
         if (_handlerInteraction.ObjectInteraction.Config is IAnimationRigProvider animationRigProvider)
@@ -67,7 +67,7 @@ public class AnimatorInteractor : MonoBehaviour, IInteractionNotifier
         if (_handlerInteraction.ObjectInteraction != null)
         {
             if (_handlerInteraction.ObjectInteraction.Config is IAnimationLayerProvider animationLayerProvider)
-                _switcherAnimationLayer.SetAnimationLayer(_beforeRunTypeAnimationLayer, _timeChangeAnimationLayer);
+                _switcherAnimationLayer.SetSetting(_beforeRunTypeAnimationLayer, _timeChangeAnimationLayer);
 
             if (_handlerInteraction.ObjectInteraction.Config is IAnimationRigProvider animationRigProvider)
                 _switcherAnimationRig.SetAnimationRig(_beforeRunTypeAnimationRig);
@@ -79,7 +79,7 @@ public class AnimatorInteractor : MonoBehaviour, IInteractionNotifier
     //AnimationEvent
     private void OnInteractBefore(AnimationEvent animationEvent)
     {
-        if (_switcherAnimationLayer.GetIndexCurrentMoverAnimationLayer() != animationEvent.intParameter)
+        if (_switcherAnimationLayer.GetIndexCurrentSetting() != animationEvent.intParameter)
             return;
 
         if (animationEvent.animatorClipInfo.weight < _weightForAnimationEvent)
@@ -94,7 +94,7 @@ public class AnimatorInteractor : MonoBehaviour, IInteractionNotifier
     //AnimationEvent
     private void OnInteract(AnimationEvent animationEvent)
     {
-        if (_switcherAnimationLayer.GetIndexCurrentMoverAnimationLayer() != animationEvent.intParameter)
+        if (_switcherAnimationLayer.GetIndexCurrentSetting() != animationEvent.intParameter)
             return;
 
         if (animationEvent.animatorClipInfo.weight < _weightForAnimationEvent)
@@ -109,7 +109,7 @@ public class AnimatorInteractor : MonoBehaviour, IInteractionNotifier
     //AnimationEvent
     private void OnInteractAfter(AnimationEvent animationEvent)
     {
-        if (_switcherAnimationLayer.GetIndexCurrentMoverAnimationLayer() != animationEvent.intParameter)
+        if (_switcherAnimationLayer.GetIndexCurrentSetting() != animationEvent.intParameter)
             return;
 
         if (animationEvent.animatorClipInfo.weight < _weightForAnimationEvent)

@@ -586,7 +586,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 321296511010564767, guid: 44be744388e3e254ab9946f7963209cc, type: 3}
       propertyPath: _luckRageAttack
-      value: 0.2
+      value: 0.05
       objectReference: {fileID: 0}
     - target: {fileID: 321296511010564767, guid: 44be744388e3e254ab9946f7963209cc, type: 3}
       propertyPath: _layerMaskCollision.m_Bits
@@ -682,7 +682,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2789975109385886845, guid: 44be744388e3e254ab9946f7963209cc, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 4
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 2789975109385886845, guid: 44be744388e3e254ab9946f7963209cc, type: 3}
       propertyPath: m_LocalPosition.y
@@ -690,7 +690,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2789975109385886845, guid: 44be744388e3e254ab9946f7963209cc, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -3
+      value: -8.24
       objectReference: {fileID: 0}
     - target: {fileID: 2789975109385886845, guid: 44be744388e3e254ab9946f7963209cc, type: 3}
       propertyPath: m_LocalRotation.w

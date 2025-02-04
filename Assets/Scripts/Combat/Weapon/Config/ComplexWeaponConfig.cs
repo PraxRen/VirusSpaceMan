@@ -17,7 +17,7 @@ public class ComplexWeaponConfig : Item, IComplexWeaponConfig
     [Header("Equipment")]
     [SerializeField] private EquipmentType _equipmentType;
     [Header("AnimationLayerProvider")]
-    [SerializeField] private TypeAnimationLayer _typeAnimationLayer;
+    [SerializeField] private SettingAnimationLayer _settingAnimationLayer;
     [Header("AnimationRigProvider")]
     [SerializeField] private TypeAnimationRig _typeAnimationRig;
     [Header("ModeMoverProvider")]
@@ -40,7 +40,7 @@ public class ComplexWeaponConfig : Item, IComplexWeaponConfig
     public SurfaceType SurfaceType => _surfaceType;
     public IReadOnlyList<Attack> Attacks => _attacks;
     public EquipmentType Type => _equipmentType;
-    public TypeAnimationLayer TypeAnimationLayer => _typeAnimationLayer;
+    public SettingAnimationLayer SettingAnimationLayer => _settingAnimationLayer;
     public TypeAnimationRig TypeAnimationRig => _typeAnimationRig;
     public ModeMover ModeMover => _modeMover;
     public SettingGameCurrencies SettingGameCurrencies => _settingGameCurrencies;
@@ -48,6 +48,7 @@ public class ComplexWeaponConfig : Item, IComplexWeaponConfig
     public Vector3 OffsetPosition => _offsetPosition;
     public Vector3 StartRotation => _rotation;
     public Vector3 Scale => _scale;
+
 
 #if UNITY_EDITOR
     [ContextMenu("Reset SettingGameCurrencies")]

@@ -1,42 +1,69 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class SwitcherAnimationLayer : MonoBehaviour
 {
     [SerializeField] private Animator _animator;
+    [SerializeField] private SettingAnimationLayer _defaultSetting;
 
     private Dictionary<int, Coroutine> _hashCorutineJobs = new Dictionary<int, Coroutine>();
 
-    public TypeAnimationLayer DefaultAnimationLayer { get; private set; } = TypeAnimationLayer.Default;
-    public TypeAnimationLayer CurrentAnimationLayer { get; private set; } = TypeAnimationLayer.Default;
+    public SettingAnimationLayer DefaultSetting => _defaultSetting;
+    public SettingAnimationLayer CurrentSetting { get; private set; }
     public bool IsNotWork => _hashCorutineJobs.Count == 0;
 
-    public void SetAnimationLayer(TypeAnimationLayer animationLayer, float pathTime = 0f)
+    private void Awake()
     {
-        if (CurrentAnimationLayer == animationLayer)
+        CurrentSetting = DefaultSetting;
+    }
+
+    public void ApplyDefaultSetting(float pathTime = 0f)
+    {
+        SetSetting(DefaultSetting, pathTime);
+    }
+
+    public void SetSetting(SettingAnimationLayer setting, float pathTime = 0f)
+    {
+        if (CurrentSetting == setting)
             return;
 
-        SetNewAnimationLayer(CurrentAnimationLayer, animationLayer, pathTime);
-        CurrentAnimationLayer = animationLayer;
+        SetNewSetting(CurrentSetting, setting, pathTime);
+        CurrentSetting = setting;
     }
 
-    public void ApplyDefaultAnimationLayer(float pathTime = 0f)
+    public void SetAddonLayer(TypeAnimationLayer addonLayer, float pathTime = 0f)
     {
-        SetAnimationLayer(DefaultAnimationLayer, pathTime);
+        if (CurrentSetting.Addons.Contains(addonLayer) == false)
+            return;
+
+        SetWeightLayer(addonLayer, 1f, pathTime);
     }
 
-    public int GetIndexCurrentMoverAnimationLayer()
+    public void RemoveAddonLayer(TypeAnimationLayer addonLayer, float pathTime = 0f)
     {
-        string name = CurrentAnimationLayer.ToString();
+        if (CurrentSetting.Addons.Contains(addonLayer) == false)
+            return;
+
+        SetWeightLayer(addonLayer, 0f, pathTime);
+    }
+
+    public int GetIndexCurrentSetting()
+    {
+        string name = CurrentSetting.Type.ToString();
         int result = _animator.GetLayerIndex(name);
         return result;
     }
 
-    private void SetNewAnimationLayer(TypeAnimationLayer oldAnimationLayer, TypeAnimationLayer newAnimationLayer, float pathTime = 0f)
+    private void SetNewSetting(SettingAnimationLayer oldSetting, SettingAnimationLayer newSetting, float pathTime = 0f)
     {
-        SetWeightLayer(oldAnimationLayer, 0, pathTime);
-        SetWeightLayer(newAnimationLayer, 1, pathTime);
+        SetWeightLayer(oldSetting.Type, 0, pathTime);
+
+        foreach (TypeAnimationLayer layerAddon in oldSetting.Addons)
+            SetWeightLayer(layerAddon, 0, pathTime);
+
+        SetWeightLayer(newSetting.Type, 1, pathTime);
     }
 
     private void SetWeightLayer(TypeAnimationLayer animationLayer, float targetWeight, float pathTime = 0f)

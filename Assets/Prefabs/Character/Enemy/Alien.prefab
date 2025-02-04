@@ -150,6 +150,10 @@ PrefabInstance:
       propertyPath: _factorSpeed
       value: 0.8
       objectReference: {fileID: 0}
+    - target: {fileID: 1687672510167128039, guid: b2ae4f7d10bb5224db3664389d0df2bc, type: 3}
+      propertyPath: _maxValue
+      value: 1000
+      objectReference: {fileID: 0}
     - target: {fileID: 3660648832872054523, guid: b2ae4f7d10bb5224db3664389d0df2bc, type: 3}
       propertyPath: m_AnchorMax.x
       value: 0
@@ -236,7 +240,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5678443269781806364, guid: b2ae4f7d10bb5224db3664389d0df2bc, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 5678443269781806364, guid: b2ae4f7d10bb5224db3664389d0df2bc, type: 3}
       propertyPath: m_LocalPosition.y

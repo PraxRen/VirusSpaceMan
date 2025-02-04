@@ -22,5 +22,5 @@ MonoBehaviour:
     _interactedGraphics: 
     _afterInteractGraphics: 
     _stopInteractGraphics: 
-  _typeAnimationLayer: 1
+  _settingAnimationLayer: {fileID: 11400000, guid: 890084a2add87804e82c1f615cb021cb, type: 2}
   _typeAnimationRig: 1

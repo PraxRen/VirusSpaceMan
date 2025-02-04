@@ -13,14 +13,14 @@ MonoBehaviour:
   m_Name: Karate
   m_EditorClassIdentifier: 
   _id: fa01fcdf-39e1-4b96-befe-813ab48c95cf
-  _name: 
-  _description: 
+  _name: Karate
+  _description: Your white belt has been gathering dust in the closet for too long...
   _limit: 1
   _idWeapon: 2cc8b2c4-4ce5-4794-b250-0c5f418f381e
   _damage: 0
   _force: 0
   _distanceAttack: 1.6
-  _cooldownAttack: 1
+  _cooldownAttack: 0.8
   _distanceNoise: 3
   _factorAuidioVolume: 0.5
   _surfaceType: 1
@@ -28,19 +28,23 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 3f418f67df761f246bf6b9cb69a505bf, type: 2}
   - {fileID: 11400000, guid: 11614a1b0d3b2c843b15b4a758fe1074, type: 2}
   - {fileID: 11400000, guid: a03f898a3c4ca57418bc93011c275a81, type: 2}
-  - {fileID: 11400000, guid: 46f1030777e6e8d45abdab2c46b34e8d, type: 2}
+  - {fileID: 11400000, guid: 11614a1b0d3b2c843b15b4a758fe1074, type: 2}
   _equipmentType: 0
-  _typeAnimationLayer: 2
+  _settingAnimationLayer: {fileID: 11400000, guid: 3b9673fb2932dd549a2d88dd2556a898, type: 2}
   _typeAnimationRig: 1
   _modeMover: {fileID: 11400000, guid: 9c06c0e4ef332674a8823a6a24270bc3, type: 2}
   _settingGameCurrencies:
-    _currencies:
-    - _type: 0
-      _price: 1
-      _icon: {fileID: 21300000, guid: 6ca9d76efa67fa54495b59ad0c2aeae4, type: 3}
-    - _type: 1
-      _price: 1
-      _icon: {fileID: 21300000, guid: 599c14d6a42651c438130da52c5be9a8, type: 3}
+    _prices:
+    - _gameCurrency:
+        _type: 0
+        _iconResourceName: Credit
+        _color: {r: 1, g: 1, b: 1, a: 1}
+      _value: 1
+    - _gameCurrency:
+        _type: 1
+        _iconResourceName: Quark
+        _color: {r: 0.501961, g: 0.003922, b: 0.866667, a: 1}
+      _value: 1
   _prefabGraphics: {fileID: 6931336238912174239, guid: 1be21c22fb2a1e547bd3c640b06ae5b1, type: 3}
   _offsetPosition: {x: 0, y: 0, z: 0}
   _rotation: {x: 0, y: 0, z: 0}

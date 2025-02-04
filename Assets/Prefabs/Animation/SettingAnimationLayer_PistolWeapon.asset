@@ -9,9 +9,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 773e858d2c352a443850ffbf8a786d77, type: 3}
-  m_Name: Karate_Attack_04
+  m_Script: {fileID: 11500000, guid: 522dc68fa269c8744b05c29aeb063794, type: 3}
+  m_Name: SettingAnimationLayer_PistolWeapon
   m_EditorClassIdentifier: 
-  _damage: 0
-  _animationIndex: 3
-  _ragePoints: 0
+  _type: 6
+  _addons: 07000000

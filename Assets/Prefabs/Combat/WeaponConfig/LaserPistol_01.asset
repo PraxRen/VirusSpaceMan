@@ -10,10 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e9f4e8d01d219f14a8b14898121f8b88, type: 3}
-  m_Name: LazerPistol_01
+  m_Name: LaserPistol_01
   m_EditorClassIdentifier: 
   _id: 1a710b27-da2a-45e0-92d3-7067acf9bbd1
-  _name: Lazer Pistol
+  _name: Laser pistol
   _description: Simple and reliable...
   _limit: 1
   _idWeapon: 86aeb65c-39f4-4a8d-887d-2ef9c75f7c03
@@ -27,7 +27,7 @@ MonoBehaviour:
   _attacks:
   - {fileID: 11400000, guid: f9d2096eb3e4f4841a8c2b6031018fd2, type: 2}
   _equipmentType: 0
-  _typeAnimationLayer: 4
+  _settingAnimationLayer: {fileID: 11400000, guid: c9f874c5440e46845aec5727e120db99, type: 2}
   _typeAnimationRig: 2
   _modeMover: {fileID: 11400000, guid: 5125f1417baf42c4f9f0a0baa3bc06d2, type: 2}
   _settingGameCurrencies:
