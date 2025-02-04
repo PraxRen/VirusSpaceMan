@@ -40,8 +40,8 @@ public abstract class Spawner<T> : MonoBehaviour where T : MonoBehaviour
 
     private void Update()
     {
-        _countActiveObjects = Pool.CountActiveObjects;
-        _countFullObjects = Pool.CountFullObjects;
+        _countActiveObjects = Pool == null ? 0 : Pool.CountActiveObjects;
+        _countFullObjects = Pool == null ? 0 : Pool.CountFullObjects;
     }
 
 #endif

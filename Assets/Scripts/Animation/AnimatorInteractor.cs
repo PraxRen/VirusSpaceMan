@@ -66,10 +66,10 @@ public class AnimatorInteractor : MonoBehaviour, IInteractionNotifier
 
         if (_handlerInteraction.ObjectInteraction != null)
         {
-            if (_handlerInteraction.ObjectInteraction.Config is IAnimationLayerProvider animationLayerProvider)
+            if (_beforeRunTypeAnimationLayer != null && _handlerInteraction.ObjectInteraction.Config is IAnimationLayerProvider animationLayerProvider)
                 _switcherAnimationLayer.SetSetting(_beforeRunTypeAnimationLayer, _timeChangeAnimationLayer);
 
-            if (_handlerInteraction.ObjectInteraction.Config is IAnimationRigProvider animationRigProvider)
+            if (_beforeRunTypeAnimationRig != TypeAnimationRig.None && _handlerInteraction.ObjectInteraction.Config is IAnimationRigProvider animationRigProvider)
                 _switcherAnimationRig.SetAnimationRig(_beforeRunTypeAnimationRig);
         }
 

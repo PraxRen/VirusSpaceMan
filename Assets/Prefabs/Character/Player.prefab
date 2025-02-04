@@ -620,6 +620,10 @@ PrefabInstance:
       propertyPath: _groundLayer.m_Bits
       value: 7168
       objectReference: {fileID: 0}
+    - target: {fileID: 2094436797040334433, guid: 44be744388e3e254ab9946f7963209cc, type: 3}
+      propertyPath: strength
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: 2284333308789749899, guid: 44be744388e3e254ab9946f7963209cc, type: 3}
       propertyPath: _root
       value: 
@@ -804,10 +808,6 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 13
       objectReference: {fileID: 0}
-    - target: {fileID: 8792028369519530837, guid: 44be744388e3e254ab9946f7963209cc, type: 3}
-      propertyPath: _defaultModeMover
-      value: 
-      objectReference: {fileID: 11400000, guid: 797e994ce0a45124fa207bacc9c82366, type: 2}
     - target: {fileID: 9054179793945102924, guid: 44be744388e3e254ab9946f7963209cc, type: 3}
       propertyPath: _layerMaskCollision.m_Bits
       value: 6657
@@ -848,6 +848,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 3037592456749619465, guid: 44be744388e3e254ab9946f7963209cc, type: 3}
       insertIndex: 35
       addedObject: {fileID: 3416461741309272846}
+    - targetCorrespondingSourceObject: {fileID: 3037592456749619465, guid: 44be744388e3e254ab9946f7963209cc, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2150061930756733077}
   m_SourcePrefab: {fileID: 100100000, guid: 44be744388e3e254ab9946f7963209cc, type: 3}
 --- !u!4 &88914280985365669 stripped
 Transform:
@@ -1158,6 +1161,26 @@ MonoBehaviour:
     m_Bits: 16384
   _radius: 5
   _debug: 107
+--- !u!114 &2150061930756733077
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7651693161451257432}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: abb9a90f535c37b4d91402b781226a5b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _offsetStartPoint: {x: 0, y: 0, z: 0}
+  _height: 1.55
+  _radius: 0.3
+  _layerMask:
+    serializedVersion: 2
+    m_Bits: 36865
+  _factorDirectionY: 0.2
+  _force: 5
 --- !u!4 &7768974569824192178 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3154496010664534499, guid: 44be744388e3e254ab9946f7963209cc, type: 3}

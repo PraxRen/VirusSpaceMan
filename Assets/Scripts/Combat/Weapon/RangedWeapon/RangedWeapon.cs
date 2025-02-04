@@ -12,7 +12,6 @@ public abstract class RangedWeapon : Weapon, IRangedWeaponReadOnly
     public Transform StartPoint => _startPoint;
     public IRangedWeaponConfig RangedWeaponConfig {  get; private set; }
 
-
     protected override void ActivateAddon()
     {
         _spawnerProjectile.enabled = true;

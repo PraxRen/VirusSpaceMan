@@ -52,6 +52,7 @@ public abstract class Projectile : MonoBehaviour, ISurface
 
     private void Update()
     {
+        _rigidbody.velocity = Transform.forward * _projectileConfig.Speed;
         bool isCollide = Physics.SphereCast(transform.position, RadiusRaycatsForward, transform.forward, out RaycastHit hit, DistanceRaycatsForward);
 
         if (isCollide == true && _rangedWeapon.CanCollide(hit.collider) == false)
@@ -70,7 +71,6 @@ public abstract class Projectile : MonoBehaviour, ISurface
     {
         Attack = attack;
         Transform.forward = direction;
-        _rigidbody.AddForce(Transform.forward * _projectileConfig.Speed, ForceMode.Impulse);
         ShootAddon();
     }
 

@@ -2393,7 +2393,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a3e22356bb40555419fa99c47c3ed9d3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _defaultModeMover: {fileID: 0}
+  _defaultModeMover: {fileID: 11400000, guid: 797e994ce0a45124fa207bacc9c82366, type: 2}
   _baseSpeedMove: 6
   _baseSpeedRotation: 15
   _gravity: -9.81
@@ -2402,7 +2402,7 @@ MonoBehaviour:
   _stepNotifierMonoBehaviour: {fileID: 8415595684599785399}
   _groundLayer:
     serializedVersion: 2
-    m_Bits: 3072
+    m_Bits: 3585
   _modeMoverMonoBehaviourChangers:
   - {fileID: 321296511010564767}
 --- !u!114 &8415595684599785399
