@@ -52,7 +52,7 @@ public static class GameSettingGenerator
         Debug.Log("GameSetting сгенерирован по пути: " + OUTPUT_PATH);
     }
 
-    private static string ConvertValueToCodeString(object value, System.Type type)
+    private static string ConvertValueToCodeString(object value, Type type)
     {
         if (value == null)
             return Null;
@@ -82,6 +82,9 @@ public static class GameSettingGenerator
 
             case Type t when t == typeof(GameCurrency):
                 return ConvertGameCurrencyToCodeString((GameCurrency)value);
+
+            case Type t when t == typeof(CombatConfig):
+                return ConvertCombatConfigToCodeString(value as CombatConfig);
 
             default:
                 Debug.LogWarning($"Поле {value} типа {type.Name} не может быть автоматически сгенерировано.");
@@ -121,7 +124,6 @@ public static class GameSettingGenerator
         string b = color.b.ToString("0.######", CultureInfo.InvariantCulture);
         string a = color.a.ToString("0.######", CultureInfo.InvariantCulture);
         string colorCode = $"new Color({r}f, {g}f, {b}f, {a}f)";
-//        string colorCode = $"new {nameof(Color)}({color.r.ToString().Replace(',','.')}{FloatFormat}, {color.g.ToString().Replace(',', '.')}{FloatFormat}, {color.b}{FloatFormat}, {color.a.ToString().Replace(',', '.')}{FloatFormat})";
 
         return $"new {nameof(GameCurrency)}({typeCode}, {iconCode}, {colorCode})";
     }
@@ -135,6 +137,14 @@ public static class GameSettingGenerator
         string arrayCode = ConvertValueToCodeString(currencies, currencies.GetType());
 
         return $"new {nameof(ShopConfig)}({arrayCode})";
+    }
+
+    private static string ConvertCombatConfigToCodeString(CombatConfig combatConfig)
+    {
+        if (combatConfig == null)
+            return Null;
+
+        return $"new {nameof(CombatConfig)}({combatConfig.MaxValueAccuracy}, {combatConfig.MaxValueDamage}, {combatConfig.MaxValueDistance})";
     }
 
     private static string GetTypeName(Type type)

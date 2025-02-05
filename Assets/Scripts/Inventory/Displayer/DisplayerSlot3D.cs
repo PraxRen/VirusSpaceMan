@@ -67,14 +67,14 @@ public class DisplayerSlot3D : MonoBehaviour, IDisplayerSlot
     private void InitializeItem(IComplexRangedWeaponConfig complexRangedWeaponConfig)
     {
         InitializeItem((IComplexWeaponConfig)complexRangedWeaponConfig);
-        _ui.AddProperty(UIDisplayerItem.PropertyName.Accuracy, complexRangedWeaponConfig.Accuracy);
+        _ui.AddProperty(UIDisplayerItem.PropertyName.Accuracy, complexRangedWeaponConfig.Accuracy * 100, GameSetting.CombatConfig.MaxValueAccuracy * 100);
     }
 
     private void InitializeItem(IComplexWeaponConfig complexWeaponConfig)
     {
         InitializeItem((IGraphicsSaleItem)complexWeaponConfig);
-        _ui.AddProperty(UIDisplayerItem.PropertyName.Damage, complexWeaponConfig.Damage);
-        _ui.AddProperty(UIDisplayerItem.PropertyName.Distance, complexWeaponConfig.Damage);
+        _ui.AddProperty(UIDisplayerItem.PropertyName.Damage, complexWeaponConfig.Damage, GameSetting.CombatConfig.MaxValueDamage);
+        _ui.AddProperty(UIDisplayerItem.PropertyName.Distance, complexWeaponConfig.DistanceAttack, GameSetting.CombatConfig.MaxValueDistance);
     }
 
     private void InitializeItem(IGraphicsSaleItem item)

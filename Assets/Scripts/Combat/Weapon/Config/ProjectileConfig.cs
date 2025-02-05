@@ -8,10 +8,12 @@ public class ProjectileConfig : ScriptableObject
     [SerializeField] private float _damage;
     [Range(0f,1f)][SerializeField] private float _factorNoise;
     [SerializeField] private SurfaceType _surfaceType;
+    [Range(1f, 30f)][SerializeField] private float _lifeTime;
 
     public Projectile Prefab => _prefab;
     public float Speed => _speed;
     public float Damage => _damage;
     public float FactorNoise => _factorNoise;
     public SurfaceType SurfaceType => _surfaceType;
+    public float LifeTime => _lifeTime;
 }

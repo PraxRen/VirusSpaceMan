@@ -472,7 +472,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _canChangeValue: 0
-  _value: 0.189
+  _value: 0.3
 --- !u!4 &80268434
 Transform:
   m_ObjectHideFlags: 0

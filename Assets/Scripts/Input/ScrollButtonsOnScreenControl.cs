@@ -25,6 +25,7 @@ public class ScrollButtonsOnScreenControl : OnScreenControl
     {
         _buttonLeft.ClickDown -= OnClickButtonLeft;
         _buttonRight.ClickDown -= OnClickButtonRight;
+        SendValueToControl(Vector2.zero);
         base.OnDisable();
     }
 

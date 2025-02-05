@@ -686,7 +686,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2789975109385886845, guid: 44be744388e3e254ab9946f7963209cc, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 5
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2789975109385886845, guid: 44be744388e3e254ab9946f7963209cc, type: 3}
       propertyPath: m_LocalPosition.y
@@ -694,7 +694,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2789975109385886845, guid: 44be744388e3e254ab9946f7963209cc, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -8.24
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2789975109385886845, guid: 44be744388e3e254ab9946f7963209cc, type: 3}
       propertyPath: m_LocalRotation.w
@@ -850,7 +850,7 @@ PrefabInstance:
       addedObject: {fileID: 3416461741309272846}
     - targetCorrespondingSourceObject: {fileID: 3037592456749619465, guid: 44be744388e3e254ab9946f7963209cc, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 2150061930756733077}
+      addedObject: {fileID: 7247161425265795278}
   m_SourcePrefab: {fileID: 100100000, guid: 44be744388e3e254ab9946f7963209cc, type: 3}
 --- !u!4 &88914280985365669 stripped
 Transform:
@@ -1096,6 +1096,11 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 1529010667323245539, guid: 44be744388e3e254ab9946f7963209cc, type: 3}
   m_PrefabInstance: {fileID: 4618428623402166097}
   m_PrefabAsset: {fileID: 0}
+--- !u!195 &6577845592422141990 stripped
+NavMeshAgent:
+  m_CorrespondingSourceObject: {fileID: 1972233495439816567, guid: 44be744388e3e254ab9946f7963209cc, type: 3}
+  m_PrefabInstance: {fileID: 4618428623402166097}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &7316401106020791644 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2710850692956099085, guid: 44be744388e3e254ab9946f7963209cc, type: 3}
@@ -1140,6 +1145,7 @@ MonoBehaviour:
   _moveTracker: {fileID: 2346274011256384277}
   _scannerDamageable: {fileID: 8550682467483166896}
   _healthMonoBehaviour: {fileID: 4541384262124319191}
+  _navMeshAgent: {fileID: 6577845592422141990}
   _layerMaskSimpleEventAttack:
     serializedVersion: 2
     m_Bits: 512
@@ -1161,7 +1167,7 @@ MonoBehaviour:
     m_Bits: 16384
   _radius: 5
   _debug: 107
---- !u!114 &2150061930756733077
+--- !u!114 &7247161425265795278
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}

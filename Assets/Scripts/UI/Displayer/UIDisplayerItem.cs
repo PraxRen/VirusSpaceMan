@@ -1,9 +1,7 @@
 using System;
 using TMPro;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
-using UnityEngine.UIElements;
 
 public class UIDisplayerItem : MonoBehaviour
 {
@@ -54,7 +52,7 @@ public class UIDisplayerItem : MonoBehaviour
         displayerPrice.Initialize(price);
     }
 
-    public void AddProperty(UIDisplayerItem.PropertyName name, float value)
+    public void AddProperty(UIDisplayerItem.PropertyName name, float value, float maxValue)
     {
         if (value < 0)
             throw new ArgumentOutOfRangeException(nameof(value));
@@ -65,7 +63,8 @@ public class UIDisplayerItem : MonoBehaviour
         _propertyContent.gameObject.SetActive(true);
         _layoutGroup.spacing += _stepForSpacing;
         UIDisplayerProperty property = Instantiate(_prefab, _propertyContent);
-        property.Initialize(name.ToString(), value);
+        value = (float)Math.Round(value, 1);
+        property.Initialize(name.ToString(), value, maxValue);
         _countProperty++;
     }
 }

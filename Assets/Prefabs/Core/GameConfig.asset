@@ -20,3 +20,7 @@ MonoBehaviour:
     - _type: 1
       _iconResourceName: Quark
       _color: {r: 0.5019608, g: 0.003921569, b: 0.8666667, a: 1}
+  _combatConfig:
+    _maxValueAccuracy: 1
+    _maxValueDamage: 100
+    _maxValueDistance: 12

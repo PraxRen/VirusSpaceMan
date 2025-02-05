@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -57,4 +58,13 @@ public class ComplexWeaponConfig : Item, IComplexWeaponConfig
         _settingGameCurrencies = new SettingGameCurrencies();
     }
 #endif
+
+    private void OnValidate()
+    {
+        _damage = Mathf.Clamp(_damage, 0, GameSetting.CombatConfig.MaxValueDamage);
+        _distanceAttack = Mathf.Clamp(_distanceAttack, 0, GameSetting.CombatConfig.MaxValueDistance);
+        ValidateAddon();
+    }
+
+    protected virtual void ValidateAddon() { }
 }

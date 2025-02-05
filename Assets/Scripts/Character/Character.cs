@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using UnityEngine.AI;
 
 [RequireComponent(typeof(Mover), typeof(Fighter), typeof(Scanner))]
 [RequireComponent(typeof(Interactor))]
@@ -10,6 +11,7 @@ public abstract class Character : MonoBehaviour, IReadOnlyCharacter
     [SerializeField] private TargetTracker _moveTracker;
     [SerializeField] private Scanner _scannerDamageable;
     [SerializeField][SerializeInterface(typeof(IHealth))] private MonoBehaviour _healthMonoBehaviour;
+    [SerializeField] private NavMeshAgent _navMeshAgent;
 
     public string Id => _id;
     public Transform Transform { get; private set; }
@@ -20,6 +22,7 @@ public abstract class Character : MonoBehaviour, IReadOnlyCharacter
     protected Mover Mover { get; private set; }
     protected Fighter Fighter { get; private set; }
     protected Interactor Interactor { get; private set; }
+    public NavMeshAgent NavMeshAgent => _navMeshAgent;
 
     private void Awake()
     {
@@ -31,6 +34,8 @@ public abstract class Character : MonoBehaviour, IReadOnlyCharacter
         Mover = GetComponent<Mover>();
         Fighter = GetComponent<Fighter>();
         Interactor = GetComponent<Interactor>();
+        _navMeshAgent.updatePosition = false;
+        _navMeshAgent.updateRotation = false;
         AwakeAddon();
     }
 
@@ -52,6 +57,7 @@ public abstract class Character : MonoBehaviour, IReadOnlyCharacter
         Fighter.enabled = true;
         _scannerDamageable.enabled = true;
         Interactor.enabled = true;
+        _navMeshAgent.enabled = true;
         EnableAddon();
     }
 
@@ -70,6 +76,7 @@ public abstract class Character : MonoBehaviour, IReadOnlyCharacter
         Fighter.enabled = false;
         _scannerDamageable.enabled = false;
         Interactor.enabled = false;
+        _navMeshAgent.enabled = false;
         DisableAddon();
     }
 

@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody), typeof(Collider))]
@@ -11,6 +12,9 @@ public abstract class Projectile : MonoBehaviour, ISurface
     private Collider _collider;
     private IRangedWeaponReadOnly _rangedWeapon;
     private ProjectileConfig _projectileConfig;
+    private Coroutine _jobTimerLifeTime;
+    private WaitForSeconds _waitLifeTime;
+    private bool _isDestroyed;
 
     public event Action<Projectile, Collider> Collided;
     public event Action<Projectile> Destroyed;
@@ -65,12 +69,17 @@ public abstract class Projectile : MonoBehaviour, ISurface
     {
         _rangedWeapon = rangedWeapon;
         _projectileConfig = ((IRangedWeaponConfig)rangedWeapon.Config).ProjectileConfig;
+        _waitLifeTime = new WaitForSeconds(_projectileConfig.LifeTime);
+        _isDestroyed = false;
     }
 
     public void Shoot(Vector3 direction, Attack attack)
     {
+        _isDestroyed = false;
         Attack = attack;
         Transform.forward = direction;
+        CancelTimer();
+        _jobTimerLifeTime = StartCoroutine(RunTimerLifeTime());
         ShootAddon();
     }
 
@@ -89,6 +98,8 @@ public abstract class Projectile : MonoBehaviour, ISurface
     protected void Destroy()
     {
         _rigidbody.velocity = Vector3.zero;
+        _isDestroyed = true;
+        CancelTimer();
         Destroyed?.Invoke(this);
     }
 
@@ -97,5 +108,27 @@ public abstract class Projectile : MonoBehaviour, ISurface
         BeforeHandleCollideAddon(collision);
         Collided?.Invoke(this, collision.collider);
         AfterHandleCollideAddon(collision);
+    }
+
+    private IEnumerator RunTimerLifeTime()
+    {
+        if (_isDestroyed)
+            throw new InvalidOperationException($"{nameof(Projectile)} is destroyed.");
+
+        yield return _waitLifeTime;
+
+        if (_isDestroyed == false)
+            Destroy();
+
+        _jobTimerLifeTime = null;
+    }
+
+    private void CancelTimer()
+    {
+        if (_jobTimerLifeTime == null)
+            return;
+
+        StopCoroutine(_jobTimerLifeTime);
+        _jobTimerLifeTime = null;
     }
 }

@@ -17,3 +17,4 @@ MonoBehaviour:
   _damage: 0
   _factorNoise: 0.7
   _surfaceType: 2
+  _lifeTime: 5
