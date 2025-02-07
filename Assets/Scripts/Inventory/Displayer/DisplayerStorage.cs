@@ -47,13 +47,34 @@ public class DisplayerStorage : MonoBehaviour, IReadOnlyDisplayerStorage
         ActiveDisplayerSlotChanged?.Invoke(ActiveDisplayerSlot);
     }
 
+    public void ShowActiveSlot() 
+    {
+        if (_displayerSlots.Count == 0)
+            throw new InvalidOperationException($"The {nameof(DisplayerStorage)} has not been initialized!");
+
+        _displayerSlots[_indexActiveSlot].Show();
+    }
+
+    public void HideActiveSlot()
+    {
+        if (_displayerSlots.Count == 0)
+            throw new InvalidOperationException($"The {nameof(DisplayerStorage)} has not been initialized!");
+
+
+        _displayerSlots[_indexActiveSlot].Hide();
+    }
+
+    public void ResetIndex()
+    {
+        _indexActiveSlot = 0;
+    }
+
     public void Initialize(ISimpleStorage simpleStorage)
     {
         foreach (ISimpleSlot slot in simpleStorage.GetSlots())
             _displayerSlots.Add(_displayerSlotFactory.Create(slot, this));
 
         _indexActiveSlot = 0;
-        _displayerSlots[_indexActiveSlot].Show();
         ActiveDisplayerSlotChanged?.Invoke(ActiveDisplayerSlot);
     }
 }
