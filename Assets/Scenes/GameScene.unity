@@ -352,6 +352,10 @@ PrefabInstance:
       propertyPath: _buttonMonoBehaviour
       value: 
       objectReference: {fileID: 37587548}
+    - target: {fileID: 1955663990186507857, guid: 27a0dac7c0f1bf94d9d1166466132d7a, type: 3}
+      propertyPath: _isValidateBounds
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 2737602797989340976, guid: 27a0dac7c0f1bf94d9d1166466132d7a, type: 3}
       propertyPath: _buttonMonoBehaviour
       value: 
@@ -376,14 +380,22 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0.62841797
       objectReference: {fileID: 0}
+    - target: {fileID: 8008930965081022752, guid: 27a0dac7c0f1bf94d9d1166466132d7a, type: 3}
+      propertyPath: _isValidateBounds
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 8102537257852483486, guid: 27a0dac7c0f1bf94d9d1166466132d7a, type: 3}
       propertyPath: m_Name
       value: CanvasGameScene
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 253580401659571312, guid: 27a0dac7c0f1bf94d9d1166466132d7a, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 3345070178670785628, guid: 27a0dac7c0f1bf94d9d1166466132d7a, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1959053429}
   m_SourcePrefab: {fileID: 100100000, guid: 27a0dac7c0f1bf94d9d1166466132d7a, type: 3}
 --- !u!114 &37587547 stripped
 MonoBehaviour:
@@ -481,6 +493,10 @@ PrefabInstance:
     - target: {fileID: 6839966602787136849, guid: a5da0f04edbf85e45a62a795afebc55d, type: 3}
       propertyPath: m_Name
       value: Alien (5)
+      objectReference: {fileID: 0}
+    - target: {fileID: 6839966602787136849, guid: a5da0f04edbf85e45a62a795afebc55d, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -963,6 +979,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Alien (2)
       objectReference: {fileID: 0}
+    - target: {fileID: 6839966602787136849, guid: a5da0f04edbf85e45a62a795afebc55d, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -1297,6 +1317,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Alien (4)
       objectReference: {fileID: 0}
+    - target: {fileID: 6839966602787136849, guid: a5da0f04edbf85e45a62a795afebc55d, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -1415,6 +1439,10 @@ PrefabInstance:
     - target: {fileID: 6839966602787136849, guid: a5da0f04edbf85e45a62a795afebc55d, type: 3}
       propertyPath: m_Name
       value: Alien
+      objectReference: {fileID: 0}
+    - target: {fileID: 6839966602787136849, guid: a5da0f04edbf85e45a62a795afebc55d, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -2186,6 +2214,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Alien (3)
       objectReference: {fileID: 0}
+    - target: {fileID: 6839966602787136849, guid: a5da0f04edbf85e45a62a795afebc55d, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -2663,6 +2695,11 @@ MonoBehaviour:
   _gizmosPositionZone: {x: 0, y: 0.5, z: 0}
   _gizmosSizeZone: {x: 4, y: 1, z: 13}
   _gizmosColorZone: {r: 0.384966, g: 0, b: 0.54509807, a: 0.5019608}
+--- !u!1 &885735567 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3311692726766338602, guid: 09bf99cdac281834398d67ace8b4df39, type: 3}
+  m_PrefabInstance: {fileID: 1341306831425761868}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &887743969
 GameObject:
   m_ObjectHideFlags: 0
@@ -3617,6 +3654,18 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1467294813791243584, guid: 21685c10a89cef242847b4a2c729e36c, type: 3}
+      propertyPath: _inputReader
+      value: 
+      objectReference: {fileID: 2038418551}
+    - target: {fileID: 1467294813791243584, guid: 21685c10a89cef242847b4a2c729e36c, type: 3}
+      propertyPath: _buttonNextMonoBehaviour
+      value: 
+      objectReference: {fileID: 37587548}
+    - target: {fileID: 1467294813791243584, guid: 21685c10a89cef242847b4a2c729e36c, type: 3}
+      propertyPath: _buttonPreviousMonoBehaviour
+      value: 
+      objectReference: {fileID: 37587549}
     - target: {fileID: 3326990007501782220, guid: 21685c10a89cef242847b4a2c729e36c, type: 3}
       propertyPath: m_Name
       value: Player
@@ -4496,6 +4545,26 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 4101803588298436, guid: c08fd2b41d30472429ef06b9f12f5c50, type: 3}
   m_PrefabInstance: {fileID: 3298489907288733446}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1959053426 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3345070178670785628, guid: 27a0dac7c0f1bf94d9d1166466132d7a, type: 3}
+  m_PrefabInstance: {fileID: 37587546}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1959053429
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1959053426}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 16a22d8447515324b9fb8722208d50f6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _playerInputReader: {fileID: 2038418551}
+  _buttonNext: {fileID: 37587548}
+  _buttonPrevious: {fileID: 37587549}
 --- !u!1001 &1964799436
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -4555,6 +4624,10 @@ PrefabInstance:
     - target: {fileID: 6839966602787136849, guid: a5da0f04edbf85e45a62a795afebc55d, type: 3}
       propertyPath: m_Name
       value: Alien (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 6839966602787136849, guid: a5da0f04edbf85e45a62a795afebc55d, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -4690,10 +4763,22 @@ MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 5109943164287874265, guid: 09bf99cdac281834398d67ace8b4df39, type: 3}
   m_PrefabInstance: {fileID: 1341306831425761868}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
+  m_GameObject: {fileID: 885735567}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 7ccf02a47ba44f346bb2d6bc4b9db1f2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &2038418551
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 885735567}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 092a20c207a59de45bcf797778d7ef4d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &2040796104
@@ -6918,7 +7003,10 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 3311692726766338602, guid: 09bf99cdac281834398d67ace8b4df39, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2038418551}
   m_SourcePrefab: {fileID: 100100000, guid: 09bf99cdac281834398d67ace8b4df39, type: 3}
 --- !u!4 &1346767833600835781
 Transform:

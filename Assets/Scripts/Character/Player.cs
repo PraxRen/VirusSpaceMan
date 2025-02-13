@@ -1,35 +1,40 @@
 using System;
 using UnityEngine;
 
-[RequireComponent(typeof(PlayerInputReader), typeof(ActivatorSimpleEvent))]
+[RequireComponent(typeof(ActivatorSimpleEvent))]
 public class Player : Character
 {
     [SerializeField] private LayerMask _layerMaskSimpleEventAttack;
-
-    private PlayerInputReader _inputReader;
+    [SerializeField] private PlayerInputReader _inputReader;
+    [SerializeField][SerializeInterface(typeof(IReadOnlyButton))] private MonoBehaviour _buttonNextMonoBehaviour;
+    [SerializeField][SerializeInterface(typeof(IReadOnlyButton))] private MonoBehaviour _buttonPreviousMonoBehaviour;
+    
     private ActivatorSimpleEvent _activatorSimpleEvent;
     private SimpleEvent _simpleEventAttack;
+    private IReadOnlyButton _buttonNext;
+    private IReadOnlyButton _buttonPrevious;
 
     protected override void AwakeAddon()
     {
-        _inputReader = GetComponent<PlayerInputReader>();
         _activatorSimpleEvent = GetComponent<ActivatorSimpleEvent>();
+        _buttonNext = (IReadOnlyButton)_buttonNextMonoBehaviour;
+        _buttonPrevious = (IReadOnlyButton)_buttonPreviousMonoBehaviour;
     }
 
     protected override void EnableAddon()
     {
         ScannerDamageable.ChangedCurrentTarget += OnChangedTarget;
         ScannerDamageable.ClearTargets += OnClearTargets;
-        _inputReader.ChangedScrollNextTarget += OnChangedScrollNextTarget;
-        _inputReader.ChangedScrollPreviousTarget += OnChangedScrollPreviousTarget;
+        _buttonNext.ClickUpInBounds += OnScrollNextTarget;
+        _buttonPrevious.ClickUpInBounds += OnScrollPreviousTarget;
     }
 
     protected override void DisableAddon()
     {
         ScannerDamageable.ChangedCurrentTarget -= OnChangedTarget;
         ScannerDamageable.ClearTargets -= OnClearTargets;
-        _inputReader.ChangedScrollNextTarget -= OnChangedScrollNextTarget;
-        _inputReader.ChangedScrollPreviousTarget -= OnChangedScrollPreviousTarget;
+        _inputReader.ScrollNextTarget -= OnScrollNextTarget;
+        _inputReader.ScrollPreviousTarget -= OnScrollPreviousTarget;
     }
 
     protected override void AddonOnChangedWeapon(IWeaponReadOnly weapon)
@@ -95,12 +100,12 @@ public class Player : Character
         LookTracker.ResetTarget();
     }
 
-    private void OnChangedScrollNextTarget()
+    private void OnScrollNextTarget()
     {
         ScannerDamageable.NextTarget();
     }
 
-    private void OnChangedScrollPreviousTarget()
+    private void OnScrollPreviousTarget()
     {
         ScannerDamageable.PreviousTarget();
     }

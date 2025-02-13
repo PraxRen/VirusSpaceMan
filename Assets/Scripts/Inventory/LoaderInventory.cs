@@ -7,7 +7,7 @@ public class LoaderInventory : MonoBehaviour
     [SerializeField] private DefaultEquipmentSlots _defaultEquipmentSlots;
     [SerializeField] private DefaultInventorySlots _defaultInventorySlots;
 
-    private void Awake()
+    private void Start()
     {
         Initilize();
     }

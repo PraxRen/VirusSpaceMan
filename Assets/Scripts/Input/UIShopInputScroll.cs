@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class UIButtonInputScroll : MonoBehaviour
+public class UIShopInputScroll : MonoBehaviour
 {
     [SerializeField] private ShopInputReader _shopInputReader;
     [SerializeField] private UICastomButton _buttonNext;
@@ -24,25 +24,21 @@ public class UIButtonInputScroll : MonoBehaviour
 
     private void OnBeforeScrollNextItem()
     {
-        //Debug.Log("BeforeScrollNext");
         _buttonNext.Down();
     }
 
     private void OnScrollNextItem()
     {
-        //Debug.Log("ScrollNext");
         _buttonNext.Up(true);
     }
 
     private void OnBeforeScrollPreviousItem()
     {
-        //Debug.Log("BeforeScrollPrevious");
         _buttonPrevious.Down();   
     }
 
     private void OnScrollPreviousItem()
     {
-        //Debug.Log("ScrollPrevious");
         _buttonPrevious.Up(true);
     }
 }

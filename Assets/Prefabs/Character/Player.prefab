@@ -686,7 +686,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2789975109385886845, guid: 44be744388e3e254ab9946f7963209cc, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 2789975109385886845, guid: 44be744388e3e254ab9946f7963209cc, type: 3}
       propertyPath: m_LocalPosition.y
@@ -694,7 +694,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2789975109385886845, guid: 44be744388e3e254ab9946f7963209cc, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0
+      value: -8.24
       objectReference: {fileID: 0}
     - target: {fileID: 2789975109385886845, guid: 44be744388e3e254ab9946f7963209cc, type: 3}
       propertyPath: m_LocalRotation.w
@@ -841,12 +841,9 @@ PrefabInstance:
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 3037592456749619465, guid: 44be744388e3e254ab9946f7963209cc, type: 3}
       insertIndex: 33
-      addedObject: {fileID: 7287111569578834294}
-    - targetCorrespondingSourceObject: {fileID: 3037592456749619465, guid: 44be744388e3e254ab9946f7963209cc, type: 3}
-      insertIndex: 34
       addedObject: {fileID: 1467294813791243584}
     - targetCorrespondingSourceObject: {fileID: 3037592456749619465, guid: 44be744388e3e254ab9946f7963209cc, type: 3}
-      insertIndex: 35
+      insertIndex: 34
       addedObject: {fileID: 3416461741309272846}
     - targetCorrespondingSourceObject: {fileID: 3037592456749619465, guid: 44be744388e3e254ab9946f7963209cc, type: 3}
       insertIndex: -1
@@ -1116,18 +1113,6 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 3037592456749619465, guid: 44be744388e3e254ab9946f7963209cc, type: 3}
   m_PrefabInstance: {fileID: 4618428623402166097}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &7287111569578834294
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7651693161451257432}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 092a20c207a59de45bcf797778d7ef4d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &1467294813791243584
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1149,6 +1134,9 @@ MonoBehaviour:
   _layerMaskSimpleEventAttack:
     serializedVersion: 2
     m_Bits: 512
+  _inputReader: {fileID: 0}
+  _buttonNextMonoBehaviour: {fileID: 0}
+  _buttonPreviousMonoBehaviour: {fileID: 0}
 --- !u!114 &3416461741309272846
 MonoBehaviour:
   m_ObjectHideFlags: 0

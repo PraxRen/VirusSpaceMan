@@ -10560,8 +10560,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _shopInputReader: {fileID: 1816350516}
-  _buttonNext: {fileID: 8602715909890386724}
-  _buttonPrevious: {fileID: 2314658705349426383}
+  _buttonNext: {fileID: 2314658705349426383}
+  _buttonPrevious: {fileID: 8602715909890386724}
 --- !u!4 &8932825817396922789
 Transform:
   m_ObjectHideFlags: 0
