@@ -6,7 +6,7 @@ using System.Linq;
 using UnityEngine.InputSystem.Utilities;
 
 [CustomEditor(typeof(UIButtonInputProxy))]
-public class UICastomButtonInputProxyEditor : Editor
+public class UIButtonInputProxyEditor : Editor
 {
     private const string NameFieldActionAsset = "_inputActionAsset";
     private const string NameFieldActionMapName = "_actionMapName";

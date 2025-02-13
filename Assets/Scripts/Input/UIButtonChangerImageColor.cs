@@ -2,9 +2,9 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 
-[RequireComponent(typeof(IReadOnlyButton))]
 public class UIButtonChangerImageColor : MonoBehaviour
-{   
+{
+    [SerializeField][SerializeInterface(typeof(IReadOnlyButton))] private MonoBehaviour _buttonMonoBehaviour;
     [SerializeField] private Image _image;
     [SerializeField] private Color _colorDefault;
     [SerializeField] private Color _colorDown;
@@ -23,7 +23,7 @@ public class UIButtonChangerImageColor : MonoBehaviour
 
     private void Awake()
     {
-        _button = GetComponent<IReadOnlyButton>();
+        _button = (IReadOnlyButton)_buttonMonoBehaviour;
     }
 
     private void OnEnable()
@@ -39,6 +39,13 @@ public class UIButtonChangerImageColor : MonoBehaviour
         _button.ClickDown -= OnClickDown;
         _button.ClickUp -= OnClickUp;
         CancelUpdateColor();
+    }
+
+    public void ResetColors(Color colorDefault, Color colorDown)
+    {
+        _colorDefault = colorDefault;
+        _colorDown = colorDown;
+        _image.color = _colorDefault;
     }
 
     private void RunUpdateColor(Color color)

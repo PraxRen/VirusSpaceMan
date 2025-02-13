@@ -151,7 +151,7 @@ public abstract class Storage<T> : MonoBehaviour, IReadOnlyStorage<T> where T : 
         return TryRemoveItem(slot, count);
     }
 
-    public bool TryGiveItem(out T item, IReadOnlySlot<T> slot, int count)
+    public bool TryGiveItem(out T item, ISimpleSlot slot, int count)
     {
         if (count <= 0)
             throw new ArgumentOutOfRangeException(nameof(count));
@@ -165,7 +165,15 @@ public abstract class Storage<T> : MonoBehaviour, IReadOnlyStorage<T> where T : 
         if (foundSlot == null)
             return false;
 
-        return foundSlot.TryGiveItem(out item, count);
+        item = foundSlot.Item;
+
+        if (TryRemoveItem(foundSlot, count) == false)
+        {
+            item = default;
+            return false;
+        }
+
+        return true;
     }
 
     public bool HasItem(T item) => _slots.Any(slot => slot.Item.Id == item.Id);

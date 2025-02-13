@@ -8,6 +8,7 @@ public class DisplayerSlot3D : MonoBehaviour, IDisplayerSlot
 
     private Graphics _graphics;
 
+    public string IdItem => Item.Id;
     public ISimpleSlot Slot { get; private set; }
     public IGraphicsItem Item { get; private set; }
 
@@ -23,6 +24,11 @@ public class DisplayerSlot3D : MonoBehaviour, IDisplayerSlot
     private void OnDisable()
     {
         ClearSlot();
+    }
+
+    public void Destroy()
+    {
+        Destroy(gameObject);
     }
 
     public void InitializeSlot(ISimpleSlot slot)

@@ -1,6 +1,5 @@
-using System;
-
 public interface IReadOnlyDisplayerSlot
 {
-    public ISimpleSlot Slot { get; }
+    string IdItem { get; }
+    ISimpleSlot Slot { get; }
 }

@@ -6,11 +6,16 @@ public class ShopInputReader : MonoBehaviour, PlayerInput.IShopActions
 {
     private PlayerInput _playerInput;
 
-    public event Action ChangedScrollNextItem;
-    public event Action ChangedScrollPreviousItem;
-    public event Action CanceledScrollItem;
-    public event Action DownCancel;
-    public event Action UpCancel;
+    public event Action BeforeScrollNextItem;
+    public event Action ScrollNextItem;
+    public event Action BeforeScrollPreviousItem;
+    public event Action ScrollPreviousItem;
+    public event Action BeforeCancel;
+    public event Action Cancel;    
+    public event Action BeforePayOne;
+    public event Action PayOne;
+    public event Action BeforePayTwo;
+    public event Action PayTwo;
 
     public float ScrollTarget { get; private set; }
 
@@ -35,27 +40,50 @@ public class ShopInputReader : MonoBehaviour, PlayerInput.IShopActions
         if (context.started)
             return;
 
-        ScrollTarget = context.ReadValue<Vector2>().y;
+        bool isStarted = context.performed;
+        bool isNext = ScrollTarget > 0;
 
-        if (ScrollTarget == 0)
+        if (isStarted == false)
         {
-            CanceledScrollItem?.Invoke();
+            if (isNext)
+                ScrollNextItem?.Invoke();
+            else
+                ScrollPreviousItem?.Invoke();
+
+            ScrollTarget = 0;
             return;
         }
 
-        bool isNext = ScrollTarget > 0;
+        ScrollTarget = context.ReadValue<Vector2>().y;
+        isNext = ScrollTarget > 0;
 
         if (isNext)
-            ChangedScrollNextItem?.Invoke();
+            BeforeScrollNextItem?.Invoke();
         else
-            ChangedScrollPreviousItem?.Invoke();
+            BeforeScrollPreviousItem?.Invoke();
     }
 
     public void OnCancel(InputAction.CallbackContext context)
     {
         if (context.performed)
-            DownCancel?.Invoke();
+            BeforeCancel?.Invoke();
         else if (context.canceled)
-            UpCancel?.Invoke();
+            Cancel?.Invoke();
+    }
+
+    public void OnPay_One(InputAction.CallbackContext context)
+    {
+        if (context.performed)
+            BeforePayOne?.Invoke();
+        else if (context.canceled)
+            PayOne?.Invoke();
+    }
+
+    public void OnPay_Two(InputAction.CallbackContext context)
+    {
+        if (context.performed)
+            BeforePayTwo?.Invoke();
+        else if (context.canceled)
+            PayTwo?.Invoke();
     }
 }

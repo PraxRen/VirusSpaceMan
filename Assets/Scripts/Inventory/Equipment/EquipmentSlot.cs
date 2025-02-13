@@ -15,27 +15,6 @@ public class EquipmentSlot : BaseSlot<IEquipmentItem>, IReadOnlyEquipmentSlot
 
     public EquipmentType Type { get; }
 
-    public override bool TryGiveItem(out IEquipmentItem item, int count)
-    {
-        if (count != 1)
-            throw new ArgumentOutOfRangeException(nameof(count));
-
-        item = default;
-
-        if (IsEmpty)
-            return false;
-
-        item = Item;
-
-        if (TryRemoveItem(count) == false)
-        {
-            item = default;
-            return false;
-        }
-
-        return true;
-    }
-
     protected override bool TryAddItemAddon(IEquipmentItem item, int count)
     {
         if (item == null)

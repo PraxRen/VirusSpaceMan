@@ -104,6 +104,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d15abe9937402254f8c69fb83dd5e7c2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _buttonMonoBehaviour: {fileID: 5340826545922081646}
   _image: {fileID: 7222511000917403791}
   _colorDefault: {r: 0.5764706, g: 0.22745098, b: 0.69803923, a: 1}
   _colorDown: {r: 0.5764706, g: 0.22745098, b: 0.69803923, a: 0.5803922}
@@ -200,6 +201,7 @@ MonoBehaviour:
   _buttonPause: {fileID: 5340826545922081646}
   _buttonReturn: {fileID: 9127798438590621020}
   _buttonShopWeapon: {fileID: 0}
+  _buttonShopArmor: {fileID: 0}
   _shopWeaponMonoBehaviour: {fileID: 0}
   _timeWait: 1.7
 --- !u!1 &5240172188876860183
@@ -306,6 +308,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d15abe9937402254f8c69fb83dd5e7c2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _buttonMonoBehaviour: {fileID: 9127798438590621020}
   _image: {fileID: 8320720221375294220}
   _colorDefault: {r: 0.57540184, g: 0.2272161, b: 0.6981132, a: 1}
   _colorDown: {r: 0.5764706, g: 0.22745098, b: 0.69803923, a: 0.5803922}

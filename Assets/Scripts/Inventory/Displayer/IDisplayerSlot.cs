@@ -5,4 +5,6 @@ public interface IDisplayerSlot : IReadOnlyDisplayerSlot
     void Hide();
 
     void Show();
+
+    void Destroy();
 }

@@ -35,8 +35,6 @@ public abstract class BaseSlot<T> : IReadOnlySlot<T> where T : IObjectItem
         return result;
     }
 
-    public abstract bool TryGiveItem(out T item, int count);
-
     protected abstract bool TryAddItemAddon(T item, int count);
 
     protected abstract bool TryRemoveItemAddon(int count);

@@ -11,5 +11,5 @@ public class ShopConfig
         _currencies = currencies;
     }
 
-    public IReadOnlyCollection<GameCurrency> Currencies => _currencies;
+    public IReadOnlyList<GameCurrency> Currencies => _currencies;
 }

@@ -10,27 +10,6 @@ public class Slot<T> : BaseSlot<T> where T : IObjectItem
             throw new InvalidOperationException($"{nameof(BaseSlot<T>)} cannot be initialized");
     }
 
-    public override bool TryGiveItem(out T item, int count)
-    {
-        if (count <= 0)
-            throw new ArgumentOutOfRangeException(nameof(count));
-
-        item = default;
-
-        if (IsEmpty)
-            return false;
-
-        if (Count <= count)
-            return false;
-
-        if (TryRemoveItem(count) == false)
-            return false;
-
-        item = Item ?? throw new InvalidOperationException($"{nameof(Item)} is Empty");
-
-        return true;
-    }
-
     protected override bool TryAddItemAddon(T item, int count)
     {
         if (item == null)

@@ -193,6 +193,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d15abe9937402254f8c69fb83dd5e7c2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _buttonMonoBehaviour: {fileID: 8064893037480143500}
   _image: {fileID: 1355785539036947073}
   _colorDefault: {r: 1, g: 1, b: 1, a: 1}
   _colorDown: {r: 1, g: 1, b: 1, a: 0.5803922}
@@ -299,6 +300,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d15abe9937402254f8c69fb83dd5e7c2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _buttonMonoBehaviour: {fileID: 1183572247685558819}
   _image: {fileID: 8812647345898618396}
   _colorDefault: {r: 1, g: 1, b: 1, a: 1}
   _colorDown: {r: 1, g: 1, b: 1, a: 0.5803922}

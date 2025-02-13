@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class DisplayerStorage : MonoBehaviour, IReadOnlyDisplayerStorage
@@ -8,11 +9,7 @@ public class DisplayerStorage : MonoBehaviour, IReadOnlyDisplayerStorage
     
     private IDisplayerSlotFactory _displayerSlotFactory;
     private List<IDisplayerSlot> _displayerSlots = new List<IDisplayerSlot>();
-    private int _indexActiveSlot;
 
-    public event Action<IReadOnlyDisplayerSlot> ActiveDisplayerSlotChanged;
-
-    public IReadOnlyDisplayerSlot ActiveDisplayerSlot => _displayerSlots[_indexActiveSlot];
     public Transform Transform { get; private set; }
 
     private void Awake()
@@ -21,60 +18,40 @@ public class DisplayerStorage : MonoBehaviour, IReadOnlyDisplayerStorage
         _displayerSlotFactory = (IDisplayerSlotFactory)_displayerSlotFactoryScriptableObject;
     }
 
-    public void Next()
+    public void Show(ISimpleSlot simpleSlot)
     {
-        int newIndex = _indexActiveSlot == _displayerSlots.Count - 1 ? 0 : _indexActiveSlot + 1;
+        IDisplayerSlot slot = _displayerSlots.FirstOrDefault(slot => slot.Slot.Id == simpleSlot.Id);
 
-        if (newIndex == _indexActiveSlot)
-            return;
+        if (slot == null)
+            throw new ArgumentNullException(nameof(slot));
 
-        _displayerSlots[_indexActiveSlot].Hide();
-        _indexActiveSlot = newIndex;
-        _displayerSlots[_indexActiveSlot].Show();
-        ActiveDisplayerSlotChanged?.Invoke(ActiveDisplayerSlot);
+        slot.Show();
     }
 
-    public void Previous()
+    public void Hide(ISimpleSlot simpleSlot)
     {
-        int newIndex = _indexActiveSlot == 0 ? _displayerSlots.Count - 1 : _indexActiveSlot - 1;
+        IDisplayerSlot slot = _displayerSlots.FirstOrDefault(slot => slot.Slot.Id == simpleSlot.Id);
 
-        if (newIndex == _indexActiveSlot)
-            return;
+        if (slot == null)
+            throw new ArgumentNullException(nameof(slot));
 
-        _displayerSlots[_indexActiveSlot].Hide();
-        _indexActiveSlot = newIndex;
-        _displayerSlots[_indexActiveSlot].Show();
-        ActiveDisplayerSlotChanged?.Invoke(ActiveDisplayerSlot);
-    }
-
-    public void ShowActiveSlot() 
-    {
-        if (_displayerSlots.Count == 0)
-            throw new InvalidOperationException($"The {nameof(DisplayerStorage)} has not been initialized!");
-
-        _displayerSlots[_indexActiveSlot].Show();
-    }
-
-    public void HideActiveSlot()
-    {
-        if (_displayerSlots.Count == 0)
-            throw new InvalidOperationException($"The {nameof(DisplayerStorage)} has not been initialized!");
-
-
-        _displayerSlots[_indexActiveSlot].Hide();
-    }
-
-    public void ResetIndex()
-    {
-        _indexActiveSlot = 0;
+        slot.Hide();
     }
 
     public void Initialize(ISimpleStorage simpleStorage)
     {
-        foreach (ISimpleSlot slot in simpleStorage.GetSlots())
-            _displayerSlots.Add(_displayerSlotFactory.Create(slot, this));
+        foreach (IDisplayerSlot displayerSlot in _displayerSlots.ToArray())
+        {
+            displayerSlot.Destroy();
+            _displayerSlots.Remove(displayerSlot);
+        }
 
-        _indexActiveSlot = 0;
-        ActiveDisplayerSlotChanged?.Invoke(ActiveDisplayerSlot);
+        foreach (ISimpleSlot slot in simpleStorage.GetSlots())
+        {
+            if (slot.IsEmpty)
+                continue;
+
+            _displayerSlots.Add(_displayerSlotFactory.Create(slot, this));
+        }
     }
 }

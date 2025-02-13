@@ -356,7 +356,7 @@ PrefabInstance:
       objectReference: {fileID: 8187978608550589662}
     - target: {fileID: 6363402265870530881, guid: f68f41b3311f4e44d95b5092fd63d0a3, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 3.408
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6363402265870530881, guid: f68f41b3311f4e44d95b5092fd63d0a3, type: 3}
       propertyPath: m_LocalPosition.y
@@ -396,7 +396,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8111789736165578807, guid: f68f41b3311f4e44d95b5092fd63d0a3, type: 3}
       propertyPath: m_Name
-      value: MannequinDied
+      value: MannequinAlien
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

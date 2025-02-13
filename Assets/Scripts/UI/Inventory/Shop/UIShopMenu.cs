@@ -1,8 +1,6 @@
 using System;
 using System.Collections;
-using UnityEditor.Profiling;
 using UnityEngine;
-using UnityEngine.UIElements;
 
 public class UIShopMenu : MonoBehaviour, IMenu
 {

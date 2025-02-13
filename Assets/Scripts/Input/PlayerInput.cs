@@ -200,6 +200,24 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Pay_One"",
+                    ""type"": ""Button"",
+                    ""id"": ""088310ff-b8ec-4980-b5c7-63c1db036de6"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Pay_Two"",
+                    ""type"": ""Button"",
+                    ""id"": ""b9f3d48b-a59a-4e4a-9646-74524d8c62a3"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -257,6 +275,28 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
                     ""action"": ""Cancel"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""ad1a0501-6197-4d47-b544-0ab19fb01860"",
+                    ""path"": ""<Keyboard>/enter"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Pay_One"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""e6528244-ba39-4bfb-84ee-a732c936841b"",
+                    ""path"": ""<Keyboard>/space"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Pay_Two"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -272,6 +312,8 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
         m_Shop = asset.FindActionMap("Shop", throwIfNotFound: true);
         m_Shop_ScrollSaleItem = m_Shop.FindAction("ScrollSaleItem", throwIfNotFound: true);
         m_Shop_Cancel = m_Shop.FindAction("Cancel", throwIfNotFound: true);
+        m_Shop_Pay_One = m_Shop.FindAction("Pay_One", throwIfNotFound: true);
+        m_Shop_Pay_Two = m_Shop.FindAction("Pay_Two", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -397,12 +439,16 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
     private List<IShopActions> m_ShopActionsCallbackInterfaces = new List<IShopActions>();
     private readonly InputAction m_Shop_ScrollSaleItem;
     private readonly InputAction m_Shop_Cancel;
+    private readonly InputAction m_Shop_Pay_One;
+    private readonly InputAction m_Shop_Pay_Two;
     public struct ShopActions
     {
         private @PlayerInput m_Wrapper;
         public ShopActions(@PlayerInput wrapper) { m_Wrapper = wrapper; }
         public InputAction @ScrollSaleItem => m_Wrapper.m_Shop_ScrollSaleItem;
         public InputAction @Cancel => m_Wrapper.m_Shop_Cancel;
+        public InputAction @Pay_One => m_Wrapper.m_Shop_Pay_One;
+        public InputAction @Pay_Two => m_Wrapper.m_Shop_Pay_Two;
         public InputActionMap Get() { return m_Wrapper.m_Shop; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -418,6 +464,12 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
             @Cancel.started += instance.OnCancel;
             @Cancel.performed += instance.OnCancel;
             @Cancel.canceled += instance.OnCancel;
+            @Pay_One.started += instance.OnPay_One;
+            @Pay_One.performed += instance.OnPay_One;
+            @Pay_One.canceled += instance.OnPay_One;
+            @Pay_Two.started += instance.OnPay_Two;
+            @Pay_Two.performed += instance.OnPay_Two;
+            @Pay_Two.canceled += instance.OnPay_Two;
         }
 
         private void UnregisterCallbacks(IShopActions instance)
@@ -428,6 +480,12 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
             @Cancel.started -= instance.OnCancel;
             @Cancel.performed -= instance.OnCancel;
             @Cancel.canceled -= instance.OnCancel;
+            @Pay_One.started -= instance.OnPay_One;
+            @Pay_One.performed -= instance.OnPay_One;
+            @Pay_One.canceled -= instance.OnPay_One;
+            @Pay_Two.started -= instance.OnPay_Two;
+            @Pay_Two.performed -= instance.OnPay_Two;
+            @Pay_Two.canceled -= instance.OnPay_Two;
         }
 
         public void RemoveCallbacks(IShopActions instance)
@@ -455,5 +513,7 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
     {
         void OnScrollSaleItem(InputAction.CallbackContext context);
         void OnCancel(InputAction.CallbackContext context);
+        void OnPay_One(InputAction.CallbackContext context);
+        void OnPay_Two(InputAction.CallbackContext context);
     }
 }
