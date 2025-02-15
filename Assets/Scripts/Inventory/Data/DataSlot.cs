@@ -1,12 +1,8 @@
-using UnityEngine;
+using System;
 
-[System.Serializable]
-public class DataSlot : IDataSlot<IObjectItem>
+[Serializable]
+public class DataSlot
 {
-    [SerializeField][SerializeInterface(typeof(IObjectItem))] private ScriptableObject _itemScriptableObject;
-    [SerializeField] private int _count;
-
-    public IObjectItem Item => (IObjectItem)_itemScriptableObject;
-
-    public int Count => _count;
+    public string IdItem;
+    public int Count;
 }

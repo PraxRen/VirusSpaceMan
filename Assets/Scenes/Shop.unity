@@ -5262,7 +5262,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _equipment: {fileID: 3364738297234287390}
   _inventory: {fileID: 3364738297234287389}
-  _defaultEquipmentSlots: {fileID: 11400000, guid: d1ab003aa8abcbb49a866118c502a00a, type: 2}
+  _defaultEquipmentSlots: {fileID: 11400000, guid: 9282efcc252266445bd1803e6764aa5f, type: 2}
   _defaultInventorySlots: {fileID: 11400000, guid: d58f19523eb912d488617fab5d222d5a, type: 2}
 --- !u!114 &3364738297234287389
 MonoBehaviour:

@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: DefaultEquipmentSlots
   m_EditorClassIdentifier: 
   _values:
-  - _type: 0
-    _itemScriptableObject: {fileID: 11400000, guid: 6adcfd5db1426c84f8c8fa2c633a6d45, type: 2}
-    _count: 1
+  - IdItem: 1a710b27-da2a-45e0-92d3-7067acf9bbd1
+    Count: 1
+    Type: 0

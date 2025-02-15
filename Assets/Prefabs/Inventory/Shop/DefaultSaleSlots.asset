@@ -13,9 +13,45 @@ MonoBehaviour:
   m_Name: DefaultSaleSlots
   m_EditorClassIdentifier: 
   _values:
-  - _itemScriptableObject: {fileID: 11400000, guid: 6adcfd5db1426c84f8c8fa2c633a6d45, type: 2}
-    _count: 1
-  - _itemScriptableObject: {fileID: 11400000, guid: a388bd12f0bf0424d9e6fad4d4c52144, type: 2}
-    _count: 1
-  - _itemScriptableObject: {fileID: 11400000, guid: 4a4816c883957d94680ab7985a3eb702, type: 2}
-    _count: 1
+  - IdItem: 1a710b27-da2a-45e0-92d3-7067acf9bbd1
+    Count: 1
+    SettingGameCurrencies:
+      _prices:
+      - _gameCurrency:
+          _type: 0
+          _iconResourceName: Credit
+          _color: {r: 1, g: 1, b: 1, a: 1}
+        _value: 1
+      - _gameCurrency:
+          _type: 1
+          _iconResourceName: Quark
+          _color: {r: 0.501961, g: 0.003922, b: 0.866667, a: 1}
+        _value: 1
+  - IdItem: 18668142-96ff-4b7b-9ae9-3cb40bd87725
+    Count: 1
+    SettingGameCurrencies:
+      _prices:
+      - _gameCurrency:
+          _type: 0
+          _iconResourceName: Credit
+          _color: {r: 1, g: 1, b: 1, a: 1}
+        _value: 1
+      - _gameCurrency:
+          _type: 1
+          _iconResourceName: Quark
+          _color: {r: 0.501961, g: 0.003922, b: 0.866667, a: 1}
+        _value: 1
+  - IdItem: bee97edf-60fc-4d53-ba32-665cd1621a5f
+    Count: 1
+    SettingGameCurrencies:
+      _prices:
+      - _gameCurrency:
+          _type: 0
+          _iconResourceName: Credit
+          _color: {r: 1, g: 1, b: 1, a: 1}
+        _value: 1
+      - _gameCurrency:
+          _type: 1
+          _iconResourceName: Quark
+          _color: {r: 0.501961, g: 0.003922, b: 0.866667, a: 1}
+        _value: 1

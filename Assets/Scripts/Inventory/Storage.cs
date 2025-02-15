@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public abstract class Storage<T> : MonoBehaviour, ISaveable, IReadOnlyStorage<T> where T : IObjectItem
@@ -57,19 +56,24 @@ public abstract class Storage<T> : MonoBehaviour, ISaveable, IReadOnlyStorage<T>
         AwakeStart();
     }
 
-    public void Initialize(IEnumerable<IDataSlot<T>> dataItems)
+    public static T FindItemInHash(string idItem)
     {
-        if (dataItems == null)
-            throw new ArgumentNullException(nameof(dataItems));
+        return _hashItems.ContainsKey(idItem) ? (T)_hashItems[idItem] : default;
+    }
 
-        if (dataItems.Count() == 0)
-            throw new ArgumentOutOfRangeException(nameof(dataItems));
+    public void Initialize(IEnumerable<DataSlot> dataSlots)
+    {
+        if (dataSlots == null)
+            throw new ArgumentNullException(nameof(dataSlots));
+
+        if (dataSlots.Count() == 0)
+            throw new ArgumentOutOfRangeException(nameof(dataSlots));
 
         _slots = new List<BaseSlot<T>>();
 
-        foreach (IDataSlot<T> dataItem in dataItems)
+        foreach (DataSlot dataSlot in dataSlots)
         {
-            BaseSlot<T> slot = _slotFactory.Create(dataItem, this);
+            BaseSlot<T> slot = _slotFactory.Create(dataSlot, this);
             _slots.Add(slot);
             
             if (slot.Item != null)
@@ -207,11 +211,6 @@ public abstract class Storage<T> : MonoBehaviour, ISaveable, IReadOnlyStorage<T>
         string path = "Items";
         IObjectItem[] items = Resources.LoadAll<Item>(path);
 
-        if (items == null || items.Length == 0)
-        {
-            return new Dictionary<string, IObjectItem>();
-        }
-
-        return items.ToDictionary(item => item.Id);
+        return items.Length == 0 ? new Dictionary<string, IObjectItem>() : items.ToDictionary(item => item.Id);
     }
 }

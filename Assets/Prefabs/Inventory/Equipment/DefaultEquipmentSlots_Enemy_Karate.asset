@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: DefaultEquipmentSlots_Enemy_Karate
   m_EditorClassIdentifier: 
   _values:
-  - _type: 0
-    _itemScriptableObject: {fileID: 11400000, guid: 0df03ad6a2c93734d9fb403d88858f36, type: 2}
-    _count: 1
+  - IdItem: fa01fcdf-39e1-4b96-befe-813ab48c95cf
+    Count: 1
+    Type: 0

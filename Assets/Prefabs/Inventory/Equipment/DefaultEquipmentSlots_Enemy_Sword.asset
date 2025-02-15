@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: DefaultEquipmentSlots_Enemy_Sword
   m_EditorClassIdentifier: 
   _values:
-  - _type: 0
-    _itemScriptableObject: {fileID: 11400000, guid: 4a4816c883957d94680ab7985a3eb702, type: 2}
-    _count: 1
+  - IdItem: bee97edf-60fc-4d53-ba32-665cd1621a5f
+    Count: 1
+    Type: 0

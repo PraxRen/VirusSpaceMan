@@ -7,5 +7,4 @@ public class DefaultEquipmentSlots : ScriptableObject
     [SerializeField] private DataEquipmentSlot[] _values;
 
     public IReadOnlyCollection<DataEquipmentSlot> Values => _values;
-
 }

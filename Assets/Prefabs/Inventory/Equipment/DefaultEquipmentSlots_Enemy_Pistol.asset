@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: DefaultEquipmentSlots_Enemy_Pistol
   m_EditorClassIdentifier: 
   _values:
-  - _type: 0
-    _itemScriptableObject: {fileID: 11400000, guid: 11725651b03a47e48b3c8b8f404a136b, type: 2}
-    _count: 1
+  - IdItem: 88193a93-8e2b-4b61-bcd7-2af5eca74049
+    Count: 1
+    Type: 0
