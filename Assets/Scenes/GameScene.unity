@@ -3666,9 +3666,17 @@ PrefabInstance:
       propertyPath: _buttonPreviousMonoBehaviour
       value: 
       objectReference: {fileID: 37587549}
+    - target: {fileID: 1953259992798587383, guid: 21685c10a89cef242847b4a2c729e36c, type: 3}
+      propertyPath: _id
+      value: 65fd486b-2af6-4003-aa67-2a7f8f861594
+      objectReference: {fileID: 0}
     - target: {fileID: 3326990007501782220, guid: 21685c10a89cef242847b4a2c729e36c, type: 3}
       propertyPath: m_Name
       value: Player
+      objectReference: {fileID: 0}
+    - target: {fileID: 6902383064249703294, guid: 21685c10a89cef242847b4a2c729e36c, type: 3}
+      propertyPath: _id
+      value: 39964104-c4ab-42f6-a732-99a2c773ef34
       objectReference: {fileID: 0}
     - target: {fileID: 7394927946005314348, guid: 21685c10a89cef242847b4a2c729e36c, type: 3}
       propertyPath: m_LocalPosition.x

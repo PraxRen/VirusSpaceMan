@@ -10,7 +10,6 @@ public class PlayerInputReader : MonoBehaviour, PlayerInput.IPlayerActions
     public event Action ScrollNextTarget;
     public event Action BeforeScrollPreviousTarget;
     public event Action ScrollPreviousTarget;
-    public event Action CanceledScrollTarget;
     public event Action DownCancel;
     public event Action UpCancel;
 

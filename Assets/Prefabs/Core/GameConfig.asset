@@ -24,3 +24,6 @@ MonoBehaviour:
     _maxValueAccuracy: 1
     _maxValueDamage: 100
     _maxValueDistance: 12
+  _savingSystemConfig:
+    _fileName: 
+    _typeSerializationStrategy: 0

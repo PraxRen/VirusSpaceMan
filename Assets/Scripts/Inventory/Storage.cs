@@ -1,14 +1,17 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Unity.VisualScripting;
 using UnityEngine;
 
-public abstract class Storage<T> : MonoBehaviour, IReadOnlyStorage<T> where T : IObjectItem
+public abstract class Storage<T> : MonoBehaviour, ISaveable, IReadOnlyStorage<T> where T : IObjectItem
 {
 #if UNITY_EDITOR
     [SerializeField][ReadOnly] private List<string> _idsDebug;
 #endif
     [SerializeField] private ScriptableObject _slotFactoryScriptableObject;
+
+    private static Dictionary<string, IObjectItem> _hashItems;
 
     private ISlotFactory<T> _slotFactory;
     private List<BaseSlot<T>> _slots;
@@ -35,6 +38,7 @@ public abstract class Storage<T> : MonoBehaviour, IReadOnlyStorage<T> where T : 
 
     private void Awake()
     {
+        _hashItems = GetHashItems();
         AwakeAddon();
     }
 
@@ -187,4 +191,27 @@ public abstract class Storage<T> : MonoBehaviour, IReadOnlyStorage<T> where T : 
     protected virtual void DisableAddon() { }
 
     public IReadOnlyList<ISimpleSlot> GetSlots() => Slots;
+
+    object ISaveable.CaptureState()
+    {
+        throw new NotImplementedException();
+    }
+
+    void ISaveable.RestoreState(object state)
+    {
+        throw new NotImplementedException();
+    }
+
+    private static Dictionary<string, IObjectItem> GetHashItems()
+    {
+        string path = "Items";
+        IObjectItem[] items = Resources.LoadAll<Item>(path);
+
+        if (items == null || items.Length == 0)
+        {
+            return new Dictionary<string, IObjectItem>();
+        }
+
+        return items.ToDictionary(item => item.Id);
+    }
 }

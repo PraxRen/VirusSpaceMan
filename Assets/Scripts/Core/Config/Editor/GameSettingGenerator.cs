@@ -86,6 +86,9 @@ public static class GameSettingGenerator
             case Type t when t == typeof(CombatConfig):
                 return ConvertCombatConfigToCodeString(value as CombatConfig);
 
+            case Type t when t == typeof(SavingSystemConfig):
+                return ConvertSavingSystemConfigToCodeString(value as SavingSystemConfig);
+
             default:
                 Debug.LogWarning($"Поле {value} типа {type.Name} не может быть автоматически сгенерировано.");
                 return null;
@@ -145,6 +148,16 @@ public static class GameSettingGenerator
             return Null;
 
         return $"new {nameof(CombatConfig)}({combatConfig.MaxValueAccuracy}, {combatConfig.MaxValueDamage}, {combatConfig.MaxValueDistance})";
+    }
+
+    private static string ConvertSavingSystemConfigToCodeString(SavingSystemConfig savingSystemConfig)
+    {
+        if (savingSystemConfig == null)
+            return Null;
+
+        string fileName = string.IsNullOrEmpty(savingSystemConfig.FileName) ? Null : savingSystemConfig.FileName;
+
+        return $"new {nameof(SavingSystemConfig)}({fileName}, {nameof(TypeSerializationStrategy)}.{savingSystemConfig.TypeSerializationStrategy})";
     }
 
     private static string GetTypeName(Type type)
