@@ -25,5 +25,5 @@ MonoBehaviour:
     _maxValueDamage: 100
     _maxValueDistance: 12
   _savingSystemConfig:
-    _fileName: 
+    _fileName: Save
     _typeSerializationStrategy: 0

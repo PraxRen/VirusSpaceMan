@@ -15,6 +15,11 @@ public class EquipmentSlot : BaseSlot<IEquipmentItem>, IReadOnlyEquipmentSlot
 
     public EquipmentType Type { get; }
 
+    public override DataSlot CreateDataSlot()
+    {
+        return new DataEquipmentSlot() { IdItem = Item?.Id, Type = this.Type, Count = this.Count };
+    }
+
     protected override bool TryAddItemAddon(IEquipmentItem item, int count)
     {
         if (item == null)

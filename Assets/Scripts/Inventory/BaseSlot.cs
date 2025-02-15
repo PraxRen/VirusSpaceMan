@@ -35,6 +35,11 @@ public abstract class BaseSlot<T> : IReadOnlySlot<T> where T : IObjectItem
         return result;
     }
 
+    public virtual DataSlot CreateDataSlot()
+    {
+        return new DataSlot() { IdItem = Item?.Id, Count = this.Count };
+    }
+
     protected abstract bool TryAddItemAddon(T item, int count);
 
     protected abstract bool TryRemoveItemAddon(int count);

@@ -6,6 +6,8 @@ using UnityEngine;
 public abstract class Storage<T> : MonoBehaviour, ISaveable, IReadOnlyStorage<T> where T : IObjectItem
 {
 #if UNITY_EDITOR
+    [SerializeField][ReadOnly] private int _countSlot;
+    [SerializeField][ReadOnly] private int _countItems;
     [SerializeField][ReadOnly] private List<string> _idsDebug;
 #endif
     [SerializeField] private ScriptableObject _slotFactoryScriptableObject;
@@ -55,6 +57,13 @@ public abstract class Storage<T> : MonoBehaviour, ISaveable, IReadOnlyStorage<T>
     {
         AwakeStart();
     }
+#if UNITY_EDITOR
+    private void Update()
+    {
+        _countSlot = _slots.Count;
+        _countItems = _slots.Sum(slot => slot.Count);
+    }
+#endif
 
     public static T FindItemInHash(string idItem)
     {
@@ -70,6 +79,9 @@ public abstract class Storage<T> : MonoBehaviour, ISaveable, IReadOnlyStorage<T>
             throw new ArgumentOutOfRangeException(nameof(dataSlots));
 
         _slots = new List<BaseSlot<T>>();
+#if UNITY_EDITOR
+        _idsDebug.Clear();
+#endif
 
         foreach (DataSlot dataSlot in dataSlots)
         {
@@ -116,7 +128,10 @@ public abstract class Storage<T> : MonoBehaviour, ISaveable, IReadOnlyStorage<T>
 
     public bool TryAddItem(T item, int count)
     {
-        BaseSlot<T> slot = _slots.FirstOrDefault(slot => slot.IsEmpty == false && slot.Item.Id == item.Id) ?? _slots.FirstOrDefault(slot => slot.IsEmpty);
+        if (item == null)
+            throw new ArgumentNullException(nameof(item));
+
+        BaseSlot<T> slot = _slots.FirstOrDefault(slot => slot.IsEmpty == false && slot.Item.Id == item.Id && slot.Count + count <= item.LimitInSlot) ?? _slots.FirstOrDefault(slot => slot.IsEmpty);
 
         if (slot == null)
             return false;
@@ -184,7 +199,11 @@ public abstract class Storage<T> : MonoBehaviour, ISaveable, IReadOnlyStorage<T>
         return true;
     }
 
-    public bool HasItem(T item) => _slots.Any(slot => slot.Item.Id == item.Id);
+    public bool HasItem(T item, out ISimpleSlot slot) 
+    {
+        slot = _slots.FirstOrDefault(slot => slot.Item.Id == item.Id);
+        return slot != null;
+    } 
 
     protected virtual void AwakeAddon() { }
 
@@ -192,18 +211,28 @@ public abstract class Storage<T> : MonoBehaviour, ISaveable, IReadOnlyStorage<T>
 
     protected virtual void EnableAddon() { }
 
-    protected virtual void DisableAddon() { }
+    protected virtual void DisableAddon() { } 
 
     public IReadOnlyList<ISimpleSlot> GetSlots() => Slots;
 
     object ISaveable.CaptureState()
     {
-        throw new NotImplementedException();
+        DataSlot[] dataSlots = new DataSlot[Slots.Count];
+
+        for (int i = 0; i < dataSlots.Length; i++)
+            dataSlots[i] = _slots[i].CreateDataSlot();
+
+        return dataSlots;
     }
 
     void ISaveable.RestoreState(object state)
     {
-        throw new NotImplementedException();
+        DataSlot[] dataSlots = state as DataSlot[];
+
+        if (dataSlots == null)
+            throw new InvalidCastException(nameof(state));
+
+        Initialize(dataSlots);
     }
 
     private static Dictionary<string, IObjectItem> GetHashItems()

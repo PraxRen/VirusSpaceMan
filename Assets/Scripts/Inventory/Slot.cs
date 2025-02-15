@@ -21,7 +21,7 @@ public class Slot<T> : BaseSlot<T> where T : IObjectItem
         if (IsEmpty == false && Item.Id != item.Id)
             return false;
 
-        if (Count >= item.Limit)
+        if (Count >= item.LimitInSlot)
             return false;
 
         Item = item;

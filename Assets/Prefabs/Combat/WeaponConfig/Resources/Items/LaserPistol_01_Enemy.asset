@@ -15,7 +15,7 @@ MonoBehaviour:
   _id: 88193a93-8e2b-4b61-bcd7-2af5eca74049
   _name: Laser pistol
   _description: Simple and reliable...
-  _limit: 1
+  _limitInSlot: 1
   _idWeapon: 86aeb65c-39f4-4a8d-887d-2ef9c75f7c03
   _damage: 100
   _force: 400

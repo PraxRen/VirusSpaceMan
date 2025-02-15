@@ -9,6 +9,7 @@ public class Shop : MonoBehaviour, IReadOnlyShop
     [SerializeField][SerializeInterface(typeof(IReadOnlyButton))] private MonoBehaviour _buttonScrollPreviousMonoBehaviour;
     [SerializeField][SerializeInterface(typeof(IReadOnlyButton))] private MonoBehaviour _buttonPayOneMonoBehaviour;
     [SerializeField][SerializeInterface(typeof(IReadOnlyButton))] private MonoBehaviour _buttonPayTwoMonoBehaviour;
+    [SerializeField][SerializeInterface(typeof(IReadOnlyButton))] private MonoBehaviour _buttonEquipMonoBehaviour;
     [SerializeField] private Seller _seller;
     [SerializeField] private Buyer _buyer;
 
@@ -16,6 +17,7 @@ public class Shop : MonoBehaviour, IReadOnlyShop
     private IReadOnlyButton _buttonScrollPrevious;
     private IReadOnlyButton _buttonPayOne;
     private IReadOnlyButton _buttonPayTwo;
+    private IReadOnlyButton _buttonEquip;
     private List<ISimpleSlot> _slots = new List<ISimpleSlot>();
     private int _indexActiveSlot = -1;
 
@@ -34,11 +36,17 @@ public class Shop : MonoBehaviour, IReadOnlyShop
         _buttonScrollPrevious = (IReadOnlyButton)_buttonScrollPreviousMonoBehaviour;
         _buttonPayOne = (IReadOnlyButton)_buttonPayOneMonoBehaviour;
         _buttonPayTwo = (IReadOnlyButton)_buttonPayTwoMonoBehaviour;
+        _buttonEquip = (IReadOnlyButton)_buttonEquipMonoBehaviour;
     }
 
-    private void Start()
+    private void OnEnable()
     {
-        Initialize(_seller.SimpleStorage);
+        _seller.Changed += Initialize;
+    }
+
+    private void OnDisable()
+    {
+        _seller.Changed -= Initialize;
     }
 
     public void Activate()
@@ -51,6 +59,7 @@ public class Shop : MonoBehaviour, IReadOnlyShop
         _buttonScrollPrevious.ClickUpInBounds += OnChangedScrollPreviousItem;
         _buttonPayOne.ClickUpInBounds += MakeTransactionOne;
         _buttonPayTwo.ClickUpInBounds += MakeTransactionTwo;
+        _buttonEquip.ClickUpInBounds += OnClickEquip;
         Activated?.Invoke();
     }
 
@@ -60,6 +69,7 @@ public class Shop : MonoBehaviour, IReadOnlyShop
         _buttonScrollPrevious.ClickUpInBounds -= OnChangedScrollPreviousItem;
         _buttonPayOne.ClickUpInBounds -= MakeTransactionOne;
         _buttonPayTwo.ClickUpInBounds -= MakeTransactionTwo;
+        _buttonEquip.ClickUpInBounds -= OnClickEquip;
         Deactivated?.Invoke();
     }
 
@@ -67,7 +77,7 @@ public class Shop : MonoBehaviour, IReadOnlyShop
     {
         _indexActiveSlot = -1;
         _slots = storage.GetSlots().Where(slot => slot.IsEmpty == false).ToList();
-        Initialized?.Invoke(_seller, _seller);
+        Initialized?.Invoke(_seller, _buyer);
     }
 
     private void OnChangedScrollNextItem()
@@ -132,5 +142,17 @@ public class Shop : MonoBehaviour, IReadOnlyShop
 
             UpdateActiveSlot(_slots.IndexOf(newSlot));
         }
+
+        SavingSystem.Save();
+    }
+
+    private void OnClickEquip()
+    {
+        IEquipmentItem equipmentItem = _slots[_indexActiveSlot].GetItem() as IEquipmentItem;
+
+        if (equipmentItem == null)
+            throw new InvalidCastException(nameof(equipmentItem));
+
+
     }
 }

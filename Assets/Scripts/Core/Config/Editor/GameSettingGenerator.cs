@@ -157,7 +157,7 @@ public static class GameSettingGenerator
 
         string fileName = string.IsNullOrEmpty(savingSystemConfig.FileName) ? Null : savingSystemConfig.FileName;
 
-        return $"new {nameof(SavingSystemConfig)}({fileName}, {nameof(TypeSerializationStrategy)}.{savingSystemConfig.TypeSerializationStrategy})";
+        return $"new {nameof(SavingSystemConfig)}(\"{fileName}\", {nameof(TypeSerializationStrategy)}.{savingSystemConfig.TypeSerializationStrategy})";
     }
 
     private static string GetTypeName(Type type)

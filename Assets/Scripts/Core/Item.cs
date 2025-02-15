@@ -5,11 +5,11 @@ public abstract class Item : ScriptableObject, IObjectItem, ISerializationCallba
     [SerializeField][ReadOnly] private string _id;
     [SerializeField] private string _name;
     [SerializeField][TextArea] private string _description;
-    [Min(1)][SerializeField] private int _limit;
+    [Range(1, 99)][SerializeField] private int _limitInSlot;
 
     public string Id => _id;
     public string Name => _name;
-    public int Limit => _limit;
+    public int LimitInSlot => _limitInSlot;
     public string Description => _description;
 
     #if UNITY_EDITOR

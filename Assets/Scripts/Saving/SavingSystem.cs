@@ -11,17 +11,23 @@ public static class SavingSystem
         Dictionary<string, object> state = strategy.LoadFile(fileName);
         CaptureState(state);
         strategy.SaveFile(state, fileName);
+#if UNITY_EDITOR
+        Debug.Log("Save");
+#endif
     }
 
-    public static void Load(string saveFile)
+    public static void Load()
     {
         ISerializationStrategy strategy = GameSetting.SavingSystemConfig.Strategy;
         string fileName = GameSetting.SavingSystemConfig.FileName;
         Dictionary<string, object> state = strategy.LoadFile(fileName);
         RestoreState(state);
+#if UNITY_EDITOR
+        Debug.Log("Load");
+#endif
     }
 
-    public static void Delete(string saveFile)
+    public static void Delete()
     {
         ISerializationStrategy strategy = GameSetting.SavingSystemConfig.Strategy;
         string fileName = GameSetting.SavingSystemConfig.FileName;
