@@ -14,16 +14,11 @@ public class UICastomButton : MonoBehaviour, IReadOnlyButton, IPointerDownHandle
     public event Action Deactivated;
 
     private RectTransform _rectTransform;
-    private bool _isActivated;
+    private bool _isActivated = true;
 
     private void Awake()
     {
         _rectTransform = GetComponent<RectTransform>();
-    }
-
-    private void Start()
-    {
-        Activate();
     }
 
     public void Activate()

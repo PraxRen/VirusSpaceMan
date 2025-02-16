@@ -56,6 +56,7 @@ public class UIShop : MonoBehaviour
         _shop.BeforeChangedActiveSlot -= HideSlot;
         _shop.ChangedActiveSlot -= ShowSlot;
         _scrollButtonsPanel.SetActive(false);
+        _buttonEquip.gameObject.SetActive(false);
 
         foreach (UIButtonPay buttonPay in _buttonsPay)
             buttonPay.gameObject.SetActive(false);

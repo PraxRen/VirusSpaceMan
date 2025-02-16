@@ -76,7 +76,7 @@ public class Shop : MonoBehaviour, IReadOnlyShop
         _buttonScrollPrevious.ClickUpInBounds += OnChangedScrollPreviousItem;
         _buttonPayOne.ClickUpInBounds += MakeTransactionOne;
         _buttonPayTwo.ClickUpInBounds += MakeTransactionTwo;
-        _buttonEquip.ClickUpInBounds += OnClickEquip;
+        _buttonEquip.ClickDown += OnClickEquip;
         Activated?.Invoke();
     }
 
@@ -147,6 +147,7 @@ public class Shop : MonoBehaviour, IReadOnlyShop
         ISimpleSlot slot = _slots[_indexActiveSlot];
         ISaleItem item = _seller.SellItem(slot, _maxCountItemForPay);
         _buyer.BuyItem(item, 1);
+        int indexSlot = _indexActiveSlot;
 
         if (slot.IsEmpty)
         {
@@ -155,9 +156,10 @@ public class Shop : MonoBehaviour, IReadOnlyShop
             Initialize(_seller.SimpleStorage);
 
             if (_slots.Count > 0)
-                UpdateActiveSlot(_slots.IndexOf(newSlot));
+                indexSlot = _slots.IndexOf(newSlot);
         }
 
+        UpdateActiveSlot(indexSlot);
         SavingSystem.Save();
     }
 
