@@ -185,7 +185,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _storageMonoBehaviour: {fileID: 45747749}
-  _equipment: {fileID: 0}
+  _equipment: {fileID: 45747748}
 --- !u!114 &45747748
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2409,7 +2409,7 @@ Transform:
   m_GameObject: {fileID: 5296812506706652695}
   serializedVersion: 2
   m_LocalRotation: {x: 0.13094656, y: 0.69487625, z: -0.13094658, w: 0.6948763}
-  m_LocalPosition: {x: -0.73, y: 4.23, z: -0.16000003}
+  m_LocalPosition: {x: -0.35, y: 3.49, z: -0.16}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -3776,10 +3776,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d15abe9937402254f8c69fb83dd5e7c2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _buttonMonoBehaviour: {fileID: 0}
+  _buttonMonoBehaviour: {fileID: 8090923453478698984}
   _image: {fileID: 5145696698651115824}
-  _colorDefault: {r: 0.4862745, g: 1, b: 0.98039216, a: 1}
-  _colorDown: {r: 0.4862745, g: 1, b: 0.98039216, a: 0.6784314}
+  _colorDefault: {r: 0.49735418, g: 1, b: 0.48627448, a: 1}
+  _colorDown: {r: 0.49803922, g: 1, b: 0.4862745, a: 0.2627451}
   _timeUpdateColor: 0.15
 --- !u!4 &1723008037809243220
 Transform:
@@ -4094,7 +4094,7 @@ RectTransform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7789074221054743469}
   m_LocalRotation: {x: 0.000000007450581, y: 0.98270345, z: -0.18518642, w: 0.000000059604645}
-  m_LocalPosition: {x: 0, y: 0, z: 1.68}
+  m_LocalPosition: {x: 0, y: 0, z: 1.654}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -4103,7 +4103,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0.01, y: -1.63}
+  m_AnchoredPosition: {x: 0.01, y: -1.562}
   m_SizeDelta: {x: 2.9827, y: 0.9237}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!4 &2008057925990129405
@@ -5796,9 +5796,10 @@ MonoBehaviour:
   _buttonScrollPreviousMonoBehaviour: {fileID: 2314658705349426383}
   _buttonPayOneMonoBehaviour: {fileID: 2115186390}
   _buttonPayTwoMonoBehaviour: {fileID: 392619091}
-  _buttonEquipMonoBehaviour: {fileID: 0}
+  _buttonEquipMonoBehaviour: {fileID: 8090923453478698984}
   _seller: {fileID: 3847247404603132682}
   _buyer: {fileID: 45747747}
+  _isEndlessInventory: 1
 --- !u!114 &3847247404603132684
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5813,6 +5814,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _shopMonoBehaviour: {fileID: 3847247404603132683}
   _displayerStorage: {fileID: 669052273}
+  _buttonEquip: {fileID: 8090923453478698984}
   _scrollButtonsPanel: {fileID: 4732378916827148743}
   _buttonsPay:
   - {fileID: 2115186390}
@@ -7221,7 +7223,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.4862745, g: 1, b: 0.98039216, a: 1}
+  m_Color: {r: 0.49735418, g: 1, b: 0.48627448, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1

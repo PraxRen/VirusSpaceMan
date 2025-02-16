@@ -9,8 +9,16 @@ public class Seller : Trader<ISaleItem>
 
         ISaleItem item = null;
 
-        if(Storage.TryGiveItem(out item, slot, count) == false)
-            throw new InvalidOperationException("Seller couldn't return the item");
+        if (count == 0)
+        {
+            if (Storage.TryGetItem(out item, (readOnlySlot) => readOnlySlot.Id == slot.Id) == false)
+                throw new InvalidOperationException("Seller couldn't return the item");
+        }
+        else
+        {
+            if (Storage.TryGiveItem(out item, slot, count) == false)
+                throw new InvalidOperationException("Seller couldn't return the item");
+        }
 
         return item;
     }

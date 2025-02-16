@@ -2,11 +2,13 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using static Shop;
 
 public class UIShop : MonoBehaviour
 {
     [SerializeField][SerializeInterface(typeof(IReadOnlyShop))] private MonoBehaviour _shopMonoBehaviour;
     [SerializeField] private DisplayerStorage _displayerStorage;
+    [SerializeField] private UICastomButton _buttonEquip;
     [SerializeField] private GameObject _scrollButtonsPanel;
     [SerializeField] private UIButtonPay[] _buttonsPay;
 
@@ -45,7 +47,7 @@ public class UIShop : MonoBehaviour
         _shop.BeforeChangedActiveSlot += HideSlot;
         _shop.ChangedActiveSlot += ShowSlot;
         ShowSlot(_shop.ActiveSlot);
-        ResetButtonsPay();
+        UpdateButtonsPay();
         _scrollButtonsPanel.SetActive(true);
     }
 
@@ -58,7 +60,7 @@ public class UIShop : MonoBehaviour
         foreach (UIButtonPay buttonPay in _buttonsPay)
             buttonPay.gameObject.SetActive(false);
 
-        if (_shop.ActiveSlot != null)
+        if (_shop.ActiveSlot.Value != null)
             HideSlot(_shop.ActiveSlot);
     }
 
@@ -67,12 +69,20 @@ public class UIShop : MonoBehaviour
         _displayerStorage.Initialize(seller.SimpleStorage);
     }
 
-    private void ResetButtonsPay()
+    private void UpdateButtonsPay()
     {
-        ISaleItem saleItem = _shop.ActiveSlot.GetItem() as ISaleItem;
+        ISaleItem saleItem = _shop.ActiveSlot.Value.GetItem() as ISaleItem;
 
         if (saleItem == null)
-            throw new InvalidCastException(nameof(saleItem));    
+            throw new InvalidCastException(nameof(saleItem));
+
+        if (_shop.ActiveSlot.HasInStorage || _shop.ActiveSlot.HasInEquipment)
+        {
+            foreach (UIButtonPay buttonPay in _buttonsPay)
+                buttonPay.gameObject.SetActive(false);
+
+            return;
+        }
 
         IEnumerable<TypeGameCurrency> typesGameCurrency = saleItem.SettingGameCurrencies.Prices.Where(price => price.Value > 0)
                                                                                                .Select(price => price.GameCurrency.Type);
@@ -85,14 +95,32 @@ public class UIShop : MonoBehaviour
         }
     }
 
-    private void HideSlot(ISimpleSlot simpleSlot)
+    private void UpdateButtonEquip(ShopActiveSlot activeSlot)
     {
-        _displayerStorage.Hide(simpleSlot);
+        if (activeSlot.HasInStorage || activeSlot.HasInEquipment)
+        {
+            _buttonEquip.gameObject.SetActive(true);
+
+            if (activeSlot.HasInEquipment)
+                _buttonEquip.Deactivate();
+            else
+                _buttonEquip.Activate();
+
+            return;
+        }
+
+        _buttonEquip.gameObject.SetActive(false);
     }
 
-    private void ShowSlot(ISimpleSlot simpleSlot)
+    private void HideSlot(ShopActiveSlot activeSlot)
     {
-        _displayerStorage.Show(simpleSlot);
-        ResetButtonsPay();
+        _displayerStorage.Hide(activeSlot.Value);
+    }
+
+    private void ShowSlot(ShopActiveSlot activeSlot)
+    {
+        _displayerStorage.Show(activeSlot.Value);
+        UpdateButtonEquip(activeSlot);
+        UpdateButtonsPay();
     }
 }

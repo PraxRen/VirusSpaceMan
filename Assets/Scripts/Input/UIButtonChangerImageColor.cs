@@ -30,14 +30,17 @@ public class UIButtonChangerImageColor : MonoBehaviour
     {
         _button.ClickDown += OnClickDown;
         _button.ClickUp += OnClickUp;
+        _button.Activated += OnActivated;
+        _button.Deactivated += OnDeactivated;
         _image.color = _colorDefault;
     }
-
 
     private void OnDisable()
     {
         _button.ClickDown -= OnClickDown;
         _button.ClickUp -= OnClickUp;
+        _button.Activated -= OnActivated;
+        _button.Deactivated -= OnDeactivated;
         CancelUpdateColor();
     }
 
@@ -48,21 +51,21 @@ public class UIButtonChangerImageColor : MonoBehaviour
         _image.color = _colorDefault;
     }
 
-    private void RunUpdateColor(Color color)
+    private void RunUpdateColor(Color color, float time)
     {
         CancelUpdateColor();
-        StartCoroutine(UpdateColor(color));
+        StartCoroutine(UpdateColor(color, time));
     }
 
-    private IEnumerator UpdateColor(Color targetColor)
+    private IEnumerator UpdateColor(Color targetColor, float timeUpdate)
     {
         Color startColor = _image.color;
         float timer = 0f;
 
-        while (timer < _timeUpdateColor)
+        while (timer < timeUpdate)
         {
             timer += Time.deltaTime;
-            _image.color = Color.Lerp(startColor, targetColor, timer / _timeUpdateColor);
+            _image.color = Color.Lerp(startColor, targetColor, timer / timeUpdate);
             yield return null;
         }
 
@@ -80,11 +83,21 @@ public class UIButtonChangerImageColor : MonoBehaviour
 
     private void OnClickDown()
     {
-        RunUpdateColor(_colorDown);
+        RunUpdateColor(_colorDown, _timeUpdateColor);
     }
 
     private void OnClickUp()
     {
-        RunUpdateColor(_colorDefault);
+        RunUpdateColor(_colorDefault, _timeUpdateColor);
+    }
+
+    private void OnActivated()
+    {
+        RunUpdateColor(_colorDefault, 0f);
+    }
+
+    private void OnDeactivated()
+    {
+        RunUpdateColor(_colorDown, 0f);
     }
 }

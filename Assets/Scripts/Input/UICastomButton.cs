@@ -10,12 +10,32 @@ public class UICastomButton : MonoBehaviour, IReadOnlyButton, IPointerDownHandle
     public event Action ClickDown;
     public event Action ClickUp;
     public event Action ClickUpInBounds;
+    public event Action Activated;
+    public event Action Deactivated;
 
     private RectTransform _rectTransform;
+    private bool _isActivated;
 
     private void Awake()
     {
         _rectTransform = GetComponent<RectTransform>();
+    }
+
+    private void Start()
+    {
+        Activate();
+    }
+
+    public void Activate()
+    {
+        _isActivated = true;
+        Activated?.Invoke();
+    }
+
+    public void Deactivate()
+    {
+        _isActivated = false;
+        Deactivated?.Invoke();
     }
 
     public void Down()
@@ -33,11 +53,17 @@ public class UICastomButton : MonoBehaviour, IReadOnlyButton, IPointerDownHandle
 
     void IPointerDownHandler.OnPointerDown(PointerEventData eventData)
     {
+        if (_isActivated == false)
+            return;
+
         Down();
     }
 
     void IPointerUpHandler.OnPointerUp(PointerEventData eventData)
     {
+        if (_isActivated == false)
+            return;
+
         Up(RectTransformUtility.RectangleContainsScreenPoint(_rectTransform, eventData.position, eventData.pressEventCamera));
     }
 }

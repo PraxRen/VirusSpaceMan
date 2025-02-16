@@ -16,6 +16,7 @@ MonoBehaviour:
   _name: Laser revolver
   _description: Wow, what a power!
   _limitInSlot: 1
+  _limitInAllStorage: 1
   _idWeapon: b5afae7c-3cac-4bb0-9bb9-068de7914d54
   _damage: 100
   _force: 400

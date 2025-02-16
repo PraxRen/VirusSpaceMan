@@ -5,6 +5,20 @@ using UnityEngine;
 
 public class Shop : MonoBehaviour, IReadOnlyShop
 {
+    public struct ShopActiveSlot
+    {
+        public ShopActiveSlot(ISimpleSlot value, bool hasInEquipment, bool hasInStorage)
+        {
+            Value = value;
+            HasInEquipment = hasInEquipment;
+            HasInStorage = hasInStorage;
+        }
+
+        public ISimpleSlot Value { get; }
+        public bool HasInEquipment { get; }
+        public bool HasInStorage { get; }
+    }
+
     [SerializeField][SerializeInterface(typeof(IReadOnlyButton))] private MonoBehaviour _buttonScrollNextMonoBehaviour;
     [SerializeField][SerializeInterface(typeof(IReadOnlyButton))] private MonoBehaviour _buttonScrollPreviousMonoBehaviour;
     [SerializeField][SerializeInterface(typeof(IReadOnlyButton))] private MonoBehaviour _buttonPayOneMonoBehaviour;
@@ -12,6 +26,7 @@ public class Shop : MonoBehaviour, IReadOnlyShop
     [SerializeField][SerializeInterface(typeof(IReadOnlyButton))] private MonoBehaviour _buttonEquipMonoBehaviour;
     [SerializeField] private Seller _seller;
     [SerializeField] private Buyer _buyer;
+    [SerializeField] private bool _isEndlessInventory;
 
     private IReadOnlyButton _buttonScrollNext;
     private IReadOnlyButton _buttonScrollPrevious;
@@ -20,15 +35,16 @@ public class Shop : MonoBehaviour, IReadOnlyShop
     private IReadOnlyButton _buttonEquip;
     private List<ISimpleSlot> _slots = new List<ISimpleSlot>();
     private int _indexActiveSlot = -1;
+    private int _maxCountItemForPay;
 
-    public event Action<ISimpleSlot> BeforeChangedActiveSlot;
-    public event Action<ISimpleSlot> ChangedActiveSlot;
+    public event Action<ShopActiveSlot> BeforeChangedActiveSlot;
+    public event Action<ShopActiveSlot> ChangedActiveSlot;
     public event Action<IReadOnlyTrader, IReadOnlyTrader> Initialized;
     public event Action Activated;
     public event Action Deactivated;
     public event Action Emptied;
 
-    public ISimpleSlot ActiveSlot => _indexActiveSlot == -1 ? null : _slots[_indexActiveSlot];
+    public ShopActiveSlot ActiveSlot { get; private set; }
 
     private void Awake()
     {
@@ -37,6 +53,7 @@ public class Shop : MonoBehaviour, IReadOnlyShop
         _buttonPayOne = (IReadOnlyButton)_buttonPayOneMonoBehaviour;
         _buttonPayTwo = (IReadOnlyButton)_buttonPayTwoMonoBehaviour;
         _buttonEquip = (IReadOnlyButton)_buttonEquipMonoBehaviour;
+        _maxCountItemForPay = _isEndlessInventory ? 0 : 1; 
     }
 
     private void OnEnable()
@@ -54,7 +71,7 @@ public class Shop : MonoBehaviour, IReadOnlyShop
         if (_slots.Count == 0)
             return;
 
-        _indexActiveSlot = 0;
+        UpdateActiveSlot(0);
         _buttonScrollNext.ClickUpInBounds += OnChangedScrollNextItem;
         _buttonScrollPrevious.ClickUpInBounds += OnChangedScrollPreviousItem;
         _buttonPayOne.ClickUpInBounds += MakeTransactionOne;
@@ -76,8 +93,12 @@ public class Shop : MonoBehaviour, IReadOnlyShop
     private void Initialize(ISimpleStorage storage)
     {
         _indexActiveSlot = -1;
+        ActiveSlot = default;
         _slots = storage.GetSlots().Where(slot => slot.IsEmpty == false).ToList();
         Initialized?.Invoke(_seller, _buyer);
+
+        if (_slots.Count == 0)
+            Emptied?.Invoke();
     }
 
     private void OnChangedScrollNextItem()
@@ -108,13 +129,12 @@ public class Shop : MonoBehaviour, IReadOnlyShop
 
     private void UpdateActiveSlot(int newIndex)
     {
-        if (_indexActiveSlot == newIndex) 
-            return;
-
         if (_indexActiveSlot != -1)
             BeforeChangedActiveSlot?.Invoke(ActiveSlot);
 
         _indexActiveSlot = newIndex;
+        IObjectItem item = _slots[_indexActiveSlot].GetItem();
+        ActiveSlot = new ShopActiveSlot(_slots[_indexActiveSlot], _buyer.HasItemInEquipment(item.Id), _buyer.HasItemInStorage(item.Id));
         ChangedActiveSlot?.Invoke(ActiveSlot);
     }
 
@@ -125,7 +145,7 @@ public class Shop : MonoBehaviour, IReadOnlyShop
     private void MakeTransaction(GameCurrency gameCurrency)
     {
         ISimpleSlot slot = _slots[_indexActiveSlot];
-        ISaleItem item = _seller.SellItem(slot, 1);
+        ISaleItem item = _seller.SellItem(slot, _maxCountItemForPay);
         _buyer.BuyItem(item, 1);
 
         if (slot.IsEmpty)
@@ -134,13 +154,8 @@ public class Shop : MonoBehaviour, IReadOnlyShop
             ISimpleSlot newSlot = _slots[newIndex];
             Initialize(_seller.SimpleStorage);
 
-            if (_slots.Count == 0)
-            {
-                Emptied?.Invoke();
-                return;
-            }
-
-            UpdateActiveSlot(_slots.IndexOf(newSlot));
+            if (_slots.Count > 0)
+                UpdateActiveSlot(_slots.IndexOf(newSlot));
         }
 
         SavingSystem.Save();
@@ -153,6 +168,8 @@ public class Shop : MonoBehaviour, IReadOnlyShop
         if (equipmentItem == null)
             throw new InvalidCastException(nameof(equipmentItem));
 
-
+        _buyer.Equip(equipmentItem);
+        UpdateActiveSlot(_indexActiveSlot);
+        SavingSystem.Save();
     }
 }

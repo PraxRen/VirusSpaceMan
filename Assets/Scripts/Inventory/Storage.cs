@@ -174,6 +174,14 @@ public abstract class Storage<T> : MonoBehaviour, ISaveable, IReadOnlyStorage<T>
         return TryRemoveItem(slot, count);
     }
 
+    public bool TryGetItem(out T item, Func<IReadOnlySlot<T>, bool> predicate)
+    {
+        IReadOnlySlot<T> slot = _slots.FirstOrDefault(predicate);
+        item = slot.Item;
+
+        return item != null;
+    }
+
     public bool TryGiveItem(out T item, ISimpleSlot slot, int count)
     {
         if (count <= 0)
@@ -201,9 +209,21 @@ public abstract class Storage<T> : MonoBehaviour, ISaveable, IReadOnlyStorage<T>
 
     public bool HasItem(T item, out ISimpleSlot slot) 
     {
-        slot = _slots.FirstOrDefault(slot => slot.Item.Id == item.Id);
+        slot = _slots.FirstOrDefault(slot => slot.IsEmpty == false && slot.Item.Id == item.Id);
         return slot != null;
-    } 
+    }
+
+    public bool HasItem(string idItem, out ISimpleSlot slot)
+    {
+        slot = _slots.FirstOrDefault(slot => slot.IsEmpty == false && slot.Item.Id == idItem);
+        return slot != null;
+    }
+
+    public bool TryFindSlot(out ISimpleSlot slot, Func<IReadOnlySlot<T>, bool> predicate)
+    {
+        slot = _slots.FirstOrDefault(predicate);
+        return slot != null;
+    }
 
     protected virtual void AwakeAddon() { }
 

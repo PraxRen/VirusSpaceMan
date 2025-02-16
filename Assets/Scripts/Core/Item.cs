@@ -6,13 +6,15 @@ public abstract class Item : ScriptableObject, IObjectItem, ISerializationCallba
     [SerializeField] private string _name;
     [SerializeField][TextArea] private string _description;
     [Range(1, 99)][SerializeField] private int _limitInSlot;
+    [Range(0, 99)][SerializeField] private int _limitInAllStorage;
 
     public string Id => _id;
     public string Name => _name;
     public int LimitInSlot => _limitInSlot;
+    public int LimitInAllStorage => throw new System.NotImplementedException();
     public string Description => _description;
 
-    #if UNITY_EDITOR
+#if UNITY_EDITOR
     [ContextMenu("Reset ID")]
     private void ClearId()
     {

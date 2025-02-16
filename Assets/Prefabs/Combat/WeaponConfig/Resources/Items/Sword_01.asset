@@ -16,6 +16,7 @@ MonoBehaviour:
   _name: Laser sword
   _description: Who's your daddy?
   _limitInSlot: 1
+  _limitInAllStorage: 1
   _idWeapon: 3bcc4681-937b-4fcf-8d01-39fef347b869
   _damage: 100
   _force: 0
