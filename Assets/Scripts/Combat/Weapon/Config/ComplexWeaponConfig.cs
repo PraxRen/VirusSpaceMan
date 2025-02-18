@@ -37,7 +37,7 @@ public class ComplexWeaponConfig : Item, IComplexWeaponConfig
     public float DistanceAttack => _distanceAttack;
     public float CooldownAttack => _cooldownAttack;
     public float DistanceNoise => _distanceNoise;
-    public float FactorAuidioVolume => _factorAuidioVolume;
+    public float FactorNoise => _factorAuidioVolume;
     public SurfaceType SurfaceType => _surfaceType;
     public IReadOnlyList<Attack> Attacks => _attacks;
     public EquipmentType Type => _equipmentType;
@@ -49,7 +49,6 @@ public class ComplexWeaponConfig : Item, IComplexWeaponConfig
     public Vector3 OffsetPosition => _offsetPosition;
     public Vector3 StartRotation => _rotation;
     public Vector3 Scale => _scale;
-
 
 #if UNITY_EDITOR
     [ContextMenu("Reset SettingGameCurrencies")]

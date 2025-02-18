@@ -2,6 +2,7 @@ using UnityEngine;
 
 public abstract class Item : ScriptableObject, IObjectItem, ISerializationCallbackReceiver
 {
+    [Header("Item")]
     [SerializeField][ReadOnly] private string _id;
     [SerializeField] private string _name;
     [SerializeField][TextArea] private string _description;

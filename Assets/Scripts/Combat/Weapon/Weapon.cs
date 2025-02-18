@@ -1,9 +1,7 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-using static UnityEditor.Experimental.GraphView.GraphView;
 
 public abstract class Weapon : MonoBehaviour, IWeaponReadOnly, ISerializationCallbackReceiver
 {
@@ -27,7 +25,7 @@ public abstract class Weapon : MonoBehaviour, IWeaponReadOnly, ISerializationCal
     public IWeaponConfig Config => _config;
     public IFighterReadOnly Fighter => _fighter;
     public Attack CurrentAttack => _config.Attacks[_indexAttack];
-    public float FactorNoise => _config.FactorAuidioVolume;
+    public float FactorNoise => _config.FactorNoise;
     public SurfaceType SurfaceType => _config.SurfaceType;
     public Vector3 Position => _transform.position;
     public IReadOnlyCollection<Collider> Colliders => _colliders;

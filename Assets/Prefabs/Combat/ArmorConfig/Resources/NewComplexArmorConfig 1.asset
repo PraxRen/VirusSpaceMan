@@ -1,0 +1,37 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4d90a30042c0a954dad54e632ae79aa1, type: 3}
+  m_Name: NewComplexArmorConfig 1
+  m_EditorClassIdentifier: 
+  _id: b05ce491-2837-43d0-9ec8-fdf2cc54bb22
+  _name: 
+  _description: 
+  _limitInSlot: 0
+  _limitInAllStorage: 1
+  _idArmor: 0b9b0f5b-be4a-4d52-bc65-549b3c91b1aa
+  _value: 0.05
+  _factorNoise: 0.5
+  _surfaceType: 1
+  _equipmentType: 1
+  _modeMover: {fileID: 0}
+  _settingGameCurrencies:
+    _prices:
+    - _gameCurrency:
+        _type: 0
+        _iconResourceName: Credit
+        _color: {r: 1, g: 1, b: 1, a: 1}
+      _value: 1
+    - _gameCurrency:
+        _type: 1
+        _iconResourceName: Quark
+        _color: {r: 0.501961, g: 0.003922, b: 0.866667, a: 1}
+      _value: 1

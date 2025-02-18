@@ -147,7 +147,12 @@ public static class GameSettingGenerator
         if (combatConfig == null)
             return Null;
 
-        return $"new {nameof(CombatConfig)}({combatConfig.MaxValueAccuracy}, {combatConfig.MaxValueDamage}, {combatConfig.MaxValueDistance})";
+        string maxValueAccuracy = combatConfig.MaxValueAccuracy.ToString("0.######", CultureInfo.InvariantCulture);
+        string maxValueDamage = combatConfig.MaxValueDamage.ToString("0.######", CultureInfo.InvariantCulture);
+        string maxValueDistance = combatConfig.MaxValueDistance.ToString("0.######", CultureInfo.InvariantCulture);
+        string maxValueArmor = combatConfig.MaxValueArmor.ToString("0.######", CultureInfo.InvariantCulture);
+
+        return $"new {nameof(CombatConfig)}({maxValueAccuracy}f, {maxValueDamage}f, {maxValueDistance}f, {maxValueArmor}f)";
     }
 
     private static string ConvertSavingSystemConfigToCodeString(SavingSystemConfig savingSystemConfig)

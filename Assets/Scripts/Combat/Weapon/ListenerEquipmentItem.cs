@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-public class ChangerWeaponConfig : MonoBehaviour, IChangerWeaponConfig
+public class ListenerEquipmentItem : MonoBehaviour, IChangerWeaponConfig, IChangerArmorConfig
 {
     [SerializeField][SerializeInterface(typeof(IReadOnlyStorage<IEquipmentItem>))] private MonoBehaviour _equipmentMonoBehaviour;
 
@@ -9,6 +9,8 @@ public class ChangerWeaponConfig : MonoBehaviour, IChangerWeaponConfig
 
     public event Action<IWeaponConfig> ChangedWeaponConfig;
     public event Action RemovedWeaponConfig;
+    public event Action<IArmorConfig> ChangedArmorConfig;
+    public event Action RemovedArmorConfig;
 
     private void Awake()
     {
@@ -29,21 +31,34 @@ public class ChangerWeaponConfig : MonoBehaviour, IChangerWeaponConfig
 
     private void OnRemovedItem(IReadOnlySlot<IEquipmentItem> slot, IEquipmentItem item)
     {
-        IReadOnlyEquipmentSlot equipmentSlot = (IReadOnlyEquipmentSlot)slot;
+        EquipmentType equipmentType = slot.Item.Type;
 
-        if (equipmentSlot.Type != EquipmentType.Weapon)
+        if (equipmentType == EquipmentType.Weapon)
+        {
+            RemovedWeaponConfig?.Invoke();
             return;
+        }
 
-        RemovedWeaponConfig?.Invoke();
+        if (equipmentType == EquipmentType.Armor)
+        {
+            RemovedArmorConfig?.Invoke();
+        }
+
     }
 
     private void OnAddedItem(IReadOnlySlot<IEquipmentItem> slot, IEquipmentItem item)
     {
-        IReadOnlyEquipmentSlot equipmentSlot = (IReadOnlyEquipmentSlot)slot;
+        EquipmentType equipmentType = slot.Item.Type;
 
-        if (equipmentSlot.Type != EquipmentType.Weapon)
+        if (equipmentType == EquipmentType.Weapon)
+        {
+            ChangedWeaponConfig?.Invoke((IWeaponConfig)item);
             return;
+        }
 
-        ChangedWeaponConfig?.Invoke((IWeaponConfig)item);
+        if (equipmentType == EquipmentType.Armor)
+        {
+            ChangedArmorConfig?.Invoke((IArmorConfig)item);
+        }
     }
 }

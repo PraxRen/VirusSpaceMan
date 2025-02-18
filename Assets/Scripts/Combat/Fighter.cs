@@ -5,12 +5,14 @@ using UnityEngine;
 public class Fighter : MonoBehaviour, IFighterReadOnly, IAction, IModeMoverChanger, ISimpleEventCreator, ISimpleEventInitiator
 {
     [SerializeField] private bool _debug = true;
-    [SerializeField] private Health _health;
+    [SerializeField][SerializeInterface(typeof(IDamageable))] private MonoBehaviour _defaultDamageableMonoBehaviour;
     [SerializeField] private WeaponContainer _weaponContainer;
+    [SerializeField] private ArmorContainer _armorContainer;
     [SerializeField] private ActionScheduler _actionScheduler;
     [SerializeField] private Rage _rage;
     [Range(0f, 1f)][SerializeField] private float _luckRageAttack;
     [SerializeField][SerializeInterface(typeof(IChangerWeaponConfig))] private MonoBehaviour _changerWeaponConfigMonoBehaviour;
+    [SerializeField][SerializeInterface(typeof(IChangerArmorConfig))] private MonoBehaviour _changerArmorConfigMonoBehaviour;
     [SerializeField][SerializeInterface(typeof(IAttackNotifier))] private MonoBehaviour _attackNotifierMonoBehaviour;
     [SerializeField][SerializeInterface(typeof(IReadOnlyTargetTracker))] private MonoBehaviour _lookTrackerMonoBehaviour;
     [SerializeField] private LayerMask _layerMaskDamageable;
@@ -18,10 +20,12 @@ public class Fighter : MonoBehaviour, IFighterReadOnly, IAction, IModeMoverChang
     [SerializeField] private Collider[] _ignoreColliders;
 
     private IChangerWeaponConfig _changerWeaponConfig;
+    private IChangerArmorConfig _changerArmorConfig;
     private IAttackNotifier _attackNotifier;
+    private IDamageable _defaultDamageable;
     private IDamageable _currentDamageable;
     private Weapon _currentWeapon;
-
+    private Armor _armor;
 
     public event Action<IWeaponReadOnly> ChangedWeapon;
     public event Action<IWeaponReadOnly> ActivatedWeapon;
@@ -49,16 +53,21 @@ public class Fighter : MonoBehaviour, IFighterReadOnly, IAction, IModeMoverChang
 
     private void Awake()
     {
+        _defaultDamageable = (IDamageable)_defaultDamageableMonoBehaviour;
         _changerWeaponConfig = (IChangerWeaponConfig)_changerWeaponConfigMonoBehaviour;
+        _changerArmorConfig = (IChangerArmorConfig)_changerArmorConfigMonoBehaviour;
         _attackNotifier = (IAttackNotifier)_attackNotifierMonoBehaviour;
         LookTracker = (IReadOnlyTargetTracker)_lookTrackerMonoBehaviour;
-        _currentDamageable = _health;
+        UpdateDamageable(_defaultDamageable);
+
     }
 
     private void OnEnable()
     {
         _changerWeaponConfig.ChangedWeaponConfig += OnChangedWeaponConfig;
         _changerWeaponConfig.RemovedWeaponConfig += RemoveWeapon;
+        _changerArmorConfig.ChangedArmorConfig += OnChangedArmorConfig;
+        _changerArmorConfig.RemovedArmorConfig += OnRemovedArmorConfig;
         _attackNotifier.StartingAttack += OnStartingAttack;
         _attackNotifier.RunningDamage += OnRunningDamage;
         _attackNotifier.StoppingAttack += StopAttack;
@@ -70,12 +79,16 @@ public class Fighter : MonoBehaviour, IFighterReadOnly, IAction, IModeMoverChang
     {
         _changerWeaponConfig.ChangedWeaponConfig -= OnChangedWeaponConfig;
         _changerWeaponConfig.RemovedWeaponConfig -= RemoveWeapon;
+        _changerArmorConfig.ChangedArmorConfig -= OnChangedArmorConfig;
+        _changerArmorConfig.RemovedArmorConfig -= OnRemovedArmorConfig;
         _attackNotifier.StartingAttack -= OnStartingAttack;
         _attackNotifier.RunningDamage -= OnRunningDamage;
         _attackNotifier.StoppingAttack -= StopAttack;
         _rage.enabled = false;
         _attackNotifier.Deactivate();
     }
+
+    public bool CanReach(Transform transform) => _currentDamageable.CanReach(transform);
 
     public void HandleSelection() => _currentDamageable.HandleSelection();
 
@@ -212,5 +225,26 @@ public class Fighter : MonoBehaviour, IFighterReadOnly, IAction, IModeMoverChang
         RemovedWeapon?.Invoke();
     }
 
-    public bool CanReach(Transform transform) => _currentDamageable.CanReach(transform);
+    private void OnChangedArmorConfig(IArmorConfig armorConfig)
+    {
+        _armor = _armorContainer.GetArmor(armorConfig.Id);
+
+        if (_armor == null)
+            throw new ArgumentNullException(nameof(_armor));
+
+        _armor.Activate();
+        UpdateDamageable(_armor);
+    }
+
+    private void OnRemovedArmorConfig()
+    {
+        _armor.Deactivate();
+        UpdateDamageable(_defaultDamageable);
+        _armor = null;
+    }
+
+    private void UpdateDamageable(IDamageable damageable)
+    {
+        _currentDamageable = damageable;
+    }
 }

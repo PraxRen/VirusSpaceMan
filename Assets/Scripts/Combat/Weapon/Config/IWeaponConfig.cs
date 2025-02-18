@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-public interface IWeaponConfig : IObjectItem
+public interface IWeaponConfig : IObjectItem, ISurface
 {
     public string IdWeapon { get; }
     public float Damage { get; }
@@ -8,7 +8,5 @@ public interface IWeaponConfig : IObjectItem
     public float DistanceAttack { get; }
     public float CooldownAttack { get; }
     public float DistanceNoise { get; }
-    public float FactorAuidioVolume { get; }
-    public SurfaceType SurfaceType { get; }
     public IReadOnlyList<Attack> Attacks { get; }
 }

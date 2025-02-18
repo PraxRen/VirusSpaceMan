@@ -4,4 +4,9 @@ public enum TypeGraphics
     Hammer,
     Ñigarette,
     Target,
+    ArmorNone,
+    ArmorEngineerSuit,
+    ArmorCombatSuit,
+    ArmorImprovedCombatSuit,
+    ArmorSpaceSuit,
 }
